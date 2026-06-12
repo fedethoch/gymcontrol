@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+:root {
+  --background: #05070b;
+  --sidebar: #080b10;
+  --workspace: #0d1118;
+  --card: #121824;
+  --card-alt: #171d2a;
+  --border: #252b36;
+  --border-strong: #323949;
+  --foreground: #f4f6fb;
+  --foreground-muted: #98a2b7;
+  --accent: #7c3aed;
+  --accent-strong: #8f4df3;
+  --accent-bright: #b995ff;
+  --accent-foreground: #f7f5ff;
+  --success: #22c55e;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  min-height: 100%;
+  background: var(--background);
+}
+
+body {
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), Arial, Helvetica, sans-serif;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.app-shell {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.shell-sidebar {
+  background:
+    radial-gradient(circle at top left, rgba(124, 58, 237, 0.12), transparent 32%),
+    linear-gradient(180deg, #090c14 0%, #05070d 100%);
+}
+
+.shell-workspace {
+  display: flex;
+  min-height: 0;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  background: var(--workspace);
+}
+
+.shell-main {
+  min-height: 0;
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.font-display {
+  font-family: var(--font-display), var(--font-body), sans-serif;
+}
+
+.page-frame {
+  display: grid;
+  gap: 1.25rem;
+  width: 100%;
+  min-height: 100%;
+  padding: 1rem;
+}
+
+.dashboard-page-frame {
+  align-content: start;
+  grid-auto-rows: max-content;
+  padding-top: 1rem;
+}
+
+.thumb-fitness {
+  background: linear-gradient(140deg, #2b1854 0%, #171d2a 42%, #0c1017 100%);
+}
+
+.fitness-photo {
+  background: linear-gradient(120deg, #22143f 0%, #141926 48%, #090c12 100%);
+}
+
+@media (min-width: 1024px) {
+  .app-shell {
+    flex-direction: row;
+  }
+
+  .page-frame {
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .dashboard-page-frame {
+    align-content: start;
+    grid-auto-rows: max-content;
+    padding-top: 1.5rem;
+  }
+}

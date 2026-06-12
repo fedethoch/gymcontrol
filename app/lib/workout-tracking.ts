@@ -1,0 +1,455 @@
+import "server-only";
+
+import { createSupabaseServerClient } from "@/app/lib/supabase/server";
+
+export type WorkoutSessionStatus = "in_progress" | "completed";
+
+export type WorkoutSessionItemInput = {
+  routineItemId: string;
+  performedReps: number | null;
+  usedWeight: number | null;
+  isCompleted: boolean;
+};
+
+export type WorkoutSessionItem = WorkoutSessionItemInput;
+
+export type WorkoutSession = {
+  id: string;
+  savedRoutineId: string;
+  routineDayId: string;
+  trainingDate: string;
+  status: WorkoutSessionStatus;
+  completedAt: string | null;
+  itemsByRoutineItemId: Record<string, WorkoutSessionItem>;
+};
+
+export type WorkoutWeeklySummary = {
+  savedRoutineId: string;
+  completedDayCount: number;
+  completedRoutineDayIds: string[];
+  completedTrainingDatesCount: number;
+  currentStreak: number;
+  hasRealData: boolean;
+};
+
+type WorkoutSessionRow = {
+  id: string;
+  saved_routine_id: string;
+  routine_day_id: string;
+  training_date: string;
+  status: WorkoutSessionStatus;
+  completed_at: string | null;
+  workout_session_items: WorkoutSessionItemRow[] | null;
+};
+
+type WorkoutSessionItemRow = {
+  routine_item_id: string;
+  performed_reps: number | null;
+  used_weight: number | null;
+  is_completed: boolean;
+};
+
+type SavedRoutineOwnershipRow = {
+  id: string;
+  routine_template_id: string;
+};
+
+type RoutineDayOwnershipRow = {
+  id: string;
+};
+
+type RoutineItemOwnershipRow = {
+  id: string;
+};
+
+const WORKOUT_SESSION_SELECT = `
+  id,
+  saved_routine_id,
+  routine_day_id,
+  training_date,
+  status,
+  completed_at,
+  workout_session_items (
+    routine_item_id,
+    performed_reps,
+    used_weight,
+    is_completed
+  )
+`;
+
+export function getLocalTrainingDate() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+export function getCurrentWeekRange() {
+  const today = new Date();
+  const currentDay = today.getDay();
+  const offsetFromMonday = currentDay === 0 ? 6 : currentDay - 1;
+  const start = new Date(today);
+  start.setHours(0, 0, 0, 0);
+  start.setDate(today.getDate() - offsetFromMonday);
+
+  const end = new Date(start);
+  end.setDate(start.getDate() + 6);
+
+  return {
+    weekStart: formatDateOnly(start),
+    weekEnd: formatDateOnly(end),
+    today: getLocalTrainingDate(),
+  };
+}
+
+export async function getWorkoutSessionForToday(args: {
+  savedRoutineId: string;
+  routineDayId: string;
+  userId: string;
+}) {
+  return getWorkoutSessionForDate({
+    ...args,
+    trainingDate: getLocalTrainingDate(),
+  });
+}
+
+export async function getWorkoutSessionForDate(args: {
+  savedRoutineId: string;
+  routineDayId: string;
+  userId: string;
+  trainingDate: string;
+}) {
+  await validateWorkoutOwnership({
+    savedRoutineId: args.savedRoutineId,
+    routineDayId: args.routineDayId,
+    userId: args.userId,
+  });
+
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("workout_sessions")
+    .select(WORKOUT_SESSION_SELECT)
+    .eq("user_id", args.userId)
+    .eq("saved_routine_id", args.savedRoutineId)
+    .eq("routine_day_id", args.routineDayId)
+    .eq("training_date", args.trainingDate)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`No se pudo leer la sesion del entrenamiento: ${error.message}`);
+  }
+
+  if (!data) {
+    return null;
+  }
+
+  return mapWorkoutSession(data as WorkoutSessionRow);
+}
+
+export async function saveWorkoutSessionForToday(args: {
+  savedRoutineId: string;
+  routineDayId: string;
+  userId: string;
+  items: WorkoutSessionItemInput[];
+  complete: boolean;
+}) {
+  return saveWorkoutSession({
+    ...args,
+    trainingDate: getLocalTrainingDate(),
+  });
+}
+
+export async function saveWorkoutSession(args: {
+  savedRoutineId: string;
+  routineDayId: string;
+  userId: string;
+  trainingDate: string;
+  items: WorkoutSessionItemInput[];
+  complete: boolean;
+}) {
+  await validateWorkoutOwnership({
+    savedRoutineId: args.savedRoutineId,
+    routineDayId: args.routineDayId,
+    userId: args.userId,
+    submittedRoutineItemIds: args.items.map((item) => item.routineItemId),
+  });
+  const normalizedItemsById = new Map(
+    args.items.map((item) => [item.routineItemId, item] satisfies [string, WorkoutSessionItemInput]),
+  );
+  const supabase = await createSupabaseServerClient();
+  const { data: existingSession, error: existingSessionError } = await supabase
+    .from("workout_sessions")
+    .select("id, status, completed_at")
+    .eq("user_id", args.userId)
+    .eq("saved_routine_id", args.savedRoutineId)
+    .eq("routine_day_id", args.routineDayId)
+    .eq("training_date", args.trainingDate)
+    .maybeSingle();
+
+  if (existingSessionError) {
+    throw new Error(`No se pudo buscar la sesion del entrenamiento: ${existingSessionError.message}`);
+  }
+
+  const nextStatus = args.complete ? "completed" : "in_progress";
+  const completedAt = nextStatus === "completed" ? new Date().toISOString() : null;
+
+  let sessionId = existingSession?.id ?? null;
+
+  if (sessionId) {
+    const { error: updateError } = await supabase
+      .from("workout_sessions")
+      .update({
+        status: nextStatus,
+        completed_at: completedAt,
+      })
+      .eq("id", sessionId)
+      .eq("user_id", args.userId);
+
+    if (updateError) {
+      throw new Error(`No se pudo actualizar la sesion del entrenamiento: ${updateError.message}`);
+    }
+  } else {
+    const { data: insertedSession, error: insertError } = await supabase
+      .from("workout_sessions")
+      .insert({
+        user_id: args.userId,
+        saved_routine_id: args.savedRoutineId,
+        routine_day_id: args.routineDayId,
+        training_date: args.trainingDate,
+        status: nextStatus,
+        completed_at: completedAt,
+      })
+      .select("id")
+      .single();
+
+    if (insertError || !insertedSession) {
+      throw new Error(`No se pudo crear la sesion del entrenamiento: ${insertError?.message ?? "sin id"}`);
+    }
+
+    sessionId = insertedSession.id;
+  }
+
+  if (!sessionId) {
+    throw new Error("No se pudo resolver la sesion del entrenamiento.");
+  }
+
+  const itemRows = [...normalizedItemsById.values()].map((submitted) => ({
+    workout_session_id: sessionId,
+    routine_item_id: submitted.routineItemId,
+    performed_reps: submitted.performedReps,
+    used_weight: submitted.usedWeight,
+    is_completed: submitted.isCompleted,
+  }));
+
+  if (itemRows.length > 0) {
+    const { error: upsertError } = await supabase.from("workout_session_items").upsert(itemRows, {
+      onConflict: "workout_session_id,routine_item_id",
+    });
+
+    if (upsertError) {
+      throw new Error(`No se pudieron guardar los ejercicios del entrenamiento: ${upsertError.message}`);
+    }
+  }
+
+  return getWorkoutSessionForDate({
+    savedRoutineId: args.savedRoutineId,
+    routineDayId: args.routineDayId,
+    userId: args.userId,
+    trainingDate: args.trainingDate,
+  });
+}
+
+export async function listWorkoutWeeklySummaries(args: {
+  userId: string;
+  savedRoutineIds: string[];
+}): Promise<Record<string, WorkoutWeeklySummary>> {
+  if (args.savedRoutineIds.length === 0) {
+    return {};
+  }
+
+  const { weekStart, weekEnd, today } = getCurrentWeekRange();
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("workout_sessions")
+    .select("saved_routine_id, routine_day_id, training_date")
+    .eq("user_id", args.userId)
+    .eq("status", "completed")
+    .gte("training_date", weekStart)
+    .lte("training_date", weekEnd)
+    .in("saved_routine_id", args.savedRoutineIds);
+
+  if (error) {
+    throw new Error(`No se pudo calcular el progreso semanal: ${error.message}`);
+  }
+
+  const summaries = Object.fromEntries(
+    args.savedRoutineIds.map((savedRoutineId) => [
+      savedRoutineId,
+      {
+        savedRoutineId,
+        completedDayCount: 0,
+        completedRoutineDayIds: [],
+        completedTrainingDatesCount: 0,
+        currentStreak: 0,
+        hasRealData: false,
+      } satisfies WorkoutWeeklySummary,
+    ]),
+  ) as Record<string, WorkoutWeeklySummary>;
+
+  const grouped = new Map<
+    string,
+    {
+      completedRoutineDayIds: Set<string>;
+      completedDates: Set<string>;
+    }
+  >();
+
+  for (const row of (data ?? []) as Array<{
+    saved_routine_id: string;
+    routine_day_id: string;
+    training_date: string;
+  }>) {
+    const entry = grouped.get(row.saved_routine_id) ?? {
+      completedRoutineDayIds: new Set<string>(),
+      completedDates: new Set<string>(),
+    };
+
+    entry.completedRoutineDayIds.add(row.routine_day_id);
+    entry.completedDates.add(row.training_date);
+    grouped.set(row.saved_routine_id, entry);
+  }
+
+  for (const [savedRoutineId, entry] of grouped) {
+    summaries[savedRoutineId] = {
+      savedRoutineId,
+      completedDayCount: entry.completedRoutineDayIds.size,
+      completedRoutineDayIds: [...entry.completedRoutineDayIds],
+      completedTrainingDatesCount: entry.completedDates.size,
+      currentStreak: calculateCurrentStreak({
+        completedDates: entry.completedDates,
+        today,
+        weekStart,
+      }),
+      hasRealData: entry.completedRoutineDayIds.size > 0,
+    };
+  }
+
+  return summaries;
+}
+
+async function validateWorkoutOwnership(args: {
+  savedRoutineId: string;
+  routineDayId: string;
+  userId: string;
+  submittedRoutineItemIds?: string[];
+}) {
+  const supabase = await createSupabaseServerClient();
+  const { data: savedRoutine, error: savedRoutineError } = await supabase
+    .from("saved_routines")
+    .select("id, routine_template_id")
+    .eq("id", args.savedRoutineId)
+    .eq("user_id", args.userId)
+    .maybeSingle();
+
+  if (savedRoutineError) {
+    throw new Error(`No se pudo validar la rutina guardada: ${savedRoutineError.message}`);
+  }
+
+  if (!savedRoutine) {
+    throw new Error("La rutina guardada no existe o no pertenece al usuario actual.");
+  }
+
+  const { data: routineDay, error: routineDayError } = await supabase
+    .from("routine_days")
+    .select("id")
+    .eq("id", args.routineDayId)
+    .eq("routine_id", (savedRoutine as SavedRoutineOwnershipRow).routine_template_id)
+    .maybeSingle();
+
+  if (routineDayError) {
+    throw new Error(`No se pudo validar el dia de rutina: ${routineDayError.message}`);
+  }
+
+  if (!routineDay) {
+    throw new Error("El dia solicitado no pertenece a la rutina guardada indicada.");
+  }
+
+  const { data: routineItems, error: routineItemsError } = await supabase
+    .from("routine_items")
+    .select("id")
+    .eq("routine_day_id", (routineDay as RoutineDayOwnershipRow).id);
+
+  if (routineItemsError) {
+    throw new Error(`No se pudieron validar los ejercicios del dia: ${routineItemsError.message}`);
+  }
+
+  const routineItemIds = ((routineItems ?? []) as RoutineItemOwnershipRow[]).map((item) => item.id);
+  const routineItemSet = new Set(routineItemIds);
+
+  for (const submittedRoutineItemId of args.submittedRoutineItemIds ?? []) {
+    if (!routineItemSet.has(submittedRoutineItemId)) {
+      throw new Error("Se enviaron ejercicios que no pertenecen al dia de rutina seleccionado.");
+    }
+  }
+
+  return {
+    routineItemIds,
+  };
+}
+
+function mapWorkoutSession(row: WorkoutSessionRow): WorkoutSession {
+  const itemsByRoutineItemId = Object.fromEntries(
+    (row.workout_session_items ?? []).map((item) => [
+      item.routine_item_id,
+      {
+        routineItemId: item.routine_item_id,
+        performedReps: item.performed_reps,
+        usedWeight: item.used_weight,
+        isCompleted: item.is_completed,
+      } satisfies WorkoutSessionItem,
+    ]),
+  );
+
+  return {
+    id: row.id,
+    savedRoutineId: row.saved_routine_id,
+    routineDayId: row.routine_day_id,
+    trainingDate: row.training_date,
+    status: row.status,
+    completedAt: row.completed_at,
+    itemsByRoutineItemId,
+  };
+}
+
+function calculateCurrentStreak(args: {
+  completedDates: Set<string>;
+  today: string;
+  weekStart: string;
+}) {
+  let streak = 0;
+  const cursor = new Date(`${args.today}T00:00:00`);
+  const weekStart = new Date(`${args.weekStart}T00:00:00`);
+
+  while (cursor >= weekStart) {
+    const cursorDate = formatDateOnly(cursor);
+
+    if (!args.completedDates.has(cursorDate)) {
+      break;
+    }
+
+    streak += 1;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+
+  return streak;
+}
+
+function formatDateOnly(value: Date) {
+  const year = value.getFullYear();
+  const month = String(value.getMonth() + 1).padStart(2, "0");
+  const day = String(value.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}

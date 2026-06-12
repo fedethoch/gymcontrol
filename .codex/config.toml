@@ -1,0 +1,31 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+model = "gpt-5.4"
+model_provider = "openai"
+
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+project_doc_max_bytes = 16384
+project_doc_fallback_filenames = ["AGENTS.md", "CODEX.md"]
+
+[profiles.fast]
+model = "gpt-5.3-codex"
+model_reasoning_effort = "low"
+
+[profiles.deep]
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+
+file_opener = "vscode"
+web_search = "cached"
+
+[sandbox_workspace_write]
+network_access = true
+
+[mcp_servers.supabase_gymcontrol]
+url = "https://mcp.supabase.com/mcp?project_ref=ignlzahslkkfucgnekkb&read_only=false&features=database,docs"
+bearer_token_env_var = "SUPABASE_ACCESS_TOKEN_GYMCONTROL"
+
+[mcp_servers.supabase_gymcontrol.tools.execute_sql]
+approval_mode = "approve"

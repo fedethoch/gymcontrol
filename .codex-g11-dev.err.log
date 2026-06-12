@@ -1,0 +1,17 @@
+$ next dev
+⚠ Port 3000 is in use by process 1920, using available port 3001 instead.
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\fedet\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\fedet\Documents\GitHub\gymcontrol\pnpm-workspace.yaml
+
+⨯ Another next dev server is already running.
+
+- Local:        http://localhost:3000
+- PID:          1920
+- Dir:          C:\Users\fedet\Documents\GitHub\gymcontrol
+- Log:          .next\dev\logs\next-development.log
+
+Run taskkill /PID 1920 /F to stop it.
