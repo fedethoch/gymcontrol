@@ -1,19 +1,37 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { LoaderCircle, PencilLine, Plus, Trash2 } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  CalendarDays,
+  ClipboardList,
+  Dumbbell,
+  Info,
+  LoaderCircle,
+  PencilLine,
+  Plus,
+  Search,
+  Trash2,
+  TriangleAlert,
+  Users,
+} from "lucide-react";
+import { toast } from "sonner";
 
-import { saveRoutineAction } from "@/app/admin/rutinas/actions";
+import { deleteRoutineAction, saveRoutineAction } from "@/app/admin/rutinas/actions";
 import { Badge } from "@/app/components/ui/Badge";
 import { Button } from "@/app/components/ui/Button";
+import { Card, CardContent } from "@/app/components/ui/Card";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/app/components/ui/Card";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/app/components/ui/Dialog";
 import { Input } from "@/app/components/ui/Input";
 import { SectionEyebrow } from "@/app/components/ui/SectionEyebrow";
 import {
@@ -23,6 +41,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/Select";
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/app/components/ui/Sheet";
 import { Textarea } from "@/app/components/ui/Textarea";
 import type { ExerciseCatalogItem } from "@/app/lib/exercises";
 import {
@@ -46,71 +71,627 @@ type RoutineAdminClientProps = {
   initialRoutines: AdminRoutineListItem[];
 };
 
+type SortColumn = "name" | "difficulty" | "objective" | "dayCount" | "usersCount" | "createdAt";
+type SortDirection = "asc" | "desc";
+
+const PAGE_SIZE = 6;
+
+const DIFFICULTY_BADGE_STYLES: Record<RoutineDifficulty, string> = {
+  principiante: "border-[#255936] bg-[#13251a] text-[#d7f5df]",
+  intermedio: "border-[#5b2ab3] bg-[#281a45] text-[#f4edff]",
+  avanzado: "border-[#323949] bg-[#141a26] text-[#c0c8dc]",
+};
+
+const OBJECTIVE_BADGE_STYLES: Record<RoutineObjective, string> = {
+  hipertrofia: "border-[#5b2ab3] bg-[#251740] text-[#eee0ff]",
+  fuerza: "border-[#5a3c00] bg-[#221500] text-[#ffe09a]",
+  mantenimiento: "border-[#255936] bg-[#101f15] text-[#b8f0c4]",
+};
+
+const OBJECTIVE_DOT_STYLES: Record<RoutineObjective, string> = {
+  hipertrofia: "bg-[#b995ff]",
+  fuerza: "bg-[#fbbf24]",
+  mantenimiento: "bg-[#86efac]",
+};
+
 export function RoutineAdminClient({
   initialExercises,
   initialRoutines,
 }: RoutineAdminClientProps) {
   const router = useRouter();
+  const [isDeleting, startDeleteTransition] = useTransition();
+
+  const [search, setSearch] = useState("");
+  const [difficultyFilter, setDifficultyFilter] = useState<RoutineDifficulty | "all">("all");
+  const [objectiveFilter, setObjectiveFilter] = useState<RoutineObjective | "all">("all");
+  const [sortColumn, setSortColumn] = useState<SortColumn>("createdAt");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+  const [page, setPage] = useState(0);
+
+  const [formTarget, setFormTarget] = useState<
+    { mode: "create" } | { mode: "edit"; routine: AdminRoutineListItem } | null
+  >(null);
+  const [formKey, setFormKey] = useState(0);
+  const [deleteTarget, setDeleteTarget] = useState<AdminRoutineListItem | null>(null);
+
+  const stats = useMemo(() => {
+    const total = initialRoutines.length;
+    const avgDays =
+      total === 0
+        ? 0
+        : Math.round(
+            (initialRoutines.reduce((sum, routine) => sum + routine.dayCount, 0) / total) * 10,
+          ) / 10;
+    const activeUsers = initialRoutines.reduce((sum, routine) => sum + routine.usersCount, 0);
+
+    return { total, avgDays, activeUsers };
+  }, [initialRoutines]);
+
+  const filtered = useMemo(() => {
+    const normalizedSearch = search.trim().toLowerCase();
+
+    const rows = initialRoutines.filter((routine) => {
+      if (
+        normalizedSearch &&
+        !`${routine.name} ${routine.description}`.toLowerCase().includes(normalizedSearch)
+      ) {
+        return false;
+      }
+
+      if (difficultyFilter !== "all" && routine.difficulty !== difficultyFilter) {
+        return false;
+      }
+
+      if (objectiveFilter !== "all" && routine.objective !== objectiveFilter) {
+        return false;
+      }
+
+      return true;
+    });
+
+    return [...rows].sort((left, right) => {
+      let cmp = 0;
+
+      if (sortColumn === "name") {
+        cmp = left.name.localeCompare(right.name, "es");
+      } else if (sortColumn === "difficulty") {
+        cmp = left.difficulty.localeCompare(right.difficulty, "es");
+      } else if (sortColumn === "objective") {
+        cmp = left.objective.localeCompare(right.objective, "es");
+      } else if (sortColumn === "dayCount") {
+        cmp = left.dayCount - right.dayCount;
+      } else if (sortColumn === "usersCount") {
+        cmp = left.usersCount - right.usersCount;
+      } else {
+        cmp = new Date(left.createdAt).getTime() - new Date(right.createdAt).getTime();
+      }
+
+      return sortDirection === "asc" ? cmp : -cmp;
+    });
+  }, [initialRoutines, search, difficultyFilter, objectiveFilter, sortColumn, sortDirection]);
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(page, pageCount - 1);
+  const pageData = filtered.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE);
+
+  function toggleSort(column: SortColumn) {
+    if (sortColumn === column) {
+      setSortDirection((direction) => (direction === "asc" ? "desc" : "asc"));
+    } else {
+      setSortColumn(column);
+      setSortDirection("asc");
+    }
+    setPage(0);
+  }
+
+  function handleFilterChange<T extends string>(setter: (value: T) => void, value: T) {
+    setter(value);
+    setPage(0);
+  }
+
+  function handleSaved(message: string) {
+    setFormTarget(null);
+    toast.success(message);
+    router.refresh();
+  }
+
+  function confirmDelete() {
+    if (!deleteTarget) return;
+
+    startDeleteTransition(async () => {
+      const result = await deleteRoutineAction(deleteTarget.id);
+
+      if (!result.ok) {
+        toast.error(result.message);
+        setDeleteTarget(null);
+        return;
+      }
+
+      toast.success("Rutina eliminada.");
+      setDeleteTarget(null);
+      router.refresh();
+    });
+  }
+
+  const hasFilters = search.trim() !== "" || difficultyFilter !== "all" || objectiveFilter !== "all";
+  const hasExercises = initialExercises.length > 0;
+
+  return (
+    <section className="page-frame dashboard-page-frame">
+      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <SectionEyebrow>Gestion / Rutinas</SectionEyebrow>
+          <h1 className="font-display mt-2 text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
+            Rutinas
+          </h1>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--foreground-muted)]">
+            Gestiona el catalogo de rutinas semanales de la plataforma.
+          </p>
+        </div>
+        <Button
+          type="button"
+          onClick={() => {
+            setFormKey((value) => value + 1);
+            setFormTarget({ mode: "create" });
+          }}
+        >
+          <Plus className="size-4" />
+          Nueva rutina
+        </Button>
+      </header>
+
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <StatTile icon={ClipboardList} value={stats.total} label="Total de rutinas" />
+        <StatTile icon={ChevronDown} value={stats.avgDays} label="Promedio de dias" />
+        <StatTile icon={Users} value={stats.activeUsers} label="Usuarios activos" />
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-[1.4fr_1fr_1fr] sm:items-center">
+        <label className="relative block">
+          <span className="sr-only">Buscar rutina</span>
+          <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#7d8697]" />
+          <Input
+            className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)] pl-9"
+            placeholder="Buscar rutina..."
+            type="search"
+            value={search}
+            onChange={(event) => handleFilterChange(setSearch, event.target.value)}
+          />
+        </label>
+
+        <Select
+          value={difficultyFilter}
+          onValueChange={(value) =>
+            handleFilterChange(setDifficultyFilter, value as RoutineDifficulty | "all")
+          }
+        >
+          <SelectTrigger className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
+            <SelectValue placeholder="Dificultad" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todas las dificultades</SelectItem>
+            {ROUTINE_DIFFICULTIES.map((option) => (
+              <SelectItem key={option} value={option}>
+                {ROUTINE_DIFFICULTY_LABELS[option]}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Select
+          value={objectiveFilter}
+          onValueChange={(value) =>
+            handleFilterChange(setObjectiveFilter, value as RoutineObjective | "all")
+          }
+        >
+          <SelectTrigger className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
+            <SelectValue placeholder="Objetivo" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todos los objetivos</SelectItem>
+            {ROUTINE_OBJECTIVES.map((option) => (
+              <SelectItem key={option} value={option}>
+                {ROUTINE_OBJECTIVE_LABELS[option]}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <Card className="overflow-hidden">
+        <CardContent className="p-0 sm:p-0">
+          {pageData.length === 0 ? (
+            <div className="grid min-h-72 place-items-center px-6 py-10 text-center">
+              <div className="max-w-sm">
+                <p className="font-display text-lg font-semibold text-white">
+                  {hasFilters ? "Sin resultados" : "Todavia no hay rutinas"}
+                </p>
+                <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)]">
+                  {hasFilters
+                    ? "Proba cambiando los filtros o el termino de busqueda."
+                    : 'Usa el boton "Nueva rutina" para agregar la primera.'}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <>
+            <div className="hidden overflow-x-auto md:block">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-[var(--border)]">
+                  <th className="px-5 py-4 text-center sm:px-6">
+                    <SortHeader label="Rutina" column="name" active={sortColumn} direction={sortDirection} onClick={() => toggleSort("name")} />
+                  </th>
+                  <th className="px-3 py-4 text-center">
+                    <SortHeader label="Dificultad" column="difficulty" active={sortColumn} direction={sortDirection} onClick={() => toggleSort("difficulty")} center />
+                  </th>
+                  <th className="px-3 py-4 text-center">
+                    <SortHeader label="Objetivo" column="objective" active={sortColumn} direction={sortDirection} onClick={() => toggleSort("objective")} center />
+                  </th>
+                  <th className="px-3 py-4 text-center">
+                    <SortHeader label="Dias" column="dayCount" active={sortColumn} direction={sortDirection} onClick={() => toggleSort("dayCount")} center />
+                  </th>
+                  <th className="px-3 py-4 text-center text-xs font-semibold uppercase tracking-[0.12em] text-[#7d8697]">
+                    Ej./dia
+                  </th>
+                  <th className="px-3 py-4 text-center">
+                    <SortHeader label="Usuarios" column="usersCount" active={sortColumn} direction={sortDirection} onClick={() => toggleSort("usersCount")} center />
+                  </th>
+                  <th className="px-3 py-4 text-center">
+                    <SortHeader label="Creada" column="createdAt" active={sortColumn} direction={sortDirection} onClick={() => toggleSort("createdAt")} center />
+                  </th>
+                  <th className="px-5 py-4 text-right sm:px-6">Acciones</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--border)]">
+                {pageData.map((routine) => {
+                  const exercisesPerDay =
+                    routine.dayCount === 0 ? 0 : Math.round(routine.itemCount / routine.dayCount);
+
+                  return (
+                    <tr key={routine.id} className="transition-colors hover:bg-[var(--card-alt)]">
+                      <td className="px-5 py-4 text-center sm:px-6">
+                        <div className="mx-auto min-w-0 max-w-xs text-left">
+                          <p className="truncate font-medium text-white">{routine.name}</p>
+                          <p className="truncate text-xs text-[var(--foreground-muted)]">
+                            {routine.description || "Sin descripcion."}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="px-3 py-4 text-center">
+                        <span
+                          className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${DIFFICULTY_BADGE_STYLES[routine.difficulty]}`}
+                        >
+                          {ROUTINE_DIFFICULTY_LABELS[routine.difficulty]}
+                        </span>
+                      </td>
+                      <td className="px-3 py-4 text-center">
+                        <span
+                          className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${OBJECTIVE_BADGE_STYLES[routine.objective]}`}
+                        >
+                          {ROUTINE_OBJECTIVE_LABELS[routine.objective]}
+                        </span>
+                      </td>
+                      <td className="px-3 py-4 text-center">
+                        <div className="flex items-center justify-center gap-1.5">
+                          {Array.from({ length: routine.dayCount }, (_, index) => (
+                            <span
+                              key={index}
+                              className={`size-2 rounded-full ${OBJECTIVE_DOT_STYLES[routine.objective]}`}
+                            />
+                          ))}
+                          <span className="ml-1 text-xs text-[#7d8697]">{routine.dayCount}</span>
+                        </div>
+                      </td>
+                      <td className="px-3 py-4 text-center text-sm text-[#c2c8d6]">{exercisesPerDay}</td>
+                      <td className="px-3 py-4 text-center text-sm text-[#c2c8d6]">{routine.usersCount}</td>
+                      <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-[#7d8697]">
+                        {routine.createdAtLabel}
+                      </td>
+                      <td className="px-5 py-4 sm:px-6">
+                        <div className="flex items-center justify-end gap-2">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            title="Editar"
+                            onClick={() => {
+                              setFormKey((value) => value + 1);
+                              setFormTarget({ mode: "edit", routine });
+                            }}
+                          >
+                            <PencilLine className="size-4" />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            title="Eliminar"
+                            className="hover:text-red-400"
+                            onClick={() => setDeleteTarget(routine)}
+                          >
+                            <Trash2 className="size-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            </div>
+
+            <div className="grid gap-3 p-4 md:hidden">
+              {pageData.map((routine) => {
+                const exercisesPerDay =
+                  routine.dayCount === 0 ? 0 : Math.round(routine.itemCount / routine.dayCount);
+
+                return (
+                  <div
+                    key={routine.id}
+                    className="min-w-0 rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-4"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="truncate font-medium text-white">{routine.name}</p>
+                        <p className="truncate text-xs text-[var(--foreground-muted)]">
+                          {routine.description || "Sin descripcion."}
+                        </p>
+                      </div>
+                      <div className="flex shrink-0 gap-1">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="size-11"
+                          title="Editar"
+                          onClick={() => {
+                            setFormKey((value) => value + 1);
+                            setFormTarget({ mode: "edit", routine });
+                          }}
+                        >
+                          <PencilLine className="size-4" />
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="size-11 hover:text-red-400"
+                          title="Eliminar"
+                          onClick={() => setDeleteTarget(routine)}
+                        >
+                          <Trash2 className="size-4" />
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <span
+                        className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${DIFFICULTY_BADGE_STYLES[routine.difficulty]}`}
+                      >
+                        {ROUTINE_DIFFICULTY_LABELS[routine.difficulty]}
+                      </span>
+                      <span
+                        className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${OBJECTIVE_BADGE_STYLES[routine.objective]}`}
+                      >
+                        {ROUTINE_OBJECTIVE_LABELS[routine.objective]}
+                      </span>
+                    </div>
+
+                    <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.12em] text-[#7d8697]">Dias</p>
+                        <p className="mt-1 font-medium text-white">{routine.dayCount}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.12em] text-[#7d8697]">Ej./dia</p>
+                        <p className="mt-1 font-medium text-white">{exercisesPerDay}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.12em] text-[#7d8697]">Usuarios</p>
+                        <p className="mt-1 font-medium text-white">{routine.usersCount}</p>
+                      </div>
+                    </div>
+
+                    <p className="mt-3 text-xs text-[#7d8697]">Creada {routine.createdAtLabel}</p>
+                  </div>
+                );
+              })}
+            </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
+
+      {pageCount > 1 ? (
+        <div className="flex items-center justify-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            disabled={currentPage <= 0}
+            onClick={() => setPage((value) => Math.max(0, value - 1))}
+          >
+            <ChevronLeft className="size-4" />
+            <span className="sr-only">Pagina anterior</span>
+          </Button>
+          {Array.from({ length: pageCount }, (_, index) => (
+            <Button
+              key={index}
+              type="button"
+              variant="outline"
+              className={
+                index === currentPage
+                  ? "size-11 border-[rgba(139,92,246,0.7)] bg-[rgba(124,58,237,0.16)] px-0 text-white"
+                  : "size-11 px-0"
+              }
+              onClick={() => setPage(index)}
+            >
+              {index + 1}
+            </Button>
+          ))}
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            disabled={currentPage >= pageCount - 1}
+            onClick={() => setPage((value) => Math.min(pageCount - 1, value + 1))}
+          >
+            <ChevronRight className="size-4" />
+            <span className="sr-only">Pagina siguiente</span>
+          </Button>
+        </div>
+      ) : null}
+
+      <RoutineFormSheet
+        key={formKey}
+        open={formTarget !== null}
+        routine={formTarget?.mode === "edit" ? formTarget.routine : null}
+        initialExercises={initialExercises}
+        hasExercises={hasExercises}
+        onClose={() => setFormTarget(null)}
+        onSaved={handleSaved}
+      />
+
+      <Dialog open={deleteTarget !== null} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <DialogContent open={deleteTarget !== null}>
+          <DialogHeader>
+            <span className="grid size-11 place-items-center rounded-full border border-[#7a2630] bg-[#3b1419]/60 text-[#f87171]">
+              <TriangleAlert className="size-5" />
+            </span>
+            <DialogTitle className="mt-3">Eliminar rutina</DialogTitle>
+            <DialogDescription>
+              ¿Estas seguro de que queres eliminar{" "}
+              <strong className="text-white">{deleteTarget?.name}</strong>? Esta accion no se
+              puede deshacer.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex items-center justify-end gap-2 px-5 pb-5">
+            <Button type="button" variant="outline" onClick={() => setDeleteTarget(null)}>
+              Cancelar
+            </Button>
+            <Button
+              type="button"
+              variant="default"
+              className="bg-[#b91c1c] text-white hover:bg-[#991b1b]"
+              disabled={isDeleting}
+              onClick={confirmDelete}
+            >
+              {isDeleting ? <LoaderCircle className="size-4 animate-spin" /> : <Trash2 className="size-4" />}
+              Si, eliminar
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </section>
+  );
+}
+
+function StatTile({
+  icon: Icon,
+  value,
+  label,
+}: {
+  icon: typeof ClipboardList;
+  value: number;
+  label: string;
+}) {
+  return (
+    <Card className="flex h-36 items-center gap-5 p-7">
+      <span className="grid size-16 shrink-0 place-items-center rounded-xl border border-[#5b2ab3] bg-[#281a45] text-[var(--accent-bright)]">
+        <Icon className="size-7" />
+      </span>
+      <div>
+        <p className="font-display text-4xl font-semibold tracking-[-0.05em] text-white">
+          {value}
+        </p>
+        <p className="mt-1 text-base text-[var(--foreground-muted)]">{label}</p>
+      </div>
+    </Card>
+  );
+}
+
+function SortHeader({
+  label,
+  column,
+  active,
+  direction,
+  onClick,
+  center,
+}: {
+  label: string;
+  column: SortColumn;
+  active: SortColumn;
+  direction: SortDirection;
+  onClick: () => void;
+  center?: boolean;
+}) {
+  const isActive = active === column;
+  const Icon = isActive && direction === "asc" ? ChevronUp : ChevronDown;
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`flex items-center gap-1 text-xs font-semibold uppercase tracking-[0.12em] transition-colors ${
+        center ? "w-full justify-center" : ""
+      } ${isActive ? "text-white" : "text-[#7d8697] hover:text-white"}`}
+    >
+      {label}
+      <Icon className="size-3" />
+    </button>
+  );
+}
+
+type RoutineFormSheetProps = {
+  open: boolean;
+  routine: AdminRoutineListItem | null;
+  initialExercises: ExerciseCatalogItem[];
+  hasExercises: boolean;
+  onClose: () => void;
+  onSaved: (message: string) => void;
+};
+
+function RoutineFormSheet({
+  open,
+  routine,
+  initialExercises,
+  hasExercises,
+  onClose,
+  onSaved,
+}: RoutineFormSheetProps) {
   const [isPending, startTransition] = useTransition();
 
-  const [selectedRoutineId, setSelectedRoutineId] = useState<string | null>(null);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [difficulty, setDifficulty] = useState<RoutineDifficulty | "">("");
-  const [objective, setObjective] = useState<RoutineObjective | "">("");
-  const [days, setDays] = useState<RoutineFormDayPayload[]>(() => [createEmptyDay(1)]);
-  const [serverState, setServerState] = useState<RoutineFormState>(
-    INITIAL_ROUTINE_FORM_STATE,
+  const [name, setName] = useState(() => routine?.name ?? "");
+  const [description, setDescription] = useState(() => routine?.description ?? "");
+  const [difficulty, setDifficulty] = useState<RoutineDifficulty | "">(
+    () => routine?.difficulty ?? "",
   );
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [objective, setObjective] = useState<RoutineObjective | "">(
+    () => routine?.objective ?? "",
+  );
+  const [days, setDays] = useState<RoutineFormDayPayload[]>(() =>
+    routine
+      ? routine.days.map((day) => ({
+          id: day.id,
+          clientId: day.id,
+          dayName: day.dayName,
+          items: day.items.map((item) => ({
+            id: item.id,
+            clientId: item.id,
+            exerciseId: item.exerciseId,
+            series: String(item.series),
+            repetitions: item.repetitions,
+            rir: String(item.rir),
+            rest: item.rest,
+          })),
+        }))
+      : [createEmptyDay(1)],
+  );
+  const [serverState, setServerState] = useState<RoutineFormState>(INITIAL_ROUTINE_FORM_STATE);
 
-  const isEditing = selectedRoutineId !== null;
-  const hasExercises = initialExercises.length > 0;
+  const isEditing = routine !== null;
   const submitDisabled = isPending || !hasExercises;
-
-  function resetFormControls() {
-    setSelectedRoutineId(null);
-    setName("");
-    setDescription("");
-    setDifficulty("");
-    setObjective("");
-    setDays([createEmptyDay(1)]);
-  }
-
-  function resetFeedback() {
-    setServerState(INITIAL_ROUTINE_FORM_STATE);
-    setSuccessMessage(null);
-  }
-
-  function handleCancelEdit() {
-    resetFormControls();
-    resetFeedback();
-  }
-
-  function handleSelectRoutine(routine: AdminRoutineListItem) {
-    setSelectedRoutineId(routine.id);
-    setName(routine.name);
-    setDescription(routine.description);
-    setDifficulty(routine.difficulty);
-    setObjective(routine.objective);
-    setDays(
-      routine.days.map((day) => ({
-        id: day.id,
-        clientId: day.id,
-        dayName: day.dayName,
-        items: day.items.map((item) => ({
-          id: item.id,
-          clientId: item.id,
-          exerciseId: item.exerciseId,
-          series: String(item.series),
-          repetitions: item.repetitions,
-          rir: String(item.rir),
-          rest: item.rest,
-        })),
-      })),
-    );
-    resetFeedback();
-  }
 
   function handleAddDay() {
     setDays((currentDays) => [...currentDays, createEmptyDay(currentDays.length + 1)]);
@@ -173,11 +754,11 @@ export function RoutineAdminClient({
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    resetFeedback();
+    setServerState(INITIAL_ROUTINE_FORM_STATE);
 
     startTransition(async () => {
       const result = await saveRoutineAction({
-        routineId: selectedRoutineId ?? undefined,
+        routineId: routine?.id,
         name,
         description,
         difficulty,
@@ -186,9 +767,7 @@ export function RoutineAdminClient({
       });
 
       if (result.status === "success") {
-        resetFormControls();
-        setSuccessMessage(result.message);
-        router.refresh();
+        onSaved(result.message ?? (isEditing ? "Rutina actualizada." : "Rutina guardada."));
         return;
       }
 
@@ -197,479 +776,382 @@ export function RoutineAdminClient({
   }
 
   return (
-    <section className="page-frame">
-      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <SectionEyebrow>Admin</SectionEyebrow>
-          <h2 className="font-display mt-2 text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
-            Rutinas
-          </h2>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--foreground-muted)]">
-            Crea y edita rutinas semanales completas usando el catalogo de
-            ejercicios de G6 como fuente de verdad del builder.
+    <Sheet open={open} onOpenChange={(value) => !value && onClose()}>
+      <SheetContent side="right" className="w-[min(48rem,96vw)]">
+        <SheetHeader>
+          <SheetTitle>{isEditing ? "Editar rutina" : "Nueva rutina"}</SheetTitle>
+          <p className="text-sm text-[var(--foreground-muted)]">
+            El guardado persiste rutina, dias y filas en orden estable.
           </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Badge variant="accent">{initialRoutines.length} rutinas</Badge>
-          <Badge variant="neutral">{initialExercises.length} ejercicios</Badge>
-          <Badge variant="neutral">
-            {isEditing ? "Modo edicion" : "Modo alta"}
-          </Badge>
-        </div>
-      </header>
+        </SheetHeader>
 
-      <section className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
-        <Card>
-          <CardHeader className="border-b border-[var(--border)]">
-            <CardTitle>{isEditing ? "Editar rutina" : "Crear rutina"}</CardTitle>
-            <CardDescription>
-              El guardado persiste rutina, dias y filas en orden estable.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <form className="grid gap-5" onSubmit={handleSubmit}>
-              <div className="grid gap-4 lg:grid-cols-2">
-                <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-                  Nombre de la rutina
-                  <Input
-                    name="name"
-                    placeholder="Ej. Hipertrofia superior / inferior"
-                    type="text"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                  />
-                  {serverState.fieldErrors.name ? (
-                    <span className="text-xs text-[#f8b4b4]">
-                      {serverState.fieldErrors.name}
-                    </span>
-                  ) : null}
-                </label>
+        <form className="flex min-h-0 flex-1 flex-col" onSubmit={handleSubmit}>
+          <div className="grid flex-1 gap-5 overflow-y-auto px-5 py-2">
+            <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#7d8697]">
+              <Info className="size-3.5" />
+              Informacion general
+            </p>
+            <div className="grid gap-4 lg:grid-cols-2">
+              <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+                Nombre de la rutina
+                <Input
+                  name="name"
+                  placeholder="Ej. Hipertrofia superior / inferior"
+                  type="text"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                />
+                {serverState.fieldErrors.name ? (
+                  <span className="text-xs text-[#f8b4b4]">{serverState.fieldErrors.name}</span>
+                ) : null}
+              </label>
 
-                <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-                  Descripcion
-                  <Textarea
-                    className="min-h-28 resize-none"
-                    name="description"
-                    placeholder="Contexto breve, enfoque o nivel sugerido."
-                    value={description}
-                    onChange={(event) => setDescription(event.target.value)}
-                  />
-                  {serverState.fieldErrors.description ? (
-                    <span className="text-xs text-[#f8b4b4]">
-                      {serverState.fieldErrors.description}
-                    </span>
-                  ) : null}
-                </label>
+              <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+                Descripcion
+                <Textarea
+                  className="min-h-28 resize-none"
+                  name="description"
+                  placeholder="Contexto breve, enfoque o nivel sugerido."
+                  value={description}
+                  onChange={(event) => setDescription(event.target.value)}
+                />
+                {serverState.fieldErrors.description ? (
+                  <span className="text-xs text-[#f8b4b4]">
+                    {serverState.fieldErrors.description}
+                  </span>
+                ) : null}
+              </label>
+            </div>
+
+            <div className="grid gap-4 lg:grid-cols-2">
+              <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+                Dificultad
+                <Select
+                  value={difficulty}
+                  onValueChange={(value) => setDifficulty(value as RoutineDifficulty)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecciona una dificultad" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ROUTINE_DIFFICULTIES.map((option) => (
+                      <SelectItem key={option} value={option}>
+                        {ROUTINE_DIFFICULTY_LABELS[option]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {serverState.fieldErrors.difficulty ? (
+                  <span className="text-xs text-[#f8b4b4]">
+                    {serverState.fieldErrors.difficulty}
+                  </span>
+                ) : null}
+              </label>
+
+              <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+                Objetivo
+                <Select
+                  value={objective}
+                  onValueChange={(value) => setObjective(value as RoutineObjective)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecciona un objetivo" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ROUTINE_OBJECTIVES.map((option) => (
+                      <SelectItem key={option} value={option}>
+                        {ROUTINE_OBJECTIVE_LABELS[option]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {serverState.fieldErrors.objective ? (
+                  <span className="text-xs text-[#f8b4b4]">
+                    {serverState.fieldErrors.objective}
+                  </span>
+                ) : null}
+              </label>
+            </div>
+
+            {!hasExercises ? (
+              <div className="rounded-2xl border border-[#7a5a23] bg-[#2c2210]/70 px-4 py-3 text-sm text-[#f8dfaa]">
+                Necesitas al menos un ejercicio cargado en `/admin/ejercicios` antes de guardar
+                rutinas.
               </div>
+            ) : null}
 
-              <div className="grid gap-4 lg:grid-cols-2">
-                <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-                  Dificultad
-                  <Select
-                    value={difficulty}
-                    onValueChange={(value) => setDifficulty(value as RoutineDifficulty)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona una dificultad" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {ROUTINE_DIFFICULTIES.map((option) => (
-                        <SelectItem key={option} value={option}>
-                          {ROUTINE_DIFFICULTY_LABELS[option]}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {serverState.fieldErrors.difficulty ? (
-                    <span className="text-xs text-[#f8b4b4]">
-                      {serverState.fieldErrors.difficulty}
-                    </span>
-                  ) : null}
-                </label>
+            <div className="h-px bg-[var(--border)]" />
 
-                <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-                  Objetivo
-                  <Select
-                    value={objective}
-                    onValueChange={(value) => setObjective(value as RoutineObjective)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona un objetivo" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {ROUTINE_OBJECTIVES.map((option) => (
-                        <SelectItem key={option} value={option}>
-                          {ROUTINE_OBJECTIVE_LABELS[option]}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {serverState.fieldErrors.objective ? (
-                    <span className="text-xs text-[#f8b4b4]">
-                      {serverState.fieldErrors.objective}
-                    </span>
-                  ) : null}
-                </label>
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="flex items-center gap-2 text-sm font-semibold text-white">
+                  <CalendarDays className="size-4 text-[#9b87f0]" />
+                  Semana editable
+                </p>
+                <p className="mt-1 text-sm leading-6 text-[var(--foreground-muted)]">
+                  Agrega dias y filas. El orden final se toma del orden visible.
+                </p>
               </div>
+              <Button type="button" variant="outline" onClick={handleAddDay}>
+                <Plus className="size-4" />
+                Agregar dia
+              </Button>
+            </div>
 
-              {!hasExercises ? (
-                <div className="rounded-2xl border border-[#7a5a23] bg-[#2c2210]/70 px-4 py-3 text-sm text-[#f8dfaa]">
-                  Necesitas al menos un ejercicio cargado en `/admin/ejercicios`
-                  antes de guardar rutinas.
-                </div>
-              ) : null}
+            {serverState.structureErrors.days ? (
+              <div className="rounded-2xl border border-[#7a2630] bg-[#3b1419]/60 px-4 py-3 text-sm text-[#ffd6db]">
+                {serverState.structureErrors.days}
+              </div>
+            ) : null}
 
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-sm font-semibold text-white">Semana editable</p>
-                  <p className="text-sm leading-6 text-[var(--foreground-muted)]">
-                    Agrega dias y filas. El orden final se toma del orden visible.
+            <div className="grid gap-4">
+              {days.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-[var(--border)] bg-[var(--card-alt)] px-5 py-8 text-center">
+                  <p className="font-display text-lg font-semibold text-white">Sin dias cargados</p>
+                  <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)]">
+                    Agrega el primer dia para empezar a construir la rutina.
                   </p>
                 </div>
-                <Button type="button" variant="outline" onClick={handleAddDay}>
-                  <Plus className="size-4" />
-                  Agregar dia
-                </Button>
-              </div>
+              ) : (
+                days.map((day, dayIndex) => {
+                  const dayErrors = serverState.structureErrors.dayErrors[day.clientId];
 
-              {serverState.structureErrors.days ? (
-                <div className="rounded-2xl border border-[#7a2630] bg-[#3b1419]/60 px-4 py-3 text-sm text-[#ffd6db]">
-                  {serverState.structureErrors.days}
-                </div>
-              ) : null}
-
-              <div className="grid gap-4">
-                {days.length === 0 ? (
-                  <div className="rounded-2xl border border-dashed border-[var(--border)] bg-[var(--card-alt)] px-5 py-8 text-center">
-                    <p className="font-display text-lg font-semibold text-white">
-                      Sin dias cargados
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)]">
-                      Agrega el primer dia para empezar a construir la rutina.
-                    </p>
-                  </div>
-                ) : (
-                  days.map((day, dayIndex) => {
-                    const dayErrors =
-                      serverState.structureErrors.dayErrors[day.clientId];
-
-                    return (
-                      <div
-                        key={day.clientId}
-                        className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card-alt)]"
-                      >
-                        <div className="flex flex-col gap-3 border-b border-[var(--border)] px-5 py-4 sm:flex-row sm:items-start sm:justify-between">
-                          <div className="space-y-2">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <Badge variant="accent">Dia {dayIndex + 1}</Badge>
-                              <Badge variant="neutral">
-                                {day.items.length} filas
-                              </Badge>
-                            </div>
-                            <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-                              Nombre visible del dia
-                              <Input
-                                placeholder={`Dia ${dayIndex + 1}`}
-                                type="text"
-                                value={day.dayName}
-                                onChange={(event) =>
-                                  handleDayNameChange(day.clientId, event.target.value)
-                                }
-                              />
-                              {dayErrors?.dayName ? (
-                                <span className="text-xs text-[#f8b4b4]">
-                                  {dayErrors.dayName}
-                                </span>
-                              ) : null}
-                            </label>
+                  return (
+                    <div
+                      key={day.clientId}
+                      className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card-alt)]"
+                    >
+                      <div className="flex flex-col gap-3 border-b border-[var(--border)] px-5 py-4 sm:flex-row sm:items-start sm:justify-between">
+                        <div className="space-y-2">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <Badge variant="accent">Dia {dayIndex + 1}</Badge>
+                            <Badge variant="neutral">{day.items.length} filas</Badge>
                           </div>
-
-                          <div className="flex flex-wrap gap-2">
-                            <Button
-                              type="button"
-                              variant="outline"
-                              onClick={() => handleAddItem(day.clientId)}
-                            >
-                              <Plus className="size-4" />
-                              Agregar fila
-                            </Button>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              onClick={() => handleRemoveDay(day.clientId)}
-                            >
-                              <Trash2 className="size-4" />
-                              Quitar dia
-                            </Button>
-                          </div>
+                          <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+                            Nombre visible del dia
+                            <Input
+                              placeholder={`Dia ${dayIndex + 1}`}
+                              type="text"
+                              value={day.dayName}
+                              onChange={(event) =>
+                                handleDayNameChange(day.clientId, event.target.value)
+                              }
+                            />
+                            {dayErrors?.dayName ? (
+                              <span className="text-xs text-[#f8b4b4]">{dayErrors.dayName}</span>
+                            ) : null}
+                          </label>
                         </div>
 
-                        {dayErrors?.items ? (
-                          <div className="border-b border-[#7a2630] bg-[#3b1419]/40 px-5 py-3 text-sm text-[#ffd6db]">
-                            {dayErrors.items}
-                          </div>
-                        ) : null}
-
-                        <div className="grid gap-3 p-5">
-                          {day.items.map((item, itemIndex) => {
-                            const itemErrors = dayErrors?.itemErrors[item.clientId] ?? {};
-
-                            return (
-                              <div
-                                key={item.clientId}
-                                className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4"
-                              >
-                                <div className="mb-3 flex items-center justify-between gap-3">
-                                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-[#7d8697]">
-                                    Fila {itemIndex + 1}
-                                  </span>
-                                  <Button
-                                    type="button"
-                                    variant="ghost"
-                                    onClick={() =>
-                                      handleRemoveItem(day.clientId, item.clientId)
-                                    }
-                                  >
-                                    <Trash2 className="size-4" />
-                                    Quitar
-                                  </Button>
-                                </div>
-
-                                <div className="grid gap-3 lg:grid-cols-[2fr_0.7fr_0.9fr_0.7fr_0.9fr]">
-                                  <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-                                    Ejercicio
-                                    <Select
-                                      value={item.exerciseId}
-                                      onValueChange={(value) =>
-                                        handleItemFieldChange(
-                                          day.clientId,
-                                          item.clientId,
-                                          "exerciseId",
-                                          value,
-                                        )
-                                      }
-                                    >
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Selecciona un ejercicio" />
-                                      </SelectTrigger>
-                                      <SelectContent>
-                                        {initialExercises.map((exercise) => (
-                                          <SelectItem key={exercise.id} value={exercise.id}>
-                                            {exercise.name}
-                                          </SelectItem>
-                                        ))}
-                                      </SelectContent>
-                                    </Select>
-                                    {itemErrors.exerciseId ? (
-                                      <span className="text-xs text-[#f8b4b4]">
-                                        {itemErrors.exerciseId}
-                                      </span>
-                                    ) : null}
-                                  </label>
-
-                                  <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-                                    Series
-                                    <Input
-                                      inputMode="numeric"
-                                      placeholder="4"
-                                      type="text"
-                                      value={item.series}
-                                      onChange={(event) =>
-                                        handleItemFieldChange(
-                                          day.clientId,
-                                          item.clientId,
-                                          "series",
-                                          event.target.value,
-                                        )
-                                      }
-                                    />
-                                    {itemErrors.series ? (
-                                      <span className="text-xs text-[#f8b4b4]">
-                                        {itemErrors.series}
-                                      </span>
-                                    ) : null}
-                                  </label>
-
-                                  <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-                                    Repeticiones
-                                    <Input
-                                      placeholder="8-10"
-                                      type="text"
-                                      value={item.repetitions}
-                                      onChange={(event) =>
-                                        handleItemFieldChange(
-                                          day.clientId,
-                                          item.clientId,
-                                          "repetitions",
-                                          event.target.value,
-                                        )
-                                      }
-                                    />
-                                    {itemErrors.repetitions ? (
-                                      <span className="text-xs text-[#f8b4b4]">
-                                        {itemErrors.repetitions}
-                                      </span>
-                                    ) : null}
-                                  </label>
-
-                                  <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-                                    RIR
-                                    <Input
-                                      inputMode="numeric"
-                                      placeholder="2"
-                                      type="text"
-                                      value={item.rir}
-                                      onChange={(event) =>
-                                        handleItemFieldChange(
-                                          day.clientId,
-                                          item.clientId,
-                                          "rir",
-                                          event.target.value,
-                                        )
-                                      }
-                                    />
-                                    {itemErrors.rir ? (
-                                      <span className="text-xs text-[#f8b4b4]">
-                                        {itemErrors.rir}
-                                      </span>
-                                    ) : null}
-                                  </label>
-
-                                  <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-                                    Descanso
-                                    <Input
-                                      placeholder="90s"
-                                      type="text"
-                                      value={item.rest}
-                                      onChange={(event) =>
-                                        handleItemFieldChange(
-                                          day.clientId,
-                                          item.clientId,
-                                          "rest",
-                                          event.target.value,
-                                        )
-                                      }
-                                    />
-                                    {itemErrors.rest ? (
-                                      <span className="text-xs text-[#f8b4b4]">
-                                        {itemErrors.rest}
-                                      </span>
-                                    ) : null}
-                                  </label>
-                                </div>
-                              </div>
-                            );
-                          })}
+                        <div className="flex flex-wrap gap-2">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => handleAddItem(day.clientId)}
+                          >
+                            <Plus className="size-4" />
+                            Agregar fila
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            onClick={() => handleRemoveDay(day.clientId)}
+                          >
+                            <Trash2 className="size-4" />
+                            Quitar dia
+                          </Button>
                         </div>
                       </div>
-                    );
-                  })
-                )}
-              </div>
 
-              {serverState.status === "error" && serverState.message ? (
-                <div className="rounded-2xl border border-[#7a2630] bg-[#3b1419]/60 px-4 py-3 text-sm text-[#ffd6db]">
-                  {serverState.message}
-                </div>
-              ) : null}
+                      {dayErrors?.items ? (
+                        <div className="border-b border-[#7a2630] bg-[#3b1419]/40 px-5 py-3 text-sm text-[#ffd6db]">
+                          {dayErrors.items}
+                        </div>
+                      ) : null}
 
-              {successMessage ? (
-                <div className="rounded-2xl border border-[#24583d] bg-[#11281c]/70 px-4 py-3 text-sm text-[#c7f7d9]">
-                  {successMessage}
-                </div>
-              ) : null}
+                      <div className="grid gap-3 p-5">
+                        {day.items.map((item, itemIndex) => {
+                          const itemErrors = dayErrors?.itemErrors[item.clientId] ?? {};
 
-              <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-                {isEditing ? (
-                  <Button type="button" variant="outline" onClick={handleCancelEdit}>
-                    Cancelar
-                  </Button>
-                ) : (
-                  <span className="text-xs text-[#7d8697]">
-                    La edicion de hijos usa reemplazo estructural completo en este MVP.
-                  </span>
-                )}
+                          return (
+                            <div
+                              key={item.clientId}
+                              className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4"
+                            >
+                              <div className="mb-3 flex items-center justify-between gap-3">
+                                <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-[#7d8697]">
+                                  <Dumbbell className="size-3.5" />
+                                  Fila {itemIndex + 1}
+                                </span>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  onClick={() => handleRemoveItem(day.clientId, item.clientId)}
+                                >
+                                  <Trash2 className="size-4" />
+                                  Quitar
+                                </Button>
+                              </div>
 
-                <Button disabled={submitDisabled} type="submit">
-                  {isPending ? (
-                    <>
-                      <LoaderCircle className="size-4 animate-spin" />
-                      Guardando...
-                    </>
-                  ) : isEditing ? (
-                    "Actualizar"
-                  ) : (
-                    "Guardar"
-                  )}
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
+                              <div className="grid gap-3 lg:grid-cols-[2fr_0.7fr_0.9fr_0.7fr_0.9fr]">
+                                <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+                                  Ejercicio
+                                  <Select
+                                    value={item.exerciseId}
+                                    onValueChange={(value) =>
+                                      handleItemFieldChange(
+                                        day.clientId,
+                                        item.clientId,
+                                        "exerciseId",
+                                        value,
+                                      )
+                                    }
+                                  >
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Selecciona un ejercicio" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      {initialExercises.map((exercise) => (
+                                        <SelectItem key={exercise.id} value={exercise.id}>
+                                          {exercise.name}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  {itemErrors.exerciseId ? (
+                                    <span className="text-xs text-[#f8b4b4]">
+                                      {itemErrors.exerciseId}
+                                    </span>
+                                  ) : null}
+                                </label>
 
-        <Card className="overflow-hidden">
-          <CardHeader className="border-b border-[var(--border)]">
-            <CardTitle>Listado de rutinas</CardTitle>
-            <CardDescription>
-              Selecciona una rutina para editarla en la misma pantalla.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="divide-y divide-[var(--border)] px-0 py-0">
-            {initialRoutines.length === 0 ? (
-              <div className="grid min-h-72 place-items-center px-6 py-10 text-center">
-                <div className="max-w-sm">
-                  <p className="font-display text-lg font-semibold text-white">
-                    Todavia no hay rutinas
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)]">
-                    Guarda la primera desde el builder para dejar listo el catalogo
-                    base de G8, G9 y G10.
-                  </p>
-                </div>
-              </div>
-            ) : (
-              initialRoutines.map((routine) => (
-                <div
-                  key={routine.id}
-                  className="grid gap-4 px-5 py-4 transition-colors hover:bg-[var(--card-alt)] sm:grid-cols-[1fr_auto] sm:items-center sm:px-6"
-                >
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-display truncate text-sm font-semibold text-white">
-                        {routine.name}
-                      </h3>
-                      <Badge variant="neutral">{routine.dayCount} dias</Badge>
-                      <Badge variant="neutral">{routine.itemCount} filas</Badge>
-                      <Badge variant="outline">
-                        {ROUTINE_DIFFICULTY_LABELS[routine.difficulty]}
-                      </Badge>
-                      <Badge variant="outline">
-                        {ROUTINE_OBJECTIVE_LABELS[routine.objective]}
-                      </Badge>
+                                <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+                                  Series
+                                  <Input
+                                    inputMode="numeric"
+                                    placeholder="4"
+                                    type="text"
+                                    value={item.series}
+                                    onChange={(event) =>
+                                      handleItemFieldChange(
+                                        day.clientId,
+                                        item.clientId,
+                                        "series",
+                                        event.target.value,
+                                      )
+                                    }
+                                  />
+                                  {itemErrors.series ? (
+                                    <span className="text-xs text-[#f8b4b4]">
+                                      {itemErrors.series}
+                                    </span>
+                                  ) : null}
+                                </label>
+
+                                <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+                                  Repeticiones
+                                  <Input
+                                    placeholder="8-10"
+                                    type="text"
+                                    value={item.repetitions}
+                                    onChange={(event) =>
+                                      handleItemFieldChange(
+                                        day.clientId,
+                                        item.clientId,
+                                        "repetitions",
+                                        event.target.value,
+                                      )
+                                    }
+                                  />
+                                  {itemErrors.repetitions ? (
+                                    <span className="text-xs text-[#f8b4b4]">
+                                      {itemErrors.repetitions}
+                                    </span>
+                                  ) : null}
+                                </label>
+
+                                <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+                                  RIR
+                                  <Input
+                                    inputMode="numeric"
+                                    placeholder="2"
+                                    type="text"
+                                    value={item.rir}
+                                    onChange={(event) =>
+                                      handleItemFieldChange(
+                                        day.clientId,
+                                        item.clientId,
+                                        "rir",
+                                        event.target.value,
+                                      )
+                                    }
+                                  />
+                                  {itemErrors.rir ? (
+                                    <span className="text-xs text-[#f8b4b4]">
+                                      {itemErrors.rir}
+                                    </span>
+                                  ) : null}
+                                </label>
+
+                                <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+                                  Descanso
+                                  <Input
+                                    placeholder="90s"
+                                    type="text"
+                                    value={item.rest}
+                                    onChange={(event) =>
+                                      handleItemFieldChange(
+                                        day.clientId,
+                                        item.clientId,
+                                        "rest",
+                                        event.target.value,
+                                      )
+                                    }
+                                  />
+                                  {itemErrors.rest ? (
+                                    <span className="text-xs text-[#f8b4b4]">
+                                      {itemErrors.rest}
+                                    </span>
+                                  ) : null}
+                                </label>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
-                    <p className="mt-2 line-clamp-2 text-sm leading-6 text-[var(--foreground-muted)]">
-                      {routine.description || "Sin descripcion."}
-                    </p>
-                    <p className="mt-2 text-xs uppercase tracking-[0.12em] text-[#7d8697]">
-                      {routine.createdAtLabel}
-                    </p>
-                  </div>
+                  );
+                })
+              )}
+            </div>
 
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => handleSelectRoutine(routine)}
-                  >
-                    <PencilLine className="size-4" />
-                    Editar
-                  </Button>
-                </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
-      </section>
-    </section>
+            {serverState.status === "error" && serverState.message ? (
+              <div className="rounded-2xl border border-[#7a2630] bg-[#3b1419]/60 px-4 py-3 text-sm text-[#ffd6db]">
+                {serverState.message}
+              </div>
+            ) : null}
+          </div>
+
+          <SheetFooter className="flex-row justify-end gap-2 border-t border-[var(--border)]">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancelar
+            </Button>
+            <Button disabled={submitDisabled} type="submit">
+              {isPending ? (
+                <>
+                  <LoaderCircle className="size-4 animate-spin" />
+                  Guardando...
+                </>
+              ) : isEditing ? (
+                "Guardar cambios"
+              ) : (
+                "Crear rutina"
+              )}
+            </Button>
+          </SheetFooter>
+        </form>
+      </SheetContent>
+    </Sheet>
   );
 }
 

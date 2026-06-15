@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ejercicio — Detalle — GymControl</title>
+<link rel="stylesheet" href="styles.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="_ds_bundle.js"></script>
+<style>
+html,body{height:100%;margin:0;overflow:hidden;}
+
+/* ── Shell ── */
+.shell{display:flex;height:100vh;overflow:hidden;}
+
+/* ── Sidebar ── */
+.sidebar{width:260px;flex-shrink:0;border-right:1px solid #151c2e;display:flex;flex-direction:column;padding:18px;height:100%;overflow-y:auto;background:radial-gradient(circle at top left,rgba(124,58,237,.14),transparent 35%),linear-gradient(180deg,#090c14 0%,#05070d 100%);}
+.nav-item{display:flex;align-items:center;gap:11px;padding:8px 11px;border-radius:11px;border:1px solid transparent;color:var(--gc-foreground-muted);font-size:13.5px;text-decoration:none;cursor:pointer;transition:all .15s;background:none;}
+.nav-item.active{background:rgba(109,64,239,.18);border-color:rgba(109,64,239,.32);color:#fff;font-weight:600;}
+.nav-item:not(.active):hover{background:rgba(255,255,255,.04);color:#fff;}
+.nav-icon{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;flex-shrink:0;border:1px solid var(--gc-border);background:var(--gc-card-alt);color:var(--gc-foreground-muted);transition:all .15s;}
+.nav-item.active .nav-icon{border-color:rgba(109,64,239,.45);background:rgba(109,64,239,.25);color:#b995ff;}
+
+/* ── Main ── */
+.main{flex:1;overflow-y:auto;padding:30px 34px 52px;background:radial-gradient(circle at 20% 0%,rgba(124,58,237,.08),transparent 30%);}
+.page-title{font-family:var(--gc-font-display);font-size:clamp(1.8rem,2.5vw,2.4rem);font-weight:600;letter-spacing:-.06em;color:#fff;margin:4px 0 0;line-height:1;}
+.page-desc{margin:7px 0 0;font-size:13.5px;color:var(--gc-foreground-muted);}
+
+/* ── Filter bar ── */
+.filter-bar{display:flex;align-items:center;gap:8px;margin-bottom:13px;}
+.search-wrap{position:relative;flex:1;max-width:340px;}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--gc-foreground-subtle);pointer-events:none;}
+.search-input{width:100%;height:38px;padding:0 11px 0 35px;box-sizing:border-box;border-radius:var(--gc-radius-md);border:1px solid var(--gc-border);background:var(--gc-card);color:var(--gc-foreground);font-family:var(--gc-font-body);font-size:13.5px;outline:none;transition:border-color .18s;}
+.search-input:focus{border-color:var(--gc-accent);}
+.search-input::placeholder{color:var(--gc-foreground-subtle);}
+.f-select{height:38px;padding:0 28px 0 11px;box-sizing:border-box;border-radius:var(--gc-radius-md);border:1px solid var(--gc-border);background:var(--gc-card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%236e7788' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 9px center;color:var(--gc-foreground);font-family:var(--gc-font-body);font-size:13px;outline:none;cursor:pointer;appearance:none;transition:border-color .18s;}
+.f-select:focus{border-color:var(--gc-accent);}
+.f-count{margin-left:auto;font-size:12.5px;color:var(--gc-foreground-subtle);}
+.btn-add{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 18px;border-radius:var(--gc-radius-md);border:1px solid var(--gc-accent);background:var(--gc-accent);color:#fff;font-family:var(--gc-font-display);font-size:13.5px;font-weight:600;cursor:pointer;transition:all .18s;}
+.btn-add:hover{background:var(--gc-accent-strong);box-shadow:var(--gc-glow-accent);}
+
+/* ── Table ── */
+.table-card{border-radius:var(--gc-radius-xl);border:1px solid var(--gc-border);background:var(--gc-card);box-shadow:var(--gc-shadow-card);overflow:hidden;}
+.ex-table{width:100%;border-collapse:collapse;}
+.ex-table thead{background:var(--gc-card-alt);border-bottom:1px solid var(--gc-border);}
+.ex-table th{padding:9px 15px;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.11em;color:var(--gc-foreground-subtle);text-align:left;}
+.ex-table td{padding:11px 15px;font-size:13.5px;color:var(--gc-foreground);vertical-align:middle;}
+.ex-table tbody tr{border-bottom:1px solid rgba(37,43,54,.4);transition:background .12s;cursor:pointer;}
+.ex-table tbody tr:last-child{border-bottom:0;}
+.ex-table tbody tr:hover{background:rgba(255,255,255,.022);}
+.ex-table tbody tr.selected-row{background:rgba(124,58,237,.08);outline:1px solid rgba(124,58,237,.22);outline-offset:-1px;}
+.badge{display:inline-flex;align-items:center;border-radius:9999px;border:1px solid;padding:2px 9px;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;}
+
+/* ── Detail Overlay ── */
+.detail-overlay{position:fixed;inset:0;background:rgba(4,6,10,.45);backdrop-filter:blur(3px);z-index:100;}
+
+/* ── Detail Drawer ── */
+.detail-drawer{position:fixed;top:0;right:0;bottom:0;width:540px;display:flex;flex-direction:column;overflow:hidden;z-index:101;background:#0a0e1a;border-left:1px solid var(--gc-border);box-shadow:-24px 0 60px rgba(0,0,0,.5);animation:draw-in .26s cubic-bezier(.16,1,.3,1);}
+@keyframes draw-in{from{transform:translateX(36px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+
+/* Accent line */
+.d-accentline{height:2px;flex-shrink:0;background:linear-gradient(90deg,transparent,#7c3aed 25%,#b995ff 60%,transparent);}
+
+/* Hero */
+.d-hero{position:relative;height:218px;flex-shrink:0;overflow:hidden;}
+.d-hero-bg{position:absolute;inset:0;}
+.d-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(124,58,237,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.055) 1px,transparent 1px);background-size:38px 38px;mask-image:radial-gradient(ellipse 80% 100% at 30% 50%,black 0%,transparent 75%);}
+.d-hero-glow{position:absolute;width:340px;height:340px;border-radius:50%;top:-90px;right:-80px;pointer-events:none;}
+.d-hero-watermark{position:absolute;bottom:-16px;right:-4px;font-family:var(--gc-font-display);font-size:118px;font-weight:800;letter-spacing:-.07em;color:rgba(124,58,237,.08);line-height:1;text-transform:uppercase;pointer-events:none;user-select:none;white-space:nowrap;}
+.d-hero-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:16px 22px 20px;}
+.d-hero-toprow{display:flex;justify-content:flex-end;}
+.d-close-btn{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.32);color:rgba(255,255,255,.65);cursor:pointer;backdrop-filter:blur(8px);transition:all .16s;}
+.d-close-btn:hover{border-color:rgba(255,255,255,.22);color:#fff;background:rgba(0,0,0,.5);}
+.d-hero-name{font-family:var(--gc-font-display);font-size:1.55rem;font-weight:700;letter-spacing:-.05em;color:#fff;line-height:1.1;margin:0 0 10px;text-shadow:0 2px 18px rgba(0,0,0,.55);}
+.d-hero-badges{display:flex;gap:7px;flex-wrap:wrap;}
+
+/* Tabs */
+.d-tabs{display:flex;border-bottom:1px solid var(--gc-border);padding:0 22px;flex-shrink:0;background:#0a0e1a;}
+.d-tab{padding:12px 14px;font-size:13px;font-weight:600;color:var(--gc-foreground-subtle);cursor:pointer;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .18s,border-color .18s;background:none;font-family:var(--gc-font-body);}
+.d-tab.on{color:#fff;border-bottom-color:var(--gc-accent-bright);}
+.d-tab:hover:not(.on){color:var(--gc-foreground-muted);}
+
+/* Scrollable body */
+.d-body{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:20px;}
+.d-body::-webkit-scrollbar{width:4px;}
+.d-body::-webkit-scrollbar-track{background:transparent;}
+.d-body::-webkit-scrollbar-thumb{background:rgba(124,58,237,.25);border-radius:99px;}
+
+/* Sections */
+.d-section{display:flex;flex-direction:column;gap:11px;}
+.d-seclabel{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--gc-foreground-subtle);}
+.d-divider{height:1px;background:var(--gc-border);margin:2px 0;}
+
+/* Description */
+.d-desc{font-size:13.5px;line-height:1.72;color:var(--gc-foreground-muted);}
+
+/* Spec chips */
+.specs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+.spec-chip{background:var(--gc-card-alt);border:1px solid var(--gc-border);border-radius:12px;padding:11px 13px;display:flex;flex-direction:column;gap:3px;}
+.spec-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--gc-foreground-subtle);}
+.spec-val{font-size:13.5px;font-weight:600;color:var(--gc-foreground);letter-spacing:-.01em;}
+
+/* Muscle bars */
+.mbar-list{display:flex;flex-direction:column;gap:9px;}
+.mbar-row{display:flex;flex-direction:column;gap:4px;}
+.mbar-meta{display:flex;justify-content:space-between;align-items:baseline;}
+.mbar-name{font-size:13px;font-weight:500;color:var(--gc-foreground-muted);}
+.mbar-name.primary-muscle{color:var(--gc-foreground);font-weight:600;}
+.mbar-pct{font-size:11px;font-weight:600;color:var(--gc-foreground-subtle);font-family:var(--gc-font-mono);}
+.mbar-track{height:4px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;}
+.mbar-fill{height:100%;border-radius:99px;transition:width .65s cubic-bezier(.16,1,.3,1);}
+.mbar-fill.p{background:linear-gradient(90deg,var(--gc-accent),var(--gc-accent-bright));}
+.mbar-fill.s{background:var(--gc-accent-soft-border);}
+
+/* Steps */
+.steps-list{display:flex;flex-direction:column;gap:13px;}
+.step-item{display:flex;gap:13px;align-items:flex-start;}
+.step-num{width:26px;height:26px;border-radius:8px;background:var(--gc-accent-soft-surface);border:1px solid var(--gc-accent-soft-border);color:var(--gc-accent-bright);font-family:var(--gc-font-display);font-size:11.5px;font-weight:700;display:grid;place-items:center;flex-shrink:0;margin-top:2px;}
+.step-text{font-size:13.5px;line-height:1.65;color:var(--gc-foreground-muted);padding-top:3px;}
+
+/* Tips */
+.tips-list{display:flex;flex-direction:column;gap:9px;}
+.tip-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.55;color:var(--gc-foreground-muted);}
+.tip-dot{width:5px;height:5px;border-radius:50%;background:var(--gc-accent-bright);box-shadow:0 0 6px rgba(185,149,255,.5);flex-shrink:0;margin-top:6px;}
+
+/* History */
+.history-card{background:var(--gc-card-alt);border:1px solid var(--gc-border);border-radius:14px;padding:16px 18px;}
+.history-chart-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--gc-foreground-subtle);margin-bottom:12px;}
+.history-log{margin-top:16px;border-top:1px solid var(--gc-border);padding-top:12px;display:flex;flex-direction:column;gap:0;}
+.hlog-header{display:flex;justify-content:space-between;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--gc-foreground-subtle);margin-bottom:7px;}
+.hlog-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(37,43,54,.35);font-size:13px;}
+.hlog-row:last-child{border-bottom:none;}
+.hlog-date{color:var(--gc-foreground-subtle);font-family:var(--gc-font-mono);font-size:12px;}
+.hlog-kg{color:#fff;font-weight:700;font-family:var(--gc-font-display);letter-spacing:-.03em;}
+.hlog-reps{color:var(--gc-foreground-muted);font-size:12px;}
+.pr-chip{display:inline-flex;align-items:center;gap:4px;padding:1px 7px;border-radius:99px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#4ade80;font-size:10.5px;font-weight:600;margin-left:6px;}
+
+/* Footer */
+.d-footer{padding:16px 22px;border-top:1px solid var(--gc-border);display:flex;gap:9px;flex-shrink:0;background:#0a0e1a;}
+.btn-primary{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 20px;border-radius:var(--gc-radius-md);border:1px solid var(--gc-accent);background:var(--gc-accent);color:#fff;font-family:var(--gc-font-display);font-size:13.5px;font-weight:600;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.btn-primary:hover{background:var(--gc-accent-strong);box-shadow:var(--gc-glow-accent);}
+.btn-ghost{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 16px;border-radius:var(--gc-radius-md);border:1px solid var(--gc-border);background:transparent;color:var(--gc-foreground-muted);font-family:var(--gc-font-body);font-size:13.5px;cursor:pointer;transition:all .18s;}
+.btn-ghost:hover{border-color:var(--gc-border-strong);color:#fff;}
+.btn-icon{display:grid;place-items:center;width:40px;height:40px;border-radius:var(--gc-radius-md);border:1px solid var(--gc-border);background:transparent;color:var(--gc-foreground-subtle);cursor:pointer;transition:all .18s;}
+.btn-icon:hover{border-color:rgba(239,68,68,.4);color:#f87171;background:rgba(239,68,68,.08);}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+(function waitMount() {
+  var NS = window.GymControlDesignSystem_e6d417;
+  if (!NS || !window.React || !window.ReactDOM) { return setTimeout(waitMount, 40); }
+
+  var React = window.React;
+  var useState = React.useState, useMemo = React.useMemo, useEffect = React.useEffect;
+  var el = React.createElement;
+  var Eyebrow = NS.Eyebrow;
+
+  /* ── Icons ─────────────────────────────────────────── */
+  function Ic(props) {
+    var d = props.d, size = props.size || 18, color = props.color;
+    var nodes = Array.isArray(d) ? d : [d];
+    return el("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none",
+      stroke: color || "currentColor", strokeWidth: 1.9, strokeLinecap: "round", strokeLinejoin: "round" },
+      nodes.map(function(p, i) {
+        if (typeof p === "string") return el("path", { key: i, d: p });
+        var tag = p.tag; var rest = Object.assign({}, p); delete rest.tag;
+        return el(tag || "circle", Object.assign({ key: i }, rest));
+      })
+    );
+  }
+
+  var I = {
+    dumbbell:  ["m6.5 6.5 11 11","M21 21l-1-1","M3 3l1 1","M18 22l4-4","M2 6l4-4","M3 10l7-7","M14 21l7-7"],
+    x:         ["M18 6 6 18","m6 6 12 12"],
+    pencil:    ["M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z","m15 5 4 4"],
+    trash:     ["M3 6h18","M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6","M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"],
+    plus:      ["M12 5v14","M5 12h14"],
+    chevR:     ["m9 18 6-6-6-6"],
+    search:    [{ tag:"circle", cx:11, cy:11, r:8 }, "m21 21-4.3-4.3"],
+    shield:    ["M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"],
+    book:      ["M4 19.5A2.5 2.5 0 0 1 6.5 17H20","M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"],
+    grid:      [{ tag:"rect", width:7, height:7, x:3, y:3, rx:1 },{ tag:"rect", width:7, height:7, x:14, y:3, rx:1 },{ tag:"rect", width:7, height:7, x:14, y:14, rx:1 },{ tag:"rect", width:7, height:7, x:3, y:14, rx:1 }],
+    calendar:  [{ tag:"rect", width:18, height:18, x:3, y:4, rx:2 },"M3 10h18M8 2v4M16 2v4"],
+    logout:    ["M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4","m16 17 5-5-5-5M21 12H9"],
+    clipboard: [{ tag:"rect", width:8, height:4, x:8, y:2, rx:1 },"M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2","M9 12h6","M9 16h4"],
+    barChart:  ["M12 20V10","M18 20V4","M6 20v-6"],
+    star:      ["M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"],
+    zap:       ["M13 2 3 14h9l-1 8 10-12h-9l1-8z"],
+  };
+
+  /* ── Muscle themes ─────────────────────────────────── */
+  var HERO_GRAD = "radial-gradient(ellipse 90% 75% at 12% -15%, rgba(124,58,237,.32) 0%, transparent 55%), radial-gradient(ellipse 55% 60% at 88% 110%, rgba(99,53,232,.14) 0%, transparent 50%), #05070b";
+  var MTHEME = {
+    "Pecho":   { grad:HERO_GRAD, glow:"rgba(124,58,237,.22)", accent:"#b995ff", badge:{bc:"#5b2ab3",bg:"#251740",tc:"#eee0ff"} },
+    "Espalda": { grad:HERO_GRAD, glow:"rgba(124,58,237,.22)", accent:"#6eb4ff", badge:{bc:"#1a3a7b",bg:"#0c1e42",tc:"#bdd4ff"} },
+    "Piernas": { grad:HERO_GRAD, glow:"rgba(124,58,237,.22)", accent:"#6ee7a0", badge:{bc:"#255936",bg:"#101f15",tc:"#b8f0c4"} },
+    "Hombros": { grad:HERO_GRAD, glow:"rgba(124,58,237,.22)", accent:"#ffd27a", badge:{bc:"#5a3c00",bg:"#221500",tc:"#ffe09a"} },
+    "Bíceps":  { grad:HERO_GRAD, glow:"rgba(124,58,237,.22)", accent:"#d4a4ff", badge:{bc:"#521a8a",bg:"#1e0b38",tc:"#e5b8ff"} },
+    "Tríceps": { grad:HERO_GRAD, glow:"rgba(124,58,237,.22)", accent:"#ff9f7a", badge:{bc:"#7a2e10",bg:"#2d1008",tc:"#ffb894"} },
+    "Core":    { grad:HERO_GRAD, glow:"rgba(124,58,237,.22)", accent:"#a8b4cc", badge:{bc:"#323949",bg:"#141a26",tc:"#b0bcd4"} },
+  };
+
+  /* ── Exercise detail data ──────────────────────────── */
+  var EXDATA = {
+    "Press de banca": {
+      tipo:"Compuesto", patron:"Empuje horizontal", dificultad:"Intermedio",
+      activation:{ primary:{name:"Pecho",pct:90}, secondary:[{name:"Tríceps",pct:52},{name:"Hombros ant.",pct:26}] },
+      steps:["Recostáte en el banco plano con los pies apoyados en el suelo y el arco natural de la columna.",
+             "Tomá la barra con agarre en pronación, un poco más ancho que tus hombros.",
+             "Bajá de forma controlada hasta que la barra toque la parte media-baja del pecho.",
+             "Empujá hacia arriba trazando un leve arco natural, extendiendo los brazos por completo.",
+             "Exhalá en el empuje; inhalá profundo antes de bajar la barra."],
+      tips:["Retraé y deprimí las escápulas antes de bajar la barra para crear una base estable.",
+            "Los codos deben ir entre 45° y 75° respecto al torso, nunca perpendiculares.",
+            "Pies firmes en el suelo: transmitís tensión desde la cadena posterior."],
+      history:[{date:"Jun 10",kg:80,reps:8,pr:false},{date:"Jun 07",kg:77.5,reps:8,pr:false},{date:"Jun 03",kg:75,reps:9,pr:false},{date:"May 30",kg:75,reps:8,pr:false},{date:"May 26",kg:72.5,reps:8,pr:true}]
+    },
+    "Sentadilla con barra": {
+      tipo:"Compuesto", patron:"Empuje vertical", dificultad:"Avanzado",
+      activation:{ primary:{name:"Cuádriceps",pct:92}, secondary:[{name:"Glúteos",pct:72},{name:"Core",pct:45},{name:"Isquiotibiales",pct:35}] },
+      steps:["Posicioná la barra sobre los trapecios (no sobre el cuello) con un agarre cómodo.",
+             "Separá los pies al ancho de los hombros o un poco más, punta de los pies hacia afuera.",
+             "Bajá con caderas hacia atrás y abajo manteniendo el torso erguido.",
+             "Las rodillas deben seguir la dirección de los pies, sin colapsar hacia adentro.",
+             "Subí empujando el suelo, extendiendo caderas y rodillas en simultáneo."],
+      tips:["Mantené el pecho alto y la mirada al frente durante todo el movimiento.",
+            "Las rodillas siempre en línea con los dedos del pie.",
+            "Respirá hondo antes de bajar y exhalá en la subida pasado el punto más difícil."],
+      history:[{date:"Jun 10",kg:100,reps:6,pr:true},{date:"Jun 07",kg:97.5,reps:6,pr:false},{date:"Jun 03",kg:97.5,reps:5,pr:false},{date:"May 30",kg:95,reps:8,pr:false},{date:"May 26",kg:95,reps:6,pr:false}]
+    },
+    "Peso muerto convencional": {
+      tipo:"Compuesto", patron:"Bisagra de cadera", dificultad:"Avanzado",
+      activation:{ primary:{name:"Cadena posterior",pct:88}, secondary:[{name:"Cuádriceps",pct:60},{name:"Core",pct:55},{name:"Trapecios",pct:40}] },
+      steps:["Posicioná la barra sobre los empeines, hombros ligeramente adelantados.",
+             "Agarre doble pronación o mixto, manos a ancho de hombros.",
+             "Apretá el suelo con los pies, inhalá, tensá el core y extendé la columna.",
+             "Empujá el suelo hacia abajo mientras arrastrás la barra pegada al cuerpo.",
+             "Extendé caderas completamente al final sin hiperextender la columna."],
+      tips:["La espalda debe estar completamente plana en todo el recorrido.",
+            "Mantenené la barra lo más cerca posible del cuerpo.",
+            "No levantes las caderas antes que el pecho: rompés la cadena de fuerza."],
+      history:[{date:"Jun 10",kg:130,reps:5,pr:true},{date:"Jun 07",kg:127.5,reps:5,pr:false},{date:"Jun 03",kg:125,reps:6,pr:false},{date:"May 30",kg:120,reps:6,pr:false},{date:"May 26",kg:120,reps:5,pr:false}]
+    },
+  };
+
+  function getDetail(ex) {
+    if (EXDATA[ex.name]) return EXDATA[ex.name];
+    return {
+      tipo: ex.equip === "Peso corporal" ? "Calistenia" : ex.equip === "Máquina" ? "Máquina" : "Libre",
+      patron: "Fuerza",
+      dificultad: "Intermedio",
+      activation:{ primary:{name:ex.muscle,pct:87}, secondary:[{name:"Core",pct:38},{name:"Estabilizadores",pct:22}] },
+      steps:["Adoptá la posición inicial con la espalda neutra y el core activo.",
+             "Ejecutá el movimiento de forma controlada, concentrándote en el músculo objetivo.",
+             "Controlá la fase excéntrica para maximizar el tiempo bajo tensión.",
+             "Completá el rango total del movimiento sin compensaciones posturales.",
+             "Exhalá en el esfuerzo, inhalá en la recuperación."],
+      tips:["Priorizá siempre la técnica por sobre la carga.",
+            "Controlá el tempo en cada repetición: 2 segundos en la bajada mínimo.",
+            "Aumentá el peso cuando puedas completar el rango superior con buena forma."],
+      history:[{date:"Jun 10",kg:60,reps:10,pr:false},{date:"Jun 07",kg:57.5,reps:10,pr:false},{date:"Jun 03",kg:55,reps:12,pr:false},{date:"May 30",kg:55,reps:10,pr:false},{date:"May 26",kg:52.5,reps:10,pr:true}]
+    };
+  }
+
+  /* ── Exercise data ─────────────────────────────────── */
+  var EXERCISES = [
+    { id:1,  name:"Press de banca",                 desc:"Ejercicio compuesto para el pecho con barra plana.",             muscle:"Pecho",   equip:"Barra",         date:"2026-06-10" },
+    { id:2,  name:"Press inclinado con mancuernas", desc:"Trabajo de pecho superior con inclinación de banco.",            muscle:"Pecho",   equip:"Mancuernas",    date:"2026-06-09" },
+    { id:3,  name:"Apertura en banco plano",        desc:"Aislamiento de pectoral con amplitud de movimiento completa.",   muscle:"Pecho",   equip:"Mancuernas",    date:"2026-06-08" },
+    { id:4,  name:"Jalón al pecho en polea",        desc:"Amplitud de dorsales y activación de espalda alta.",             muscle:"Espalda", equip:"Polea",         date:"2026-06-10" },
+    { id:5,  name:"Remo con barra",                 desc:"Grosor y densidad de espalda media con barra.",                  muscle:"Espalda", equip:"Barra",         date:"2026-06-09" },
+    { id:6,  name:"Peso muerto convencional",       desc:"Ejercicio de cadena posterior, básico de fuerza.",               muscle:"Espalda", equip:"Barra",         date:"2026-06-08" },
+    { id:7,  name:"Sentadilla con barra",           desc:"Rey de los ejercicios de tren inferior.",                        muscle:"Piernas", equip:"Barra",         date:"2026-06-10" },
+    { id:8,  name:"Prensa de piernas",              desc:"Volumen de cuádriceps y glúteos en máquina.",                    muscle:"Piernas", equip:"Máquina",       date:"2026-06-09" },
+    { id:9,  name:"Hip thrust con barra",           desc:"Activación y fuerza máxima de glúteos.",                         muscle:"Piernas", equip:"Barra",         date:"2026-06-06" },
+    { id:10, name:"Press militar con barra",        desc:"Desarrollo completo del deltoides anterior.",                    muscle:"Hombros", equip:"Barra",         date:"2026-06-10" },
+    { id:11, name:"Elevaciones laterales",          desc:"Aislamiento del deltoides medio con mancuernas.",                muscle:"Hombros", equip:"Mancuernas",    date:"2026-06-09" },
+    { id:12, name:"Curl con barra EZ",              desc:"Masa y fuerza de bíceps con agarre neutro.",                     muscle:"Bíceps",  equip:"Barra",         date:"2026-06-10" },
+    { id:13, name:"Curl martillo",                  desc:"Braquial y antebrazo con mancuernas en agarre neutro.",          muscle:"Bíceps",  equip:"Mancuernas",    date:"2026-06-08" },
+    { id:14, name:"Press francés con barra",        desc:"Masa y volumen del tríceps con barra EZ.",                       muscle:"Tríceps", equip:"Barra",         date:"2026-06-10" },
+    { id:15, name:"Extensión de tríceps en polea",  desc:"Definición y bombeo del tríceps en polea alta.",                 muscle:"Tríceps", equip:"Polea",         date:"2026-06-09" },
+    { id:16, name:"Plancha abdominal",              desc:"Activación isométrica y resistencia del core.",                  muscle:"Core",    equip:"Peso corporal", date:"2026-06-10" },
+    { id:17, name:"Ab wheel",                       desc:"Extensión de core con rueda abdominal.",                         muscle:"Core",    equip:"Peso corporal", date:"2026-06-06" },
+  ];
+  var MUSCLES = ["Pecho","Espalda","Piernas","Hombros","Bíceps","Tríceps","Core"];
+
+  /* ── History mini-chart ──────────────────────────── */
+  function MiniChart(props) {
+    var data = props.data, accentColor = props.accentColor || "#9d6cff";
+    var W = 496, H = 78, PL = 32, PR = 8, PT = 8, PB = 22;
+    var kgs = data.map(function(d){ return d.kg; });
+    var minK = Math.min.apply(null,kgs), maxK = Math.max.apply(null,kgs);
+    var rng = maxK - minK || 4;
+    function cx(i){ return PL + i*(W-PL-PR)/(data.length-1); }
+    function cy(k){ return PT + (1-(k-minK)/rng)*(H-PT-PB); }
+    var pts = data.map(function(d,i){ return [cx(i),cy(d.kg)]; });
+    var line = pts.map(function(p,i){ return (i===0?"M":"L")+p[0]+","+p[1]; }).join(" ");
+    var area = line+" L"+pts[pts.length-1][0]+","+(H-PB)+" L"+pts[0][0]+","+(H-PB)+" Z";
+    return el("svg", { width:"100%", viewBox:"0 0 "+W+" "+H, style:{overflow:"visible"} },
+      el("defs",null,
+        el("linearGradient",{id:"cg",x1:"0",y1:"0",x2:"0",y2:"1"},
+          el("stop",{offset:"0%",stopColor:accentColor,stopOpacity:0.28}),
+          el("stop",{offset:"100%",stopColor:accentColor,stopOpacity:0})
+        )
+      ),
+      el("path",{d:area,fill:"url(#cg)"}),
+      el("path",{d:line,fill:"none",stroke:accentColor,strokeWidth:1.5,strokeLinecap:"round",strokeLinejoin:"round"}),
+      pts.map(function(p,i){
+        return el("circle",{key:i,cx:p[0],cy:p[1],r:3,fill:accentColor,stroke:"#0a0e1a",strokeWidth:1.5});
+      }),
+      data.map(function(d,i){
+        return el("text",{key:i,x:cx(i),y:H-4,textAnchor:"middle",fontSize:9,fill:"#6e7788",fontFamily:"var(--gc-font-mono)"},d.date);
+      })
+    );
+  }
+
+  /* ── Badge ───────────────────────────────────────── */
+  function Bdg(props) {
+    var text = props.text, bc = props.bc, bg = props.bg, tc = props.tc;
+    return el("span",{className:"badge",style:{borderColor:bc,background:bg,color:tc}},text);
+  }
+
+  /* ── Detail Drawer ───────────────────────────────── */
+  function DetailDrawer(props) {
+    var exercise = props.exercise, onClose = props.onClose;
+    var tab0 = useState("desc");
+    var tab = tab0[0], setTab = tab0[1];
+    var detail = getDetail(exercise);
+    var theme  = MTHEME[exercise.muscle] || MTHEME["Core"];
+    var mb     = theme.badge;
+    var equipBadge = { bc:"var(--gc-border-strong)", bg:"rgba(23,29,42,.6)", tc:"var(--gc-foreground-muted)" };
+    var tipoBadge  = { bc:"rgba(255,255,255,.1)",    bg:"rgba(0,0,0,.28)",   tc:"rgba(255,255,255,.55)" };
+
+    /* ── Desc tab ── */
+    function DescTab() {
+      return el(React.Fragment, null,
+        el("div",{className:"d-section"},
+          el("div",{className:"d-seclabel"},"Descripción"),
+          el("p",{className:"d-desc"},exercise.desc)
+        ),
+        el("div",{className:"d-divider"}),
+        el("div",{className:"d-section"},
+          el("div",{className:"d-seclabel"},"Clasificación"),
+          el("div",{className:"specs-grid"},
+            el("div",{className:"spec-chip"},el("span",{className:"spec-lbl"},"Tipo"),el("span",{className:"spec-val"},detail.tipo)),
+            el("div",{className:"spec-chip"},el("span",{className:"spec-lbl"},"Patrón"),el("span",{className:"spec-val"},detail.patron)),
+            el("div",{className:"spec-chip"},el("span",{className:"spec-lbl"},"Nivel"),el("span",{className:"spec-val"},detail.dificultad))
+          )
+        ),
+        el("div",{className:"d-divider"}),
+        el("div",{className:"d-section"},
+          el("div",{className:"d-seclabel"},"Activación muscular"),
+          el("div",{className:"mbar-list"},
+            el("div",{className:"mbar-row"},
+              el("div",{className:"mbar-meta"},
+                el("span",{className:"mbar-name primary-muscle"},detail.activation.primary.name+" — primario"),
+                el("span",{className:"mbar-pct"},detail.activation.primary.pct+"%")
+              ),
+              el("div",{className:"mbar-track"},
+                el("div",{className:"mbar-fill p",style:{width:detail.activation.primary.pct+"%"}})
+              )
+            ),
+            detail.activation.secondary.map(function(s,i){
+              return el("div",{key:i,className:"mbar-row"},
+                el("div",{className:"mbar-meta"},
+                  el("span",{className:"mbar-name"},s.name+" — secundario"),
+                  el("span",{className:"mbar-pct"},s.pct+"%")
+                ),
+                el("div",{className:"mbar-track"},
+                  el("div",{className:"mbar-fill s",style:{width:s.pct+"%"}})
+                )
+              );
+            })
+          )
+        )
+      );
+    }
+
+    /* ── Técnica tab ── */
+    function TecnicaTab() {
+      return el(React.Fragment, null,
+        el("div",{className:"d-section"},
+          el("div",{className:"d-seclabel"},"Pasos de ejecución"),
+          el("div",{className:"steps-list"},
+            detail.steps.map(function(s,i){
+              return el("div",{key:i,className:"step-item"},
+                el("div",{className:"step-num"},i+1),
+                el("span",{className:"step-text"},s)
+              );
+            })
+          )
+        ),
+        el("div",{className:"d-divider"}),
+        el("div",{className:"d-section"},
+          el("div",{className:"d-seclabel"},"Claves de técnica"),
+          el("div",{className:"tips-list"},
+            detail.tips.map(function(t,i){
+              return el("div",{key:i,className:"tip-item"},
+                el("span",{className:"tip-dot"}),
+                t
+              );
+            })
+          )
+        )
+      );
+    }
+
+    /* ── Historial tab ── */
+    function HistorialTab() {
+      var maxKg = Math.max.apply(null, detail.history.map(function(h){ return h.kg; }));
+      return el("div",{className:"d-section"},
+        el("div",{className:"d-seclabel"},"Progresión de carga"),
+        el("div",{className:"history-card"},
+          el("div",{className:"history-chart-lbl"},"kg por sesión"),
+          el(MiniChart,{data:detail.history,accentColor:theme.accent}),
+          el("div",{className:"history-log"},
+            el("div",{className:"hlog-header"},
+              el("span",null,"Fecha"),
+              el("span",null,"Carga"),
+              el("span",null,"Reps")
+            ),
+            detail.history.map(function(h,i){
+              return el("div",{key:i,className:"hlog-row"},
+                el("span",{className:"hlog-date"},h.date),
+                el("span",{className:"hlog-kg"},
+                  h.kg+" kg",
+                  h.kg === maxKg && el("span",{className:"pr-chip"},el(Ic,{d:I.star,size:9}),"PR")
+                ),
+                el("span",{className:"hlog-reps"},h.reps+" reps")
+              );
+            })
+          )
+        )
+      );
+    }
+
+    return el(React.Fragment, null,
+      el("div",{className:"detail-overlay",onClick:onClose}),
+      el("div",{className:"detail-drawer"},
+        el("div",{className:"d-accentline"}),
+
+        /* ── Hero ── */
+        el("div",{className:"d-hero"},
+          el("div",{className:"d-hero-bg",style:{background:theme.grad}}),
+          el("div",{className:"d-hero-grid"}),
+          el("div",{className:"d-hero-glow",style:{background:"radial-gradient(circle,"+theme.glow+",transparent 70%)"}}),
+          el("div",{className:"d-hero-watermark"},exercise.muscle.toUpperCase()),
+          el("div",{className:"d-hero-content"},
+            el("div",{className:"d-hero-toprow"},
+              el("button",{className:"d-close-btn",onClick:onClose},el(Ic,{d:I.x,size:13}))
+            ),
+            el("div",null,
+              el("h2",{className:"d-hero-name"},exercise.name),
+              el("div",{className:"d-hero-badges"},
+                el(Bdg,Object.assign({text:exercise.muscle},mb)),
+                el(Bdg,Object.assign({text:exercise.equip},equipBadge)),
+                el(Bdg,Object.assign({text:detail.tipo},tipoBadge))
+              )
+            )
+          )
+        ),
+
+        /* ── Tabs ── */
+        el("div",{className:"d-tabs"},
+          [["desc","Descripción"],["tecnica","Técnica"],["historial","Historial"]].map(function(pair){
+            return el("button",{key:pair[0],className:"d-tab"+(tab===pair[0]?" on":""),onClick:function(){setTab(pair[0]);}},pair[1]);
+          })
+        ),
+
+        /* ── Body ── */
+        el("div",{className:"d-body"},
+          tab==="desc"      && el(DescTab),
+          tab==="tecnica"   && el(TecnicaTab),
+          tab==="historial" && el(HistorialTab)
+        ),
+
+        /* ── Footer ── */
+        el("div",{className:"d-footer"},
+          el("button",{className:"btn-primary",style:{flex:1}},el(Ic,{d:I.plus,size:14}),"Agregar a rutina"),
+          el("button",{className:"btn-ghost"},el(Ic,{d:I.pencil,size:13}),"Editar"),
+          el("button",{className:"btn-icon",title:"Eliminar"},el(Ic,{d:I.trash,size:14}))
+        )
+      )
+    );
+  }
+
+  /* ── ExRow ───────────────────────────────────────── */
+  function ExRow(props) {
+    var ex = props.ex, isSelected = props.isSelected, onClick = props.onClick;
+    var theme = MTHEME[ex.muscle] || MTHEME["Core"];
+    var mb = theme.badge;
+    var equipBadge = { bc:"var(--gc-border-strong)", bg:"rgba(23,29,42,.6)", tc:"var(--gc-foreground-muted)" };
+    return el("tr",{
+      onClick:onClick,
+      className:isSelected?"selected-row":undefined
+    },
+      el("td",null,
+        el("div",{style:{display:"flex",alignItems:"center",gap:13}},
+          el("div",{style:{width:42,height:34,borderRadius:8,border:"1px solid rgba(255,255,255,.06)",display:"flex",alignItems:"center",justifyContent:"center",background:theme.grad,flexShrink:0}},
+            el(Ic,{d:I.dumbbell,size:13,color:"rgba(255,255,255,.2)"})
+          ),
+          el("div",null,
+            el("div",{style:{fontSize:13.5,fontWeight:600,color:"#fff"}},ex.name),
+            el("div",{style:{fontSize:12,color:"var(--gc-foreground-muted)",marginTop:2,lineHeight:1.4}},ex.desc)
+          )
+        )
+      ),
+      el("td",null,el(Bdg,Object.assign({text:ex.muscle},mb))),
+      el("td",null,el(Bdg,Object.assign({text:ex.equip},equipBadge))),
+      el("td",{style:{color:"var(--gc-foreground-subtle)",fontSize:12.5,fontFamily:"var(--gc-font-mono)",whiteSpace:"nowrap"}},ex.date),
+      el("td",null,
+        el("div",{style:{display:"flex",alignItems:"center",gap:4,color:isSelected?"var(--gc-accent-bright)":"var(--gc-foreground-subtle)",transition:"color .15s"}},
+          el("span",{style:{fontSize:11.5,fontWeight:600}},"Ver detalle"),
+          el(Ic,{d:I.chevR,size:12})
+        )
+      )
+    );
+  }
+
+  /* ── Sidebar ─────────────────────────────────────── */
+  function Sidebar() {
+    var userLinks  = [{k:"cat",ic:I.book,    label:"Catálogo"},{k:"rut",ic:I.grid,    label:"Mis rutinas"},{k:"sem",ic:I.calendar, label:"Semana activa"}];
+    var adminLinks = [{k:"sh", ic:I.shield,  label:"Dashboard Admin"},{k:"ej", ic:I.dumbbell,label:"Ejercicios",active:true},{k:"ra",ic:I.clipboard,label:"Rutinas"}];
+    function NavItem(props) {
+      var item = props.item;
+      return el("button",{className:"nav-item"+(item.active?" active":""),style:{width:"100%",textAlign:"left"}},
+        el("span",{className:"nav-icon"},el(Ic,{d:item.ic,size:15})),item.label
+      );
+    }
+    return el("aside",{className:"sidebar"},
+      el("a",{href:"#",style:{display:"flex",alignItems:"center",gap:11,textDecoration:"none",marginBottom:26}},
+        el("span",{style:{display:"grid",placeItems:"center",width:44,height:44,borderRadius:13,background:"#6335e8",border:"1px solid #5a30d6",boxShadow:"0 10px 26px rgba(72,39,158,.3)",fontFamily:"var(--gc-font-display)",fontWeight:700,fontSize:14,color:"#fff",flexShrink:0}},"GC"),
+        el("span",null,
+          el("span",{style:{display:"block",fontFamily:"var(--gc-font-display)",fontSize:17,fontWeight:600,color:"#fff",letterSpacing:"-.04em"}},"GymControl"),
+          el("span",{style:{display:"block",marginTop:2,fontSize:9.5,fontWeight:700,textTransform:"uppercase",letterSpacing:".22em",color:"#9199c8"}},"Panel operativo")
+        )
+      ),
+      el("nav",{style:{flex:1,display:"flex",flexDirection:"column",gap:20}},
+        el("section",null,
+          el("span",{className:"gc-eyebrow",style:{display:"block",padding:"0 11px 8px"}},"Usuario"),
+          el("div",{style:{display:"flex",flexDirection:"column",gap:2}},userLinks.map(function(it){return el(NavItem,{key:it.k,item:it});}))
+        ),
+        el("hr",{className:"gc-divider",style:{margin:0}}),
+        el("section",null,
+          el("span",{className:"gc-eyebrow",style:{display:"block",padding:"0 11px 8px"}},"Gestión"),
+          el("div",{style:{display:"flex",flexDirection:"column",gap:2}},adminLinks.map(function(it){return el(NavItem,{key:it.k,item:it});}))
+        )
+      ),
+      el("div",{style:{paddingTop:18,display:"flex",flexDirection:"column",gap:9}},
+        el("div",{style:{borderRadius:13,border:"1px solid #151c2e",background:"#0a0d16",padding:"13px 14px"}},
+          el("div",{style:{display:"flex",alignItems:"center",gap:7,marginBottom:9}},
+            el("span",{style:{width:6,height:6,borderRadius:99,background:"#7c4dff",boxShadow:"0 0 9px rgba(109,64,239,.7)",flexShrink:0}}),
+            el("span",{style:{fontSize:9.5,fontWeight:700,textTransform:"uppercase",letterSpacing:".22em",color:"#8d67f2"}},"Sesión activa")
+          ),
+          el("div",{style:{display:"flex",alignItems:"center",gap:9}},
+            el("span",{style:{display:"grid",placeItems:"center",width:34,height:34,borderRadius:99,border:"1px solid #252b3f",background:"#06080f",fontFamily:"var(--gc-font-display)",fontSize:12,fontWeight:700,color:"#fff",flexShrink:0}},"A"),
+            el("div",null,
+              el("p",{style:{margin:0,fontSize:9.5,fontWeight:700,textTransform:"uppercase",letterSpacing:".15em",color:"#97a0c4"}},"Admin"),
+              el("p",{style:{margin:"2px 0 0",fontSize:11.5,color:"#b5bdd3"}},"admin@gymcontrol.com")
+            )
+          )
+        ),
+        el("button",{style:{display:"flex",alignItems:"center",gap:9,height:42,width:"100%",padding:"0 11px",borderRadius:11,border:"1px solid #3b2775",background:"#1a1230",color:"#fff",cursor:"pointer",fontFamily:"var(--gc-font-display)",fontSize:13.5,fontWeight:600}},
+          el("span",{style:{display:"grid",placeItems:"center",width:28,height:28,borderRadius:7,border:"1px solid #4a3191",background:"#201641",color:"#a57dff",flexShrink:0}},el(Ic,{d:I.logout,size:13})),
+          "Cerrar sesión"
+        )
+      )
+    );
+  }
+
+  /* ── App ─────────────────────────────────────────── */
+  function App() {
+    var sel0 = useState(EXERCISES[0]);
+    var selected = sel0[0], setSelected = sel0[1];
+    var srch0 = useState(""); var search = srch0[0], setSearch = srch0[1];
+    var fmsc0 = useState("all"); var fMuscle = fmsc0[0], setFMuscle = fmsc0[1];
+
+    var filtered = useMemo(function(){
+      var r = EXERCISES;
+      if (search.trim()) { var q = search.toLowerCase(); r = r.filter(function(e){ return e.name.toLowerCase().indexOf(q) >= 0; }); }
+      if (fMuscle !== "all") r = r.filter(function(e){ return e.muscle === fMuscle; });
+      return r;
+    }, [search, fMuscle]);
+
+    return el("div",{className:"shell"},
+      el(Sidebar),
+      el("main",{className:"main"},
+        el("header",{style:{marginBottom:22}},
+          el(Eyebrow,{tone:"accent"},"Gestión / Ejercicios"),
+          el("div",{style:{display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:16,marginTop:5}},
+            el("div",null,
+              el("h1",{className:"page-title"},"Ejercicios"),
+              el("p",{className:"page-desc"},"Hacé clic en un ejercicio para ver todos sus detalles.")
+            ),
+            el("button",{className:"btn-add"},el(Ic,{d:I.plus,size:15}),"Nuevo ejercicio")
+          )
+        ),
+        el("div",{className:"filter-bar"},
+          el("div",{className:"search-wrap"},
+            el("span",{className:"search-icon"},el(Ic,{d:I.search,size:14})),
+            el("input",{className:"search-input",placeholder:"Buscar ejercicio...",value:search,onChange:function(e){setSearch(e.target.value);}})
+          ),
+          el("select",{className:"f-select",value:fMuscle,onChange:function(e){setFMuscle(e.target.value);}},
+            el("option",{value:"all"},"Todos los grupos"),
+            MUSCLES.map(function(m){return el("option",{key:m,value:m},m);})
+          ),
+          el("span",{className:"f-count"},filtered.length+" ejercicio"+(filtered.length!==1?"s":""))
+        ),
+        el("div",{className:"table-card"},
+          el("table",{className:"ex-table"},
+            el("thead",null,
+              el("tr",null,
+                el("th",{style:{width:"38%"}},"Ejercicio"),
+                el("th",null,"Grupo muscular"),
+                el("th",null,"Equipamiento"),
+                el("th",null,"Agregado"),
+                el("th",{style:{width:96}},null)
+              )
+            ),
+            el("tbody",null,
+              filtered.map(function(ex){
+                return el(ExRow,{key:ex.id,ex:ex,isSelected:selected&&selected.id===ex.id,onClick:function(){setSelected(ex);}});
+              })
+            )
+          )
+        )
+      ),
+      selected && el(DetailDrawer,{exercise:selected,onClose:function(){setSelected(null);}})
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById("root")).render(el(App));
+})();
+</script>
+</body>
+</html>

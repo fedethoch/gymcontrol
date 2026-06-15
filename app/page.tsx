@@ -12,13 +12,18 @@ import { Button } from "@/app/components/ui/Button";
 import { Card, CardContent } from "@/app/components/ui/Card";
 import { fadeUp, MotionDiv, MotionSection, staggerContainer } from "@/app/components/ui/motion";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
+import { TrainingCalendarCard } from "@/app/components/shared/TrainingCalendarCard";
+import { WeeklyAttendanceCard } from "@/app/components/shared/WeeklyAttendanceCard";
 import { requireUser } from "@/app/lib/auth";
 import { ROUTINE_DIFFICULTY_LABELS } from "@/app/lib/routine-metadata";
 import {
   getSavedRoutineByIdForUser,
   listSavedRoutinesForUser,
 } from "@/app/lib/saved-routines";
-import { listWorkoutWeeklySummaries } from "@/app/lib/workout-tracking";
+import {
+  getCompletedTrainingDates,
+  listWorkoutWeeklySummaries,
+} from "@/app/lib/workout-tracking";
 
 export default async function Home() {
   const auth = await requireUser();
@@ -35,6 +40,7 @@ export default async function Home() {
         listWorkoutWeeklySummaries({
           userId: auth.user.id,
           savedRoutineIds: [activeRoutineListItem.id],
+          plannedDaysBySavedRoutineId: { [activeRoutineListItem.id]: activeRoutineListItem.dayCount },
         }),
       ])
     : [null, {}];
@@ -68,6 +74,14 @@ export default async function Home() {
   const activeDifficultyLabel = activeRoutineListItem
     ? ROUTINE_DIFFICULTY_LABELS[activeRoutineListItem.difficulty]
     : null;
+  const completedTrainingDates = activeRoutine
+    ? await getCompletedTrainingDates({
+        userId: auth.user.id,
+        savedRoutineId: activeRoutine.id,
+        days: 70,
+      })
+    : new Set<string>();
+  const completedThisWeek = weeklySummary?.completedTrainingDatesCount ?? 0;
 
   return (
     <section className="page-frame auto-rows-max content-start bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
@@ -168,7 +182,7 @@ export default async function Home() {
         viewport={{ once: true, margin: "-80px" }}
         className="grid auto-rows-max gap-4 lg:grid-cols-3"
       >
-        <MotionDiv variants={fadeUp}>
+        <MotionDiv variants={fadeUp} className="h-full">
           <WeeklyProgressCard
             completedDayCount={completedDayCount}
             firstDayLabel={firstRoutineDay ? `Dia ${firstRoutineDay.dayOrder}` : "Dia 1"}
@@ -178,16 +192,32 @@ export default async function Home() {
           />
         </MotionDiv>
 
-        <MotionDiv variants={fadeUp}>
+        <MotionDiv variants={fadeUp} className="h-full">
           <WeeklyStreakCard currentStreak={currentStreak} />
         </MotionDiv>
 
-        <MotionDiv variants={fadeUp}>
+        <MotionDiv variants={fadeUp} className="h-full">
           <ActiveRoutineCard
             difficultyLabel={activeDifficultyLabel}
             displayName={activeRoutine?.displayName ?? "Sin rutina activa"}
             status={activeRoutineListItem ? activeRoutineStatus : "Pendiente"}
           />
+        </MotionDiv>
+      </MotionSection>
+
+      <MotionSection
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-80px" }}
+        className="grid auto-rows-max gap-4 lg:grid-cols-2"
+      >
+        <MotionDiv variants={fadeUp} className="h-full">
+          <TrainingCalendarCard completedDates={completedTrainingDates} />
+        </MotionDiv>
+
+        <MotionDiv variants={fadeUp} className="h-full">
+          <WeeklyAttendanceCard completedThisWeek={completedThisWeek} plannedDays={totalDays} />
         </MotionDiv>
       </MotionSection>
     </section>
@@ -208,8 +238,8 @@ function WeeklyProgressCard({
   totalDays: number;
 }) {
   return (
-    <Card className="overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(14,19,32,0.96)_0%,rgba(8,12,22,0.98)_100%)] shadow-[0_18px_48px_rgba(73,34,146,0.16)] transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]">
-      <CardContent className="min-h-[17rem] p-6">
+    <Card className="flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(14,19,32,0.96)_0%,rgba(8,12,22,0.98)_100%)] shadow-[0_18px_48px_rgba(73,34,146,0.16)] transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]">
+      <CardContent className="min-h-[17rem] flex-1 p-6">
         <MetricTitle icon={TrendingUp} title="Progreso semanal" />
 
         <div className="mt-6 grid gap-6 sm:grid-cols-[10rem_minmax(0,1fr)] sm:items-center">
@@ -250,8 +280,8 @@ function WeeklyProgressCard({
 
 function WeeklyStreakCard({ currentStreak }: { currentStreak: number }) {
   return (
-    <Card className="relative overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(13,19,34,0.96)_0%,rgba(8,12,20,0.98)_100%)] shadow-[0_18px_48px_rgba(0,0,0,0.24)] transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]">
-      <CardContent className="relative min-h-[17rem] p-6">
+    <Card className="relative flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(13,19,34,0.96)_0%,rgba(8,12,20,0.98)_100%)] shadow-[0_18px_48px_rgba(0,0,0,0.24)] transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]">
+      <CardContent className="relative min-h-[17rem] flex-1 p-6">
         <MetricTitle icon={Flame} title="Racha semanal" />
 
         <div className="mt-12 max-w-[13rem]">
@@ -287,11 +317,11 @@ function ActiveRoutineCard({
   status: string;
 }) {
   return (
-    <Card className="relative overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(13,19,34,0.96)_0%,rgba(8,12,20,0.98)_100%)] shadow-[0_18px_48px_rgba(0,0,0,0.24)] transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]">
-      <CardContent className="relative min-h-[17rem] p-6">
+    <Card className="relative flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(13,19,34,0.96)_0%,rgba(8,12,20,0.98)_100%)] shadow-[0_18px_48px_rgba(0,0,0,0.24)] transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]">
+      <CardContent className="relative min-h-[17rem] flex-1 p-6">
         <MetricTitle icon={CalendarDays} title="Rutina activa" />
 
-        <div className="mt-16 max-w-[23rem]">
+        <div className="mt-16 max-w-[16rem]">
           <p className="font-display line-clamp-2 break-words text-4xl font-semibold leading-tight text-white">
             {displayName}
           </p>

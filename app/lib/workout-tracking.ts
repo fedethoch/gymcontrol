@@ -6,8 +6,8 @@ export type WorkoutSessionStatus = "in_progress" | "completed";
 
 export type WorkoutSessionItemInput = {
   routineItemId: string;
-  performedReps: number | null;
-  usedWeight: number | null;
+  performedReps: string | null;
+  usedWeight: string | null;
   isCompleted: boolean;
 };
 
@@ -44,8 +44,8 @@ type WorkoutSessionRow = {
 
 type WorkoutSessionItemRow = {
   routine_item_id: string;
-  performed_reps: number | null;
-  used_weight: number | null;
+  performed_reps: string | null;
+  used_weight: string | null;
   is_completed: boolean;
 };
 
@@ -148,6 +148,42 @@ export async function getWorkoutSessionForDate(args: {
   return mapWorkoutSession(data as WorkoutSessionRow);
 }
 
+export async function getWorkoutSessionForWeek(args: {
+  savedRoutineId: string;
+  routineDayId: string;
+  userId: string;
+}) {
+  await validateWorkoutOwnership({
+    savedRoutineId: args.savedRoutineId,
+    routineDayId: args.routineDayId,
+    userId: args.userId,
+  });
+
+  const { weekStart, weekEnd } = getCurrentWeekRange();
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("workout_sessions")
+    .select(WORKOUT_SESSION_SELECT)
+    .eq("user_id", args.userId)
+    .eq("saved_routine_id", args.savedRoutineId)
+    .eq("routine_day_id", args.routineDayId)
+    .gte("training_date", weekStart)
+    .lte("training_date", weekEnd)
+    .order("training_date", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`No se pudo leer la sesion del entrenamiento: ${error.message}`);
+  }
+
+  if (!data) {
+    return null;
+  }
+
+  return mapWorkoutSession(data as WorkoutSessionRow);
+}
+
 export async function saveWorkoutSessionForToday(args: {
   savedRoutineId: string;
   routineDayId: string;
@@ -161,6 +197,20 @@ export async function saveWorkoutSessionForToday(args: {
   });
 }
 
+export async function saveWorkoutSessionForWeek(args: {
+  savedRoutineId: string;
+  routineDayId: string;
+  userId: string;
+  items: WorkoutSessionItemInput[];
+  complete: boolean;
+}) {
+  return saveWorkoutSession({
+    ...args,
+    trainingDate: getLocalTrainingDate(),
+    useWeekRange: true,
+  });
+}
+
 export async function saveWorkoutSession(args: {
   savedRoutineId: string;
   routineDayId: string;
@@ -168,6 +218,7 @@ export async function saveWorkoutSession(args: {
   trainingDate: string;
   items: WorkoutSessionItemInput[];
   complete: boolean;
+  useWeekRange?: boolean;
 }) {
   await validateWorkoutOwnership({
     savedRoutineId: args.savedRoutineId,
@@ -179,14 +230,26 @@ export async function saveWorkoutSession(args: {
     args.items.map((item) => [item.routineItemId, item] satisfies [string, WorkoutSessionItemInput]),
   );
   const supabase = await createSupabaseServerClient();
-  const { data: existingSession, error: existingSessionError } = await supabase
+
+  let existingSessionQuery = supabase
     .from("workout_sessions")
-    .select("id, status, completed_at")
+    .select("id, status, completed_at, training_date")
     .eq("user_id", args.userId)
     .eq("saved_routine_id", args.savedRoutineId)
-    .eq("routine_day_id", args.routineDayId)
-    .eq("training_date", args.trainingDate)
-    .maybeSingle();
+    .eq("routine_day_id", args.routineDayId);
+
+  if (args.useWeekRange) {
+    const { weekStart, weekEnd } = getCurrentWeekRange();
+    existingSessionQuery = existingSessionQuery
+      .gte("training_date", weekStart)
+      .lte("training_date", weekEnd)
+      .order("training_date", { ascending: false })
+      .limit(1);
+  } else {
+    existingSessionQuery = existingSessionQuery.eq("training_date", args.trainingDate);
+  }
+
+  const { data: existingSession, error: existingSessionError } = await existingSessionQuery.maybeSingle();
 
   if (existingSessionError) {
     throw new Error(`No se pudo buscar la sesion del entrenamiento: ${existingSessionError.message}`);
@@ -253,35 +316,71 @@ export async function saveWorkoutSession(args: {
     }
   }
 
-  return getWorkoutSessionForDate({
-    savedRoutineId: args.savedRoutineId,
-    routineDayId: args.routineDayId,
-    userId: args.userId,
-    trainingDate: args.trainingDate,
-  });
+  const { data: savedSession, error: savedSessionError } = await supabase
+    .from("workout_sessions")
+    .select(WORKOUT_SESSION_SELECT)
+    .eq("id", sessionId)
+    .single();
+
+  if (savedSessionError || !savedSession) {
+    throw new Error(`No se pudo leer la sesion del entrenamiento: ${savedSessionError?.message ?? "sin datos"}`);
+  }
+
+  return mapWorkoutSession(savedSession as WorkoutSessionRow);
 }
 
 export async function listWorkoutWeeklySummaries(args: {
   userId: string;
   savedRoutineIds: string[];
+  plannedDaysBySavedRoutineId?: Record<string, number>;
 }): Promise<Record<string, WorkoutWeeklySummary>> {
   if (args.savedRoutineIds.length === 0) {
     return {};
   }
 
   const { weekStart, weekEnd, today } = getCurrentWeekRange();
+  const streakWindowStart = formatDateOnly(addDays(new Date(`${today}T00:00:00`), -90));
   const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("workout_sessions")
-    .select("saved_routine_id, routine_day_id, training_date")
-    .eq("user_id", args.userId)
-    .eq("status", "completed")
-    .gte("training_date", weekStart)
-    .lte("training_date", weekEnd)
-    .in("saved_routine_id", args.savedRoutineIds);
+  const [{ data, error }, { data: streakData, error: streakError }] = await Promise.all([
+    supabase
+      .from("workout_sessions")
+      .select("saved_routine_id, routine_day_id, training_date")
+      .eq("user_id", args.userId)
+      .eq("status", "completed")
+      .gte("training_date", weekStart)
+      .lte("training_date", weekEnd)
+      .in("saved_routine_id", args.savedRoutineIds),
+    supabase
+      .from("workout_sessions")
+      .select("saved_routine_id, routine_day_id, training_date")
+      .eq("user_id", args.userId)
+      .eq("status", "completed")
+      .gte("training_date", streakWindowStart)
+      .lte("training_date", today)
+      .in("saved_routine_id", args.savedRoutineIds),
+  ]);
 
   if (error) {
     throw new Error(`No se pudo calcular el progreso semanal: ${error.message}`);
+  }
+
+  if (streakError) {
+    throw new Error(`No se pudo calcular la racha actual: ${streakError.message}`);
+  }
+
+  const streakSessionsBySavedRoutineId = new Map<
+    string,
+    Array<{ trainingDate: string; routineDayId: string }>
+  >();
+
+  for (const row of (streakData ?? []) as Array<{
+    saved_routine_id: string;
+    routine_day_id: string;
+    training_date: string;
+  }>) {
+    const sessions = streakSessionsBySavedRoutineId.get(row.saved_routine_id) ?? [];
+    sessions.push({ trainingDate: row.training_date, routineDayId: row.routine_day_id });
+    streakSessionsBySavedRoutineId.set(row.saved_routine_id, sessions);
   }
 
   const summaries = Object.fromEntries(
@@ -322,21 +421,133 @@ export async function listWorkoutWeeklySummaries(args: {
   }
 
   for (const [savedRoutineId, entry] of grouped) {
+    const streakSessions = streakSessionsBySavedRoutineId.get(savedRoutineId) ?? [];
+    const plannedDays = args.plannedDaysBySavedRoutineId?.[savedRoutineId] ?? 0;
+
     summaries[savedRoutineId] = {
       savedRoutineId,
       completedDayCount: entry.completedRoutineDayIds.size,
       completedRoutineDayIds: [...entry.completedRoutineDayIds],
       completedTrainingDatesCount: entry.completedDates.size,
-      currentStreak: calculateCurrentStreak({
-        completedDates: entry.completedDates,
-        today,
-        weekStart,
-      }),
-      hasRealData: entry.completedRoutineDayIds.size > 0,
+      currentStreak: calculateCurrentStreak({ sessions: streakSessions, plannedDays, today }),
+      hasRealData: entry.completedRoutineDayIds.size > 0 || streakSessions.length > 0,
+    };
+  }
+
+  for (const [savedRoutineId, streakSessions] of streakSessionsBySavedRoutineId) {
+    if (grouped.has(savedRoutineId)) {
+      continue;
+    }
+
+    const plannedDays = args.plannedDaysBySavedRoutineId?.[savedRoutineId] ?? 0;
+
+    summaries[savedRoutineId] = {
+      savedRoutineId,
+      completedDayCount: 0,
+      completedRoutineDayIds: [],
+      completedTrainingDatesCount: 0,
+      currentStreak: calculateCurrentStreak({ sessions: streakSessions, plannedDays, today }),
+      hasRealData: streakSessions.length > 0,
     };
   }
 
   return summaries;
+}
+
+export type ExerciseHistoryEntry = {
+  date: string;
+  weight: string | null;
+  reps: string | null;
+};
+
+const EXERCISE_HISTORY_LIMIT = 5;
+
+export async function getExerciseHistoryByRoutineItem(args: {
+  userId: string;
+  savedRoutineId: string;
+  routineItemIds: string[];
+}): Promise<Record<string, ExerciseHistoryEntry[]>> {
+  if (args.routineItemIds.length === 0) {
+    return {};
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("workout_session_items")
+    .select(
+      "routine_item_id, performed_reps, used_weight, workout_sessions!inner(training_date, user_id, saved_routine_id)",
+    )
+    .in("routine_item_id", args.routineItemIds)
+    .eq("workout_sessions.user_id", args.userId)
+    .eq("workout_sessions.saved_routine_id", args.savedRoutineId)
+    .order("training_date", { referencedTable: "workout_sessions", ascending: false });
+
+  if (error) {
+    throw new Error(`No se pudo leer el historial de ejercicios: ${error.message}`);
+  }
+
+  const result: Record<string, ExerciseHistoryEntry[]> = {};
+
+  for (const row of (data ?? []) as Array<{
+    routine_item_id: string;
+    performed_reps: string | null;
+    used_weight: string | null;
+    workout_sessions: { training_date: string } | { training_date: string }[] | null;
+  }>) {
+    const session = Array.isArray(row.workout_sessions)
+      ? row.workout_sessions[0]
+      : row.workout_sessions;
+
+    if (!session) {
+      continue;
+    }
+
+    const entries = result[row.routine_item_id] ?? [];
+
+    if (entries.length >= EXERCISE_HISTORY_LIMIT) {
+      continue;
+    }
+
+    entries.push({
+      date: formatHistoryDate(session.training_date),
+      weight: row.used_weight,
+      reps: row.performed_reps,
+    });
+    result[row.routine_item_id] = entries;
+  }
+
+  return result;
+}
+
+function formatHistoryDate(value: string) {
+  return new Intl.DateTimeFormat("es-AR", {
+    day: "2-digit",
+    month: "2-digit",
+  }).format(new Date(`${value}T00:00:00`));
+}
+
+export async function getCompletedTrainingDates(args: {
+  userId: string;
+  savedRoutineId: string;
+  days: number;
+}): Promise<Set<string>> {
+  const { today } = getCurrentWeekRange();
+  const rangeStart = formatDateOnly(addDays(new Date(`${today}T00:00:00`), -(args.days - 1)));
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("workout_sessions")
+    .select("training_date")
+    .eq("user_id", args.userId)
+    .eq("saved_routine_id", args.savedRoutineId)
+    .eq("status", "completed")
+    .gte("training_date", rangeStart)
+    .lte("training_date", today);
+
+  if (error) {
+    throw new Error(`No se pudo leer el historial de entrenamientos: ${error.message}`);
+  }
+
+  return new Set((data ?? []).map((row) => (row as { training_date: string }).training_date));
 }
 
 async function validateWorkoutOwnership(args: {
@@ -423,27 +634,63 @@ function mapWorkoutSession(row: WorkoutSessionRow): WorkoutSession {
   };
 }
 
+function getWeekStartKey(value: Date) {
+  const date = new Date(value);
+  date.setHours(0, 0, 0, 0);
+  const day = date.getDay();
+  const offsetFromMonday = day === 0 ? 6 : day - 1;
+  date.setDate(date.getDate() - offsetFromMonday);
+
+  return formatDateOnly(date);
+}
+
 function calculateCurrentStreak(args: {
-  completedDates: Set<string>;
+  sessions: Array<{ trainingDate: string; routineDayId: string }>;
+  plannedDays: number;
   today: string;
-  weekStart: string;
 }) {
+  const byWeek = new Map<string, { dates: Set<string>; dayIds: Set<string> }>();
+
+  for (const session of args.sessions) {
+    const weekStart = getWeekStartKey(new Date(`${session.trainingDate}T00:00:00`));
+    const entry = byWeek.get(weekStart) ?? { dates: new Set<string>(), dayIds: new Set<string>() };
+    entry.dates.add(session.trainingDate);
+    entry.dayIds.add(session.routineDayId);
+    byWeek.set(weekStart, entry);
+  }
+
   let streak = 0;
-  const cursor = new Date(`${args.today}T00:00:00`);
-  const weekStart = new Date(`${args.weekStart}T00:00:00`);
+  let cursor = getWeekStartKey(new Date(`${args.today}T00:00:00`));
+  let isCurrentWeek = true;
 
-  while (cursor >= weekStart) {
-    const cursorDate = formatDateOnly(cursor);
+  while (true) {
+    const entry = byWeek.get(cursor);
+    const completedCount = entry?.dates.size ?? 0;
 
-    if (!args.completedDates.has(cursorDate)) {
-      break;
+    if (isCurrentWeek) {
+      streak += completedCount;
+      isCurrentWeek = false;
+    } else {
+      const isWeekComplete = args.plannedDays > 0 && (entry?.dayIds.size ?? 0) >= args.plannedDays;
+      if (!isWeekComplete) {
+        break;
+      }
+      streak += completedCount;
     }
 
-    streak += 1;
-    cursor.setDate(cursor.getDate() - 1);
+    const cursorDate = new Date(`${cursor}T00:00:00`);
+    cursorDate.setDate(cursorDate.getDate() - 7);
+    cursor = formatDateOnly(cursorDate);
   }
 
   return streak;
+}
+
+function addDays(value: Date, amount: number) {
+  const result = new Date(value);
+  result.setDate(result.getDate() + amount);
+
+  return result;
 }
 
 function formatDateOnly(value: Date) {

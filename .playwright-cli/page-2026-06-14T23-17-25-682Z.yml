@@ -1,0 +1,236 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - button "Colapsar sidebar" [ref=e6]:
+          - img
+        - generic [ref=e7]:
+          - link "GC GymControl PANEL OPERATIVO" [ref=e9] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e10]: GC
+            - generic [ref=e11]:
+              - generic [ref=e12]: GymControl
+              - generic [ref=e13]: PANEL OPERATIVO
+          - navigation "Navegación principal" [ref=e14]:
+            - generic [ref=e15]:
+              - paragraph [ref=e16]: Entrenamiento
+              - generic [ref=e17]:
+                - link "Catálogo" [ref=e18] [cursor=pointer]:
+                  - /url: /catalogo
+                  - img [ref=e20]
+                  - generic [ref=e22]: Catálogo
+                - link "Mis rutinas" [ref=e23] [cursor=pointer]:
+                  - /url: /dashboard
+                  - img [ref=e25]
+                  - generic [ref=e30]: Mis rutinas
+                - link "Semana activa" [ref=e31] [cursor=pointer]:
+                  - /url: /dashboard/rutinas
+                  - img [ref=e33]
+                  - generic [ref=e35]: Semana activa
+            - generic [ref=e37]:
+              - paragraph [ref=e38]: Nutrición
+              - generic [ref=e39]:
+                - link "Alimentos" [ref=e40] [cursor=pointer]:
+                  - /url: /alimentos
+                  - img [ref=e42]
+                  - generic [ref=e47]: Alimentos
+                - link "Recetas" [ref=e48] [cursor=pointer]:
+                  - /url: /recetas
+                  - img [ref=e50]
+                  - generic [ref=e52]: Recetas
+                - link "Registro diario" [ref=e53] [cursor=pointer]:
+                  - /url: /nutricion/registro
+                  - img [ref=e55]
+                  - generic [ref=e60]: Registro diario
+            - generic [ref=e62]:
+              - paragraph [ref=e63]: Gestión
+              - generic [ref=e64]:
+                - link "Dashboard Admin" [ref=e65] [cursor=pointer]:
+                  - /url: /admin
+                  - img [ref=e67]
+                  - generic [ref=e69]: Dashboard Admin
+                - link "Ejercicios" [ref=e70] [cursor=pointer]:
+                  - /url: /admin/ejercicios
+                  - img [ref=e72]
+                  - generic [ref=e78]: Ejercicios
+                - link "Rutinas" [ref=e79] [cursor=pointer]:
+                  - /url: /admin/rutinas
+                  - img [ref=e81]
+                  - generic [ref=e84]: Rutinas
+                - link "Alimentos" [ref=e85] [cursor=pointer]:
+                  - /url: /admin/alimentos
+                  - img [ref=e88]
+                  - generic [ref=e93]: Alimentos
+                - link "Recetas" [ref=e94] [cursor=pointer]:
+                  - /url: /admin/recetas
+                  - img [ref=e96]
+                  - generic [ref=e98]: Recetas
+          - link "Configuración" [ref=e100] [cursor=pointer]:
+            - /url: /configuracion
+            - img [ref=e102]
+            - generic [ref=e105]: Configuración
+    - main [ref=e107]:
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - generic [ref=e110]:
+            - paragraph [ref=e111]: Gestión / Alimentos
+            - heading "Alimentos" [level=1] [ref=e112]
+            - paragraph [ref=e113]: "Gestiona el catálogo de alimentos con sus calorías y macronutrientes. (Vista de ejemplo: los cambios no se guardan todavía.)"
+          - button "Nuevo alimento" [ref=e114]:
+            - img
+            - text: Nuevo alimento
+        - generic [ref=e115]:
+          - generic [ref=e116]:
+            - generic [ref=e117]: Buscar alimento
+            - img
+            - searchbox "Buscar alimento" [ref=e118]
+          - combobox [ref=e119]:
+            - img [ref=e120]
+          - combobox [ref=e122]
+        - table [ref=e126]:
+          - rowgroup [ref=e127]:
+            - row "Alimento Categoría Porción Calorías Macros Acciones" [ref=e128]:
+              - columnheader "Alimento" [ref=e129]:
+                - button "Alimento" [ref=e130]:
+                  - text: Alimento
+                  - img [ref=e131]
+              - columnheader "Categoría" [ref=e133]:
+                - button "Categoría" [ref=e134]: Categoría
+              - columnheader "Porción" [ref=e136]:
+                - button "Porción" [ref=e137]:
+                  - text: Porción
+                  - img [ref=e138]
+              - columnheader "Calorías" [ref=e140]:
+                - button "Calorías" [ref=e141]:
+                  - text: Calorías
+                  - img [ref=e142]
+              - columnheader "Macros" [ref=e144]
+              - columnheader "Acciones" [ref=e145]
+          - rowgroup [ref=e146]:
+            - row "Aceite de oliva Grasa 100 g · 1 u ≈ 10 g 884 kcal" [ref=e147]:
+              - cell "Aceite de oliva" [ref=e148]:
+                - generic [ref=e149]:
+                  - img [ref=e151]
+                  - paragraph [ref=e153]: Aceite de oliva
+              - cell "Grasa" [ref=e154]
+              - cell "100 g · 1 u ≈ 10 g" [ref=e155]
+              - cell "884 kcal" [ref=e156]
+              - cell [ref=e157]
+              - cell [ref=e161]:
+                - generic [ref=e162]:
+                  - button "Editar" [ref=e163]:
+                    - img
+                  - button "Eliminar" [ref=e164]:
+                    - img
+            - row "Almendras Grasa 100 g · 1 u ≈ 14 g 579 kcal" [ref=e165]:
+              - cell "Almendras" [ref=e166]:
+                - generic [ref=e167]:
+                  - img [ref=e169]
+                  - paragraph [ref=e171]: Almendras
+              - cell "Grasa" [ref=e172]
+              - cell "100 g · 1 u ≈ 14 g" [ref=e173]
+              - cell "579 kcal" [ref=e174]
+              - cell [ref=e175]
+              - cell [ref=e181]:
+                - generic [ref=e182]:
+                  - button "Editar" [ref=e183]:
+                    - img
+                  - button "Eliminar" [ref=e184]:
+                    - img
+            - row "Arroz blanco cocido Carbohidrato 100 g · 1 u ≈ 150 g 130 kcal" [ref=e185]:
+              - cell "Arroz blanco cocido" [ref=e186]:
+                - generic [ref=e187]:
+                  - img [ref=e189]
+                  - paragraph [ref=e198]: Arroz blanco cocido
+              - cell "Carbohidrato" [ref=e199]
+              - cell "100 g · 1 u ≈ 150 g" [ref=e200]
+              - cell "130 kcal" [ref=e201]
+              - cell [ref=e202]
+              - cell [ref=e207]:
+                - generic [ref=e208]:
+                  - button "Editar" [ref=e209]:
+                    - img
+                  - button "Eliminar" [ref=e210]:
+                    - img
+            - row "Atún al natural Proteína 100 g · 1 u ≈ 80 g 116 kcal" [ref=e211]:
+              - cell "Atún al natural" [ref=e212]:
+                - generic [ref=e213]:
+                  - img [ref=e215]
+                  - paragraph [ref=e219]: Atún al natural
+              - cell "Proteína" [ref=e220]
+              - cell "100 g · 1 u ≈ 80 g" [ref=e221]
+              - cell "116 kcal" [ref=e222]
+              - cell [ref=e223]
+              - cell [ref=e228]:
+                - generic [ref=e229]:
+                  - button "Editar" [ref=e230]:
+                    - img
+                  - button "Eliminar" [ref=e231]:
+                    - img
+            - row "Avena Carbohidrato 100 g · 1 u ≈ 40 g 389 kcal" [ref=e232]:
+              - cell "Avena" [ref=e233]:
+                - generic [ref=e234]:
+                  - img [ref=e236]
+                  - paragraph [ref=e245]: Avena
+              - cell "Carbohidrato" [ref=e246]
+              - cell "100 g · 1 u ≈ 40 g" [ref=e247]
+              - cell "389 kcal" [ref=e248]
+              - cell [ref=e249]
+              - cell [ref=e255]:
+                - generic [ref=e256]:
+                  - button "Editar" [ref=e257]:
+                    - img
+                  - button "Eliminar" [ref=e258]:
+                    - img
+            - row "Banana Carbohidrato 100 g · 1 u ≈ 120 g 89 kcal" [ref=e259]:
+              - cell "Banana" [ref=e260]:
+                - generic [ref=e261]:
+                  - img [ref=e263]
+                  - paragraph [ref=e272]: Banana
+              - cell "Carbohidrato" [ref=e273]
+              - cell "100 g · 1 u ≈ 120 g" [ref=e274]
+              - cell "89 kcal" [ref=e275]
+              - cell [ref=e276]
+              - cell [ref=e281]:
+                - generic [ref=e282]:
+                  - button "Editar" [ref=e283]:
+                    - img
+                  - button "Eliminar" [ref=e284]:
+                    - img
+            - row "Brócoli Vegetal 100 g · 1 u ≈ 80 g 34 kcal" [ref=e285]:
+              - cell "Brócoli" [ref=e286]:
+                - generic [ref=e287]:
+                  - img [ref=e289]
+                  - paragraph [ref=e292]: Brócoli
+              - cell "Vegetal" [ref=e293]
+              - cell "100 g · 1 u ≈ 80 g" [ref=e294]
+              - cell "34 kcal" [ref=e295]
+              - cell [ref=e296]
+              - cell [ref=e301]:
+                - generic [ref=e302]:
+                  - button "Editar" [ref=e303]:
+                    - img
+                  - button "Eliminar" [ref=e304]:
+                    - img
+            - row "Carne vacuna magra Proteína 100 g · 1 u ≈ 150 g 187 kcal" [ref=e305]:
+              - cell "Carne vacuna magra" [ref=e306]:
+                - generic [ref=e307]:
+                  - img [ref=e309]
+                  - paragraph [ref=e313]: Carne vacuna magra
+              - cell "Proteína" [ref=e314]
+              - cell "100 g · 1 u ≈ 150 g" [ref=e315]
+              - cell "187 kcal" [ref=e316]
+              - cell [ref=e317]
+              - cell [ref=e322]:
+                - generic [ref=e323]:
+                  - button "Editar" [ref=e324]:
+                    - img
+                  - button "Eliminar" [ref=e325]:
+                    - img
+        - generic [ref=e326]:
+          - button "1" [ref=e327]
+          - button "2" [ref=e328]
+          - button "3" [ref=e329]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e335] [cursor=pointer]:
+    - img [ref=e336]

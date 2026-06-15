@@ -1,0 +1,28 @@
+- generic [active] [ref=e1]:
+  - main [ref=e4]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - paragraph [ref=e9]: Bienvenido de vuelta
+        - heading "Iniciar sesion" [level=2] [ref=e10]
+        - paragraph [ref=e11]: Ingresa tus credenciales para entrar a tu cuenta.
+      - generic [ref=e13]:
+        - generic [ref=e14]:
+          - text: Email
+          - generic [ref=e15]:
+            - img
+            - textbox "Email" [ref=e16]:
+              - /placeholder: tu@email.com
+              - text: gymcontrolweb@gmail.com
+        - button "Enviar codigo" [ref=e17]:
+          - text: Enviar codigo
+          - img
+      - generic [ref=e18]: o continua con
+      - button "Entrar con Google" [ref=e22]
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=e39]:
+        - img [ref=e41]
+        - generic [ref=e44]: Espera un minuto antes de pedir otro codigo.
+  - button "Open Next.js Dev Tools" [ref=e28] [cursor=pointer]:
+    - img [ref=e29]
+  - alert [ref=e32]

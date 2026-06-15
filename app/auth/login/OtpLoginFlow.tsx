@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { ArrowRight, KeyRound, Mail } from "lucide-react";
+import { toast } from "sonner";
 
-import { Badge } from "@/app/components/ui/Badge";
 import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
 import { isValidEmail, normalizeEmail, normalizeOtpToken } from "@/app/lib/auth-input";
+
+const INPUT_WITH_ICON_CLASS = "pl-10 focus:ring-4 focus:ring-[rgba(124,58,237,0.18)]";
 
 const requestErrorCopy: Record<string, string> = {
   "missing-email": "Ingresa un email valido.",
@@ -35,28 +38,22 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
   const [email, setEmail] = useState(initialEmail);
   const [token, setToken] = useState("");
   const [step, setStep] = useState<"email" | "token">("email");
-  const [statusMessage, setStatusMessage] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [busyState, setBusyState] = useState<BusyState>(null);
 
   async function requestOtp(mode: "request" | "resend") {
     const normalizedEmail = normalizeEmail(email);
 
     if (!normalizedEmail) {
-      setErrorMessage(requestErrorCopy["missing-email"]);
-      setStatusMessage(null);
+      toast.error(requestErrorCopy["missing-email"]);
       return;
     }
 
     if (!isValidEmail(normalizedEmail)) {
-      setErrorMessage(requestErrorCopy["invalid-email"]);
-      setStatusMessage(null);
+      toast.error(requestErrorCopy["invalid-email"]);
       return;
     }
 
     setBusyState(mode);
-    setErrorMessage(null);
-    setStatusMessage(null);
 
     try {
       const response = await fetch("/api/auth/request-otp", {
@@ -72,20 +69,20 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
         | null;
 
       if (!response.ok) {
-        setErrorMessage(requestErrorCopy[payload?.error ?? "otp-request-failed"]);
+        toast.error(requestErrorCopy[payload?.error ?? "otp-request-failed"]);
         return;
       }
 
       setEmail(payload?.email ?? normalizedEmail);
       setStep("token");
       setToken("");
-      setStatusMessage(
+      toast.success(
         mode === "resend"
           ? "Codigo reenviado. Revisa tu email."
           : "Codigo enviado. Revisa tu email.",
       );
     } catch {
-      setErrorMessage(requestErrorCopy["otp-request-failed"]);
+      toast.error(requestErrorCopy["otp-request-failed"]);
     } finally {
       setBusyState(null);
     }
@@ -96,26 +93,21 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
     const normalizedToken = normalizeOtpToken(token);
 
     if (!normalizedEmail) {
-      setErrorMessage(verifyErrorCopy["missing-email"]);
-      setStatusMessage(null);
+      toast.error(verifyErrorCopy["missing-email"]);
       return;
     }
 
     if (!isValidEmail(normalizedEmail)) {
-      setErrorMessage(verifyErrorCopy["invalid-email"]);
-      setStatusMessage(null);
+      toast.error(verifyErrorCopy["invalid-email"]);
       return;
     }
 
     if (!normalizedToken) {
-      setErrorMessage(verifyErrorCopy["missing-token"]);
-      setStatusMessage(null);
+      toast.error(verifyErrorCopy["missing-token"]);
       return;
     }
 
     setBusyState("verify");
-    setErrorMessage(null);
-    setStatusMessage(null);
 
     try {
       const response = await fetch("/api/auth/verify-otp", {
@@ -134,14 +126,14 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
         | null;
 
       if (!response.ok || !payload?.redirectTo) {
-        setErrorMessage(verifyErrorCopy[payload?.error ?? "otp-verify-failed"]);
+        toast.error(verifyErrorCopy[payload?.error ?? "otp-verify-failed"]);
         return;
       }
 
-      setStatusMessage("Sesion iniciada. Redirigiendo...");
+      toast.success("Sesion iniciada. Redirigiendo...");
       window.location.assign(payload.redirectTo);
     } catch {
-      setErrorMessage(verifyErrorCopy["otp-verify-failed"]);
+      toast.error(verifyErrorCopy["otp-verify-failed"]);
     } finally {
       setBusyState(null);
     }
@@ -149,16 +141,6 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
 
   return (
     <div className="grid gap-5">
-      <div className="flex flex-wrap gap-2">
-        <Badge variant="neutral">OTP por email</Badge>
-        <Badge variant="outline">
-          {step === "email" ? "Paso 1: enviar codigo" : "Paso 2: verificar codigo"}
-        </Badge>
-      </div>
-
-      {statusMessage ? <Badge variant="success">{statusMessage}</Badge> : null}
-      {errorMessage ? <Badge variant="accent">{errorMessage}</Badge> : null}
-
       {step === "email" ? (
         <form
           className="grid gap-4"
@@ -169,18 +151,23 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
         >
           <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
             Email
-            <Input
-              value={email}
-              onChange={(event) => setEmail(event.currentTarget.value)}
-              placeholder="tu@email.com"
-              type="email"
-              autoComplete="email"
-              required
-            />
+            <span className="relative flex items-center">
+              <Mail className="pointer-events-none absolute left-3 size-4 text-[#6e7788]" />
+              <Input
+                value={email}
+                onChange={(event) => setEmail(event.currentTarget.value)}
+                placeholder="tu@email.com"
+                type="email"
+                autoComplete="email"
+                required
+                className={INPUT_WITH_ICON_CLASS}
+              />
+            </span>
           </label>
 
           <Button type="submit" className="w-full" disabled={busyState !== null}>
             {busyState === "request" ? "Enviando codigo..." : "Enviar codigo"}
+            <ArrowRight className="size-4" />
           </Button>
         </form>
       ) : (
@@ -200,21 +187,25 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
 
           <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
             Codigo de 6 digitos
-            <Input
-              value={token}
-              onChange={(event) => setToken(event.currentTarget.value.replace(/\D/g, "").slice(0, 6))}
-              placeholder="123456"
-              type="text"
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              maxLength={6}
-              required
-              className="text-center font-mono text-lg tracking-[0.35em]"
-            />
+            <span className="relative flex items-center">
+              <KeyRound className="pointer-events-none absolute left-3 size-4 text-[#6e7788]" />
+              <Input
+                value={token}
+                onChange={(event) => setToken(event.currentTarget.value.replace(/\D/g, "").slice(0, 6))}
+                placeholder="123456"
+                type="text"
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                maxLength={6}
+                required
+                className={`${INPUT_WITH_ICON_CLASS} text-center font-mono text-lg tracking-[0.35em]`}
+              />
+            </span>
           </label>
 
           <Button type="submit" className="w-full" disabled={busyState !== null}>
             {busyState === "verify" ? "Verificando codigo..." : "Verificar codigo"}
+            <ArrowRight className="size-4" />
           </Button>
 
           <div className="flex flex-col gap-2 sm:flex-row">
@@ -237,8 +228,6 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
               onClick={() => {
                 setStep("email");
                 setToken("");
-                setStatusMessage(null);
-                setErrorMessage(null);
               }}
             >
               Cambiar email

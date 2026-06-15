@@ -17,6 +17,7 @@ export type AuthContext = {
     id: string;
     userId: string;
     role: AppRole;
+    displayName: string | null;
   };
 };
 
@@ -24,6 +25,7 @@ type ProfileRecord = {
   id: string;
   user_id: string;
   type_rol: string;
+  display_name: string | null;
 };
 
 function resolveRole(typeRol: string): AppRole {
@@ -40,6 +42,7 @@ function toAuthContext(user: { id: string; email?: string | null }, profile: Pro
       id: profile.id,
       userId: profile.user_id,
       role: resolveRole(profile.type_rol),
+      displayName: profile.display_name,
     },
   } satisfies AuthContext;
 }
@@ -47,7 +50,7 @@ function toAuthContext(user: { id: string; email?: string | null }, profile: Pro
 async function loadProfileRecord(supabase: SupabaseClient, userId: string) {
   const { data: profile, error } = await supabase
     .from("profiles")
-    .select("id, user_id, type_rol")
+    .select("id, user_id, type_rol, display_name")
     .eq("user_id", userId)
     .maybeSingle();
 
@@ -59,7 +62,7 @@ async function loadProfileRecord(supabase: SupabaseClient, userId: string) {
 }
 
 export function getPostLoginRedirectPath(role: AppRole) {
-  return role === "admin" ? "/admin" : "/dashboard";
+  return role === "admin" ? "/admin" : "/";
 }
 
 export async function resolveAuthContextForUserId(

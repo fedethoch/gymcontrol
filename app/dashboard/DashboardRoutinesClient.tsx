@@ -16,15 +16,21 @@ import {
   Trash2,
   TrendingUp,
 } from "lucide-react";
-import { useState, type ComponentType, type ReactNode } from "react";
+import { useRef, useState, type ComponentType, type ReactNode } from "react";
 
 import {
   deleteSavedRoutineAction,
   renameSavedRoutineAction,
-  setActiveSavedRoutineAction,
+  toggleActiveSavedRoutineAction,
 } from "@/app/dashboard/actions";
 import { Badge } from "@/app/components/ui/Badge";
 import { Button } from "@/app/components/ui/Button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/app/components/ui/DropdownMenu";
 import { Input } from "@/app/components/ui/Input";
 import {
   Select,
@@ -50,8 +56,6 @@ export function DashboardRoutinesClient({
   routines,
   activeRoutineId,
 }: DashboardRoutinesClientProps) {
-  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
-  const [renamingId, setRenamingId] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [objective, setObjective] = useState<string>("all");
   const [dayCount, setDayCount] = useState<string>("all");
@@ -103,7 +107,7 @@ export function DashboardRoutinesClient({
 
   return (
     <section className="grid gap-4">
-      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_10.5rem_10.5rem]">
+      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_13rem_12rem]">
         <label className="relative block">
           <span className="sr-only">Buscar mis rutinas</span>
           <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[#9a63ff]" />
@@ -118,9 +122,9 @@ export function DashboardRoutinesClient({
 
         <DashboardSelect value={objective} onValueChange={updateObjective}>
           <SelectItem value="all">
-            <span className="inline-flex items-center gap-2">
+            <span className="inline-flex h-full w-full items-center justify-center gap-2">
               <Target className="size-4" />
-              Objetivo
+              Todos los objetivos
             </span>
           </SelectItem>
           {Object.entries(ROUTINE_OBJECTIVE_LABELS).map(([value, label]) => (
@@ -132,9 +136,9 @@ export function DashboardRoutinesClient({
 
         <DashboardSelect value={dayCount} onValueChange={updateDayCount}>
           <SelectItem value="all">
-            <span className="inline-flex items-center gap-2">
+            <span className="inline-flex h-full w-full items-center justify-center gap-2">
               <CalendarDays className="size-4" />
-              Días
+              Todos los días
             </span>
           </SelectItem>
           {dayOptions.map((value) => (
@@ -163,17 +167,6 @@ export function DashboardRoutinesClient({
               key={routine.id}
               routine={routine}
               isActive={routine.id === activeRoutineId}
-              menuOpen={openMenuId === routine.id}
-              renaming={renamingId === routine.id}
-              onToggleMenu={() => {
-                setOpenMenuId((current) => (current === routine.id ? null : routine.id));
-                setRenamingId(null);
-              }}
-              onStartRenaming={() => {
-                setOpenMenuId(routine.id);
-                setRenamingId(routine.id);
-              }}
-              onCancelRenaming={() => setRenamingId(null)}
             />
           ))}
         </div>
@@ -228,7 +221,7 @@ function DashboardSelect({
 }) {
   return (
     <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger className="h-10 rounded-lg border-[#20283a] bg-[#080d17]/82">
+      <SelectTrigger className="h-10 justify-center rounded-lg border-[#20283a] bg-[#080d17]/82 [&>span]:flex [&>span]:h-full [&>span]:flex-1 [&>span]:items-center [&>span]:overflow-visible">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>{children}</SelectContent>
@@ -239,20 +232,14 @@ function DashboardSelect({
 function DashboardRoutineCard({
   routine,
   isActive,
-  menuOpen,
-  renaming,
-  onToggleMenu,
-  onStartRenaming,
-  onCancelRenaming,
 }: {
   routine: SavedRoutineListItem;
   isActive: boolean;
-  menuOpen: boolean;
-  renaming: boolean;
-  onToggleMenu: () => void;
-  onStartRenaming: () => void;
-  onCancelRenaming: () => void;
 }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [renaming, setRenaming] = useState(false);
+  const deleteFormRef = useRef<HTMLFormElement>(null);
+
   return (
     <article className="grid overflow-hidden rounded-2xl border border-[#20283a] bg-[linear-gradient(145deg,#0d1322_0%,#080d17_100%)] shadow-[0_18px_42px_rgba(0,0,0,0.22)] lg:grid-cols-[12.5rem_minmax(0,1fr)] 2xl:grid-cols-[12.5rem_minmax(0,1fr)_11.5rem]">
       <div className="relative min-h-40 overflow-hidden border-b border-[#20283a] bg-[#111827] lg:border-b-0 lg:border-r">
@@ -294,7 +281,7 @@ function DashboardRoutineCard({
         </p>
       </div>
 
-      <div className="relative grid gap-2 border-t border-[#20283a] p-4 sm:grid-cols-[1fr_1fr_auto] lg:col-span-2 2xl:col-span-1 2xl:border-l 2xl:border-t-0 2xl:grid-cols-1 2xl:px-6">
+      <div className="grid gap-2 border-t border-[#20283a] p-4 sm:grid-cols-[1fr_1fr_auto] lg:col-span-2 2xl:col-span-1 2xl:border-l 2xl:border-t-0 2xl:grid-cols-1 2xl:px-6">
         <Button asChild className="h-10 rounded-lg">
           <Link href={`/catalogo/rutinas/${routine.routineTemplateId}`}>
             {isActive ? <Star className="size-4" /> : null}
@@ -302,32 +289,32 @@ function DashboardRoutineCard({
           </Link>
         </Button>
 
-        <form action={setActiveSavedRoutineAction}>
+        <form action={toggleActiveSavedRoutineAction}>
           <input type="hidden" name="savedRoutineId" value={routine.id} />
           <Button
             type="submit"
             variant={isActive ? "secondary" : "outline"}
             className="h-10 w-full rounded-lg"
-            disabled={isActive}
           >
             <Check className="size-4" />
-            {isActive ? "Activa" : "Activar"}
+            {isActive ? "Desactivar" : "Activar"}
           </Button>
         </form>
 
-        <Button
-          type="button"
-          variant="outline"
-          className="h-10 rounded-lg"
-          aria-expanded={menuOpen}
-          onClick={onToggleMenu}
+        <DropdownMenu
+          open={menuOpen}
+          onOpenChange={(value) => {
+            setMenuOpen(value);
+            if (!value) setRenaming(false);
+          }}
         >
-          <MoreHorizontal className="size-5" />
-          <span className="sr-only">Mas acciones</span>
-        </Button>
-
-        {menuOpen ? (
-          <div className="absolute right-4 top-[calc(100%-0.5rem)] z-20 w-72 rounded-2xl border border-[#27304a] bg-[#090e19] p-3 shadow-[0_24px_70px_rgba(0,0,0,0.48)] 2xl:bottom-4 2xl:right-[calc(100%+0.5rem)] 2xl:top-auto">
+          <DropdownMenuTrigger asChild>
+            <Button type="button" variant="outline" className="h-10 rounded-lg">
+              <MoreHorizontal className="size-5" />
+              <span className="sr-only">Mas acciones</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-72 p-3">
             {renaming ? (
               <form action={renameSavedRoutineAction} className="grid gap-2">
                 <input type="hidden" name="savedRoutineId" value={routine.id} />
@@ -355,37 +342,40 @@ function DashboardRoutineCard({
                   type="button"
                   variant="ghost"
                   className="h-9 justify-start rounded-lg"
-                  onClick={onCancelRenaming}
+                  onClick={() => setRenaming(false)}
                 >
                   Cancelar
                 </Button>
               </form>
             ) : (
               <div className="grid gap-2">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="h-10 justify-start rounded-lg text-white"
-                  onClick={onStartRenaming}
+                <DropdownMenuItem
+                  className="h-10 text-white"
+                  onSelect={(event) => {
+                    event.preventDefault();
+                    setRenaming(true);
+                  }}
                 >
                   <Pencil className="size-4" />
                   Renombrar
-                </Button>
-                <form action={deleteSavedRoutineAction}>
+                </DropdownMenuItem>
+                <form ref={deleteFormRef} action={deleteSavedRoutineAction}>
                   <input type="hidden" name="savedRoutineId" value={routine.id} />
-                  <Button
-                    type="submit"
-                    variant="ghost"
-                    className="h-10 w-full justify-start rounded-lg text-[#ffb4b4] hover:text-[#ffd1d1]"
+                  <DropdownMenuItem
+                    className="text-[#ffb4b4] focus:text-[#ffd1d1]"
+                    onSelect={(event) => {
+                      event.preventDefault();
+                      deleteFormRef.current?.requestSubmit();
+                    }}
                   >
                     <Trash2 className="size-4" />
                     Borrar
-                  </Button>
+                  </DropdownMenuItem>
                 </form>
               </div>
             )}
-          </div>
-        ) : null}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </article>
   );

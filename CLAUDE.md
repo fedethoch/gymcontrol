@@ -93,3 +93,13 @@ Rules:
 - If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
 - Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
 - After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
+
+## Frontend
+- Framework: React + Tailwind 
+- Componentes base: shadcn/ui — no crear componentes desde cero si ya existe uno
+- Íconos: lucide-react únicamente
+- No usar estilos inline salvo excepciones justificadas
+- Siempre mobile-first
+
+## Admin account
+- You can find the credentials in .env.local at the name of "EMAIL" and "EMAIL_PASSWORD"

@@ -9,12 +9,10 @@ import {
   Flame,
 } from "lucide-react";
 
-import { Badge } from "@/app/components/ui/Badge";
 import { Button } from "@/app/components/ui/Button";
 import { Card, CardContent } from "@/app/components/ui/Card";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
 import { requireUser } from "@/app/lib/auth";
-import { ROUTINE_DIFFICULTY_LABELS } from "@/app/lib/routine-metadata";
 import { listSavedRoutinesForUser, getSavedRoutineByIdForUser } from "@/app/lib/saved-routines";
 import { cn } from "@/app/lib/utils";
 import { listWorkoutWeeklySummaries } from "@/app/lib/workout-tracking";
@@ -27,7 +25,7 @@ export default async function DashboardRoutinesPage() {
 
   if (!activeRoutineListItem) {
     return (
-      <section className="page-frame bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
+      <section className="page-frame dashboard-page-frame bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
         <header className="flex flex-col gap-2">
           <div>
             <h1 className="font-display text-3xl font-semibold text-white sm:text-4xl">
@@ -75,6 +73,9 @@ export default async function DashboardRoutinesPage() {
     listWorkoutWeeklySummaries({
       userId: auth.user.id,
       savedRoutineIds: routines.map((routine) => routine.id),
+      plannedDaysBySavedRoutineId: Object.fromEntries(
+        routines.map((routine) => [routine.id, routine.dayCount]),
+      ),
     }),
   ]);
 
@@ -98,7 +99,7 @@ export default async function DashboardRoutinesPage() {
   const nextPendingDay = activeRoutine.days.find((day) => !completedDayIds.has(day.id)) ?? null;
 
   return (
-    <section className="page-frame bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
+    <section className="page-frame dashboard-page-frame bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
       <div className="grid gap-1.5">
         <header className="flex flex-col gap-2">
           <div>
@@ -121,12 +122,6 @@ export default async function DashboardRoutinesPage() {
                     <h2 className="font-display text-[1.6rem] font-semibold leading-tight text-white sm:text-3xl">
                       {activeRoutine.displayName}
                     </h2>
-                    <Badge
-                      variant="accent"
-                      className="border-[#5f2cc9] bg-[#251342] px-3 py-1 text-[11px] normal-case tracking-normal text-[#bb8cff]"
-                    >
-                      {ROUTINE_DIFFICULTY_LABELS[activeRoutineListItem.difficulty]}
-                    </Badge>
                   </div>
                 </div>
 

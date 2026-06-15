@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { requireAdmin } from "@/app/lib/auth";
 import type { ExerciseFormPayload, ExerciseFormState } from "@/app/lib/exercise-form";
-import { createExercise, getExerciseById, updateExercise } from "@/app/lib/exercises";
+import { createExercise, deleteExercise, getExerciseById, updateExercise } from "@/app/lib/exercises";
 import { parseExercisePayload } from "@/app/lib/exercise-validation";
 import { getSupabasePublicEnv } from "@/app/lib/supabase/env";
 
@@ -41,12 +41,26 @@ export async function saveExerciseAction(
         name: parsed.data.name,
         description: parsed.data.description,
         imageUrl: parsed.data.imageUrl || existingExercise.imageUrl,
+        muscleGroup: parsed.data.muscleGroup,
+        equipment: parsed.data.equipment,
+        videoUrl: parsed.data.videoUrl,
+        minReps: parsed.data.minReps,
+        maxReps: parsed.data.maxReps,
+        steps: parsed.data.steps,
+        tips: parsed.data.tips,
       });
     } else {
       await createExercise({
         name: parsed.data.name,
         description: parsed.data.description,
         imageUrl: parsed.data.imageUrl,
+        muscleGroup: parsed.data.muscleGroup,
+        equipment: parsed.data.equipment,
+        videoUrl: parsed.data.videoUrl,
+        minReps: parsed.data.minReps,
+        maxReps: parsed.data.maxReps,
+        steps: parsed.data.steps,
+        tips: parsed.data.tips,
         createdBy: auth.profile.id,
       });
     }
@@ -70,4 +84,21 @@ export async function saveExerciseAction(
       : "Ejercicio guardado.",
     fieldErrors: {},
   };
+}
+
+export async function deleteExerciseAction(id: string): Promise<{ ok: true } | { ok: false; message: string }> {
+  await requireAdmin();
+
+  try {
+    await deleteExercise(id);
+  } catch (error) {
+    return {
+      ok: false,
+      message: error instanceof Error ? error.message : "No se pudo eliminar el ejercicio.",
+    };
+  }
+
+  revalidatePath("/admin/ejercicios");
+
+  return { ok: true };
 }

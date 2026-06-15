@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, Sora } from "next/font/google";
 
+import { Toaster } from "sonner";
+
 import { getOptionalAuthContext } from "@/app/lib/auth";
 
 import { PrimaryNavigation } from "./components/shared/PrimaryNavigation";
@@ -54,6 +56,7 @@ export default async function RootLayout({
             <main className="shell-main">{children}</main>
           </div>
         </AppShell>
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   );

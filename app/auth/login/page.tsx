@@ -2,22 +2,9 @@ import { redirect } from "next/navigation";
 
 import { OtpLoginFlow } from "@/app/auth/login/OtpLoginFlow";
 import { getOptionalAuthContext } from "@/app/lib/auth";
-import { Badge } from "@/app/components/ui/Badge";
 import { Button } from "@/app/components/ui/Button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/app/components/ui/Card";
 import { SectionEyebrow } from "@/app/components/ui/SectionEyebrow";
-
-const accessNotes = [
-  "El acceso principal usa OTP por email de 6 digitos con autoregistro abierto.",
-  "Google OAuth queda visible como alternativa y usa callback SSR solo para ese flujo.",
-  "El profile de aplicacion sigue resolviendo rol, redirect final y guards.",
-];
+import { StatusToast } from "@/app/components/shared/StatusToast";
 
 const statusCopy: Record<string, string> = {
   "signed-out": "La sesion se cerro correctamente.",
@@ -62,116 +49,72 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const email = params.email ?? "";
 
   return (
-    <section className="page-frame">
-      <div className="grid min-h-[34rem] overflow-hidden rounded-[1.75rem] border border-[var(--border)] bg-[var(--card)] xl:grid-cols-[1.05fr_0.95fr]">
-        <div className="fitness-photo relative hidden border-r border-[var(--border)] p-8 xl:flex xl:flex-col xl:justify-center">
-          <div className="max-w-sm">
-            <div className="mb-5 flex items-center gap-3">
-              <span className="grid size-12 place-items-center rounded-2xl bg-[var(--accent)] font-display text-base font-bold text-[var(--accent-foreground)]">
-                GC
-              </span>
-              <div>
-                <p className="font-display text-2xl font-semibold tracking-[-0.06em] text-white">
-                  GymControl
-                </p>
-                <p className="text-sm text-[var(--foreground-muted)]">
-                  mejora cada dia
-                </p>
-              </div>
-            </div>
-            <p className="text-sm leading-7 text-[#d7dbe6]">
-              Acceso dual, directo y alineado con el shell operativo. El login
-              cambia de superficie, pero el rol sigue resolviendose en
-              `profiles.type_rol`.
+    <div className="grid min-h-[100svh] w-full lg:grid-cols-[1fr_minmax(420px,520px)]">
+      {/* Left panel: brand */}
+      <div
+        className="relative hidden flex-col justify-between overflow-hidden p-12 lg:flex"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 18% 12%, rgba(124,58,237,0.55), transparent 45%), radial-gradient(circle at 82% 88%, rgba(91,33,182,0.6), transparent 50%), linear-gradient(165deg, rgba(21,17,38,0.85) 0%, rgba(12,15,26,0.9) 52%, rgba(5,7,11,0.95) 100%), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1600&auto=format&fit=crop')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="flex items-center gap-3">
+          <span className="grid size-12 place-items-center rounded-2xl bg-[var(--accent)] font-display text-base font-bold text-[var(--accent-foreground)]">
+            GC
+          </span>
+          <div>
+            <p className="font-display text-2xl font-semibold tracking-[-0.06em] text-white">
+              GymControl
             </p>
-            <div className="mt-8 grid gap-3">
-              <div className="rounded-3xl border border-white/10 bg-black/25 p-4 backdrop-blur-sm">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#b7c1d9]">
-                  Principal
-                </p>
-                <p className="mt-2 font-display text-xl font-semibold tracking-[-0.05em] text-white">
-                  Codigo OTP de 6 digitos
-                </p>
-                <p className="mt-2 text-sm leading-6 text-[#d7dbe6]">
-                  Envia el codigo, verifica y deja la sesion SSR lista sin
-                  depender del callback de email.
-                </p>
-              </div>
-              <div className="rounded-3xl border border-white/10 bg-black/20 p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#b7c1d9]">
-                  Alternativa
-                </p>
-                <p className="mt-2 font-display text-xl font-semibold tracking-[-0.05em] text-white">
-                  Google OAuth
-                </p>
-                <p className="mt-2 text-sm leading-6 text-[#d7dbe6]">
-                  Mantiene el callback SSR y converge al mismo usuario y
-                  profile cuando el email coincide.
-                </p>
-              </div>
-            </div>
+            <p className="text-sm text-[var(--foreground-muted)]">mejora cada dia</p>
           </div>
         </div>
 
-        <div className="grid place-items-center bg-[#0f141d] p-4 sm:p-8">
-          <Card className="w-full max-w-md">
-            <CardHeader>
-              <SectionEyebrow>Acceso</SectionEyebrow>
-              <CardTitle className="mt-2 text-2xl">Iniciar sesion</CardTitle>
-              <CardDescription>
-                Usa un codigo por email o entra con Google.
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="grid gap-6">
-              <div className="grid gap-3">
-                {reasonMessage ? <Badge variant="outline">{reasonMessage}</Badge> : null}
-                {statusMessage ? <Badge variant="success">{statusMessage}</Badge> : null}
-                {errorMessage ? <Badge variant="accent">{errorMessage}</Badge> : null}
-              </div>
-
-              <OtpLoginFlow initialEmail={email} />
-
-              <div className="grid gap-3 rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-4">
-                <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#8b94a8]">
-                    Opcion alternativa
-                  </p>
-                  <p className="mt-2 font-display text-lg font-semibold tracking-[-0.04em] text-white">
-                    Continuar con Google
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)]">
-                    Si Google no esta configurado, volveras a esta pantalla con
-                    un error explicito.
-                  </p>
-                </div>
-
-                <form action="/auth/google/start" method="post">
-                  <Button type="submit" variant="outline" className="w-full">
-                    Entrar con Google
-                  </Button>
-                </form>
-              </div>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                <Badge variant="neutral">Autoregistro activo</Badge>
-                <Badge variant="success">Supabase Auth</Badge>
-                <Badge variant="outline">Redirect por rol</Badge>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="max-w-md">
+          <h1 className="font-display text-5xl font-semibold leading-[1.1] tracking-[-0.05em] text-white sm:text-6xl">
+            Tu mejor
+            <br />
+            version empieza
+            <br />
+            <span className="text-[var(--accent-bright)]">hoy.</span>
+          </h1>
         </div>
       </div>
 
-      <div className="grid gap-3 xl:grid-cols-3">
-        {accessNotes.map((note) => (
-          <Card key={note} className="bg-[var(--card-alt)]">
-            <CardContent className="p-4 text-sm leading-6 text-[var(--foreground-muted)]">
-              {note}
-            </CardContent>
-          </Card>
-        ))}
+      {/* Right panel: login form */}
+      <div className="grid place-items-center bg-[var(--workspace)] p-6 sm:p-10">
+        <div className="grid w-full max-w-[380px] gap-6">
+          <div>
+            <SectionEyebrow>Bienvenido de vuelta</SectionEyebrow>
+            <h2 className="font-display mt-2 text-2xl font-semibold tracking-[-0.05em] text-white">
+              Iniciar sesion
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)]">
+              Ingresa tus credenciales para entrar a tu cuenta.
+            </p>
+          </div>
+
+          <StatusToast message={reasonMessage} isError clearParams={["reason"]} />
+          <StatusToast message={statusMessage} clearParams={["status"]} />
+          <StatusToast message={errorMessage} isError clearParams={["error"]} />
+
+          <OtpLoginFlow initialEmail={email} />
+
+          <div className="flex items-center gap-3 text-xs uppercase tracking-[0.18em] text-[#6e7788]">
+            <span className="h-px flex-1 bg-[var(--border)]" />
+            o continua con
+            <span className="h-px flex-1 bg-[var(--border)]" />
+          </div>
+
+          <form action="/auth/google/start" method="post">
+            <Button type="submit" variant="outline" className="w-full">
+              Entrar con Google
+            </Button>
+          </form>
+        </div>
       </div>
-    </section>
+    </div>
   );
 }

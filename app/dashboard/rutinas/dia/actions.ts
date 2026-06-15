@@ -3,13 +3,14 @@
 import { revalidatePath } from "next/cache";
 
 import { requireUser } from "@/app/lib/auth";
-import { saveWorkoutSessionForToday, type WorkoutSessionItemInput } from "@/app/lib/workout-tracking";
+import { saveWorkoutSessionForWeek, type WorkoutSessionItemInput } from "@/app/lib/workout-tracking";
 
 export async function autosaveWorkoutSessionItemAction(input: {
   savedRoutineId: string;
   routineDayId: string;
   day: number;
   routineItemId: string;
+  series: number;
   performedReps: string;
   usedWeight: string;
   isCompleted: boolean;
@@ -31,12 +32,13 @@ export async function autosaveWorkoutSessionItemAction(input: {
   try {
     const item = parseWorkoutItem({
       routineItemId,
+      series: input.series,
       performedReps: input.performedReps,
       usedWeight: input.usedWeight,
       isCompleted: input.isCompleted,
     });
 
-    await saveWorkoutSessionForToday({
+    await saveWorkoutSessionForWeek({
       savedRoutineId,
       routineDayId,
       userId: auth.user.id,
@@ -60,56 +62,50 @@ export async function autosaveWorkoutSessionItemAction(input: {
 
 function parseWorkoutItem(input: {
   routineItemId: string;
+  series: number;
   performedReps?: string;
   usedWeight?: string;
   isCompleted: boolean;
 }): WorkoutSessionItemInput {
   return {
     routineItemId: input.routineItemId,
-    performedReps: parsePositiveInteger(input.performedReps),
-    usedWeight: parsePositiveNumber(input.usedWeight),
+    performedReps: parseSeriesValues(input.performedReps, {
+      maxValues: input.series,
+      pattern: /^\d+$/,
+      message: "Las reps realizadas deben ser numeros enteros positivos separados por \"/\" (ej. 12/10/8).",
+    }),
+    usedWeight: parseSeriesValues(input.usedWeight, {
+      maxValues: input.series,
+      pattern: /^\d+(\.\d+)?$/,
+      message: "El peso utilizado debe ser numeros positivos separados por \"/\" (ej. 40/40/35).",
+    }),
     isCompleted: input.isCompleted,
   };
 }
 
-function parsePositiveInteger(value: string | undefined) {
-  const normalized = value?.trim() ?? "";
+function parseSeriesValues(
+  value: string | undefined,
+  options: { maxValues: number; pattern: RegExp; message: string },
+) {
+  const normalized = value?.trim().replace(/,/g, ".") ?? "";
 
   if (!normalized) {
     return null;
   }
 
-  if (!/^\d+$/.test(normalized)) {
-    throw new Error("Las reps realizadas deben ser un numero entero positivo.");
+  const tokens = normalized.split("/").map((token) => token.trim());
+
+  if (options.maxValues > 0 && tokens.length > options.maxValues) {
+    throw new Error(options.message);
   }
 
-  const parsed = Number.parseInt(normalized, 10);
-
-  if (parsed <= 0) {
-    throw new Error("Las reps realizadas deben ser mayores a cero.");
+  for (const token of tokens) {
+    if (!options.pattern.test(token) || Number.parseFloat(token) <= 0) {
+      throw new Error(options.message);
+    }
   }
 
-  return parsed;
-}
-
-function parsePositiveNumber(value: string | undefined) {
-  const normalized = value?.trim().replace(",", ".") ?? "";
-
-  if (!normalized) {
-    return null;
-  }
-
-  if (!/^\d+(\.\d+)?$/.test(normalized)) {
-    throw new Error("El peso utilizado debe ser un numero positivo.");
-  }
-
-  const parsed = Number.parseFloat(normalized);
-
-  if (parsed <= 0) {
-    throw new Error("El peso utilizado debe ser mayor a cero.");
-  }
-
-  return parsed;
+  return tokens.join("/");
 }
 
 function revalidateWorkoutPaths() {

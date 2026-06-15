@@ -6,6 +6,10 @@ import {
   EXERCISE_IMAGE_ALLOWED_MIME_TYPES,
   EXERCISE_IMAGE_MAX_SIZE_BYTES,
 } from "@/app/lib/exercise-config";
+import {
+  EXERCISE_EQUIPMENT_OPTIONS,
+  EXERCISE_MUSCLE_GROUPS,
+} from "@/app/lib/exercise-form";
 import type { ExerciseFormPayload, ExerciseFormState } from "@/app/lib/exercise-form";
 
 const exerciseTextSchema = z.object({
@@ -31,6 +35,13 @@ type ParsedExercisePayload = {
   name: string;
   description: string;
   imageUrl: string;
+  muscleGroup: string | null;
+  equipment: string | null;
+  videoUrl: string | null;
+  minReps: number | null;
+  maxReps: number | null;
+  steps: string[];
+  tips: string[];
 };
 
 type ExerciseImageValidationResult = {
@@ -107,6 +118,49 @@ export function parseExercisePayload({
     fieldErrors.imageUrl = "La imagen debe provenir del bucket de ejercicios.";
   }
 
+  const normalizedMuscleGroup = payload.muscleGroup.trim();
+  let muscleGroup: string | null = null;
+
+  if (normalizedMuscleGroup) {
+    if (!EXERCISE_MUSCLE_GROUPS.includes(normalizedMuscleGroup as never)) {
+      fieldErrors.muscleGroup = "Selecciona un grupo muscular valido.";
+    } else {
+      muscleGroup = normalizedMuscleGroup;
+    }
+  }
+
+  const normalizedEquipment = payload.equipment.trim();
+  let equipment: string | null = null;
+
+  if (normalizedEquipment) {
+    if (!EXERCISE_EQUIPMENT_OPTIONS.includes(normalizedEquipment as never)) {
+      fieldErrors.equipment = "Selecciona un equipamiento valido.";
+    } else {
+      equipment = normalizedEquipment;
+    }
+  }
+
+  const normalizedVideoUrl = payload.videoUrl.trim();
+  let videoUrl: string | null = null;
+
+  if (normalizedVideoUrl) {
+    try {
+      new URL(normalizedVideoUrl);
+      videoUrl = normalizedVideoUrl;
+    } catch {
+      fieldErrors.videoUrl = "Ingresa una URL valida.";
+    }
+  }
+
+  const { minReps, maxReps, error: repRangeError } = parseRepRange(payload.minReps, payload.maxReps);
+
+  if (repRangeError) {
+    fieldErrors.maxReps = repRangeError;
+  }
+
+  const steps = sanitizeTextList(payload.steps);
+  const tips = sanitizeTextList(payload.tips);
+
   if (Object.keys(fieldErrors).length > 0) {
     return {
       ok: false,
@@ -124,8 +178,55 @@ export function parseExercisePayload({
       name: parsedText!.name,
       description: parsedText!.description,
       imageUrl: normalizedImageUrl,
+      muscleGroup,
+      equipment,
+      videoUrl,
+      minReps,
+      maxReps,
+      steps,
+      tips,
     },
   };
+}
+
+function sanitizeTextList(items: string[]): string[] {
+  return items
+    .map((item) => item.trim())
+    .filter((item) => item.length > 0)
+    .slice(0, 20)
+    .map((item) => item.slice(0, 300));
+}
+
+function parseRepRange(
+  rawMinReps: string,
+  rawMaxReps: string,
+): { minReps: number | null; maxReps: number | null; error: string | null } {
+  const normalizedMin = rawMinReps.trim();
+  const normalizedMax = rawMaxReps.trim();
+
+  if (!normalizedMin && !normalizedMax) {
+    return { minReps: null, maxReps: null, error: null };
+  }
+
+  const minReps = Number(normalizedMin);
+  const maxReps = Number(normalizedMax);
+
+  if (
+    !normalizedMin ||
+    !normalizedMax ||
+    !Number.isInteger(minReps) ||
+    !Number.isInteger(maxReps) ||
+    minReps < 1 ||
+    maxReps < 1
+  ) {
+    return { minReps: null, maxReps: null, error: "Ingresa un rango de reps valido." };
+  }
+
+  if (minReps > maxReps) {
+    return { minReps: null, maxReps: null, error: "El minimo no puede ser mayor que el maximo." };
+  }
+
+  return { minReps, maxReps, error: null };
 }
 
 function isExerciseStorageUrl(imageUrl: string, supabaseUrl: string) {

@@ -1,0 +1,2527 @@
+{
+  ".claude/settings.json": {
+    "mtime": 1781195529.8471699,
+    "ast_hash": "7bf81dca0376bde3a32244b82bc7cbc0",
+    "semantic_hash": "7bf81dca0376bde3a32244b82bc7cbc0"
+  },
+  ".claude/settings.local.json": {
+    "mtime": 1781218033.506873,
+    "ast_hash": "57529049358c53c4a31949e1686730fd",
+    "semantic_hash": ""
+  },
+  ".codex-temp/resolve-playwright.js": {
+    "mtime": 1781027675.299795,
+    "ast_hash": "a2334cbf3611699861ce830c9630d503",
+    "semantic_hash": "a2334cbf3611699861ce830c9630d503"
+  },
+  ".codex/skills/web-quality-audit/scripts/analyze.sh": {
+    "mtime": 1780945687.170078,
+    "ast_hash": "e623269499a0f256146f7725eb578f77",
+    "semantic_hash": "e623269499a0f256146f7725eb578f77"
+  },
+  ".codex/skills/webapp-testing/examples/console_logging.py": {
+    "mtime": 1780945687.9144595,
+    "ast_hash": "eeccdae76b3d57954c562d6116bf0dea",
+    "semantic_hash": "eeccdae76b3d57954c562d6116bf0dea"
+  },
+  ".codex/skills/webapp-testing/examples/element_discovery.py": {
+    "mtime": 1780945687.9144595,
+    "ast_hash": "ab18cb3570c77564a08cc73269d7b97d",
+    "semantic_hash": "ab18cb3570c77564a08cc73269d7b97d"
+  },
+  ".codex/skills/webapp-testing/examples/static_html_automation.py": {
+    "mtime": 1780945687.9159727,
+    "ast_hash": "b631a23dc044d41fae4614be9353527d",
+    "semantic_hash": "b631a23dc044d41fae4614be9353527d"
+  },
+  ".codex/skills/webapp-testing/scripts/with_server.py": {
+    "mtime": 1780945687.9174864,
+    "ast_hash": "5182121f66c1b4279a5b3013378e6ea9",
+    "semantic_hash": "5182121f66c1b4279a5b3013378e6ea9"
+  },
+  ".mcp.json": {
+    "mtime": 1780344068.0832896,
+    "ast_hash": "819264428fcd996e8ca86a03fe8c1703",
+    "semantic_hash": "819264428fcd996e8ca86a03fe8c1703"
+  },
+  "app/admin/ejercicios/ExerciseAdminClient.tsx": {
+    "mtime": 1781374791.4020739,
+    "ast_hash": "6c8b94a03c4edff8cfa750071c531d3a",
+    "semantic_hash": ""
+  },
+  "app/admin/ejercicios/actions.ts": {
+    "mtime": 1781366646.9950259,
+    "ast_hash": "2334ede242331d55dc99dead2071184b",
+    "semantic_hash": ""
+  },
+  "app/admin/ejercicios/page.tsx": {
+    "mtime": 1780971694.4598033,
+    "ast_hash": "986f5f621c6b4ba9bb09cee742a27512",
+    "semantic_hash": "986f5f621c6b4ba9bb09cee742a27512"
+  },
+  "app/admin/layout.tsx": {
+    "mtime": 1780956870.6731963,
+    "ast_hash": "bb975dd01f3dc0c4348fb7a80154a8c8",
+    "semantic_hash": "bb975dd01f3dc0c4348fb7a80154a8c8"
+  },
+  "app/admin/page.tsx": {
+    "mtime": 1781374811.418965,
+    "ast_hash": "c41b070d7a8cdd32653f547054705aea",
+    "semantic_hash": ""
+  },
+  "app/admin/rutinas/RoutineAdminClient.tsx": {
+    "mtime": 1781366551.9244044,
+    "ast_hash": "e695bf267d2f1d553aa0a35a721949e0",
+    "semantic_hash": ""
+  },
+  "app/admin/rutinas/actions.ts": {
+    "mtime": 1781292416.2744856,
+    "ast_hash": "920f74a81ea9dae606fa44ade35e9351",
+    "semantic_hash": ""
+  },
+  "app/admin/rutinas/page.tsx": {
+    "mtime": 1780974531.827593,
+    "ast_hash": "ba2e2db19ff2a83361fa6d855b567ef4",
+    "semantic_hash": "ba2e2db19ff2a83361fa6d855b567ef4"
+  },
+  "app/api/auth/request-otp/route.ts": {
+    "mtime": 1781018998.6029222,
+    "ast_hash": "e9fe29a051b011a08d1ece4bf68e5899",
+    "semantic_hash": "e9fe29a051b011a08d1ece4bf68e5899"
+  },
+  "app/api/auth/verify-otp/route.ts": {
+    "mtime": 1781018998.6044438,
+    "ast_hash": "6114d92ee02f905621b75660a6244d67",
+    "semantic_hash": "6114d92ee02f905621b75660a6244d67"
+  },
+  "app/auth/callback/route.ts": {
+    "mtime": 1781018998.6059566,
+    "ast_hash": "cc85fc015caa474cee237959bd953e61",
+    "semantic_hash": "cc85fc015caa474cee237959bd953e61"
+  },
+  "app/auth/google/start/route.ts": {
+    "mtime": 1781021098.242895,
+    "ast_hash": "001fe8f5bc9e4459948720f3a2d5c877",
+    "semantic_hash": "001fe8f5bc9e4459948720f3a2d5c877"
+  },
+  "app/auth/login/OtpLoginFlow.tsx": {
+    "mtime": 1781376948.950996,
+    "ast_hash": "30c79a2dd17430b300ef64c6d0112698",
+    "semantic_hash": ""
+  },
+  "app/auth/login/page.tsx": {
+    "mtime": 1781376912.559924,
+    "ast_hash": "c7f9c5e9a4c0aab72e09c920c1b8de3e",
+    "semantic_hash": ""
+  },
+  "app/auth/signout/route.ts": {
+    "mtime": 1780956870.6716757,
+    "ast_hash": "28f26cc26c7d3176739ca4d59ed05bb6",
+    "semantic_hash": "28f26cc26c7d3176739ca4d59ed05bb6"
+  },
+  "app/catalogo/RoutineCatalogClient.tsx": {
+    "mtime": 1781312586.1635897,
+    "ast_hash": "eb80bfff6fbda025962a1a46cdf9c062",
+    "semantic_hash": ""
+  },
+  "app/catalogo/page.tsx": {
+    "mtime": 1781312582.4810283,
+    "ast_hash": "510625139a5c4d23827d62b082d2679d",
+    "semantic_hash": ""
+  },
+  "app/catalogo/rutinas/[id]/RoutineDetailClient.tsx": {
+    "mtime": 1781292416.2760031,
+    "ast_hash": "6308b018dde6751ff3fbc7cf6d10cba1",
+    "semantic_hash": ""
+  },
+  "app/catalogo/rutinas/[id]/actions.ts": {
+    "mtime": 1781068056.9375587,
+    "ast_hash": "534413aab756fac4b6087dde71f5c0c8",
+    "semantic_hash": "534413aab756fac4b6087dde71f5c0c8"
+  },
+  "app/catalogo/rutinas/[id]/page.tsx": {
+    "mtime": 1781298985.737993,
+    "ast_hash": "7bd182c1d8e55e4ebb069975ae096f7e",
+    "semantic_hash": ""
+  },
+  "app/catalogo/rutinas/page.tsx": {
+    "mtime": 1780976102.7793696,
+    "ast_hash": "34ab8345b7662fbc78040abce29b4250",
+    "semantic_hash": "34ab8345b7662fbc78040abce29b4250"
+  },
+  "app/components/shared/ExerciseDetailModal.tsx": {
+    "mtime": 1781366991.287277,
+    "ast_hash": "981687f9f542bb598d8487fa5a8acc88",
+    "semantic_hash": ""
+  },
+  "app/components/shared/PlaceholderPanel.tsx": {
+    "mtime": 1780951880.5563498,
+    "ast_hash": "bd52e8fa120dfb0d11f8786c2290c3d3",
+    "semantic_hash": "bd52e8fa120dfb0d11f8786c2290c3d3"
+  },
+  "app/components/shared/PrimaryNavigation.tsx": {
+    "mtime": 1781453513.8396444,
+    "ast_hash": "e8e8b29c49836f74c443080f04a161c1",
+    "semantic_hash": ""
+  },
+  "app/components/shared/RouteCard.tsx": {
+    "mtime": 1780951880.5543332,
+    "ast_hash": "fea88215aec19698164abac3404aaa7f",
+    "semantic_hash": "fea88215aec19698164abac3404aaa7f"
+  },
+  "app/components/shared/RoutineTablePreview.tsx": {
+    "mtime": 1781000327.017958,
+    "ast_hash": "d4fdf664c3f07f99139493f1d5bc2ae4",
+    "semantic_hash": "d4fdf664c3f07f99139493f1d5bc2ae4"
+  },
+  "app/components/shared/WeekSchedulePreview.tsx": {
+    "mtime": 1780951933.1926131,
+    "ast_hash": "e525f39e78d4eb10a941820bea144429",
+    "semantic_hash": "e525f39e78d4eb10a941820bea144429"
+  },
+  "app/components/shared/navigation-config.ts": {
+    "mtime": 1781453491.9647307,
+    "ast_hash": "36cc56b8545b69019fc1b854192854bf",
+    "semantic_hash": ""
+  },
+  "app/components/ui/AppShell.tsx": {
+    "mtime": 1780951437.989851,
+    "ast_hash": "1c4871858f753b9a55200323780f7467",
+    "semantic_hash": "1c4871858f753b9a55200323780f7467"
+  },
+  "app/components/ui/Badge.tsx": {
+    "mtime": 1780951437.9821863,
+    "ast_hash": "bc470dc7257273ab67ccea7a7cc193ac",
+    "semantic_hash": "bc470dc7257273ab67ccea7a7cc193ac"
+  },
+  "app/components/ui/Button.tsx": {
+    "mtime": 1780951437.9806695,
+    "ast_hash": "55d75e5fbe8178d1f4beff385803ed1a",
+    "semantic_hash": "55d75e5fbe8178d1f4beff385803ed1a"
+  },
+  "app/components/ui/Card.tsx": {
+    "mtime": 1780951437.9806695,
+    "ast_hash": "07bc9aaac67571a2ba3fc237dbe3beb5",
+    "semantic_hash": "07bc9aaac67571a2ba3fc237dbe3beb5"
+  },
+  "app/components/ui/Dialog.tsx": {
+    "mtime": 1781220927.0000348,
+    "ast_hash": "6580067ddad00d6b8087e4d08f128f17",
+    "semantic_hash": ""
+  },
+  "app/components/ui/Input.tsx": {
+    "mtime": 1780951437.9821863,
+    "ast_hash": "b490ad871ab216ca360b9ca377f63abb",
+    "semantic_hash": "b490ad871ab216ca360b9ca377f63abb"
+  },
+  "app/components/ui/SectionEyebrow.tsx": {
+    "mtime": 1780951599.022499,
+    "ast_hash": "b46f20f17061b707d50137f1979178eb",
+    "semantic_hash": "b46f20f17061b707d50137f1979178eb"
+  },
+  "app/components/ui/Select.tsx": {
+    "mtime": 1781307519.40783,
+    "ast_hash": "dcc7fb59e281c79c4de63df6d22c7a95",
+    "semantic_hash": ""
+  },
+  "app/components/ui/Separator.tsx": {
+    "mtime": 1780951437.9883332,
+    "ast_hash": "29b7516fccebc3ca1e31209d22a167a7",
+    "semantic_hash": "29b7516fccebc3ca1e31209d22a167a7"
+  },
+  "app/components/ui/Sheet.tsx": {
+    "mtime": 1780951437.9852543,
+    "ast_hash": "6414d96464d090f02120efa57abb8a37",
+    "semantic_hash": "6414d96464d090f02120efa57abb8a37"
+  },
+  "app/components/ui/SurfaceCard.tsx": {
+    "mtime": 1780951437.9908593,
+    "ast_hash": "36fc11b83478910b6d79de9ad3573f6a",
+    "semantic_hash": "36fc11b83478910b6d79de9ad3573f6a"
+  },
+  "app/components/ui/Table.tsx": {
+    "mtime": 1781307728.661157,
+    "ast_hash": "bd44b2dfd3f665e93965838f5d896af3",
+    "semantic_hash": ""
+  },
+  "app/components/ui/Textarea.tsx": {
+    "mtime": 1780951437.9837391,
+    "ast_hash": "9d7d17040f46623c01c0290a898427d9",
+    "semantic_hash": "9d7d17040f46623c01c0290a898427d9"
+  },
+  "app/components/ui/Tooltip.tsx": {
+    "mtime": 1780951437.9867704,
+    "ast_hash": "54bccd9b53b454510d1b7cea194274d3",
+    "semantic_hash": "54bccd9b53b454510d1b7cea194274d3"
+  },
+  "app/dashboard/DashboardRoutinesClient.tsx": {
+    "mtime": 1781318342.691305,
+    "ast_hash": "59a3322d082d306ed704d73dcf0342c2",
+    "semantic_hash": ""
+  },
+  "app/dashboard/actions.ts": {
+    "mtime": 1781308268.2353978,
+    "ast_hash": "61ebd913c7c93117d621658dbb1353df",
+    "semantic_hash": ""
+  },
+  "app/dashboard/layout.tsx": {
+    "mtime": 1780956870.6731963,
+    "ast_hash": "82686561b5679534e1f03b3e01de7cd1",
+    "semantic_hash": "82686561b5679534e1f03b3e01de7cd1"
+  },
+  "app/dashboard/page.tsx": {
+    "mtime": 1781454206.760684,
+    "ast_hash": "1b8467f39d4dc0214c689147e8f51f42",
+    "semantic_hash": ""
+  },
+  "app/dashboard/rutinas/dia/DayWorkoutClient.tsx": {
+    "mtime": 1781374896.1646194,
+    "ast_hash": "a268ce1b73918f838a43a99fccb40b34",
+    "semantic_hash": ""
+  },
+  "app/dashboard/rutinas/dia/actions.ts": {
+    "mtime": 1781320917.0746546,
+    "ast_hash": "0f9382a548e53de456b6b07490269cdf",
+    "semantic_hash": ""
+  },
+  "app/dashboard/rutinas/dia/page.tsx": {
+    "mtime": 1781367015.8550253,
+    "ast_hash": "78637e000835b7921f514649493537f5",
+    "semantic_hash": ""
+  },
+  "app/dashboard/rutinas/page.tsx": {
+    "mtime": 1781320847.1137395,
+    "ast_hash": "2ecb86c2ef9dd8b42793b2171bf39403",
+    "semantic_hash": ""
+  },
+  "app/layout.tsx": {
+    "mtime": 1781307560.7913208,
+    "ast_hash": "f76d4ac41cd331a82dd6539c716ab5f3",
+    "semantic_hash": ""
+  },
+  "app/lib/auth-input.ts": {
+    "mtime": 1781018938.214426,
+    "ast_hash": "f1be08d4dff1133596f54f9b8fce2e62",
+    "semantic_hash": "f1be08d4dff1133596f54f9b8fce2e62"
+  },
+  "app/lib/auth.ts": {
+    "mtime": 1781454079.3150966,
+    "ast_hash": "006a1de5590026ce5c2be6a61399941a",
+    "semantic_hash": ""
+  },
+  "app/lib/exercise-config.ts": {
+    "mtime": 1780971557.931363,
+    "ast_hash": "087da60704897d3dd485b344dff82ba3",
+    "semantic_hash": "087da60704897d3dd485b344dff82ba3"
+  },
+  "app/lib/exercise-form.ts": {
+    "mtime": 1781366620.5351646,
+    "ast_hash": "328ac2221adbf3bb98cfd3c08a1acf4f",
+    "semantic_hash": ""
+  },
+  "app/lib/exercise-validation.ts": {
+    "mtime": 1781366634.275734,
+    "ast_hash": "66020c25390ef1e513c772a91f11f7e2",
+    "semantic_hash": ""
+  },
+  "app/lib/exercises.ts": {
+    "mtime": 1781366611.2595518,
+    "ast_hash": "6136155beecf9eab261202a74a1c1506",
+    "semantic_hash": ""
+  },
+  "app/lib/otp-rate-limit.ts": {
+    "mtime": 1781018938.2159364,
+    "ast_hash": "93b3fc538d42fab61d995d48537ca343",
+    "semantic_hash": "93b3fc538d42fab61d995d48537ca343"
+  },
+  "app/lib/request.ts": {
+    "mtime": 1780956870.6666214,
+    "ast_hash": "c652cbe819f4916e91c448a539cb1717",
+    "semantic_hash": "c652cbe819f4916e91c448a539cb1717"
+  },
+  "app/lib/routine-form.ts": {
+    "mtime": 1781025283.3150592,
+    "ast_hash": "f09d7fc86188ea19606c40200fc7dd3a",
+    "semantic_hash": "f09d7fc86188ea19606c40200fc7dd3a"
+  },
+  "app/lib/routine-metadata.ts": {
+    "mtime": 1781025274.5569546,
+    "ast_hash": "2e8d32d213f1ae34688fc22daf4e10ea",
+    "semantic_hash": "2e8d32d213f1ae34688fc22daf4e10ea"
+  },
+  "app/lib/routine-validation.ts": {
+    "mtime": 1781025605.2328455,
+    "ast_hash": "06e2201313f1c032589dfa64d6eb9dfc",
+    "semantic_hash": "06e2201313f1c032589dfa64d6eb9dfc"
+  },
+  "app/lib/routines.ts": {
+    "mtime": 1781366702.817983,
+    "ast_hash": "02616669a6a1a510f25685b4dfc5bdbc",
+    "semantic_hash": ""
+  },
+  "app/lib/saved-routines.ts": {
+    "mtime": 1781366811.0561168,
+    "ast_hash": "a88691d5b3f71e2b80f0f1e1bd73924c",
+    "semantic_hash": ""
+  },
+  "app/lib/supabase/browser.ts": {
+    "mtime": 1780348678.2691622,
+    "ast_hash": "bdbd98757e67b9e71f9ec46535bbdc10",
+    "semantic_hash": "bdbd98757e67b9e71f9ec46535bbdc10"
+  },
+  "app/lib/supabase/env.ts": {
+    "mtime": 1780348678.2691622,
+    "ast_hash": "e36f1ddbec9d23eee1edeba36428a7ed",
+    "semantic_hash": "e36f1ddbec9d23eee1edeba36428a7ed"
+  },
+  "app/lib/supabase/middleware.ts": {
+    "mtime": 1780956870.6681328,
+    "ast_hash": "7da5ef625e97aa1c52f501559cd696cd",
+    "semantic_hash": "7da5ef625e97aa1c52f501559cd696cd"
+  },
+  "app/lib/supabase/server.ts": {
+    "mtime": 1780348678.27121,
+    "ast_hash": "44d996f468310e69e1fb4afea18c7ca0",
+    "semantic_hash": "44d996f468310e69e1fb4afea18c7ca0"
+  },
+  "app/lib/utils.ts": {
+    "mtime": 1780951437.9796648,
+    "ast_hash": "d9837f38cc05303254571985e3164050",
+    "semantic_hash": "d9837f38cc05303254571985e3164050"
+  },
+  "app/lib/workout-tracking.ts": {
+    "mtime": 1781367007.1432846,
+    "ast_hash": "e82daab18699ed0afa044e80c7ed67b1",
+    "semantic_hash": ""
+  },
+  "app/page.tsx": {
+    "mtime": 1781320840.9182594,
+    "ast_hash": "59707dabb09475adae9646e2926024a6",
+    "semantic_hash": ""
+  },
+  "components.json": {
+    "mtime": 1780951437.9791617,
+    "ast_hash": "6c6c237181fa8d43ecb031b3a7d22787",
+    "semantic_hash": "6c6c237181fa8d43ecb031b3a7d22787"
+  },
+  "eslint.config.mjs": {
+    "mtime": 1780325483.0503352,
+    "ast_hash": "dfa1f5f6a7037bf39dc510f30b180002",
+    "semantic_hash": "dfa1f5f6a7037bf39dc510f30b180002"
+  },
+  "next.config.ts": {
+    "mtime": 1780971729.4414358,
+    "ast_hash": "0ff3e296c64ea051d609391ab3b2aea3",
+    "semantic_hash": "0ff3e296c64ea051d609391ab3b2aea3"
+  },
+  "package.json": {
+    "mtime": 1781307478.5261748,
+    "ast_hash": "e8681c1d303f779a1b796a8d2fe67a9d",
+    "semantic_hash": ""
+  },
+  "postcss.config.mjs": {
+    "mtime": 1780325483.0528545,
+    "ast_hash": "239f3ebf717465dc636818a1a619398d",
+    "semantic_hash": "239f3ebf717465dc636818a1a619398d"
+  },
+  "proxy.ts": {
+    "mtime": 1780957071.2369914,
+    "ast_hash": "b4ed46b4490edc555518a03fd7631dd3",
+    "semantic_hash": "b4ed46b4490edc555518a03fd7631dd3"
+  },
+  "supabase/migrations/20260601_g2_mvp_base_schema.sql": {
+    "mtime": 1780345816.2327032,
+    "ast_hash": "5372899f39257a0ab17d4a5b3b7d35c0",
+    "semantic_hash": "5372899f39257a0ab17d4a5b3b7d35c0"
+  },
+  "supabase/migrations/20260608_g55_mvp_rls_policies.sql": {
+    "mtime": 1780958065.6414442,
+    "ast_hash": "c91d1b860886e36bb6658c0b6c2953dd",
+    "semantic_hash": "c91d1b860886e36bb6658c0b6c2953dd"
+  },
+  "supabase/migrations/20260608_g6_exercise_images_storage.sql": {
+    "mtime": 1780971763.0425475,
+    "ast_hash": "b5963fd55f4bec9adf570612d124fe06",
+    "semantic_hash": "b5963fd55f4bec9adf570612d124fe06"
+  },
+  "supabase/migrations/20260609_g14_saved_routines_active.sql": {
+    "mtime": 1781039001.8131888,
+    "ast_hash": "1892b5e9834fccbafed42a0a892531fa",
+    "semantic_hash": "1892b5e9834fccbafed42a0a892531fa"
+  },
+  "supabase/migrations/20260609_g15_workout_tracking.sql": {
+    "mtime": 1781043171.7131586,
+    "ast_hash": "f3d56c5d3ea4114026b3f1f019128a5f",
+    "semantic_hash": "f3d56c5d3ea4114026b3f1f019128a5f"
+  },
+  "supabase/migrations/20260609_g16_workout_tracking_policy_hardening.sql": {
+    "mtime": 1781043743.812565,
+    "ast_hash": "0c644ab9eadb6157d8bfead91512a16f",
+    "semantic_hash": "0c644ab9eadb6157d8bfead91512a16f"
+  },
+  "supabase/migrations/20260609_g17_workout_session_item_completion.sql": {
+    "mtime": 1781056848.453024,
+    "ast_hash": "442e2bc78237c375e79deb7f0c0a0e55",
+    "semantic_hash": "442e2bc78237c375e79deb7f0c0a0e55"
+  },
+  "supabase/migrations/20260609_g8_routine_template_metadata.sql": {
+    "mtime": 1781025472.5290403,
+    "ast_hash": "4626c0c96d6fe28c96a2c2a466b1927d",
+    "semantic_hash": "4626c0c96d6fe28c96a2c2a466b1927d"
+  },
+  "supabase/migrations/20260609_g9_saved_routines_unique.sql": {
+    "mtime": 1781001382.641025,
+    "ast_hash": "444b5ebbd5bf7e8bdd2b87a4cfa66345",
+    "semantic_hash": "444b5ebbd5bf7e8bdd2b87a4cfa66345"
+  },
+  "tsconfig.json": {
+    "mtime": 1780325551.4820087,
+    "ast_hash": "02fc19ad21338c2ab820a70136310db4",
+    "semantic_hash": "02fc19ad21338c2ab820a70136310db4"
+  },
+  ".claude/CLAUDE.md": {
+    "mtime": 1781194895.4219315,
+    "ast_hash": "817fe671013b35ae0bc9301dfe449a87",
+    "semantic_hash": "817fe671013b35ae0bc9301dfe449a87"
+  },
+  ".claude/skills/graphify/SKILL.md": {
+    "mtime": 1781195529.8425925,
+    "ast_hash": "41f700d6535cc2f2b6b6d0a9eecc7525",
+    "semantic_hash": "41f700d6535cc2f2b6b6d0a9eecc7525"
+  },
+  ".claude/skills/graphify/references/add-watch.md": {
+    "mtime": 1781194695.671895,
+    "ast_hash": "0df0589623217ca38a12bdcabfb42f4c",
+    "semantic_hash": "0df0589623217ca38a12bdcabfb42f4c"
+  },
+  ".claude/skills/graphify/references/exports.md": {
+    "mtime": 1781194695.671895,
+    "ast_hash": "7fb1a81aca17a462db70684a324fcfb0",
+    "semantic_hash": "7fb1a81aca17a462db70684a324fcfb0"
+  },
+  ".claude/skills/graphify/references/extraction-spec.md": {
+    "mtime": 1781194695.6765268,
+    "ast_hash": "24808b03abfeaf5f6435bb69c0125b2c",
+    "semantic_hash": "24808b03abfeaf5f6435bb69c0125b2c"
+  },
+  ".claude/skills/graphify/references/github-and-merge.md": {
+    "mtime": 1781194695.6780598,
+    "ast_hash": "cde13df085e4c492aeb7ba298a996d0d",
+    "semantic_hash": "cde13df085e4c492aeb7ba298a996d0d"
+  },
+  ".claude/skills/graphify/references/hooks.md": {
+    "mtime": 1781194695.681116,
+    "ast_hash": "3f545db6ce646650bb9de588f5512a27",
+    "semantic_hash": "3f545db6ce646650bb9de588f5512a27"
+  },
+  ".claude/skills/graphify/references/query.md": {
+    "mtime": 1781194695.684196,
+    "ast_hash": "8b40ed8c9e9060fc215219a8fc964091",
+    "semantic_hash": "8b40ed8c9e9060fc215219a8fc964091"
+  },
+  ".claude/skills/graphify/references/transcribe.md": {
+    "mtime": 1781194695.6852438,
+    "ast_hash": "70f6aa30d6211f3a2c7e9fc45479f50c",
+    "semantic_hash": "70f6aa30d6211f3a2c7e9fc45479f50c"
+  },
+  ".claude/skills/graphify/references/update.md": {
+    "mtime": 1781194695.6867726,
+    "ast_hash": "0dad167a95bdb389f02fecffb60b1bc8",
+    "semantic_hash": "0dad167a95bdb389f02fecffb60b1bc8"
+  },
+  ".codex/skills/accessibility/SKILL.md": {
+    "mtime": 1780947295.4780376,
+    "ast_hash": "62acf4ee1997a1241a224184291d37af",
+    "semantic_hash": "62acf4ee1997a1241a224184291d37af"
+  },
+  ".codex/skills/accessibility/references/A11Y-PATTERNS.md": {
+    "mtime": 1780945687.1613448,
+    "ast_hash": "2995457ea35b394cc9665fa502d66e85",
+    "semantic_hash": "2995457ea35b394cc9665fa502d66e85"
+  },
+  ".codex/skills/accessibility/references/WCAG.md": {
+    "mtime": 1780945687.1613448,
+    "ast_hash": "1aeaf4a30d2ceb69edec5a62bfb084ee",
+    "semantic_hash": "1aeaf4a30d2ceb69edec5a62bfb084ee"
+  },
+  ".codex/skills/best-practices/SKILL.md": {
+    "mtime": 1780947295.4795597,
+    "ast_hash": "c4bfb568baa578b9ef5f420747df9301",
+    "semantic_hash": "c4bfb568baa578b9ef5f420747df9301"
+  },
+  ".codex/skills/better-auth-best-practices/SKILL.md": {
+    "mtime": 1780947295.4795597,
+    "ast_hash": "776f0b22e096e984090b276b2762bf9b",
+    "semantic_hash": "776f0b22e096e984090b276b2762bf9b"
+  },
+  ".codex/skills/better-auth-emailAndPassword/SKILL.md": {
+    "mtime": 1780947295.4810774,
+    "ast_hash": "393d57672d1eafddee3029c44887d752",
+    "semantic_hash": "393d57672d1eafddee3029c44887d752"
+  },
+  ".codex/skills/core-web-vitals/SKILL.md": {
+    "mtime": 1780947295.4825904,
+    "ast_hash": "ed24dc8cda10e5d3aedfeb987dcac0a3",
+    "semantic_hash": "ed24dc8cda10e5d3aedfeb987dcac0a3"
+  },
+  ".codex/skills/core-web-vitals/references/LCP.md": {
+    "mtime": 1780945687.1643913,
+    "ast_hash": "827c7035dd0a6c6d895dec33c66a0793",
+    "semantic_hash": "827c7035dd0a6c6d895dec33c66a0793"
+  },
+  ".codex/skills/frontend-design/LICENSE.txt": {
+    "mtime": 1780945149.3635092,
+    "ast_hash": "2ee41112a44fe7014dce33e26468ba93",
+    "semantic_hash": "2ee41112a44fe7014dce33e26468ba93"
+  },
+  ".codex/skills/frontend-design/SKILL.md": {
+    "mtime": 1781062795.7919044,
+    "ast_hash": "b92bb0dd7b680f9cb953fa743b33fb3c",
+    "semantic_hash": "b92bb0dd7b680f9cb953fa743b33fb3c"
+  },
+  ".codex/skills/next-best-practices/SKILL.md": {
+    "mtime": 1780947295.4841056,
+    "ast_hash": "707d43a36c13d9619800bf124e002aec",
+    "semantic_hash": "707d43a36c13d9619800bf124e002aec"
+  },
+  ".codex/skills/next-best-practices/async-patterns.md": {
+    "mtime": 1780945687.1581898,
+    "ast_hash": "96115ce1f0df17ddae6b8608e85d3c68",
+    "semantic_hash": "96115ce1f0df17ddae6b8608e85d3c68"
+  },
+  ".codex/skills/next-best-practices/bundling.md": {
+    "mtime": 1780945687.1581898,
+    "ast_hash": "cc2f969a0fd4d87ad4f41d0cfbc9fe97",
+    "semantic_hash": "cc2f969a0fd4d87ad4f41d0cfbc9fe97"
+  },
+  ".codex/skills/next-best-practices/data-patterns.md": {
+    "mtime": 1780945687.1598177,
+    "ast_hash": "b00c953f4e2f7f9c913be52ce7c51924",
+    "semantic_hash": "b00c953f4e2f7f9c913be52ce7c51924"
+  },
+  ".codex/skills/next-best-practices/debug-tricks.md": {
+    "mtime": 1780945687.1598177,
+    "ast_hash": "cb785c49cd1610990efbc7a539985318",
+    "semantic_hash": "cb785c49cd1610990efbc7a539985318"
+  },
+  ".codex/skills/next-best-practices/directives.md": {
+    "mtime": 1780945687.1613448,
+    "ast_hash": "d6543b3ccdd8a86a4e2b71bb4fdf9821",
+    "semantic_hash": "d6543b3ccdd8a86a4e2b71bb4fdf9821"
+  },
+  ".codex/skills/next-best-practices/error-handling.md": {
+    "mtime": 1780945687.1613448,
+    "ast_hash": "8c9a7bfd44c372f0d7a4624a0a9bd04c",
+    "semantic_hash": "8c9a7bfd44c372f0d7a4624a0a9bd04c"
+  },
+  ".codex/skills/next-best-practices/file-conventions.md": {
+    "mtime": 1780945687.1628704,
+    "ast_hash": "86af86859274a99a2eb921795451381e",
+    "semantic_hash": "86af86859274a99a2eb921795451381e"
+  },
+  ".codex/skills/next-best-practices/font.md": {
+    "mtime": 1780945687.1628704,
+    "ast_hash": "6a80f011459f5fb1c2ec8711d89cc65e",
+    "semantic_hash": "6a80f011459f5fb1c2ec8711d89cc65e"
+  },
+  ".codex/skills/next-best-practices/functions.md": {
+    "mtime": 1780945687.1643913,
+    "ast_hash": "3c4b13044e8a6625203e4e9f4a6b35a3",
+    "semantic_hash": "3c4b13044e8a6625203e4e9f4a6b35a3"
+  },
+  ".codex/skills/next-best-practices/hydration-error.md": {
+    "mtime": 1780945687.1643913,
+    "ast_hash": "bad50adfc79190c6b1c212af375fde1f",
+    "semantic_hash": "bad50adfc79190c6b1c212af375fde1f"
+  },
+  ".codex/skills/next-best-practices/image.md": {
+    "mtime": 1780945687.1659148,
+    "ast_hash": "127df20d2ec3f23dbe75347c055f356f",
+    "semantic_hash": "127df20d2ec3f23dbe75347c055f356f"
+  },
+  ".codex/skills/next-best-practices/metadata.md": {
+    "mtime": 1780945687.1659148,
+    "ast_hash": "92f3fd585c4b2f82aff01c8b2a3474f8",
+    "semantic_hash": "92f3fd585c4b2f82aff01c8b2a3474f8"
+  },
+  ".codex/skills/next-best-practices/parallel-routes.md": {
+    "mtime": 1780945687.1659148,
+    "ast_hash": "e9cc6b644e1d00369bb55b80e016b3b2",
+    "semantic_hash": "e9cc6b644e1d00369bb55b80e016b3b2"
+  },
+  ".codex/skills/next-best-practices/route-handlers.md": {
+    "mtime": 1780945687.1680186,
+    "ast_hash": "c449d9de455bce9b156df994c7904084",
+    "semantic_hash": "c449d9de455bce9b156df994c7904084"
+  },
+  ".codex/skills/next-best-practices/rsc-boundaries.md": {
+    "mtime": 1780945687.1685266,
+    "ast_hash": "735b898e15bf1a4ec4a6313f2776b30b",
+    "semantic_hash": "735b898e15bf1a4ec4a6313f2776b30b"
+  },
+  ".codex/skills/next-best-practices/runtime-selection.md": {
+    "mtime": 1780945687.1685266,
+    "ast_hash": "ef0d567f857c739fa3671b1e0b572c1c",
+    "semantic_hash": "ef0d567f857c739fa3671b1e0b572c1c"
+  },
+  ".codex/skills/next-best-practices/scripts.md": {
+    "mtime": 1780945687.1685266,
+    "ast_hash": "6a0c4705252de702c5633315616b5695",
+    "semantic_hash": "6a0c4705252de702c5633315616b5695"
+  },
+  ".codex/skills/next-best-practices/self-hosting.md": {
+    "mtime": 1780945687.170078,
+    "ast_hash": "6cc13ead1302de3a2165e1e1f4959bfa",
+    "semantic_hash": "6cc13ead1302de3a2165e1e1f4959bfa"
+  },
+  ".codex/skills/next-best-practices/suspense-boundaries.md": {
+    "mtime": 1780945687.170078,
+    "ast_hash": "75bf7135ce762d0d662d0f0b432922ca",
+    "semantic_hash": "75bf7135ce762d0d662d0f0b432922ca"
+  },
+  ".codex/skills/next-cache-components/SKILL.md": {
+    "mtime": 1780947295.4856207,
+    "ast_hash": "5102a2201468cc342f6f7d91478c03a2",
+    "semantic_hash": "5102a2201468cc342f6f7d91478c03a2"
+  },
+  ".codex/skills/next-upgrade/SKILL.md": {
+    "mtime": 1780947295.4856207,
+    "ast_hash": "fb6210d7d2eef209599c8665ccfa023f",
+    "semantic_hash": "fb6210d7d2eef209599c8665ccfa023f"
+  },
+  ".codex/skills/supabase-postgres-best-practices/CHANGELOG.md": {
+    "mtime": 1780945709.5369008,
+    "ast_hash": "c2431bd02e1717ed5f6a728643953695",
+    "semantic_hash": "c2431bd02e1717ed5f6a728643953695"
+  },
+  ".codex/skills/supabase-postgres-best-practices/SKILL.md": {
+    "mtime": 1780947295.4871788,
+    "ast_hash": "e08278913451ef89d41c423108af81c3",
+    "semantic_hash": "e08278913451ef89d41c423108af81c3"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/_contributing.md": {
+    "mtime": 1780945709.5374134,
+    "ast_hash": "19edd365b47667a9b81108cacfd75775",
+    "semantic_hash": "19edd365b47667a9b81108cacfd75775"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/_sections.md": {
+    "mtime": 1780945709.5389247,
+    "ast_hash": "7cc4829a3718c745dfdbec554c30485f",
+    "semantic_hash": "7cc4829a3718c745dfdbec554c30485f"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/_template.md": {
+    "mtime": 1780945709.5389247,
+    "ast_hash": "384ee769a417d3001e81d81b139acbf6",
+    "semantic_hash": "384ee769a417d3001e81d81b139acbf6"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/advanced-full-text-search.md": {
+    "mtime": 1780945709.5404444,
+    "ast_hash": "f32a27eab306ad2a29db0a2a8a55b03c",
+    "semantic_hash": "f32a27eab306ad2a29db0a2a8a55b03c"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/advanced-jsonb-indexing.md": {
+    "mtime": 1780945709.5404444,
+    "ast_hash": "5b4fbcc451879892d366fa02194bb536",
+    "semantic_hash": "5b4fbcc451879892d366fa02194bb536"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/conn-idle-timeout.md": {
+    "mtime": 1780945709.5419557,
+    "ast_hash": "c73ea45eecdb007786cd3b3e08e31640",
+    "semantic_hash": "c73ea45eecdb007786cd3b3e08e31640"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/conn-limits.md": {
+    "mtime": 1780945709.5419557,
+    "ast_hash": "59025fe12439048e81296f28feca4ce1",
+    "semantic_hash": "59025fe12439048e81296f28feca4ce1"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/conn-pooling.md": {
+    "mtime": 1780945709.5419557,
+    "ast_hash": "8561b805a5e0bdfa348840266861de66",
+    "semantic_hash": "8561b805a5e0bdfa348840266861de66"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/conn-prepared-statements.md": {
+    "mtime": 1780945709.543468,
+    "ast_hash": "fe941145678825d273baac1fe66d4dce",
+    "semantic_hash": "fe941145678825d273baac1fe66d4dce"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/data-batch-inserts.md": {
+    "mtime": 1780945709.543468,
+    "ast_hash": "75a4e92f80b90818221fae51f8b994f1",
+    "semantic_hash": "75a4e92f80b90818221fae51f8b994f1"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/data-n-plus-one.md": {
+    "mtime": 1780945709.544979,
+    "ast_hash": "4fc111bb51121f5181910b3759061ada",
+    "semantic_hash": "4fc111bb51121f5181910b3759061ada"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/data-pagination.md": {
+    "mtime": 1780945709.544979,
+    "ast_hash": "0e9b3211df99b3d35f7083c984b03ccb",
+    "semantic_hash": "0e9b3211df99b3d35f7083c984b03ccb"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/data-upsert.md": {
+    "mtime": 1780945709.544979,
+    "ast_hash": "51a26138848f5fec547cd56b9bcb33d4",
+    "semantic_hash": "51a26138848f5fec547cd56b9bcb33d4"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/lock-advisory.md": {
+    "mtime": 1780945709.5464883,
+    "ast_hash": "3f3523b7b0a812a6906f92a6610a5a9b",
+    "semantic_hash": "3f3523b7b0a812a6906f92a6610a5a9b"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/lock-deadlock-prevention.md": {
+    "mtime": 1780945709.5464883,
+    "ast_hash": "07eae98867b47074d82528df59d2135e",
+    "semantic_hash": "07eae98867b47074d82528df59d2135e"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/lock-short-transactions.md": {
+    "mtime": 1780945709.5480094,
+    "ast_hash": "aea973297ac14bba2586a2ff57fd8ff7",
+    "semantic_hash": "aea973297ac14bba2586a2ff57fd8ff7"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/lock-skip-locked.md": {
+    "mtime": 1780945709.5480094,
+    "ast_hash": "26e9bd402801299afce06ee506a9f864",
+    "semantic_hash": "26e9bd402801299afce06ee506a9f864"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/monitor-explain-analyze.md": {
+    "mtime": 1780945709.5495508,
+    "ast_hash": "93d5998318098652ac380cd354718924",
+    "semantic_hash": "93d5998318098652ac380cd354718924"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/monitor-pg-stat-statements.md": {
+    "mtime": 1780945709.5495508,
+    "ast_hash": "ee51d9586cf18c848563799c14dcc638",
+    "semantic_hash": "ee51d9586cf18c848563799c14dcc638"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/monitor-vacuum-analyze.md": {
+    "mtime": 1780945709.5495508,
+    "ast_hash": "e3d1e4f8831a37bdb1c7f364b911f7a6",
+    "semantic_hash": "e3d1e4f8831a37bdb1c7f364b911f7a6"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/query-composite-indexes.md": {
+    "mtime": 1780945709.5510607,
+    "ast_hash": "bd959891036289cfaf3d54e49599b2d0",
+    "semantic_hash": "bd959891036289cfaf3d54e49599b2d0"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/query-covering-indexes.md": {
+    "mtime": 1780945709.5510607,
+    "ast_hash": "5e62afcfe9289405caec1f32f351dd29",
+    "semantic_hash": "5e62afcfe9289405caec1f32f351dd29"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/query-index-types.md": {
+    "mtime": 1780945709.5526123,
+    "ast_hash": "ef0d4ad9d1eb0466a0bde542ade59de2",
+    "semantic_hash": "ef0d4ad9d1eb0466a0bde542ade59de2"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/query-missing-indexes.md": {
+    "mtime": 1780945709.5526123,
+    "ast_hash": "1bd5f85a9c930219dd479825986bd6ad",
+    "semantic_hash": "1bd5f85a9c930219dd479825986bd6ad"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/query-partial-indexes.md": {
+    "mtime": 1780945709.5526123,
+    "ast_hash": "a6c64f9136f8a7880e53df3e259d90c9",
+    "semantic_hash": "a6c64f9136f8a7880e53df3e259d90c9"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/schema-constraints.md": {
+    "mtime": 1780945709.554124,
+    "ast_hash": "e7362385f5b79c28f5e495d7c45a7a52",
+    "semantic_hash": "e7362385f5b79c28f5e495d7c45a7a52"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/schema-data-types.md": {
+    "mtime": 1780945709.554124,
+    "ast_hash": "a10f1ec17bd499622d9201af3d00e0d4",
+    "semantic_hash": "a10f1ec17bd499622d9201af3d00e0d4"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/schema-foreign-key-indexes.md": {
+    "mtime": 1780945709.5556364,
+    "ast_hash": "6bc02b38edd88e56c89bab863f5c789b",
+    "semantic_hash": "6bc02b38edd88e56c89bab863f5c789b"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/schema-lowercase-identifiers.md": {
+    "mtime": 1780945709.5566425,
+    "ast_hash": "1df2eae336d542d365f99abdfa968367",
+    "semantic_hash": "1df2eae336d542d365f99abdfa968367"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/schema-partitioning.md": {
+    "mtime": 1780945709.557148,
+    "ast_hash": "e95568857288b614ba0d4b8cd1b4fb72",
+    "semantic_hash": "e95568857288b614ba0d4b8cd1b4fb72"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/schema-primary-keys.md": {
+    "mtime": 1780945709.557148,
+    "ast_hash": "63412819d632d8cbe39f14630e5de085",
+    "semantic_hash": "63412819d632d8cbe39f14630e5de085"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/security-privileges.md": {
+    "mtime": 1780945709.558153,
+    "ast_hash": "212beb5d93e7c02cb61c95e117af3aaa",
+    "semantic_hash": "212beb5d93e7c02cb61c95e117af3aaa"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/security-rls-basics.md": {
+    "mtime": 1780945709.558153,
+    "ast_hash": "2349e490ff266b1c2b81a2368c054baa",
+    "semantic_hash": "2349e490ff266b1c2b81a2368c054baa"
+  },
+  ".codex/skills/supabase-postgres-best-practices/references/security-rls-performance.md": {
+    "mtime": 1780945709.5596907,
+    "ast_hash": "6c87b7d050ba714a95a2b88eb0b6caf0",
+    "semantic_hash": "6c87b7d050ba714a95a2b88eb0b6caf0"
+  },
+  ".codex/skills/web-quality-audit/SKILL.md": {
+    "mtime": 1780947295.488695,
+    "ast_hash": "097b42c531dea837fdd724d98767efd5",
+    "semantic_hash": "097b42c531dea837fdd724d98767efd5"
+  },
+  ".codex/skills/webapp-testing/LICENSE.txt": {
+    "mtime": 1780945687.912907,
+    "ast_hash": "0ee6429f4c66920b6744d818225fb58f",
+    "semantic_hash": "0ee6429f4c66920b6744d818225fb58f"
+  },
+  ".codex/skills/webapp-testing/SKILL.md": {
+    "mtime": 1780947295.492785,
+    "ast_hash": "42fe484a4ae36e0c4a5486ff126969d9",
+    "semantic_hash": "42fe484a4ae36e0c4a5486ff126969d9"
+  },
+  ".codex/subagents/backend-developer.md": {
+    "mtime": 1780947411.6084492,
+    "ast_hash": "baa3510ede75b719ce21dd1cf7ab42c3",
+    "semantic_hash": "baa3510ede75b719ce21dd1cf7ab42c3"
+  },
+  ".codex/subagents/code-reviewer.md": {
+    "mtime": 1780947411.6089528,
+    "ast_hash": "513f83892ef701e93600b2d511631c13",
+    "semantic_hash": "513f83892ef701e93600b2d511631c13"
+  },
+  ".codex/subagents/context-manager.md": {
+    "mtime": 1780947411.6089528,
+    "ast_hash": "5f61b6422e7f694b93faa34d68f90a64",
+    "semantic_hash": "5f61b6422e7f694b93faa34d68f90a64"
+  },
+  ".codex/subagents/database-administrator.md": {
+    "mtime": 1780947411.6104848,
+    "ast_hash": "78eedc5e3c5336a91662ed0e90085548",
+    "semantic_hash": "78eedc5e3c5336a91662ed0e90085548"
+  },
+  ".codex/subagents/debugger.md": {
+    "mtime": 1780947411.612,
+    "ast_hash": "8e507ea38e89eceed85dc068deccd921",
+    "semantic_hash": "8e507ea38e89eceed85dc068deccd921"
+  },
+  ".codex/subagents/deployment-engineer.md": {
+    "mtime": 1780947411.612,
+    "ast_hash": "fed5edc79f4d098f03f1a788f495326f",
+    "semantic_hash": "fed5edc79f4d098f03f1a788f495326f"
+  },
+  ".codex/subagents/frontend-developer.md": {
+    "mtime": 1780947411.613518,
+    "ast_hash": "105c1bc368fbf12188991d3c33316e71",
+    "semantic_hash": "105c1bc368fbf12188991d3c33316e71"
+  },
+  ".codex/subagents/nextjs-developer.md": {
+    "mtime": 1780947411.6145558,
+    "ast_hash": "40c70171975f044187f3fadcf8f70d23",
+    "semantic_hash": "40c70171975f044187f3fadcf8f70d23"
+  },
+  ".codex/subagents/postgres-pro.md": {
+    "mtime": 1780947411.6145558,
+    "ast_hash": "a57c1430a75866d05ab7021bd7482088",
+    "semantic_hash": "a57c1430a75866d05ab7021bd7482088"
+  },
+  ".codex/subagents/security-auditor.md": {
+    "mtime": 1780947411.616074,
+    "ast_hash": "606a94283f5a434bdcd61e64375151a4",
+    "semantic_hash": "606a94283f5a434bdcd61e64375151a4"
+  },
+  ".codex/subagents/typescript-pro.md": {
+    "mtime": 1780947411.617653,
+    "ast_hash": "7717ea51cf5687ca865222c1ddc3eb8e",
+    "semantic_hash": "7717ea51cf5687ca865222c1ddc3eb8e"
+  },
+  ".codex/subagents/ui-designer.md": {
+    "mtime": 1780947411.6191819,
+    "ast_hash": "5beb102fcce6409a74a9e29113d97a35",
+    "semantic_hash": "5beb102fcce6409a74a9e29113d97a35"
+  },
+  ".codex/subagents/ui-ux-tester.md": {
+    "mtime": 1780947411.620752,
+    "ast_hash": "407dbc77eceeea2621185838f545bbfe",
+    "semantic_hash": "407dbc77eceeea2621185838f545bbfe"
+  },
+  "AGENTS.md": {
+    "mtime": 1780947754.0009818,
+    "ast_hash": "88d09d7a4ad33a60b17ee87176ef3301",
+    "semantic_hash": "88d09d7a4ad33a60b17ee87176ef3301"
+  },
+  "CLAUDE.md": {
+    "mtime": 1781475396.619687,
+    "ast_hash": "0454d468ac4b70961d06390b8b1945bc",
+    "semantic_hash": ""
+  },
+  "PLAN.md": {
+    "mtime": 1781019209.5628254,
+    "ast_hash": "45c665c7f2516092f9b7804a341692a4",
+    "semantic_hash": "45c665c7f2516092f9b7804a341692a4"
+  },
+  "README.md": {
+    "mtime": 1781043171.714673,
+    "ast_hash": "adbdff8f20895e40a4dd8aa8e1332056",
+    "semantic_hash": "adbdff8f20895e40a4dd8aa8e1332056"
+  },
+  "docs/ARCHITECTURE.md": {
+    "mtime": 1781019229.8011973,
+    "ast_hash": "0092992cf9d418966e69f88c24090e53",
+    "semantic_hash": "0092992cf9d418966e69f88c24090e53"
+  },
+  "docs/DATABASE.md": {
+    "mtime": 1781454350.0622027,
+    "ast_hash": "bec47adf4820419264d3dffc9a553b46",
+    "semantic_hash": ""
+  },
+  "docs/DOCUMENTATION_ROADMAP.md": {
+    "mtime": 1780326137.170532,
+    "ast_hash": "c57a104ff862954c0c38d956fbfceea3",
+    "semantic_hash": "c57a104ff862954c0c38d956fbfceea3"
+  },
+  "docs/MCP_SUPABASE_SETUP.md": {
+    "mtime": 1780953463.811198,
+    "ast_hash": "c9b54123304a583c70c83fe308af0db2",
+    "semantic_hash": "c9b54123304a583c70c83fe308af0db2"
+  },
+  "docs/PROJECT_FOUNDATIONS.md": {
+    "mtime": 1780326177.7220755,
+    "ast_hash": "a99be9f0dafb1419ea31cb0728f220c0",
+    "semantic_hash": "a99be9f0dafb1419ea31cb0728f220c0"
+  },
+  "docs/SKILLS_AND_AGENTS.md": {
+    "mtime": 1781019180.903221,
+    "ast_hash": "7383c7f9cc2dea90be1e4a8e4c08306a",
+    "semantic_hash": "7383c7f9cc2dea90be1e4a8e4c08306a"
+  },
+  "docs/WORKING_AGREEMENTS.md": {
+    "mtime": 1780347367.7286859,
+    "ast_hash": "b701ef5b3db794801469ef03f129013f",
+    "semantic_hash": "b701ef5b3db794801469ef03f129013f"
+  },
+  "docs/architecture/01-scope.md": {
+    "mtime": 1780332441.6562512,
+    "ast_hash": "ffb2abff5de19a7f0652fffec607668b",
+    "semantic_hash": "ffb2abff5de19a7f0652fffec607668b"
+  },
+  "docs/architecture/02-modules.md": {
+    "mtime": 1781019180.8990524,
+    "ast_hash": "b7d1007b704e795ceef50eeafbf93250",
+    "semantic_hash": "b7d1007b704e795ceef50eeafbf93250"
+  },
+  "docs/architecture/03-flows.md": {
+    "mtime": 1781019180.9001431,
+    "ast_hash": "c832b1ec164aff3616b9facaae34bc22",
+    "semantic_hash": "c832b1ec164aff3616b9facaae34bc22"
+  },
+  "docs/architecture/04-layers-and-boundaries.md": {
+    "mtime": 1780332441.6592884,
+    "ast_hash": "9ec8f3a931bde62309bc79ae2efd5bc3",
+    "semantic_hash": "9ec8f3a931bde62309bc79ae2efd5bc3"
+  },
+  "docs/architecture/05-structure-and-naming.md": {
+    "mtime": 1780332441.6592884,
+    "ast_hash": "e59c209b91d3ff72d27522fc1a10012f",
+    "semantic_hash": "e59c209b91d3ff72d27522fc1a10012f"
+  },
+  "docs/architecture/06-implementation-strategy.md": {
+    "mtime": 1780351894.7706037,
+    "ast_hash": "fd4ccd3c9ed17823934577d9622dc77e",
+    "semantic_hash": "fd4ccd3c9ed17823934577d9622dc77e"
+  },
+  "docs/architecture/07-frontend-experience.md": {
+    "mtime": 1781019180.9001431,
+    "ast_hash": "4a373915b1044a61cbb423b5a9dbee09",
+    "semantic_hash": "4a373915b1044a61cbb423b5a9dbee09"
+  },
+  "docs/architecture/README.md": {
+    "mtime": 1780351894.7690785,
+    "ast_hash": "67b3c5330398d9beb1354ea0a5ac944d",
+    "semantic_hash": "67b3c5330398d9beb1354ea0a5ac944d"
+  },
+  "docs/codex/COMMANDS.md": {
+    "mtime": 1780943175.9398732,
+    "ast_hash": "4c6a1a4feaf2d647df5511879922dd52",
+    "semantic_hash": "4c6a1a4feaf2d647df5511879922dd52"
+  },
+  "docs/codex/ENV_INDEX.md": {
+    "mtime": 1781019180.904739,
+    "ast_hash": "d0845112faf8932034561978a8c6d9e1",
+    "semantic_hash": "d0845112faf8932034561978a8c6d9e1"
+  },
+  "docs/codex/FILE_OWNERSHIP.md": {
+    "mtime": 1780947754.0040104,
+    "ast_hash": "93a28d97e4e60270fee2932d6cd8d5e1",
+    "semantic_hash": "93a28d97e4e60270fee2932d6cd8d5e1"
+  },
+  "docs/codex/MAINTENANCE_RULES.md": {
+    "mtime": 1780947754.0055256,
+    "ast_hash": "89138cf695a4f6852ff83480f3515da5",
+    "semantic_hash": "89138cf695a4f6852ff83480f3515da5"
+  },
+  "docs/codex/PROMPT_TEMPLATES.md": {
+    "mtime": 1780947754.0024917,
+    "ast_hash": "9ff38c471bc5a190b8a6a0cc7287feda",
+    "semantic_hash": "9ff38c471bc5a190b8a6a0cc7287feda"
+  },
+  "docs/codex/ROUTING_GRAPH.md": {
+    "mtime": 1781388101.7926776,
+    "ast_hash": "5bddd5ee4928674cb9355b067d01a440",
+    "semantic_hash": ""
+  },
+  "docs/codex/SKILL_ROUTING.md": {
+    "mtime": 1780947754.0009818,
+    "ast_hash": "709abfc38d66edca4c4ee0b4e7f8f2a6",
+    "semantic_hash": "709abfc38d66edca4c4ee0b4e7f8f2a6"
+  },
+  "docs/codex/TEST_MATRIX.md": {
+    "mtime": 1781007473.3474517,
+    "ast_hash": "8fddd63c39842c3d3ab4df5bf5b753fb",
+    "semantic_hash": "8fddd63c39842c3d3ab4df5bf5b753fb"
+  },
+  "pnpm-workspace.yaml": {
+    "mtime": 1780325729.226515,
+    "ast_hash": "e7f697500f143b1886baa80d4356f42c",
+    "semantic_hash": "e7f697500f143b1886baa80d4356f42c"
+  },
+  "specs/G1-architecture/01-delimitar-alcance-final-del-mvp.md": {
+    "mtime": 1780953227.7037635,
+    "ast_hash": "b4f4c4d91128f81f0f299a7e7e8f9ba1",
+    "semantic_hash": "b4f4c4d91128f81f0f299a7e7e8f9ba1"
+  },
+  "specs/G1-architecture/02-definir-modulos-principales-del-producto.md": {
+    "mtime": 1780953227.7053163,
+    "ast_hash": "fafe1a5643a3bcb5fc36cdf194ad4f2a",
+    "semantic_hash": "fafe1a5643a3bcb5fc36cdf194ad4f2a"
+  },
+  "specs/G1-architecture/03-definir-responsabilidades-y-fronteras.md": {
+    "mtime": 1780953227.7068365,
+    "ast_hash": "2a38e2fe54f56d1a16c78a59b6feee61",
+    "semantic_hash": "2a38e2fe54f56d1a16c78a59b6feee61"
+  },
+  "specs/G1-architecture/04-documentar-flujo-admin-crear-ejercicios.md": {
+    "mtime": 1780953227.7083678,
+    "ast_hash": "2417ef470c9a969d4114084160ca7742",
+    "semantic_hash": "2417ef470c9a969d4114084160ca7742"
+  },
+  "specs/G1-architecture/05-documentar-flujo-admin-crear-rutinas-semanales.md": {
+    "mtime": 1780953227.7083678,
+    "ast_hash": "5941bdf943aee162f32c1972838343ba",
+    "semantic_hash": "5941bdf943aee162f32c1972838343ba"
+  },
+  "specs/G1-architecture/06-documentar-flujo-usuario-explorar-y-guardar-rutinas.md": {
+    "mtime": 1780953227.71093,
+    "ast_hash": "9e7806f17136ca80925511db79d9dc0a",
+    "semantic_hash": "9e7806f17136ca80925511db79d9dc0a"
+  },
+  "specs/G1-architecture/07-documentar-flujo-del-modal-de-ejercicio.md": {
+    "mtime": 1780953227.712444,
+    "ast_hash": "c67bd160bdcc54c057b80a0bcb034859",
+    "semantic_hash": "c67bd160bdcc54c057b80a0bcb034859"
+  },
+  "specs/G1-architecture/08-definir-estructura-de-carpetas-y-nombres.md": {
+    "mtime": 1780953227.7139997,
+    "ast_hash": "e9d0f769dc998d0587c85c4bbebc61a5",
+    "semantic_hash": "e9d0f769dc998d0587c85c4bbebc61a5"
+  },
+  "specs/G1-architecture/09-definir-estrategia-de-componentes-vistas-y-acciones.md": {
+    "mtime": 1780953227.7155268,
+    "ast_hash": "04088542a9e91bd3f52e554450b72e2e",
+    "semantic_hash": "04088542a9e91bd3f52e554450b72e2e"
+  },
+  "specs/G1-architecture/10-guardar-arquitectura-pactada.md": {
+    "mtime": 1780953227.7185712,
+    "ast_hash": "78ffec998c2d3ed4348872e896f96f72",
+    "semantic_hash": "78ffec998c2d3ed4348872e896f96f72"
+  },
+  "specs/G1-architecture/README.md": {
+    "mtime": 1780953227.7037635,
+    "ast_hash": "0ece5128d1876457422dc39d2f7d6b84",
+    "semantic_hash": "0ece5128d1876457422dc39d2f7d6b84"
+  },
+  "specs/G10-exercise-modal/01-disenar-e-implementar-componente-base-de-modal.md": {
+    "mtime": 1780329412.6774347,
+    "ast_hash": "45eeb3d749e725d8087ca99923034aa6",
+    "semantic_hash": "45eeb3d749e725d8087ca99923034aa6"
+  },
+  "specs/G10-exercise-modal/02-mostrar-nombre-imagen-y-descripcion-del-ejercicio.md": {
+    "mtime": 1780329412.6784635,
+    "ast_hash": "68314aaf5eb3674d493790461d3870ce",
+    "semantic_hash": "68314aaf5eb3674d493790461d3870ce"
+  },
+  "specs/G10-exercise-modal/03-permitir-apertura-y-cierre-sin-abandonar-la-pagina.md": {
+    "mtime": 1780329412.6789865,
+    "ast_hash": "af663a9fbbfc5c2117be3cd0f4bc6924",
+    "semantic_hash": "af663a9fbbfc5c2117be3cd0f4bc6924"
+  },
+  "specs/G10-exercise-modal/04-integrar-el-modal-en-catalogo-de-rutinas.md": {
+    "mtime": 1780960132.0512621,
+    "ast_hash": "70ef8e832d5837525d7427dd258b5843",
+    "semantic_hash": "70ef8e832d5837525d7427dd258b5843"
+  },
+  "specs/G10-exercise-modal/05-integrar-el-modal-en-dashboard-de-usuario.md": {
+    "mtime": 1780960132.0512621,
+    "ast_hash": "7c0d2db8a9cf189c7ce811d4f9be1fe7",
+    "semantic_hash": "7c0d2db8a9cf189c7ce811d4f9be1fe7"
+  },
+  "specs/G10-exercise-modal/06-integrar-el-modal-en-otras-vistas-del-mvp-que-muestren-ejercicios.md": {
+    "mtime": 1780329412.6805356,
+    "ast_hash": "71cd0dce2af07d713883aa25afa02ca9",
+    "semantic_hash": "71cd0dce2af07d713883aa25afa02ca9"
+  },
+  "specs/G10-exercise-modal/07-asegurar-comportamiento-claro-en-desktop-y-mobile.md": {
+    "mtime": 1780329412.6820526,
+    "ast_hash": "d34557034cdac9e6428cd39bd113b63f",
+    "semantic_hash": "d34557034cdac9e6428cd39bd113b63f"
+  },
+  "specs/G10-exercise-modal/08-revisar-accesibilidad-minima-de-foco-cierre-y-lectura.md": {
+    "mtime": 1780329412.6820526,
+    "ast_hash": "d0de07d81f73ff74c407be8eee2e9b6d",
+    "semantic_hash": "d0de07d81f73ff74c407be8eee2e9b6d"
+  },
+  "specs/G10-exercise-modal/README.md": {
+    "mtime": 1780953345.5320969,
+    "ast_hash": "876b775973cb899f7c89b80a68afa3bc",
+    "semantic_hash": "876b775973cb899f7c89b80a68afa3bc"
+  },
+  "specs/G11-integration-and-qa/01-probar-flujo-admin-de-creacion-de-ejercicios.md": {
+    "mtime": 1780329530.619303,
+    "ast_hash": "4fad04700721443cddaefcfd88ec78d0",
+    "semantic_hash": "4fad04700721443cddaefcfd88ec78d0"
+  },
+  "specs/G11-integration-and-qa/02-probar-flujo-admin-de-creacion-de-rutinas-semanales.md": {
+    "mtime": 1780329530.6198099,
+    "ast_hash": "0a9ead126054c3a9da90b0498df7a4fb",
+    "semantic_hash": "0a9ead126054c3a9da90b0498df7a4fb"
+  },
+  "specs/G11-integration-and-qa/03-probar-flujo-usuario-de-exploracion-guardado-y-renombrado.md": {
+    "mtime": 1780329530.6213253,
+    "ast_hash": "ee84321cbab248c18eb64a1f27aff0a9",
+    "semantic_hash": "ee84321cbab248c18eb64a1f27aff0a9"
+  },
+  "specs/G11-integration-and-qa/04-probar-apertura-del-modal-de-ejercicio-desde-multiples-contextos.md": {
+    "mtime": 1780329530.6213253,
+    "ast_hash": "54d588226239da1f05b2bf257d7fa69b",
+    "semantic_hash": "54d588226239da1f05b2bf257d7fa69b"
+  },
+  "specs/G11-integration-and-qa/05-revisar-validaciones-mensajes-de-error-y-estados-vacios.md": {
+    "mtime": 1780329530.6228395,
+    "ast_hash": "a524a1f074fb291339aee330fa0559c0",
+    "semantic_hash": "a524a1f074fb291339aee330fa0559c0"
+  },
+  "specs/G11-integration-and-qa/06-revisar-permisos-para-evitar-acciones-admin-desde-no-admin.md": {
+    "mtime": 1780960132.052794,
+    "ast_hash": "b77eedaf3bf89024f4a3df983b54a3c8",
+    "semantic_hash": "b77eedaf3bf89024f4a3df983b54a3c8"
+  },
+  "specs/G11-integration-and-qa/07-revisar-consistencia-visual-minima-entre-vistas.md": {
+    "mtime": 1780329530.6243658,
+    "ast_hash": "5bf6be33379ca0db1a6d8825bb1258ec",
+    "semantic_hash": "5bf6be33379ca0db1a6d8825bb1258ec"
+  },
+  "specs/G11-integration-and-qa/08-resolver-bugs-detectados-en-pruebas-finales.md": {
+    "mtime": 1780329530.625883,
+    "ast_hash": "b9be9996c52eb065b408f5844755f3fe",
+    "semantic_hash": "b9be9996c52eb065b408f5844755f3fe"
+  },
+  "specs/G11-integration-and-qa/09-ejecutar-validacion-tecnica-final-del-mvp.md": {
+    "mtime": 1780960132.0543473,
+    "ast_hash": "42076bc5a8caecc17d6e0ad1dd9e18e4",
+    "semantic_hash": "42076bc5a8caecc17d6e0ad1dd9e18e4"
+  },
+  "specs/G11-integration-and-qa/README.md": {
+    "mtime": 1780329818.1836147,
+    "ast_hash": "1089c085410052fd437748daf33687e8",
+    "semantic_hash": "1089c085410052fd437748daf33687e8"
+  },
+  "specs/G12-mvp-closure/01-actualizar-readme-y-documentos-principales.md": {
+    "mtime": 1780329612.6421516,
+    "ast_hash": "80577891a8ad790bc1c2eda23eab1307",
+    "semantic_hash": "80577891a8ad790bc1c2eda23eab1307"
+  },
+  "specs/G12-mvp-closure/02-registrar-decisiones-finales-y-desvios-del-plan.md": {
+    "mtime": 1780329612.6437178,
+    "ast_hash": "505cb7ee5f70402df5f33b836c19727d",
+    "semantic_hash": "505cb7ee5f70402df5f33b836c19727d"
+  },
+  "specs/G12-mvp-closure/03-confirmar-que-el-mvp-cumple-el-alcance-funcional-pactado.md": {
+    "mtime": 1780329612.6437178,
+    "ast_hash": "8f3628a120053fe9d16716b299741b71",
+    "semantic_hash": "8f3628a120053fe9d16716b299741b71"
+  },
+  "specs/G12-mvp-closure/04-confirmar-pendientes-post-mvp.md": {
+    "mtime": 1780329612.6452386,
+    "ast_hash": "2fc2104b4490a5437568675e1f818933",
+    "semantic_hash": "2fc2104b4490a5437568675e1f818933"
+  },
+  "specs/G12-mvp-closure/05-dejar-listo-el-backlog-de-la-siguiente-iteracion.md": {
+    "mtime": 1780329612.6452386,
+    "ast_hash": "6e72c7ea8b5722b5ad6f7cb329575929",
+    "semantic_hash": "6e72c7ea8b5722b5ad6f7cb329575929"
+  },
+  "specs/G12-mvp-closure/README.md": {
+    "mtime": 1780329818.1851377,
+    "ast_hash": "8277d5cbd9a1945d1b27621681cdaacb",
+    "semantic_hash": "8277d5cbd9a1945d1b27621681cdaacb"
+  },
+  "specs/G13-auth-transition/01-definir-el-contrato-de-auth-dual-para-gymcontrol.md": {
+    "mtime": 1781007473.3224025,
+    "ast_hash": "2ed902cf65e4ade4d81e2f3285c9fd12",
+    "semantic_hash": "2ed902cf65e4ade4d81e2f3285c9fd12"
+  },
+  "specs/G13-auth-transition/02-documentar-la-brecha-entre-magic-link-actual-y-auth-dual-objetivo.md": {
+    "mtime": 1781007473.3224025,
+    "ast_hash": "5435adbc32a85880053769f67edab8d4",
+    "semantic_hash": "5435adbc32a85880053769f67edab8d4"
+  },
+  "specs/G13-auth-transition/03-definir-el-flujo-otp-por-email-de-6-digitos.md": {
+    "mtime": 1781007473.3239148,
+    "ast_hash": "33ee99187cbf16bb2fc3dcddb17023ec",
+    "semantic_hash": "33ee99187cbf16bb2fc3dcddb17023ec"
+  },
+  "specs/G13-auth-transition/04-definir-el-flujo-alternativo-de-google-oauth.md": {
+    "mtime": 1781007473.3239148,
+    "ast_hash": "9259d3ced773f7cd3a135c481ff85440",
+    "semantic_hash": "9259d3ced773f7cd3a135c481ff85440"
+  },
+  "specs/G13-auth-transition/05-definir-como-convergen-sesion-y-perfil-entre-otp-y-google.md": {
+    "mtime": 1781007473.3254576,
+    "ast_hash": "7b7c2b835959b7b6b2cf7d2bebf354f0",
+    "semantic_hash": "7b7c2b835959b7b6b2cf7d2bebf354f0"
+  },
+  "specs/G13-auth-transition/06-definir-redirecciones-y-reglas-de-acceso-segun-rol.md": {
+    "mtime": 1781007473.3254576,
+    "ast_hash": "32f4aba2a4c492551c8f733ee27339cf",
+    "semantic_hash": "32f4aba2a4c492551c8f733ee27339cf"
+  },
+  "specs/G13-auth-transition/07-disenar-la-nueva-pantalla-de-auth-dual.md": {
+    "mtime": 1781007473.327026,
+    "ast_hash": "44193b8d224b6e1f82c942b446f9751e",
+    "semantic_hash": "44193b8d224b6e1f82c942b446f9751e"
+  },
+  "specs/G13-auth-transition/08-implementar-requestotp-mediante-endpoint-protegido.md": {
+    "mtime": 1781007473.3280654,
+    "ast_hash": "06c52d7bb66bcf7ad28b1d5a4d8e0681",
+    "semantic_hash": "06c52d7bb66bcf7ad28b1d5a4d8e0681"
+  },
+  "specs/G13-auth-transition/09-agregar-rate-limit-minimo-para-solicitud-de-otp.md": {
+    "mtime": 1781007473.3280654,
+    "ast_hash": "726db0a9a01ed062f5d08d65887f8bfa",
+    "semantic_hash": "726db0a9a01ed062f5d08d65887f8bfa"
+  },
+  "specs/G13-auth-transition/10-implementar-verificacion-de-otp-y-creacion-de-sesion.md": {
+    "mtime": 1781007473.3295877,
+    "ast_hash": "8af00be76008ff51f555349cf2137c12",
+    "semantic_hash": "8af00be76008ff51f555349cf2137c12"
+  },
+  "specs/G13-auth-transition/11-adaptar-el-callback-auth-para-google-oauth-y-retirar-dependencia-del-callback-en-otp.md": {
+    "mtime": 1781007473.3311064,
+    "ast_hash": "a53cab54669921e966856a24b3e7df74",
+    "semantic_hash": "a53cab54669921e966856a24b3e7df74"
+  },
+  "specs/G13-auth-transition/12-confirmar-si-el-trigger-actual-de-profiles-alcanza-sin-capa-extra-de-sync.md": {
+    "mtime": 1781007473.3311064,
+    "ast_hash": "a28d605e1a47d0213c9ebc3dee880d71",
+    "semantic_hash": "a28d605e1a47d0213c9ebc3dee880d71"
+  },
+  "specs/G13-auth-transition/13-refactorizar-la-capa-auth-y-guards-sin-romper-roles.md": {
+    "mtime": 1781007473.3326283,
+    "ast_hash": "54f2af428bc950ad61bd1d8fe43978a8",
+    "semantic_hash": "54f2af428bc950ad61bd1d8fe43978a8"
+  },
+  "specs/G13-auth-transition/14-retirar-el-flujo-principal-de-magic-link.md": {
+    "mtime": 1781007473.334152,
+    "ast_hash": "b5bf6e6029561aeb6eb7f76f66f18285",
+    "semantic_hash": "b5bf6e6029561aeb6eb7f76f66f18285"
+  },
+  "specs/G13-auth-transition/15-documentar-configuracion-externa-de-supabase-para-otp-por-codigo.md": {
+    "mtime": 1781007473.335708,
+    "ast_hash": "a3d901bbb2f5a66709e8f58980f21529",
+    "semantic_hash": "a3d901bbb2f5a66709e8f58980f21529"
+  },
+  "specs/G13-auth-transition/16-documentar-configuracion-externa-de-google-oauth.md": {
+    "mtime": 1781007473.337227,
+    "ast_hash": "30663eb13506baf139109d45a1cef630",
+    "semantic_hash": "30663eb13506baf139109d45a1cef630"
+  },
+  "specs/G13-auth-transition/17-revalidar-compatibilidad-con-profiles-bootstrap-admin-y-rls.md": {
+    "mtime": 1781007473.337227,
+    "ast_hash": "0f9aacdc44b58a4bf32e0f91d04ca02e",
+    "semantic_hash": "0f9aacdc44b58a4bf32e0f91d04ca02e"
+  },
+  "specs/G13-auth-transition/18-validar-flujos-auth-duales-y-logout.md": {
+    "mtime": 1781007473.3387542,
+    "ast_hash": "ca131951889d764aec96430b6b5e4bcf",
+    "semantic_hash": "ca131951889d764aec96430b6b5e4bcf"
+  },
+  "specs/G13-auth-transition/19-ejecutar-validacion-tecnica-de-la-transicion-auth.md": {
+    "mtime": 1781007473.3402843,
+    "ast_hash": "3cf8b084db62a24a38721e323173801d",
+    "semantic_hash": "3cf8b084db62a24a38721e323173801d"
+  },
+  "specs/G13-auth-transition/20-actualizar-documentacion-final-y-contexto-del-repo-tras-cerrar-g13.md": {
+    "mtime": 1781007473.3418202,
+    "ast_hash": "0c8382e17a5999121db0b00d5e3e1c5f",
+    "semantic_hash": "0c8382e17a5999121db0b00d5e3e1c5f"
+  },
+  "specs/G13-auth-transition/README.md": {
+    "mtime": 1781007473.3208916,
+    "ast_hash": "4e90f45c164535adee7c687b81d1b266",
+    "semantic_hash": "4e90f45c164535adee7c687b81d1b266"
+  },
+  "specs/G2-database/01-listar-entidades-minimas-necesarias.md": {
+    "mtime": 1780334513.9037552,
+    "ast_hash": "aa348c868b6c15134b7b56aad830eb31",
+    "semantic_hash": "aa348c868b6c15134b7b56aad830eb31"
+  },
+  "specs/G2-database/02-definir-atributos-minimos-por-entidad.md": {
+    "mtime": 1780334513.9037552,
+    "ast_hash": "ec3c6fc48eeb287d9e97c81c0e96066b",
+    "semantic_hash": "ec3c6fc48eeb287d9e97c81c0e96066b"
+  },
+  "specs/G2-database/03-definir-type-rol-y-su-uso-en-permisos.md": {
+    "mtime": 1780334612.3344798,
+    "ast_hash": "3c3c9f955d0d234b8fd08916c8b20f61",
+    "semantic_hash": "3c3c9f955d0d234b8fd08916c8b20f61"
+  },
+  "specs/G2-database/04-definir-relacion-rutina-dias-y-filas.md": {
+    "mtime": 1780334640.986071,
+    "ast_hash": "4da5f7223338b2cad9c68053907e6102",
+    "semantic_hash": "4da5f7223338b2cad9c68053907e6102"
+  },
+  "specs/G2-database/05-definir-relacion-usuarios-y-rutinas-guardadas.md": {
+    "mtime": 1780336778.827857,
+    "ast_hash": "60c5e8e68b1a64929d3e52cffcdea9f3",
+    "semantic_hash": "60c5e8e68b1a64929d3e52cffcdea9f3"
+  },
+  "specs/G2-database/06-definir-estrategia-para-imagenes-de-ejercicios.md": {
+    "mtime": 1780336800.9017825,
+    "ast_hash": "d6daf04d5481bffff5fd568669729ae9",
+    "semantic_hash": "d6daf04d5481bffff5fd568669729ae9"
+  },
+  "specs/G2-database/07-revisar-si-el-modelo-puede-simplificarse.md": {
+    "mtime": 1780336855.6694388,
+    "ast_hash": "65a6e5e9edc4029baf00672db3ea533c",
+    "semantic_hash": "65a6e5e9edc4029baf00672db3ea533c"
+  },
+  "specs/G2-database/08-redactar-documento-de-base-de-datos.md": {
+    "mtime": 1780336932.8301535,
+    "ast_hash": "86c3ff55294151dd4df012139910e360",
+    "semantic_hash": "86c3ff55294151dd4df012139910e360"
+  },
+  "specs/G2-database/09-guardar-acuerdo-de-minima-manipulacion.md": {
+    "mtime": 1780336974.898921,
+    "ast_hash": "e81688bd143ee1e95dcb74c9b787cdf9",
+    "semantic_hash": "e81688bd143ee1e95dcb74c9b787cdf9"
+  },
+  "specs/G2-database/10-cerrar-database-md-como-fuente-de-verdad.md": {
+    "mtime": 1780337087.0375087,
+    "ast_hash": "a991e0651aaf98c2faf16983826ed1c8",
+    "semantic_hash": "a991e0651aaf98c2faf16983826ed1c8"
+  },
+  "specs/G2-database/README.md": {
+    "mtime": 1780345039.4810057,
+    "ast_hash": "00b782c3940d627a8bc47b50efc6d8c0",
+    "semantic_hash": "00b782c3940d627a8bc47b50efc6d8c0"
+  },
+  "specs/G2.1/01-traducir-database-md-a-reglas-sql-concretas.md": {
+    "mtime": 1780345160.41427,
+    "ast_hash": "32bfff2ca3536dca43b302a7a84e3a90",
+    "semantic_hash": "32bfff2ca3536dca43b302a7a84e3a90"
+  },
+  "specs/G2.1/02-definir-utilidades-comunes-minimas-del-esquema.md": {
+    "mtime": 1780345320.5639057,
+    "ast_hash": "2fb086fc55ecb8b13262a7b3e52c0129",
+    "semantic_hash": "2fb086fc55ecb8b13262a7b3e52c0129"
+  },
+  "specs/G2.1/03-crear-tabla-profiles.md": {
+    "mtime": 1780345435.3721464,
+    "ast_hash": "3dcd6fe24e6bb694f9bc511b80150794",
+    "semantic_hash": "3dcd6fe24e6bb694f9bc511b80150794"
+  },
+  "specs/G2.1/04-crear-tabla-exercises.md": {
+    "mtime": 1780345515.713727,
+    "ast_hash": "1f1afe3d269f85f92ab61a44bf31c1c2",
+    "semantic_hash": "1f1afe3d269f85f92ab61a44bf31c1c2"
+  },
+  "specs/G2.1/05-crear-tablas-routine-templates-y-routine-days.md": {
+    "mtime": 1780345617.5093684,
+    "ast_hash": "cae093ac6b1054f419a4e65b358e25de",
+    "semantic_hash": "cae093ac6b1054f419a4e65b358e25de"
+  },
+  "specs/G2.1/06-crear-tabla-routine-items.md": {
+    "mtime": 1780345677.5568397,
+    "ast_hash": "6772dc704b84fba9db9e71236c2a9eff",
+    "semantic_hash": "6772dc704b84fba9db9e71236c2a9eff"
+  },
+  "specs/G2.1/07-crear-tabla-saved-routines.md": {
+    "mtime": 1780345724.2209692,
+    "ast_hash": "2b9f1b7238f36c01ab41ce698feed7d6",
+    "semantic_hash": "2b9f1b7238f36c01ab41ce698feed7d6"
+  },
+  "specs/G2.1/08-agregar-constraints-e-indices-minimos-finales.md": {
+    "mtime": 1780345767.1679952,
+    "ast_hash": "3ff9e50f9c5f788987b25556816852ad",
+    "semantic_hash": "3ff9e50f9c5f788987b25556816852ad"
+  },
+  "specs/G2.1/09-generar-migracion-sql-final-de-g2.md": {
+    "mtime": 1780345830.390288,
+    "ast_hash": "017d8e6dd09f9c6180d035dbed7031f6",
+    "semantic_hash": "017d8e6dd09f9c6180d035dbed7031f6"
+  },
+  "specs/G2.1/10-aplicar-migracion-en-supabase-y-verificar-esquema-real.md": {
+    "mtime": 1780345961.340095,
+    "ast_hash": "16f1101c8f95d577edd9aeb361c469b8",
+    "semantic_hash": "16f1101c8f95d577edd9aeb361c469b8"
+  },
+  "specs/G2.1/11-sincronizar-documentacion-operativa-de-g2.md": {
+    "mtime": 1780345979.6320057,
+    "ast_hash": "c3b927a08d7eaecad5c300c06db1f29c",
+    "semantic_hash": "c3b927a08d7eaecad5c300c06db1f29c"
+  },
+  "specs/G2.1/README.md": {
+    "mtime": 1780344727.237722,
+    "ast_hash": "dc6ef7075627abd8b757afb249ea169f",
+    "semantic_hash": "dc6ef7075627abd8b757afb249ea169f"
+  },
+  "specs/G3-skills-and-agents/01-identificar-tareas-recurrentes-que-justifican-skills-o-agentes.md": {
+    "mtime": 1780337238.3957968,
+    "ast_hash": "aaf51348e527a6b7117a5388717276bb",
+    "semantic_hash": "aaf51348e527a6b7117a5388717276bb"
+  },
+  "specs/G3-skills-and-agents/02-separar-necesidades-reales-de-ideas-prematuras.md": {
+    "mtime": 1780337357.2016542,
+    "ast_hash": "5ea1e46bd41440a031e6bedad96c185d",
+    "semantic_hash": "5ea1e46bd41440a031e6bedad96c185d"
+  },
+  "specs/G3-skills-and-agents/03-decidir-que-puede-resolverse-sin-skill-dedicada.md": {
+    "mtime": 1780337420.686813,
+    "ast_hash": "5df39069ea2d576dde0427a4689f5a7f",
+    "semantic_hash": "5df39069ea2d576dde0427a4689f5a7f"
+  },
+  "specs/G3-skills-and-agents/04-definir-cantidad-minima-de-skills-necesarias.md": {
+    "mtime": 1780953527.6079142,
+    "ast_hash": "91ee88eccc24a4f36784ca8c822a3365",
+    "semantic_hash": "91ee88eccc24a4f36784ca8c822a3365"
+  },
+  "specs/G3-skills-and-agents/05-definir-si-hace-falta-algun-agente-adicional.md": {
+    "mtime": 1780337536.0089962,
+    "ast_hash": "aa3e8336b474965fe5a285d61d7b500b",
+    "semantic_hash": "aa3e8336b474965fe5a285d61d7b500b"
+  },
+  "specs/G3-skills-and-agents/07-documentar-responsabilidades-limites-y-criterio-de-uso.md": {
+    "mtime": 1780953527.6079142,
+    "ast_hash": "4a27f11f086724c5c89801d3ef5a3703",
+    "semantic_hash": "4a27f11f086724c5c89801d3ef5a3703"
+  },
+  "specs/G3-skills-and-agents/08-guardar-definicion-en-skills-and-agents-md.md": {
+    "mtime": 1780337670.1746054,
+    "ast_hash": "30f86eccf12454e82a9d87d2854b9c89",
+    "semantic_hash": "30f86eccf12454e82a9d87d2854b9c89"
+  },
+  "specs/G3-skills-and-agents/README.md": {
+    "mtime": 1780329818.1775043,
+    "ast_hash": "4c891112679e5436b0f15b24a05f8c08",
+    "semantic_hash": "4c891112679e5436b0f15b24a05f8c08"
+  },
+  "specs/G4-mvp-setup/01-confirmar-stack-final-y-dependencias-necesarias.md": {
+    "mtime": 1780347381.608312,
+    "ast_hash": "4c5b549b40bdabcc3fe742c233c00dda",
+    "semantic_hash": "4c5b549b40bdabcc3fe742c233c00dda"
+  },
+  "specs/G4-mvp-setup/02-instalar-y-configurar-librerias-imprescindibles.md": {
+    "mtime": 1780347541.4514458,
+    "ast_hash": "f8347f40fd7b9dc5da62bd86df64255b",
+    "semantic_hash": "f8347f40fd7b9dc5da62bd86df64255b"
+  },
+  "specs/G4-mvp-setup/03-limpiar-el-boilerplate-inicial.md": {
+    "mtime": 1780347675.710484,
+    "ast_hash": "838eff76e98ff70228740867611d81ae",
+    "semantic_hash": "838eff76e98ff70228740867611d81ae"
+  },
+  "specs/G4-mvp-setup/04-crear-estructura-de-carpetas-pactada.md": {
+    "mtime": 1780347826.473611,
+    "ast_hash": "40a5abde5ffa0047695ba6f3768db60c",
+    "semantic_hash": "40a5abde5ffa0047695ba6f3768db60c"
+  },
+  "specs/G4-mvp-setup/05-configurar-estilos-base-y-ui-compartida.md": {
+    "mtime": 1780348019.7870083,
+    "ast_hash": "c6b10c12c1f9e5c126f74ee93c4240b5",
+    "semantic_hash": "c6b10c12c1f9e5c126f74ee93c4240b5"
+  },
+  "specs/G4-mvp-setup/06-configurar-acceso-a-base-de-datos-y-entorno.md": {
+    "mtime": 1780348678.2732902,
+    "ast_hash": "c59730346d5763383ae78d5051e7487a",
+    "semantic_hash": "c59730346d5763383ae78d5051e7487a"
+  },
+  "specs/G4-mvp-setup/07-crear-layout-base-y-navegacion-inicial.md": {
+    "mtime": 1780953227.7201,
+    "ast_hash": "2701a3bd37d3ec8e2226fc8b5f597ddc",
+    "semantic_hash": "2701a3bd37d3ec8e2226fc8b5f597ddc"
+  },
+  "specs/G4-mvp-setup/08-dejar-esqueleto-navegable-de-las-vistas-principales.md": {
+    "mtime": 1780953227.7224472,
+    "ast_hash": "88624b2861b689a4449c2254da3f7a2c",
+    "semantic_hash": "88624b2861b689a4449c2254da3f7a2c"
+  },
+  "specs/G4-mvp-setup/README.md": {
+    "mtime": 1780329818.17902,
+    "ast_hash": "b97859ee51b89d7ba40e9145a9a7cf10",
+    "semantic_hash": "b97859ee51b89d7ba40e9145a9a7cf10"
+  },
+  "specs/G4.5-frontend-base-and-experience/01-definir-shell-principal-con-panel-lateral-izquierdo.md": {
+    "mtime": 1780351894.7722328,
+    "ast_hash": "3a4581aba4749168b5a6741b43701d70",
+    "semantic_hash": "3a4581aba4749168b5a6741b43701d70"
+  },
+  "specs/G4.5-frontend-base-and-experience/02-definir-navegacion-base-para-usuario-y-admin.md": {
+    "mtime": 1780351983.6717021,
+    "ast_hash": "f208cd3c12f9d6811a203d4e05b977f2",
+    "semantic_hash": "f208cd3c12f9d6811a203d4e05b977f2"
+  },
+  "specs/G4.5-frontend-base-and-experience/03-definir-mapa-real-de-vistas-y-transiciones.md": {
+    "mtime": 1780352092.2408202,
+    "ast_hash": "5c635e5f1a93c0c3f8db59e08e5f305e",
+    "semantic_hash": "5c635e5f1a93c0c3f8db59e08e5f305e"
+  },
+  "specs/G4.5-frontend-base-and-experience/04-confirmar-fronteras-entre-agregar-rutinas-mis-rutinas-ejercicio-y-admin.md": {
+    "mtime": 1780352167.339406,
+    "ast_hash": "67f7f2f0fefa7b384b7fa9620c01ea17",
+    "semantic_hash": "67f7f2f0fefa7b384b7fa9620c01ea17"
+  },
+  "specs/G4.5-frontend-base-and-experience/05-definir-direccion-visual-general-del-producto.md": {
+    "mtime": 1780352270.782645,
+    "ast_hash": "43cc0731aff125dd5a56590ac2e66948",
+    "semantic_hash": "43cc0731aff125dd5a56590ac2e66948"
+  },
+  "specs/G4.5-frontend-base-and-experience/06-definir-tipografia-paleta-superficies-y-espaciado-base.md": {
+    "mtime": 1780352364.155022,
+    "ast_hash": "43ce41f4a8ccbc76ca266033492bbbff",
+    "semantic_hash": "43ce41f4a8ccbc76ca266033492bbbff"
+  },
+  "specs/G4.5-frontend-base-and-experience/07-definir-patron-visual-del-panel-lateral-y-area-de-contenido.md": {
+    "mtime": 1780352448.4829733,
+    "ast_hash": "6b093301ca741768c3699464ccc75d06",
+    "semantic_hash": "6b093301ca741768c3699464ccc75d06"
+  },
+  "specs/G4.5-frontend-base-and-experience/08-definir-estilo-base-de-tabla-de-rutina-y-modal-de-ejercicio.md": {
+    "mtime": 1780352538.6421547,
+    "ast_hash": "3b33a364e045e5489e02c6c8d9c9da8b",
+    "semantic_hash": "3b33a364e045e5489e02c6c8d9c9da8b"
+  },
+  "specs/G4.5-frontend-base-and-experience/09-disenar-pantalla-agregar-rutinas.md": {
+    "mtime": 1780352652.5886128,
+    "ast_hash": "62c0bafd6b06a02e216ac497cfcc24b7",
+    "semantic_hash": "62c0bafd6b06a02e216ac497cfcc24b7"
+  },
+  "specs/G4.5-frontend-base-and-experience/10-disenar-pantalla-mis-rutinas-con-rutina-activa.md": {
+    "mtime": 1780352744.4535003,
+    "ast_hash": "ee1ca5fa92e82a4443aa6fad84bfbda6",
+    "semantic_hash": "ee1ca5fa92e82a4443aa6fad84bfbda6"
+  },
+  "specs/G4.5-frontend-base-and-experience/11-disenar-pantalla-ejercicio-con-organigrama-semanal.md": {
+    "mtime": 1780352832.6069617,
+    "ast_hash": "2781f2669ded1fa2c5e58b65cec600d1",
+    "semantic_hash": "2781f2669ded1fa2c5e58b65cec600d1"
+  },
+  "specs/G4.5-frontend-base-and-experience/12-disenar-pantalla-de-detalle-diario-de-rutina.md": {
+    "mtime": 1780353144.651699,
+    "ast_hash": "d5073e56dc3b820145dfe1ae21ba3c33",
+    "semantic_hash": "d5073e56dc3b820145dfe1ae21ba3c33"
+  },
+  "specs/G4.5-frontend-base-and-experience/13-disenar-comportamiento-del-modal-de-ejercicio.md": {
+    "mtime": 1780353229.978181,
+    "ast_hash": "24c853cc154432a7496ddf12d626c476",
+    "semantic_hash": "24c853cc154432a7496ddf12d626c476"
+  },
+  "specs/G4.5-frontend-base-and-experience/14-integrar-acceso-admin-en-el-shell-general.md": {
+    "mtime": 1780353346.8205779,
+    "ast_hash": "dda69227c24cf55085d1acb19fab6843",
+    "semantic_hash": "dda69227c24cf55085d1acb19fab6843"
+  },
+  "specs/G4.5-frontend-base-and-experience/15-disenar-base-visual-de-admin-dashboard.md": {
+    "mtime": 1780353437.5063634,
+    "ast_hash": "298cc9f1da1c635126be441a9265ec76",
+    "semantic_hash": "298cc9f1da1c635126be441a9265ec76"
+  },
+  "specs/G4.5-frontend-base-and-experience/16-disenar-entradas-para-gestion-de-ejercicios-y-rutinas.md": {
+    "mtime": 1780353517.6587193,
+    "ast_hash": "741633a143f8df23c99209e1f3ff3dbe",
+    "semantic_hash": "741633a143f8df23c99209e1f3ff3dbe"
+  },
+  "specs/G4.5-frontend-base-and-experience/17-implementar-shell-navegable-definitivo-del-frontend-base.md": {
+    "mtime": 1780354102.9582367,
+    "ast_hash": "45203507b1ea90d9e419c06b399e221e",
+    "semantic_hash": "45203507b1ea90d9e419c06b399e221e"
+  },
+  "specs/G4.5-frontend-base-and-experience/18-implementar-vistas-base-y-placeholders-del-nuevo-flujo.md": {
+    "mtime": 1780354951.8595948,
+    "ast_hash": "276a11f0a3eab4292b2df666e890e35e",
+    "semantic_hash": "276a11f0a3eab4292b2df666e890e35e"
+  },
+  "specs/G4.5-frontend-base-and-experience/19-validar-navegacion-responsive-panel-y-modal-con-playwright.md": {
+    "mtime": 1780953227.7260518,
+    "ast_hash": "2c0c62df042fb12bc08e9e7af240e893",
+    "semantic_hash": "2c0c62df042fb12bc08e9e7af240e893"
+  },
+  "specs/G4.5-frontend-base-and-experience/README.md": {
+    "mtime": 1780953481.1578531,
+    "ast_hash": "345645959ab04770b0ac3fce5fb5c93b",
+    "semantic_hash": "345645959ab04770b0ac3fce5fb5c93b"
+  },
+  "specs/G5-auth-and-roles/01-implementar-autenticacion-base-de-usuario.md": {
+    "mtime": 1780957213.5973742,
+    "ast_hash": "dd8c8f888ce7121baeb9f42ae763a91c",
+    "semantic_hash": "dd8c8f888ce7121baeb9f42ae763a91c"
+  },
+  "specs/G5-auth-and-roles/02-integrar-type-rol-al-flujo-de-acceso-y-sesion.md": {
+    "mtime": 1780957213.5973742,
+    "ast_hash": "0b24b2f6ae0189c4483e587af87b4836",
+    "semantic_hash": "0b24b2f6ae0189c4483e587af87b4836"
+  },
+  "specs/G5-auth-and-roles/03-definir-redirecciones-segun-estado-y-rol.md": {
+    "mtime": 1780957213.5988953,
+    "ast_hash": "fae7e4e394350ca9d262e599e099a950",
+    "semantic_hash": "fae7e4e394350ca9d262e599e099a950"
+  },
+  "specs/G5-auth-and-roles/04-proteger-admin-dashboard-para-rol-admin.md": {
+    "mtime": 1780957213.6004162,
+    "ast_hash": "814f9341e607f40d0e221ee336f3b1e3",
+    "semantic_hash": "814f9341e607f40d0e221ee336f3b1e3"
+  },
+  "specs/G5-auth-and-roles/05-proteger-acciones-de-creacion-y-edicion-administrativas.md": {
+    "mtime": 1780957213.6019547,
+    "ast_hash": "354f5a74ae22a9973f0092744fe27114",
+    "semantic_hash": "354f5a74ae22a9973f0092744fe27114"
+  },
+  "specs/G5-auth-and-roles/06-validar-acceso-normal-al-dashboard-de-usuario.md": {
+    "mtime": 1780957213.6035218,
+    "ast_hash": "a94e538b500767b30237a5947dd7cc76",
+    "semantic_hash": "a94e538b500767b30237a5947dd7cc76"
+  },
+  "specs/G5-auth-and-roles/07-probar-escenarios-basicos-de-acceso-permitido-y-denegado.md": {
+    "mtime": 1780957213.6050553,
+    "ast_hash": "c5ff9b35cae5f4459852f58c301c5b1e",
+    "semantic_hash": "c5ff9b35cae5f4459852f58c301c5b1e"
+  },
+  "specs/G5-auth-and-roles/08-ajustar-mensajes-o-ux-minima-ante-accesos-no-permitidos.md": {
+    "mtime": 1780957213.6066442,
+    "ast_hash": "c40aa4c41e62799ff7975e327bca84fa",
+    "semantic_hash": "c40aa4c41e62799ff7975e327bca84fa"
+  },
+  "specs/G5-auth-and-roles/09-documentar-bootstrap-admin-verificable.md": {
+    "mtime": 1780957213.6081755,
+    "ast_hash": "c711a80132ca5cd528a507c977e1fd5b",
+    "semantic_hash": "c711a80132ca5cd528a507c977e1fd5b"
+  },
+  "specs/G5-auth-and-roles/README.md": {
+    "mtime": 1780957213.595855,
+    "ast_hash": "1651a5426159d7927e12fd0b52e513c1",
+    "semantic_hash": "1651a5426159d7927e12fd0b52e513c1"
+  },
+  "specs/G5.5-rls-and-policies/01-definir-estrategia-minima-de-rls-y-helper-de-admin.md": {
+    "mtime": 1780958037.9825113,
+    "ast_hash": "4323cce067a801f93e6cd201dc64745e",
+    "semantic_hash": "4323cce067a801f93e6cd201dc64745e"
+  },
+  "specs/G5.5-rls-and-policies/02-habilitar-rls-en-tablas-del-mvp.md": {
+    "mtime": 1780958037.9825113,
+    "ast_hash": "d44a03da57aaccef8038185cfa0aca12",
+    "semantic_hash": "d44a03da57aaccef8038185cfa0aca12"
+  },
+  "specs/G5.5-rls-and-policies/03-documentar-lecturas-de-catalogo-del-mvp.md": {
+    "mtime": 1780958037.984067,
+    "ast_hash": "f859a3e92225a693db4149533af6b94a",
+    "semantic_hash": "f859a3e92225a693db4149533af6b94a"
+  },
+  "specs/G5.5-rls-and-policies/04-aplicar-policies-para-profiles.md": {
+    "mtime": 1780958037.985585,
+    "ast_hash": "e9065402b6f124364c611ded1bee3c52",
+    "semantic_hash": "e9065402b6f124364c611ded1bee3c52"
+  },
+  "specs/G5.5-rls-and-policies/05-aplicar-policies-para-catalogo-base.md": {
+    "mtime": 1780958037.9871333,
+    "ast_hash": "982415dba5b1bbd3fe99e21f3a96d8f6",
+    "semantic_hash": "982415dba5b1bbd3fe99e21f3a96d8f6"
+  },
+  "specs/G5.5-rls-and-policies/06-aplicar-policies-para-saved-routines.md": {
+    "mtime": 1780958037.9886518,
+    "ast_hash": "56ab15a728e4d1e07b236b71eec07496",
+    "semantic_hash": "56ab15a728e4d1e07b236b71eec07496"
+  },
+  "specs/G5.5-rls-and-policies/07-restringir-escrituras-administrativas-a-admin.md": {
+    "mtime": 1780958037.99078,
+    "ast_hash": "b2945061f3b79aead56f9f55368f210c",
+    "semantic_hash": "b2945061f3b79aead56f9f55368f210c"
+  },
+  "specs/G5.5-rls-and-policies/08-validar-escenarios-anon-authenticated-admin-y-owner.md": {
+    "mtime": 1780958281.4945364,
+    "ast_hash": "935c19af797942c1d58c1338b845820f",
+    "semantic_hash": "935c19af797942c1d58c1338b845820f"
+  },
+  "specs/G5.5-rls-and-policies/09-confirmar-bootstrap-admin-y-criterio-de-qa-manual.md": {
+    "mtime": 1780958037.9944086,
+    "ast_hash": "b796ebd0abf8c03a428d77a4015fcfeb",
+    "semantic_hash": "b796ebd0abf8c03a428d77a4015fcfeb"
+  },
+  "specs/G5.5-rls-and-policies/README.md": {
+    "mtime": 1780958281.4945364,
+    "ast_hash": "79756dcd707ce29596ddfe658fd9f84d",
+    "semantic_hash": "79756dcd707ce29596ddfe658fd9f84d"
+  },
+  "specs/G6-admin-exercises/01-implementar-modelo-persistente-de-ejercicio.md": {
+    "mtime": 1780953345.5253382,
+    "ast_hash": "2dbdfc4d94439776fbd42f327faa2194",
+    "semantic_hash": "2dbdfc4d94439776fbd42f327faa2194"
+  },
+  "specs/G6-admin-exercises/02-implementar-validaciones-de-alta-y-edicion.md": {
+    "mtime": 1780960132.041052,
+    "ast_hash": "058bdab6e48ddc97ad836498092c7cf3",
+    "semantic_hash": "058bdab6e48ddc97ad836498092c7cf3"
+  },
+  "specs/G6-admin-exercises/03-resolver-almacenamiento-o-referencia-de-imagenes.md": {
+    "mtime": 1780960132.0420563,
+    "ast_hash": "63f2fe44395925826b2ed2004c7a7722",
+    "semantic_hash": "63f2fe44395925826b2ed2004c7a7722"
+  },
+  "specs/G6-admin-exercises/04-crear-vista-de-listado-de-ejercicios-en-admin-dashboard.md": {
+    "mtime": 1780960132.0420563,
+    "ast_hash": "5e5dff73f98d50e0fd1ff5bbd3dd2684",
+    "semantic_hash": "5e5dff73f98d50e0fd1ff5bbd3dd2684"
+  },
+  "specs/G6-admin-exercises/05-crear-formulario-para-alta-de-ejercicio.md": {
+    "mtime": 1780960132.0435908,
+    "ast_hash": "ae24dec0392e547fc56c386975e405bb",
+    "semantic_hash": "ae24dec0392e547fc56c386975e405bb"
+  },
+  "specs/G6-admin-exercises/06-crear-edicion-basica-de-ejercicio-si-aplica.md": {
+    "mtime": 1780328554.5639875,
+    "ast_hash": "95d8bf7b19f98c8da8d4001ee36e409e",
+    "semantic_hash": "95d8bf7b19f98c8da8d4001ee36e409e"
+  },
+  "specs/G6-admin-exercises/07-exponer-datos-de-ejercicio-para-consumo-transversal.md": {
+    "mtime": 1780328554.5639875,
+    "ast_hash": "2322716a09cf7652b452eb2e099bb673",
+    "semantic_hash": "2322716a09cf7652b452eb2e099bb673"
+  },
+  "specs/G6-admin-exercises/08-verificar-persistencia-y-recuperacion-correcta.md": {
+    "mtime": 1780328554.5655003,
+    "ast_hash": "8d6245270e68add585d3b1cc7e98f91f",
+    "semantic_hash": "8d6245270e68add585d3b1cc7e98f91f"
+  },
+  "specs/G6-admin-exercises/README.md": {
+    "mtime": 1780953345.5238035,
+    "ast_hash": "20ae3aad095fa8170926bf417444a394",
+    "semantic_hash": "20ae3aad095fa8170926bf417444a394"
+  },
+  "specs/G7-admin-routines/01-implementar-persistencia-de-rutina-plantilla.md": {
+    "mtime": 1780953345.5283978,
+    "ast_hash": "6a9838d912f5396ffea4d3965f39002b",
+    "semantic_hash": "6a9838d912f5396ffea4d3965f39002b"
+  },
+  "specs/G7-admin-routines/02-implementar-persistencia-de-dias-de-rutina-semanal.md": {
+    "mtime": 1780953345.529923,
+    "ast_hash": "65f5c64a3bda21c78d1b7652bae72f23",
+    "semantic_hash": "65f5c64a3bda21c78d1b7652bae72f23"
+  },
+  "specs/G7-admin-routines/03-implementar-persistencia-de-filas-de-ejercicio.md": {
+    "mtime": 1780953345.5309925,
+    "ast_hash": "2b2b98f99ac12f4b46b689082e6f6433",
+    "semantic_hash": "2b2b98f99ac12f4b46b689082e6f6433"
+  },
+  "specs/G7-admin-routines/04-crear-listado-de-rutinas-en-admin-dashboard.md": {
+    "mtime": 1780960132.0435908,
+    "ast_hash": "7d081fcc1d0788671f99071f7f11e087",
+    "semantic_hash": "7d081fcc1d0788671f99071f7f11e087"
+  },
+  "specs/G7-admin-routines/05-crear-builder-o-formulario-de-rutina-semanal.md": {
+    "mtime": 1780328701.915208,
+    "ast_hash": "34c140a4980aabad747501f3d9ea5c33",
+    "semantic_hash": "34c140a4980aabad747501f3d9ea5c33"
+  },
+  "specs/G7-admin-routines/06-permitir-agregar-multiples-dias-a-una-rutina.md": {
+    "mtime": 1780328701.9167266,
+    "ast_hash": "2467f3e4806e205daa0f00519c9888d2",
+    "semantic_hash": "2467f3e4806e205daa0f00519c9888d2"
+  },
+  "specs/G7-admin-routines/07-permitir-agregar-multiples-filas-de-ejercicios-por-dia.md": {
+    "mtime": 1780328701.9167266,
+    "ast_hash": "c7e7867205158bddf778beaeed9e775a",
+    "semantic_hash": "c7e7867205158bddf778beaeed9e775a"
+  },
+  "specs/G7-admin-routines/08-validar-recuperacion-de-rutina-con-estructura-completa.md": {
+    "mtime": 1780960132.0451057,
+    "ast_hash": "046f1e86b5048235bc1ff2b06adf991f",
+    "semantic_hash": "046f1e86b5048235bc1ff2b06adf991f"
+  },
+  "specs/G7-admin-routines/09-verificar-consistencia-de-referencias-a-ejercicios.md": {
+    "mtime": 1780960132.0466201,
+    "ast_hash": "e433869532dcf7d5395a6d20120cbe3f",
+    "semantic_hash": "e433869532dcf7d5395a6d20120cbe3f"
+  },
+  "specs/G7-admin-routines/README.md": {
+    "mtime": 1780953345.5268648,
+    "ast_hash": "eb45e06ac9c4257359943ce89c80690e",
+    "semantic_hash": "eb45e06ac9c4257359943ce89c80690e"
+  },
+  "specs/G8-routine-catalog/01-crear-vista-catalogo-de-rutinas-disponibles.md": {
+    "mtime": 1780328775.9000173,
+    "ast_hash": "ec44c0170344dfe8c9305991688ffd3f",
+    "semantic_hash": "ec44c0170344dfe8c9305991688ffd3f"
+  },
+  "specs/G8-routine-catalog/02-mostrar-informacion-minima-util-de-cada-rutina.md": {
+    "mtime": 1780328775.9000173,
+    "ast_hash": "a231892debc8e8db4f9c1e0205c58f4d",
+    "semantic_hash": "a231892debc8e8db4f9c1e0205c58f4d"
+  },
+  "specs/G8-routine-catalog/03-permitir-entrar-al-detalle-de-una-rutina.md": {
+    "mtime": 1780328775.901539,
+    "ast_hash": "871c07f7fd5708e56351cea4046645a0",
+    "semantic_hash": "871c07f7fd5708e56351cea4046645a0"
+  },
+  "specs/G8-routine-catalog/04-mostrar-estructura-semanal-de-la-rutina-elegida.md": {
+    "mtime": 1780328775.902551,
+    "ast_hash": "6bb71718be54450d798c0dfbda1f8eb2",
+    "semantic_hash": "6bb71718be54450d798c0dfbda1f8eb2"
+  },
+  "specs/G8-routine-catalog/05-hacer-clickeables-los-ejercicios-para-su-detalle.md": {
+    "mtime": 1780960132.0476277,
+    "ast_hash": "d7158e46f4a90d707ed570cef4b7abd0",
+    "semantic_hash": "d7158e46f4a90d707ed570cef4b7abd0"
+  },
+  "specs/G8-routine-catalog/06-preparar-punto-de-accion-para-guardar-rutina.md": {
+    "mtime": 1780960132.0486412,
+    "ast_hash": "8de5d16c1d7f5ebaf98898e290b0257d",
+    "semantic_hash": "8de5d16c1d7f5ebaf98898e290b0257d"
+  },
+  "specs/G8-routine-catalog/README.md": {
+    "mtime": 1780329818.1820936,
+    "ast_hash": "b1086b29fe55c700935c0013bf0b07c0",
+    "semantic_hash": "b1086b29fe55c700935c0013bf0b07c0"
+  },
+  "specs/G9-user-dashboard/01-implementar-accion-para-guardar-rutina-en-cuenta.md": {
+    "mtime": 1780328884.8859584,
+    "ast_hash": "9af441cdfccafd015b1fa68425699fab",
+    "semantic_hash": "9af441cdfccafd015b1fa68425699fab"
+  },
+  "specs/G9-user-dashboard/02-permitir-que-el-usuario-tenga-mas-de-una-rutina-guardada.md": {
+    "mtime": 1780328884.8874762,
+    "ast_hash": "6466c4fb9b5a5933005b3d9012326c81",
+    "semantic_hash": "6466c4fb9b5a5933005b3d9012326c81"
+  },
+  "specs/G9-user-dashboard/03-definir-representacion-entre-rutina-plantilla-y-rutina-guardada.md": {
+    "mtime": 1780328884.888485,
+    "ast_hash": "569ec5e3a5d8f093b92088925d53187e",
+    "semantic_hash": "569ec5e3a5d8f093b92088925d53187e"
+  },
+  "specs/G9-user-dashboard/04-permitir-asignar-nombre-propio-a-cada-rutina-guardada.md": {
+    "mtime": 1780960132.0486412,
+    "ast_hash": "6889c51af1d93d843096ffe81cb55f12",
+    "semantic_hash": "6889c51af1d93d843096ffe81cb55f12"
+  },
+  "specs/G9-user-dashboard/05-permitir-editar-nombre-desde-el-dashboard.md": {
+    "mtime": 1780328884.8899965,
+    "ast_hash": "7dd9b667528ead6f22c2dae398ddb102",
+    "semantic_hash": "7dd9b667528ead6f22c2dae398ddb102"
+  },
+  "specs/G9-user-dashboard/06-crear-dashboard-de-usuario-con-listado-de-rutinas-guardadas.md": {
+    "mtime": 1780328884.8899965,
+    "ast_hash": "e4d25cef5b7b77c3e6c706c1b4249819",
+    "semantic_hash": "e4d25cef5b7b77c3e6c706c1b4249819"
+  },
+  "specs/G9-user-dashboard/07-permitir-ver-detalle-de-cada-rutina-guardada.md": {
+    "mtime": 1780328884.8915155,
+    "ast_hash": "20ae067958504ad727f162588d1edd8c",
+    "semantic_hash": "20ae067958504ad727f162588d1edd8c"
+  },
+  "specs/G9-user-dashboard/08-mantener-acceso-al-modal-de-detalle-de-ejercicio.md": {
+    "mtime": 1780328884.8915155,
+    "ast_hash": "f7194380a30002b2effd655538f03acc",
+    "semantic_hash": "f7194380a30002b2effd655538f03acc"
+  },
+  "specs/G9-user-dashboard/README.md": {
+    "mtime": 1780329818.1820936,
+    "ast_hash": "d2fcbc821eeaddaa0674fb919595f92d",
+    "semantic_hash": "d2fcbc821eeaddaa0674fb919595f92d"
+  },
+  "specs/README.md": {
+    "mtime": 1780351741.1332116,
+    "ast_hash": "d41b7a16cce548863ca8bc9a8b1bf804",
+    "semantic_hash": "d41b7a16cce548863ca8bc9a8b1bf804"
+  },
+  ".codex-g11-upload.png": {
+    "mtime": 1781002693.007775,
+    "ast_hash": "f7c1599971552e64c767c013f4edaea6",
+    "semantic_hash": "f7c1599971552e64c767c013f4edaea6"
+  },
+  ".codex-temp/catalogo-desktop-cards.png": {
+    "mtime": 1781027694.474264,
+    "ast_hash": "6d22475eaac3ed15f4992512e05c3e08",
+    "semantic_hash": "6d22475eaac3ed15f4992512e05c3e08"
+  },
+  ".codex-temp/catalogo-desktop.png": {
+    "mtime": 1781027592.7952893,
+    "ast_hash": "83c9334fe7cda27c58a92f0a0838bda1",
+    "semantic_hash": "83c9334fe7cda27c58a92f0a0838bda1"
+  },
+  ".codex-temp/catalogo-mobile-cards.png": {
+    "mtime": 1781027694.4874756,
+    "ast_hash": "20ba867233fe5b541ade145e8cb656bf",
+    "semantic_hash": "20ba867233fe5b541ade145e8cb656bf"
+  },
+  ".codex-temp/catalogo-mobile.png": {
+    "mtime": 1781027632.6183944,
+    "ast_hash": "d79936359a31aa953ba1b7184a269713",
+    "semantic_hash": "d79936359a31aa953ba1b7184a269713"
+  },
+  "public/bugs/bug1.png": {
+    "mtime": 1781221921.2721646,
+    "ast_hash": "87ada0bd2f3c357ddb9daa32e6df19b8",
+    "semantic_hash": ""
+  },
+  "public/bugs/bug2.png": {
+    "mtime": 1781038653.110228,
+    "ast_hash": "bdad9a0cdd07d11dc032c3bf660c980f",
+    "semantic_hash": "bdad9a0cdd07d11dc032c3bf660c980f"
+  },
+  "public/bugs/bug3.png": {
+    "mtime": 1781039432.9147165,
+    "ast_hash": "26cca5677aba9e0d96ff2b1a248f1cb2",
+    "semantic_hash": "26cca5677aba9e0d96ff2b1a248f1cb2"
+  },
+  "public/bugs/bug4.png": {
+    "mtime": 1781039857.6346965,
+    "ast_hash": "1f22d469486cd618b2f53988737b5e1b",
+    "semantic_hash": "1f22d469486cd618b2f53988737b5e1b"
+  },
+  "public/bugs/bug5.png": {
+    "mtime": 1781042021.0525866,
+    "ast_hash": "a993a9f601fbf48907c3234cb39dfa55",
+    "semantic_hash": "a993a9f601fbf48907c3234cb39dfa55"
+  },
+  "public/bugs/bug6.png": {
+    "mtime": 1781064385.2046742,
+    "ast_hash": "5943d50b12f1e721d29226b7128305d7",
+    "semantic_hash": "5943d50b12f1e721d29226b7128305d7"
+  },
+  "public/file.svg": {
+    "mtime": 1780325483.054372,
+    "ast_hash": "d09f95206c3fa0bb9bd9fefabfd0ea71",
+    "semantic_hash": "d09f95206c3fa0bb9bd9fefabfd0ea71"
+  },
+  "public/globe.svg": {
+    "mtime": 1780325483.055889,
+    "ast_hash": "2aaafa6a49b6563925fe440891e32717",
+    "semantic_hash": "2aaafa6a49b6563925fe440891e32717"
+  },
+  "public/next.svg": {
+    "mtime": 1780325483.055889,
+    "ast_hash": "8e061864f388b47f33a1c3780831193e",
+    "semantic_hash": "8e061864f388b47f33a1c3780831193e"
+  },
+  "public/references/example.png": {
+    "mtime": 1780949240.3313289,
+    "ast_hash": "48c45cd1de57ff50b69e9014f6674e2a",
+    "semantic_hash": "48c45cd1de57ff50b69e9014f6674e2a"
+  },
+  "public/references/finished/catalogo.png": {
+    "mtime": 1781024777.8997512,
+    "ast_hash": "99dd616e7d9b596085bd8e93ea26443e",
+    "semantic_hash": "99dd616e7d9b596085bd8e93ea26443e"
+  },
+  "public/references/finished/catalogo_rutinas_[id].png": {
+    "mtime": 1781028515.9653096,
+    "ast_hash": "aab4995c24689b0eab07efba95038a4e",
+    "semantic_hash": "aab4995c24689b0eab07efba95038a4e"
+  },
+  "public/references/finished/dashboard_rutinas_dia.png": {
+    "mtime": 1781035763.3664944,
+    "ast_hash": "4e9b7034aaed5c1788053a589f5320d0",
+    "semantic_hash": "4e9b7034aaed5c1788053a589f5320d0"
+  },
+  "public/references/finished/home.png": {
+    "mtime": 1781065408.06992,
+    "ast_hash": "b739f2a6c7818740efed5a11031efb80",
+    "semantic_hash": "b739f2a6c7818740efed5a11031efb80"
+  },
+  "public/references/finished/navbar.png": {
+    "mtime": 1781022313.5773573,
+    "ast_hash": "0cf050eafcd3a3adc6500bef4cdd890d",
+    "semantic_hash": "0cf050eafcd3a3adc6500bef4cdd890d"
+  },
+  "public/vercel.svg": {
+    "mtime": 1780325483.058919,
+    "ast_hash": "c0af2f507b369b085b35ef4bbe3bcf1e",
+    "semantic_hash": "c0af2f507b369b085b35ef4bbe3bcf1e"
+  },
+  "public/window.svg": {
+    "mtime": 1780325483.058919,
+    "ast_hash": "a2760511c65806022ad20adf74370ff3",
+    "semantic_hash": "a2760511c65806022ad20adf74370ff3"
+  },
+  "app/dashboard/rutinas/WeekDaysList.tsx": {
+    "mtime": 1781308388.8297613,
+    "ast_hash": "b1434d46719fdeb52aebec30f1ab0eb4",
+    "semantic_hash": ""
+  },
+  "tools/claude-batch/check-batch.py": {
+    "mtime": 1781198368.6763816,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "tools/claude-batch/create-batch.py": {
+    "mtime": 1781198359.8442664,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "tools/claude-batch/read-result.py": {
+    "mtime": 1781198376.2177823,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "public/references/finished/dashboard.png": {
+    "mtime": 1781034055.426074,
+    "ast_hash": "cd70376447ac447ae035098893a8bf5a",
+    "semantic_hash": ""
+  },
+  "public/references/finished/dashboard_rutinas.png": {
+    "mtime": 1781035784.2338865,
+    "ast_hash": "1cf16c993bfa9736d75bb30e89acd662",
+    "semantic_hash": ""
+  },
+  "app/components/ui/ProgressRing.tsx": {
+    "mtime": 1781220769.1675317,
+    "ast_hash": "abc03ba9beef08cf6f36fc3bade81e28",
+    "semantic_hash": ""
+  },
+  "app/components/ui/motion.tsx": {
+    "mtime": 1781222022.4710248,
+    "ast_hash": "0ea2f1ee009f65c20da10fc563254965",
+    "semantic_hash": ""
+  },
+  "app/lib/admin-stats.ts": {
+    "mtime": 1781291795.5112615,
+    "ast_hash": "d131944e820e00f1ebd678fcba819ff2",
+    "semantic_hash": ""
+  },
+  ".claude/plans/en-el-home-en-agile-harp.md": {
+    "mtime": 1781270123.9006824,
+    "ast_hash": "506e2f7e100f5817f92818863da51b1b",
+    "semantic_hash": ""
+  },
+  ".claude/plans/fetch-this-design-file-compressed-crab.md": {
+    "mtime": 1781238601.0023634,
+    "ast_hash": "8513057be60bddd07ad20dc791b78c2c",
+    "semantic_hash": ""
+  },
+  "public/references/to_do/admin-dashboard.png": {
+    "mtime": 1781236673.3833413,
+    "ast_hash": "ce5465e57438461e54bcd9fdf6548a9d",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-transient-ladybug.md": {
+    "mtime": 1781290277.5795312,
+    "ast_hash": "49ff351b8b593f9d9c72fe3602be2435",
+    "semantic_hash": ""
+  },
+  "public/bugs/bug_lupita.png": {
+    "mtime": 1781270630.8951602,
+    "ast_hash": "599cf3351a4530d6a35308d3829e3905",
+    "semantic_hash": ""
+  },
+  "app/components/shared/StatusToast.tsx": {
+    "mtime": 1781312398.523915,
+    "ast_hash": "f0f6f727f22c7e6e66749f9266973812",
+    "semantic_hash": ""
+  },
+  "app/components/ui/DropdownMenu.tsx": {
+    "mtime": 1781307537.149666,
+    "ast_hash": "21ff880d8c0e5e775b96e3a930a815d9",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-staged-stonebraker.md": {
+    "mtime": 1781307409.1997452,
+    "ast_hash": "ff2cd596e5a9f3ddcc752dff70ee8b55",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-vectorized-kahn.md": {
+    "mtime": 1781295315.031905,
+    "ast_hash": "b48591a616a36f077ba6771f3bd22eaa",
+    "semantic_hash": ""
+  },
+  "app/components/shared/TrainingCalendarCard.tsx": {
+    "mtime": 1781387823.0461712,
+    "ast_hash": "eb99f9669196f53c59685785873eac0e",
+    "semantic_hash": ""
+  },
+  "app/components/shared/WeeklyAttendanceCard.tsx": {
+    "mtime": 1781318304.4328258,
+    "ast_hash": "45dbb9131a561b6cd1e1af90460d2064",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-clever-balloon.md": {
+    "mtime": 1781312364.1016595,
+    "ast_hash": "2c835567c56da2bb4def5fb60b848f55",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-eager-stream.md": {
+    "mtime": 1781365146.2969866,
+    "ast_hash": "bf8ff1962f43b71798ea88e874c7a713",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-mellow-fiddle.md": {
+    "mtime": 1781320501.854574,
+    "ast_hash": "4ae80cb14553e10d30de1ba10d3d922a",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-radiant-clock.md": {
+    "mtime": 1781318198.1780772,
+    "ast_hash": "c11c36033d1dbb64758918f9a2a06fc8",
+    "semantic_hash": ""
+  },
+  "desing-refs/Ejercicio Detalle.html": {
+    "mtime": 1781317973.142557,
+    "ast_hash": "65abc81a90de1c5348f570c80d9eb835",
+    "semantic_hash": ""
+  },
+  "desing-refs/Ejercicio Form.html": {
+    "mtime": 1781317966.649969,
+    "ast_hash": "b77e9c1836411a77acd4afc94801d150",
+    "semantic_hash": ""
+  },
+  "desing-refs/Login.html": {
+    "mtime": 1781317976.409349,
+    "ast_hash": "271b38d92ff2ff16c376a2b33409c758",
+    "semantic_hash": ""
+  },
+  "public/bugs/bug-alineacion.png": {
+    "mtime": 1781315502.485513,
+    "ast_hash": "87746f64df8d185a96d4654a48f11ed7",
+    "semantic_hash": ""
+  },
+  "public/bugs/bug-espacios.png": {
+    "mtime": 1781315410.609833,
+    "ast_hash": "a4f2730b7ad232e2daf16f94d35d8198",
+    "semantic_hash": ""
+  },
+  "public/references/to_do/calendar.png": {
+    "mtime": 1781318965.7673647,
+    "ast_hash": "d32ae57df7dfb6cc94da63067c21e3aa",
+    "semantic_hash": ""
+  },
+  "app/admin/RecentExercisesTable.tsx": {
+    "mtime": 1781374803.656417,
+    "ast_hash": "078beb8f249ab3a5a0756bb35b644edc",
+    "semantic_hash": ""
+  },
+  "app/admin/alimentos/FoodAdminClient.tsx": {
+    "mtime": 1781476314.955139,
+    "ast_hash": "9db2331edd472b288cae122a0aacedc7",
+    "semantic_hash": ""
+  },
+  "app/admin/alimentos/actions.ts": {
+    "mtime": 1781453574.308413,
+    "ast_hash": "2674e76f3b6c6dbda8202530a209ecf0",
+    "semantic_hash": ""
+  },
+  "app/admin/alimentos/page.tsx": {
+    "mtime": 1781386416.5521016,
+    "ast_hash": "1f9a6c8c7225711bc90f3263bcaf82fe",
+    "semantic_hash": ""
+  },
+  "app/components/shared/MacroBar.tsx": {
+    "mtime": 1781384235.6299884,
+    "ast_hash": "c567ddc981b7313621ab53b2380ee26a",
+    "semantic_hash": ""
+  },
+  "app/lib/foods-form.ts": {
+    "mtime": 1781410938.6642141,
+    "ast_hash": "505795b326c7c80a5089e24560c0df49",
+    "semantic_hash": ""
+  },
+  "app/lib/foods-validation.ts": {
+    "mtime": 1781410948.2807205,
+    "ast_hash": "eb0b12bc93def925ce435fe0d939931a",
+    "semantic_hash": ""
+  },
+  "app/lib/foods.ts": {
+    "mtime": 1781410929.2725525,
+    "ast_hash": "5f22ca1dc49d970e5dbe577665956d65",
+    "semantic_hash": ""
+  },
+  "app/lib/meal-logs.ts": {
+    "mtime": 1781453334.228805,
+    "ast_hash": "709a69e15a3108387ed76289861d29f1",
+    "semantic_hash": ""
+  },
+  "app/lib/nutrition-calc.ts": {
+    "mtime": 1781384080.0970757,
+    "ast_hash": "7b2ecf88befcc6bd8502bb34ff1c9141",
+    "semantic_hash": ""
+  },
+  "app/lib/nutrition-mock.ts": {
+    "mtime": 1781411267.6663744,
+    "ast_hash": "e55928578439268f9e1b4921e85cf114",
+    "semantic_hash": ""
+  },
+  "app/lib/nutrition-profile.ts": {
+    "mtime": 1781386355.6710863,
+    "ast_hash": "2585c1969dd311b6bc68924637594e4f",
+    "semantic_hash": ""
+  },
+  "app/lib/nutrition-style.ts": {
+    "mtime": 1781384226.1180422,
+    "ast_hash": "570844921dd74ef1ebfc5ebaa24ed0e1",
+    "semantic_hash": ""
+  },
+  "app/lib/nutrition-types.ts": {
+    "mtime": 1781453838.371783,
+    "ast_hash": "311952ae9cfe786f9e3374c97e4268e0",
+    "semantic_hash": ""
+  },
+  "app/nutricion/registro/RegistroClient.tsx": {
+    "mtime": 1781476347.5304928,
+    "ast_hash": "ad9e395b375f84cde23c062fdd706e8b",
+    "semantic_hash": ""
+  },
+  "app/nutricion/registro/actions.ts": {
+    "mtime": 1781453343.817125,
+    "ast_hash": "dfba6b014ec25763a050f3c28eb2ed0a",
+    "semantic_hash": ""
+  },
+  "app/nutricion/registro/page.tsx": {
+    "mtime": 1781454216.2630508,
+    "ast_hash": "aed84e05d781e2d5ed6e0e02185c6010",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/20260613_g18_nutrition_core.sql": {
+    "mtime": 1781386057.185731,
+    "ast_hash": "0bfdaada64a331d284fcfd263d3139d3",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/20260613_g19_nutrition_seed.sql": {
+    "mtime": 1781386155.5843666,
+    "ast_hash": "80ea59ebc1ec494df4c646157b6e8264",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/20260613_g21_nutrition_fase3.sql": {
+    "mtime": 1781387704.534785,
+    "ast_hash": "bfd68b8d945550d11dd323db896a2cf6",
+    "semantic_hash": ""
+  },
+  ".claude/plans/agregaremos-una-nuevo-apartado-rustling-spark.md": {
+    "mtime": 1781381805.3654623,
+    "ast_hash": "8ed978e356020faeba3b7de890eae650",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-ancient-mango.md": {
+    "mtime": 1781374709.2664936,
+    "ast_hash": "2aab7d339be268d684b69771e2e1f75f",
+    "semantic_hash": ""
+  },
+  "admin-alimentos.png": {
+    "mtime": 1781384817.9552004,
+    "ast_hash": "3f3576be65cb28e9d742de4a2eb84567",
+    "semantic_hash": ""
+  },
+  "dieta-detail-1.png": {
+    "mtime": 1781384794.7068987,
+    "ast_hash": "3e9ddb6b45f647c864e0006b54f65b73",
+    "semantic_hash": ""
+  },
+  "dieta-detail-2.png": {
+    "mtime": 1781384800.3361485,
+    "ast_hash": "5d92ab6e15c82d1b00524593a8fc24a6",
+    "semantic_hash": ""
+  },
+  "dietas-mobile.png": {
+    "mtime": 1781384782.196962,
+    "ast_hash": "610a668654b41b8c4a66d66edccd9210",
+    "semantic_hash": ""
+  },
+  "login-desktop.png": {
+    "mtime": 1781374964.5489311,
+    "ast_hash": "37d56b0b3489a229856cabc20f57010e",
+    "semantic_hash": ""
+  },
+  "login-desktop2.png": {
+    "mtime": 1781375020.9144976,
+    "ast_hash": "aaa6ff417acc3c1cf6d012e78e98308a",
+    "semantic_hash": ""
+  },
+  "login-mobile.png": {
+    "mtime": 1781375034.5544827,
+    "ast_hash": "dee31d44b6e54cc17e24287680675af3",
+    "semantic_hash": ""
+  },
+  "nutricion-detail.png": {
+    "mtime": 1781384724.660664,
+    "ast_hash": "285383e24ac03cb740cef3058bb00d23",
+    "semantic_hash": ""
+  },
+  "nutricion-mobile.png": {
+    "mtime": 1781384712.115431,
+    "ast_hash": "24975b05a8b1d4862c6c9588a166d931",
+    "semantic_hash": ""
+  },
+  "perfil-mobile-2.png": {
+    "mtime": 1781384749.9466474,
+    "ast_hash": "6422e2c5602f40ce3e991a112ad90018",
+    "semantic_hash": ""
+  },
+  "perfil-mobile-3.png": {
+    "mtime": 1781384760.5484588,
+    "ast_hash": "edd48bea351ae644c9261a06d2bc8c8c",
+    "semantic_hash": ""
+  },
+  "perfil-mobile.png": {
+    "mtime": 1781384740.0386088,
+    "ast_hash": "6422e2c5602f40ce3e991a112ad90018",
+    "semantic_hash": ""
+  },
+  "perfil-result.png": {
+    "mtime": 1781384770.9836154,
+    "ast_hash": "eccca43296e6bfd49c1f6381b11e7e73",
+    "semantic_hash": ""
+  },
+  "app/components/shared/BodyFatFigure.tsx": {
+    "mtime": 1781411231.6473455,
+    "ast_hash": "00865484cd92022270cf04f80ab8e60c",
+    "semantic_hash": ""
+  },
+  "app/configuracion/ConfiguracionClient.tsx": {
+    "mtime": 1781476287.7570899,
+    "ast_hash": "c076639d0da0f409257cdab948fe8435",
+    "semantic_hash": ""
+  },
+  "app/configuracion/actions.ts": {
+    "mtime": 1781454114.8514466,
+    "ast_hash": "f243c07fcc1dcc8889a72fe92639beb1",
+    "semantic_hash": ""
+  },
+  "app/configuracion/page.tsx": {
+    "mtime": 1781454120.209558,
+    "ast_hash": "6ecb4e0b0a9f362166b052b0a65288ab",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/20260614_g22_foods_measure.sql": {
+    "mtime": 1781409423.0637443,
+    "ast_hash": "1984137f06360f6e315afccd6656d94f",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/20260614_g23_meal_log_meals.sql": {
+    "mtime": 1781409428.7193663,
+    "ast_hash": "4b8d94a9e0ab235c8ba4cfe675f1feee",
+    "semantic_hash": ""
+  },
+  ".claude/plans/actualmente-hay-partes-smooth-treehouse.md": {
+    "mtime": 1781404128.1164935,
+    "ast_hash": "9d889949f969458a0328c5d141f5a742",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-groovy-star.md": {
+    "mtime": 1781409250.7471402,
+    "ast_hash": "6a6719d083a61182a4619ec35d5a5efa",
+    "semantic_hash": ""
+  },
+  "sidebar-desktop.png": {
+    "mtime": 1781404777.1110868,
+    "ast_hash": "5e5a5fd4ce4f401423bf36b769b59af6",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-ethereal-hanrahan.md": {
+    "mtime": 1781410834.2763581,
+    "ast_hash": "c69d67fec45c39081b6e0ac2650eca42",
+    "semantic_hash": ""
+  },
+  "app/admin/recetas/RecipeAdminClient.tsx": {
+    "mtime": 1781453972.2651303,
+    "ast_hash": "bad9a93f49bf2ebcdffe08fe81eea12c",
+    "semantic_hash": ""
+  },
+  "app/admin/recetas/actions.ts": {
+    "mtime": 1781453914.0421436,
+    "ast_hash": "316e3b72da87aaf4ec68fb8f167caa99",
+    "semantic_hash": ""
+  },
+  "app/admin/recetas/page.tsx": {
+    "mtime": 1781453915.594823,
+    "ast_hash": "fa1dc6d3c8eda81e88237af5e02c569d",
+    "semantic_hash": ""
+  },
+  "app/alimentos/NutritionCatalogClient.tsx": {
+    "mtime": 1781453427.7017236,
+    "ast_hash": "0cc71c1c2e171a1b5773862a19fb47df",
+    "semantic_hash": ""
+  },
+  "app/alimentos/page.tsx": {
+    "mtime": 1781453560.824089,
+    "ast_hash": "06331fb736a0a6f7bcb51b7e81981e5e",
+    "semantic_hash": ""
+  },
+  "app/lib/recipes-form.ts": {
+    "mtime": 1781453659.0889955,
+    "ast_hash": "58753dd0f0b34ae46ebdf4ab816cc5b3",
+    "semantic_hash": ""
+  },
+  "app/lib/recipes-validation.ts": {
+    "mtime": 1781453828.581145,
+    "ast_hash": "5db582401ea50d629d25e18a954d8219",
+    "semantic_hash": ""
+  },
+  "app/lib/recipes.ts": {
+    "mtime": 1781453855.6195269,
+    "ast_hash": "856d3c5cf67d54624b725e77019471c2",
+    "semantic_hash": ""
+  },
+  "app/lib/supabase/admin.ts": {
+    "mtime": 1781454084.308079,
+    "ast_hash": "6175180bcfe8457ed386eae2f142d736",
+    "semantic_hash": ""
+  },
+  "app/recetas/RecipeCatalogClient.tsx": {
+    "mtime": 1781467892.057076,
+    "ast_hash": "164a637038d3c2a6b867634e8483ed68",
+    "semantic_hash": ""
+  },
+  "app/recetas/page.tsx": {
+    "mtime": 1781453904.8477366,
+    "ast_hash": "f229e0f75b87acac5a42b9fcbe08a1b4",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-cheerful-mountain.md": {
+    "mtime": 1781412261.2862587,
+    "ast_hash": "9dc5da38225417eb2b16180b10281660",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-glowing-raven.md": {
+    "mtime": 1781453267.315018,
+    "ast_hash": "c3abc6a5639cf79965c41ca951e745f0",
+    "semantic_hash": ""
+  },
+  "desing-refs/nutricionregistro.html": {
+    "mtime": 1781452754.7195206,
+    "ast_hash": "c6744770c903762210e0ebb381aff231",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-sparkling-snowglobe.md": {
+    "mtime": 1781458520.2527463,
+    "ast_hash": "3a29836146a2ae1feeb77b5573c12de1",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-snappy-kahan.md": {
+    "mtime": 1781476025.1773705,
+    "ast_hash": "3fc4d2e0e0cf6ab96de32f99b951f8c8",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-sorted-goblet.md": {
+    "mtime": 1781468979.524231,
+    "ast_hash": "7f60942036d7ea442d5c52d5e9e121a0",
+    "semantic_hash": ""
+  }
+}

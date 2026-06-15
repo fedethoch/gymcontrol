@@ -6,11 +6,11 @@ import {
   useRef,
   useState,
   useTransition,
-  type ComponentProps,
+  type MouseEvent,
   type ReactNode,
 } from "react";
-import { ArrowLeft, Check, ChevronRight, Clock3, Dumbbell } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowLeft, Check, ChevronDown, ChevronRight, Clock3, Dumbbell, TrendingUp } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 
 import { autosaveWorkoutSessionItemAction } from "@/app/dashboard/rutinas/dia/actions";
@@ -26,6 +26,26 @@ import { cn } from "@/app/lib/utils";
 
 const AUTOSAVE_DELAY_MS = 700;
 
+function splitSeriesValues(value: string, series: number) {
+  const parts = value.split("/").map((part) => part.trim());
+
+  return Array.from({ length: Math.max(series, 0) }, (_, i) => parts[i] ?? "");
+}
+
+function joinSeriesValues(values: string[], index: number, nextValue: string) {
+  const next = [...values];
+  next[index] = nextValue;
+
+  return next.join("/");
+}
+
+function isAtOrAboveMaxReps(value: string, maxReps: number) {
+  const tokens = value.split("/").map((token) => Number.parseFloat(token.trim()));
+  const lastValue = tokens.at(-1);
+
+  return lastValue != null && !Number.isNaN(lastValue) && lastValue >= maxReps;
+}
+
 type DayWorkoutRow = {
   id: string;
   number: number;
@@ -34,8 +54,8 @@ type DayWorkoutRow = {
   repsTarget: string;
   rir: string;
   rest: string;
-  performedReps: number | null;
-  usedWeight: number | null;
+  performedReps: string | null;
+  usedWeight: string | null;
   isCompleted: boolean;
 };
 
@@ -72,6 +92,7 @@ export function DayWorkoutClient({
   sessionStatus,
 }: DayWorkoutClientProps) {
   const [selectedExercise, setSelectedExercise] = useState<ExerciseDetail | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const [drafts, setDrafts] = useState<Record<string, DraftState>>(() =>
     Object.fromEntries(
       rows.map((row) => [
@@ -149,6 +170,7 @@ export function DayWorkoutClient({
           routineDayId,
           day: dayOrder,
           routineItemId,
+          series: rows.find((row) => row.id === routineItemId)?.series ?? 0,
           performedReps: draft.performedReps,
           usedWeight: draft.usedWeight,
           isCompleted,
@@ -313,21 +335,11 @@ export function DayWorkoutClient({
 
           {rows.length > 0 ? (
             <div className="grid gap-3">
-              <div className="hidden grid-cols-[minmax(18rem,2.35fr)_0.55fr_0.85fr_0.55fr_0.75fr_minmax(8.5rem,1fr)_minmax(8rem,0.9fr)_7.5rem] items-center gap-4 rounded-lg border border-[#172236] bg-[#081321]/88 px-6 py-4 text-sm font-medium text-[#dbe2ef] xl:grid">
-                <span>Ejercicio</span>
-                <span className="text-center">Series</span>
-                <span className="text-center">Reps objetivo</span>
-                <span className="text-center">RIR</span>
-                <span className="text-center">Descanso</span>
-                <span className="text-center">Reps realizadas</span>
-                <span className="text-center">Peso utilizado</span>
-                <span className="text-center">Detalle</span>
-              </div>
-
               {rows.map((row, index) => {
                 const draft = drafts[row.id] ?? { performedReps: "", usedWeight: "" };
                 const isCompleted = completedByItemId[row.id] ?? false;
                 const saveState = saveStateByItemId[row.id] ?? { status: "idle" };
+                const isExpanded = expandedId === row.id;
 
                 return (
                   <motion.article
@@ -336,66 +348,102 @@ export function DayWorkoutClient({
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.04, duration: 0.3, ease: "easeOut" }}
                     className={cn(
-                      "rounded-xl border bg-[linear-gradient(180deg,rgba(9,18,31,0.96),rgba(7,14,24,0.98))] px-5 py-3.5 shadow-[0_14px_36px_rgba(0,0,0,0.16)] transition-colors xl:px-6",
+                      "overflow-hidden rounded-xl border bg-[linear-gradient(180deg,rgba(9,18,31,0.96),rgba(7,14,24,0.98))] shadow-[0_14px_36px_rgba(0,0,0,0.16)] transition-colors",
                       isCompleted ? "border-[#1e754a]" : "border-[#172236]",
                     )}
                   >
-                    <div className="grid gap-4 xl:grid-cols-[minmax(18rem,2.35fr)_0.55fr_0.85fr_0.55fr_0.75fr_minmax(8.5rem,1fr)_minmax(8rem,0.9fr)_7.5rem] xl:items-center xl:gap-4">
-                      <div className="flex min-w-0 items-center gap-4">
-                        <WorkoutStatusToggle
-                          number={row.number}
-                          complete={isCompleted}
-                          onClick={() => handleToggleCompleted(row.id)}
-                        />
-
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-base font-semibold leading-5 text-white">
-                            {row.exercise.name}
-                          </p>
-                          <RowSaveIndicator state={saveState} className="mt-2 xl:hidden" />
-                        </div>
-                      </div>
-
-                      <MobileMeta label="Series" value={String(row.series)} />
-                      <MobileMeta label="Reps objetivo" value={row.repsTarget} />
-                      <MobileMeta label="RIR" value={row.rir} />
-                      <MobileMeta label="Descanso" value={row.rest} />
-
-                      <NumberField
-                        label="Reps realizadas"
-                        name={`performedReps:${row.id}`}
-                        suffix="reps"
-                        value={draft.performedReps}
-                        onChange={(value) => handleDraftChange(row.id, "performedReps", value)}
-                        inputMode="numeric"
-                        pattern="[0-9]*"
-                        placeholder="--"
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      aria-expanded={isExpanded}
+                      onClick={() => setExpandedId((current) => (current === row.id ? null : row.id))}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          setExpandedId((current) => (current === row.id ? null : row.id));
+                        }
+                      }}
+                      className="flex cursor-pointer items-center gap-4 px-5 py-3.5 xl:px-6"
+                    >
+                      <WorkoutStatusToggle
+                        number={row.number}
+                        complete={isCompleted}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleToggleCompleted(row.id);
+                        }}
                       />
 
-                      <NumberField
-                        label="Peso utilizado"
-                        name={`usedWeight:${row.id}`}
-                        suffix="kg"
-                        value={draft.usedWeight}
-                        onChange={(value) => handleDraftChange(row.id, "usedWeight", value)}
-                        inputMode="decimal"
-                        placeholder="--"
-                        step="0.5"
-                      />
+                      <button
+                        type="button"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          setSelectedExercise(row.exercise);
+                        }}
+                        className="min-w-0 flex-1 text-left"
+                      >
+                        <p className="truncate text-base font-semibold leading-5 text-white underline-offset-4 hover:underline">
+                          {row.exercise.name}
+                        </p>
+                        <p className="mt-1 truncate text-xs text-[#8a93a8]">
+                          {row.series} series · {row.repsTarget} reps · RIR {row.rir} · {row.rest}
+                        </p>
+                        <RowSaveIndicator state={saveState} className="mt-1" />
+                      </button>
 
-                      <div className="grid gap-2 xl:justify-items-center">
-                        <RowSaveIndicator state={saveState} className="hidden xl:flex" />
-                        <Button
-                          type="button"
-                          variant="outline"
-                          className="h-10 w-full rounded-lg border-[#26364f] bg-[#07111d] px-4 text-sm font-medium xl:w-auto"
-                          onClick={() => setSelectedExercise(row.exercise)}
-                        >
-                          Ver detalle
-                          <ChevronRight className="size-4" />
-                        </Button>
-                      </div>
+                      <ChevronDown
+                        className={cn(
+                          "size-5 shrink-0 text-[#7887a6] transition-transform",
+                          isExpanded ? "rotate-180" : "",
+                        )}
+                      />
                     </div>
+
+                    <AnimatePresence initial={false}>
+                      {isExpanded ? (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2, ease: "easeOut" }}
+                          className="overflow-hidden"
+                        >
+                          <div className="grid gap-4 border-t border-[#172236] px-5 py-4 xl:px-6">
+                            <SeriesInputsGroup
+                              rowId={row.id}
+                              series={row.series}
+                              performedReps={draft.performedReps}
+                              usedWeight={draft.usedWeight}
+                              onPerformedRepsChange={(value) =>
+                                handleDraftChange(row.id, "performedReps", value)
+                              }
+                              onUsedWeightChange={(value) =>
+                                handleDraftChange(row.id, "usedWeight", value)
+                              }
+                            />
+
+                            {row.exercise.maxReps != null &&
+                            isAtOrAboveMaxReps(draft.performedReps, row.exercise.maxReps) ? (
+                              <div className="flex items-center gap-2 rounded-lg border border-[#3a2d5c] bg-[#1c1438] px-3 py-2 text-sm text-[#cbb8ff]">
+                                <TrendingUp className="size-4 shrink-0" />
+                                Llegaste al tope del rango ideal ({row.exercise.minReps}-
+                                {row.exercise.maxReps} reps). Proba aumentar el peso la proxima serie.
+                              </div>
+                            ) : null}
+
+                            <Button
+                              type="button"
+                              variant="outline"
+                              className="h-10 w-full rounded-lg border-[#26364f] bg-[#07111d] px-4 text-sm font-medium sm:w-auto sm:justify-self-start"
+                              onClick={() => setSelectedExercise(row.exercise)}
+                            >
+                              Ver detalle
+                              <ChevronRight className="size-4" />
+                            </Button>
+                          </div>
+                        </motion.div>
+                      ) : null}
+                    </AnimatePresence>
                   </motion.article>
                 );
               })}
@@ -467,7 +515,7 @@ function WorkoutStatusToggle({
 }: {
   number: number;
   complete: boolean;
-  onClick: () => void;
+  onClick: (event: MouseEvent) => void;
 }) {
   return (
     <motion.button
@@ -521,46 +569,75 @@ function RowSaveIndicator({
   );
 }
 
-function MobileMeta({ label, value }: { label: string; value: string }) {
+function SeriesInputsGroup({
+  rowId,
+  series,
+  performedReps,
+  usedWeight,
+  onPerformedRepsChange,
+  onUsedWeightChange,
+}: {
+  rowId: string;
+  series: number;
+  performedReps: string;
+  usedWeight: string;
+  onPerformedRepsChange: (value: string) => void;
+  onUsedWeightChange: (value: string) => void;
+}) {
+  const repsValues = splitSeriesValues(performedReps, series);
+  const weightValues = splitSeriesValues(usedWeight, series);
+
+  if (series <= 0) {
+    return null;
+  }
+
   return (
-    <div className="grid grid-cols-[8rem_minmax(0,1fr)] items-center gap-3 xl:block">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#7887a6] xl:hidden">
-        {label}
-      </p>
-      <p className="text-sm text-[#d8def0] xl:text-center">{value}</p>
+    <div className="grid gap-2">
+      <div className="grid grid-cols-[2.5rem_minmax(0,1fr)_minmax(0,1fr)] items-center gap-2 px-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#7887a6]">
+        <span />
+        <span className="text-center">Reps</span>
+        <span className="text-center">Peso (kg)</span>
+      </div>
+      {Array.from({ length: series }, (_, index) => (
+        <div
+          key={index}
+          className="grid grid-cols-[2.5rem_minmax(0,1fr)_minmax(0,1fr)] items-center gap-2"
+        >
+          <span className="text-center text-xs font-semibold text-[#7887a6]">#{index + 1}</span>
+          <SeriesCell
+            name={`performedReps:${rowId}:${index}`}
+            value={repsValues[index] ?? ""}
+            onChange={(value) =>
+              onPerformedRepsChange(joinSeriesValues(repsValues, index, value))
+            }
+          />
+          <SeriesCell
+            name={`usedWeight:${rowId}:${index}`}
+            value={weightValues[index] ?? ""}
+            onChange={(value) => onUsedWeightChange(joinSeriesValues(weightValues, index, value))}
+          />
+        </div>
+      ))}
     </div>
   );
 }
 
-function NumberField({
-  label,
+function SeriesCell({
   name,
-  suffix,
   value,
   onChange,
-  ...props
-}: Omit<ComponentProps<typeof Input>, "value" | "onChange"> & {
-  label: string;
+}: {
   name: string;
-  suffix: string;
   value: string;
   onChange: (value: string) => void;
 }) {
   return (
-    <label className="grid min-w-0 grid-cols-[8rem_minmax(0,1fr)] items-center gap-3 xl:block">
-      <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#7887a6] xl:hidden">
-        {label}
-      </span>
-      <span className="grid h-12 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-md border border-[#20304a] bg-[#07111d] px-4">
-        <Input
-          {...props}
-          name={name}
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-          className="h-10 min-w-0 border-0 bg-transparent px-0 py-0 text-center text-lg text-white placeholder:text-[#748098] focus:border-0 xl:text-left"
-        />
-        <span className="text-sm text-[#7e8aa3]">{suffix}</span>
-      </span>
-    </label>
+    <Input
+      name={name}
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+      inputMode="decimal"
+      className="h-10 w-full rounded-md border-[#20304a] bg-[#07111d] text-center text-base text-white placeholder:text-[#748098]"
+    />
   );
 }

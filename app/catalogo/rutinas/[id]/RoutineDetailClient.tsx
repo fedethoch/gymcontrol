@@ -43,14 +43,15 @@ export function RoutineDetailClient({ routine }: RoutineDetailClientProps) {
               </h3>
             </div>
 
+            <div className="hidden md:block">
             <Table className="min-w-[44rem]">
               <TableHeader>
                 <TableRow className="hover:bg-transparent">
-                  <TableHead className="h-11 px-0 text-[#aab2c4]">Ejercicio</TableHead>
-                  <TableHead className="h-11 text-[#aab2c4]">Series</TableHead>
-                  <TableHead className="h-11 text-[#aab2c4]">Reps</TableHead>
-                  <TableHead className="h-11 text-[#aab2c4]">RIR</TableHead>
-                  <TableHead className="h-11 pr-0 text-[#aab2c4]">Descanso</TableHead>
+                  <TableHead className="h-11 pl-3 pr-0 text-[#aab2c4]">Ejercicio</TableHead>
+                  <TableHead className="h-11 text-center text-[#aab2c4]">Series</TableHead>
+                  <TableHead className="h-11 text-center text-[#aab2c4]">Reps</TableHead>
+                  <TableHead className="h-11 text-center text-[#aab2c4]">RIR</TableHead>
+                  <TableHead className="h-11 pr-0 text-center text-[#aab2c4]">Descanso</TableHead>
                 </TableRow>
               </TableHeader>
               <motion.tbody
@@ -66,7 +67,7 @@ export function RoutineDetailClient({ routine }: RoutineDetailClientProps) {
                     variants={fadeRow}
                     className="border-b border-[rgba(148,163,184,0.13)] transition-colors hover:bg-[rgba(124,58,237,0.08)]"
                   >
-                    <TableCell className="px-0 py-4 text-white">
+                    <TableCell className="pl-3 pr-0 py-4 text-white">
                       <button
                         type="button"
                         className="font-semibold text-left transition-colors hover:text-[var(--accent-bright)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-bright)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0f1a]"
@@ -83,14 +84,65 @@ export function RoutineDetailClient({ routine }: RoutineDetailClientProps) {
                         {item.exercise.name}
                       </button>
                     </TableCell>
-                    <TableCell className="text-white">{item.series}</TableCell>
-                    <TableCell className="text-white">{item.repetitions}</TableCell>
-                    <TableCell className="text-white">{item.rir}</TableCell>
-                    <TableCell className="pr-0 text-white">{item.rest}</TableCell>
+                    <TableCell className="text-center text-white">{item.series}</TableCell>
+                    <TableCell className="text-center text-white">{item.repetitions}</TableCell>
+                    <TableCell className="text-center text-white">{item.rir}</TableCell>
+                    <TableCell className="pr-0 text-center text-white">{item.rest}</TableCell>
                   </motion.tr>
                 ))}
               </motion.tbody>
             </Table>
+            </div>
+
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-40px" }}
+              className="grid gap-3 md:hidden"
+            >
+              {day.items.map((item) => (
+                <motion.div
+                  key={item.id}
+                  variants={fadeRow}
+                  className="rounded-2xl border border-[rgba(148,163,184,0.13)] bg-[rgba(255,255,255,0.02)] p-4"
+                >
+                  <button
+                    type="button"
+                    className="font-semibold text-left text-white transition-colors hover:text-[var(--accent-bright)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-bright)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0f1a]"
+                    onClick={() =>
+                      setSelectedExercise({
+                        ...item.exercise,
+                        series: item.series,
+                        repsTarget: item.repetitions,
+                        rir: item.rir,
+                        rest: item.rest,
+                      })
+                    }
+                  >
+                    {item.exercise.name}
+                  </button>
+                  <div className="mt-3 grid grid-cols-4 gap-2 text-center text-xs">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.12em] text-[#7d8697]">Series</p>
+                      <p className="mt-1 font-medium text-white">{item.series}</p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.12em] text-[#7d8697]">Reps</p>
+                      <p className="mt-1 font-medium text-white">{item.repetitions}</p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.12em] text-[#7d8697]">RIR</p>
+                      <p className="mt-1 font-medium text-white">{item.rir}</p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.12em] text-[#7d8697]">Descanso</p>
+                      <p className="mt-1 font-medium text-white">{item.rest}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
         ))}
       </section>

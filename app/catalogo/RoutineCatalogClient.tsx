@@ -104,11 +104,11 @@ export function RoutineCatalogClient({ routines }: RoutineCatalogClientProps) {
   const visiblePages = getVisiblePages(page, totalPages);
 
   return (
-    <section className="grid gap-5">
+    <section className="grid content-start gap-5">
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_repeat(4,minmax(0,0.7fr))]">
-        <label className="relative block">
+        <label className="relative flex h-12 items-center">
           <span className="sr-only">Buscar rutinas</span>
-          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#7d8697]" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#7d8697]" />
           <Input
             className="h-12 rounded-xl border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] pl-9"
             placeholder="Buscar por nombre o descripcion..."
@@ -170,7 +170,7 @@ export function RoutineCatalogClient({ routines }: RoutineCatalogClientProps) {
       </div>
 
       {paginatedRoutines.length === 0 ? (
-        <div className="grid min-h-80 place-items-center rounded-2xl border border-dashed border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] px-6 py-10 text-center">
+        <div className="grid min-h-[32rem] place-items-center rounded-2xl border border-dashed border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] px-6 py-10 text-center">
           <div className="max-w-md">
             <p className="font-display text-lg font-semibold text-white">
               No hay rutinas para mostrar
@@ -276,8 +276,8 @@ function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
   const objective = ROUTINE_OBJECTIVE_LABELS[routine.objective];
 
   return (
-    <article className="group flex min-h-[32rem] flex-col overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#111723_0%,#0b1017_100%)] shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-transform duration-200 hover:-translate-y-0.5 hover:border-[rgba(185,149,255,0.24)]">
-      <div className="relative h-[22rem] overflow-hidden border-b border-[rgba(255,255,255,0.08)] bg-[#141a24]">
+    <article className="group flex flex-col overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#111723_0%,#0b1017_100%)] shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-transform duration-200 hover:-translate-y-0.5 hover:border-[rgba(185,149,255,0.24)] sm:min-h-[32rem]">
+      <div className="relative h-48 overflow-hidden border-b border-[rgba(255,255,255,0.08)] bg-[#141a24] sm:h-[22rem]">
         {imageUrl ? (
           <Image
             alt={routine.name}
@@ -293,7 +293,7 @@ function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
       </div>
 
       <div className="flex flex-1 flex-col gap-4 p-4">
-        <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9ea7b9]">
+        <div className="flex min-h-[2.75rem] flex-wrap items-start gap-x-3 gap-y-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9ea7b9]">
           <span>{dayCount} dias</span>
           <span aria-hidden="true" className="text-[#556074]">
             /

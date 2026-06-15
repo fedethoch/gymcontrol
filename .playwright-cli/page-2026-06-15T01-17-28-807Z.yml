@@ -1,0 +1,218 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - button "Colapsar sidebar" [ref=e6]:
+          - img
+        - generic [ref=e7]:
+          - link "GC GymControl PANEL OPERATIVO" [ref=e9] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e10]: GC
+            - generic [ref=e11]:
+              - generic [ref=e12]: GymControl
+              - generic [ref=e13]: PANEL OPERATIVO
+          - navigation "Navegación principal" [ref=e14]:
+            - generic [ref=e15]:
+              - paragraph [ref=e16]: Entrenamiento
+              - generic [ref=e17]:
+                - link "Catálogo" [ref=e18] [cursor=pointer]:
+                  - /url: /catalogo
+                  - img [ref=e20]
+                  - generic [ref=e22]: Catálogo
+                - link "Mis rutinas" [ref=e23] [cursor=pointer]:
+                  - /url: /dashboard
+                  - img [ref=e25]
+                  - generic [ref=e30]: Mis rutinas
+                - link "Semana activa" [ref=e31] [cursor=pointer]:
+                  - /url: /dashboard/rutinas
+                  - img [ref=e33]
+                  - generic [ref=e35]: Semana activa
+            - generic [ref=e37]:
+              - paragraph [ref=e38]: Nutrición
+              - generic [ref=e39]:
+                - link "Alimentos" [ref=e40] [cursor=pointer]:
+                  - /url: /alimentos
+                  - img [ref=e42]
+                  - generic [ref=e47]: Alimentos
+                - link "Recetas" [ref=e48] [cursor=pointer]:
+                  - /url: /recetas
+                  - img [ref=e50]
+                  - generic [ref=e52]: Recetas
+                - link "Registro diario" [ref=e53] [cursor=pointer]:
+                  - /url: /nutricion/registro
+                  - img [ref=e55]
+                  - generic [ref=e60]: Registro diario
+            - generic [ref=e62]:
+              - paragraph [ref=e63]: Gestión
+              - generic [ref=e64]:
+                - link "Dashboard Admin" [ref=e65] [cursor=pointer]:
+                  - /url: /admin
+                  - img [ref=e67]
+                  - generic [ref=e69]: Dashboard Admin
+                - link "Ejercicios" [ref=e70] [cursor=pointer]:
+                  - /url: /admin/ejercicios
+                  - img [ref=e72]
+                  - generic [ref=e78]: Ejercicios
+                - link "Rutinas" [ref=e79] [cursor=pointer]:
+                  - /url: /admin/rutinas
+                  - img [ref=e81]
+                  - generic [ref=e84]: Rutinas
+                - link "Alimentos" [ref=e85] [cursor=pointer]:
+                  - /url: /admin/alimentos
+                  - img [ref=e87]
+                  - generic [ref=e92]: Alimentos
+                - link "Recetas" [ref=e93] [cursor=pointer]:
+                  - /url: /admin/recetas
+                  - img [ref=e95]
+                  - generic [ref=e97]: Recetas
+          - link "Configuración" [ref=e99] [cursor=pointer]:
+            - /url: /configuracion
+            - img [ref=e102]
+            - generic [ref=e105]: Configuración
+    - main [ref=e107]:
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - paragraph [ref=e110]: Configuración
+          - heading "Tu perfil" [level=2] [ref=e111]
+          - paragraph [ref=e112]: Estos datos son opcionales. Completalos para recibir un cálculo personalizado de calorías de mantenimiento, objetivo diario y distribución de macronutrientes.
+        - generic [ref=e113]:
+          - generic [ref=e114]:
+            - generic [ref=e115]:
+              - generic [ref=e117]: Tu cuenta
+              - generic [ref=e118]:
+                - generic [ref=e119]:
+                  - text: Nombre para mostrar
+                  - textbox "Nombre para mostrar" [ref=e120]:
+                    - /placeholder: Ej. Fede
+                - button "Guardar nombre" [ref=e121]
+            - generic [ref=e122]:
+              - generic [ref=e124]: Datos básicos
+              - generic [ref=e125]:
+                - generic [ref=e126]:
+                  - text: Género
+                  - generic [ref=e127]:
+                    - button "Hombre" [ref=e128]:
+                      - paragraph [ref=e129]: Hombre
+                    - button "Mujer" [ref=e130]:
+                      - paragraph [ref=e131]: Mujer
+                - generic [ref=e132]:
+                  - generic [ref=e133]:
+                    - text: Edad (años)
+                    - spinbutton "Edad (años)" [ref=e134]: "28"
+                  - generic [ref=e135]:
+                    - text: Altura (cm)
+                    - spinbutton "Altura (cm)" [ref=e136]: "178"
+                  - generic [ref=e137]:
+                    - text: Peso (kg)
+                    - spinbutton "Peso (kg)" [ref=e138]: "78"
+            - generic [ref=e139]:
+              - generic [ref=e140]:
+                - generic [ref=e141]: Porcentaje de grasa corporal (opcional)
+                - paragraph [ref=e142]: Si conocés tu porcentaje aproximado, elegí el rango que más se parezca al tuyo. Mejora la precisión del cálculo de calorías.
+              - generic [ref=e143]:
+                - generic [ref=e144]:
+                  - button "No lo sé Usamos tu peso, altura, edad y género." [ref=e145]:
+                    - paragraph [ref=e146]: No lo sé
+                    - paragraph [ref=e147]: Usamos tu peso, altura, edad y género.
+                  - button "Muy bajo · 10-14% Definición atlética marcada, venas visibles." [ref=e148]:
+                    - paragraph [ref=e149]: Muy bajo · 10-14%
+                    - paragraph [ref=e150]: Definición atlética marcada, venas visibles.
+                  - button "Bajo · 15-19% Abdomen definido, poca grasa visible." [ref=e151]:
+                    - paragraph [ref=e152]: Bajo · 15-19%
+                    - paragraph [ref=e153]: Abdomen definido, poca grasa visible.
+                  - button "Moderado · 20-24% Contorno normal, definición leve." [ref=e154]:
+                    - paragraph [ref=e155]: Moderado · 20-24%
+                    - paragraph [ref=e156]: Contorno normal, definición leve.
+                  - button "Alto · 25-29% Sobrepeso leve, sin definición muscular." [ref=e157]:
+                    - paragraph [ref=e158]: Alto · 25-29%
+                    - paragraph [ref=e159]: Sobrepeso leve, sin definición muscular.
+                  - button "Muy alto · 30%+ Acumulación notoria de grasa corporal." [ref=e160]:
+                    - paragraph [ref=e161]: Muy alto · 30%+
+                    - paragraph [ref=e162]: Acumulación notoria de grasa corporal.
+                - generic [ref=e163]:
+                  - generic [ref=e164]: Referencia ilustrativa
+                  - paragraph [ref=e165]: Referencia ilustrativa
+            - generic [ref=e166]:
+              - generic [ref=e168]: Nivel de actividad física
+              - generic [ref=e169]:
+                - button "Sedentario Poco o nada de ejercicio, trabajo de oficina." [ref=e170]:
+                  - paragraph [ref=e171]: Sedentario
+                  - paragraph [ref=e172]: Poco o nada de ejercicio, trabajo de oficina.
+                - button "Actividad ligera Ejercicio leve 1-3 días por semana." [ref=e173]:
+                  - paragraph [ref=e174]: Actividad ligera
+                  - paragraph [ref=e175]: Ejercicio leve 1-3 días por semana.
+                - button "Actividad moderada Ejercicio moderado 3-5 días por semana." [ref=e176]:
+                  - paragraph [ref=e177]: Actividad moderada
+                  - paragraph [ref=e178]: Ejercicio moderado 3-5 días por semana.
+                - button "Actividad alta Ejercicio intenso 6-7 días por semana." [ref=e179]:
+                  - paragraph [ref=e180]: Actividad alta
+                  - paragraph [ref=e181]: Ejercicio intenso 6-7 días por semana.
+                - button "Actividad muy alta Ejercicio muy intenso, trabajo físico o doble sesión diaria." [ref=e182]:
+                  - paragraph [ref=e183]: Actividad muy alta
+                  - paragraph [ref=e184]: Ejercicio muy intenso, trabajo físico o doble sesión diaria.
+            - generic [ref=e185]:
+              - generic [ref=e187]: Objetivo
+              - generic [ref=e188]:
+                - button "Definición Reducir grasa corporal manteniendo masa muscular." [ref=e189]:
+                  - paragraph [ref=e190]: Definición
+                  - paragraph [ref=e191]: Reducir grasa corporal manteniendo masa muscular.
+                - button "Recomposición corporal Mantener peso mientras se gana músculo y se pierde grasa." [ref=e192]:
+                  - paragraph [ref=e193]: Recomposición corporal
+                  - paragraph [ref=e194]: Mantener peso mientras se gana músculo y se pierde grasa.
+                - button "Ganancia de masa muscular Superávit calórico moderado para ganar músculo." [ref=e195]:
+                  - paragraph [ref=e196]: Ganancia de masa muscular
+                  - paragraph [ref=e197]: Superávit calórico moderado para ganar músculo.
+            - button "Guardar perfil" [ref=e198]
+          - generic [ref=e199]:
+            - generic [ref=e200]:
+              - generic [ref=e201]: Tu plan estimado
+              - paragraph [ref=e202]: Estimación nutricional, no reemplaza el consejo de un profesional.
+            - generic [ref=e203]:
+              - generic [ref=e204]:
+                - generic [ref=e205]:
+                  - img [ref=e206]
+                  - generic [ref=e210]:
+                    - img [ref=e211]
+                    - generic [ref=e213]: "2724"
+                    - generic [ref=e214]: kcal objetivo
+                - paragraph [ref=e215]:
+                  - text: Mantenimiento estimado ·
+                  - generic [ref=e216]: 2724 kcal
+              - generic [ref=e217]:
+                - generic [ref=e218]:
+                  - generic [ref=e219]:
+                    - img [ref=e220]
+                    - generic [ref=e224]: 25%
+                  - generic [ref=e226]:
+                    - generic [ref=e227]:
+                      - img [ref=e228]
+                      - text: Proteína
+                    - generic [ref=e232]: 172 g
+                - generic [ref=e235]:
+                  - generic [ref=e236]:
+                    - img [ref=e237]
+                    - generic [ref=e241]: 52%
+                  - generic [ref=e243]:
+                    - generic [ref=e244]:
+                      - img [ref=e245]
+                      - text: Carbohidratos
+                    - generic [ref=e254]: 351 g
+                - generic [ref=e257]:
+                  - generic [ref=e258]:
+                    - img [ref=e259]
+                    - generic [ref=e263]: 23%
+                  - generic [ref=e265]:
+                    - generic [ref=e266]:
+                      - img [ref=e267]
+                      - text: Grasas
+                    - generic [ref=e269]: 70 g
+          - generic [ref=e272]:
+            - button "Cerrar sesión" [ref=e274]:
+              - img
+              - text: Cerrar sesión
+            - button "Borrar tu cuenta" [ref=e275]:
+              - img
+              - text: Borrar tu cuenta
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e281] [cursor=pointer]:
+    - img [ref=e282]

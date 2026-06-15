@@ -1,0 +1,83 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - link "GC GymControl Catálogo" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: GC
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: GymControl
+          - paragraph [ref=e9]: Catálogo
+      - button "Abrir navegación" [ref=e10]:
+        - img
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: Catalogo
+          - heading "Catalogo de rutinas" [level=2] [ref=e16]
+          - paragraph [ref=e17]: Explora rutinas disponibles y prepara el guardado.
+        - generic [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - generic [ref=e22]: Buscar rutinas
+              - img
+              - searchbox "Buscar rutinas" [ref=e23]
+            - combobox [ref=e24]:
+              - img [ref=e25]
+            - combobox [ref=e27]
+            - combobox [ref=e28]:
+              - img [ref=e29]
+            - combobox [ref=e31]
+            - combobox [ref=e32]:
+              - img [ref=e33]
+            - combobox [ref=e35]
+            - combobox [ref=e36]:
+              - img [ref=e37]
+            - combobox [ref=e39]
+          - generic [ref=e40]:
+            - article [ref=e42]:
+              - img "qa rutina 829015 editada" [ref=e44]
+              - generic [ref=e46]:
+                - generic [ref=e47]:
+                  - generic [ref=e48]: 2 dias
+                  - generic [ref=e49]: /
+                  - generic [ref=e50]: 3 filas
+                  - generic [ref=e51]: /
+                  - generic [ref=e52]: Intermedio
+                  - generic [ref=e53]: /
+                  - generic [ref=e54]: Mantenimiento
+                - generic [ref=e55]:
+                  - heading "qa rutina 829015 editada" [level=3] [ref=e56]
+                  - paragraph [ref=e57]: Rutina QA G11 con dos dias y multiples filas.
+                - link "Ver rutina" [ref=e58] [cursor=pointer]:
+                  - /url: /catalogo/rutinas/479d079f-12e8-4283-b5fa-749267db8aa7
+                  - text: Ver rutina
+                  - img
+            - article [ref=e60]:
+              - img "test rutina" [ref=e62]
+              - generic [ref=e64]:
+                - generic [ref=e65]:
+                  - generic [ref=e66]: 2 dias
+                  - generic [ref=e67]: /
+                  - generic [ref=e68]: 3 filas
+                  - generic [ref=e69]: /
+                  - generic [ref=e70]: Intermedio
+                  - generic [ref=e71]: /
+                  - generic [ref=e72]: Mantenimiento
+                - generic [ref=e73]:
+                  - heading "test rutina" [level=3] [ref=e74]
+                  - paragraph [ref=e75]: test
+                - link "Ver rutina" [ref=e76] [cursor=pointer]:
+                  - /url: /catalogo/rutinas/a4a9ba57-b6ab-4850-8906-13b384d4ac86
+                  - text: Ver rutina
+                  - img
+          - generic [ref=e77]:
+            - button "Pagina anterior" [disabled]:
+              - img
+              - generic: Pagina anterior
+            - button "1" [ref=e79]
+            - button "Pagina siguiente" [disabled]:
+              - img
+              - generic: Pagina siguiente
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e85] [cursor=pointer]:
+    - img [ref=e86]

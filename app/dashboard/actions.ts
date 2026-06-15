@@ -7,7 +7,7 @@ import { requireUser } from "@/app/lib/auth";
 import {
   deleteSavedRoutineForUser,
   renameSavedRoutineForUser,
-  setSavedRoutineActiveForUser,
+  toggleSavedRoutineActiveForUser,
 } from "@/app/lib/saved-routines";
 
 export async function renameSavedRoutineAction(formData: FormData) {
@@ -43,7 +43,7 @@ export async function renameSavedRoutineAction(formData: FormData) {
   redirect(destination);
 }
 
-export async function setActiveSavedRoutineAction(formData: FormData) {
+export async function toggleActiveSavedRoutineAction(formData: FormData) {
   const auth = await requireUser();
   const savedRoutineId = String(formData.get("savedRoutineId") ?? "").trim();
 
@@ -54,16 +54,19 @@ export async function setActiveSavedRoutineAction(formData: FormData) {
   let destination = "/dashboard?status=active-error";
 
   try {
-    const activeRoutine = await setSavedRoutineActiveForUser({
+    const result = await toggleSavedRoutineActiveForUser({
       savedRoutineId,
       userId: auth.user.id,
     });
 
-    if (activeRoutine) {
+    if (result) {
       revalidatePath("/dashboard");
       revalidatePath("/dashboard/rutinas");
 
-      destination = `/dashboard?status=active&savedRoutineId=${savedRoutineId}`;
+      destination =
+        result.status === "activated"
+          ? `/dashboard?status=active&savedRoutineId=${savedRoutineId}`
+          : "/dashboard?status=inactive";
     }
   } catch {
     destination = "/dashboard?status=active-error";

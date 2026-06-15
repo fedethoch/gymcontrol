@@ -76,8 +76,8 @@ export function WeekDaysList({
                 </div>
 
                 {isCompleted ? (
-                  <span className="inline-flex h-12 w-full items-center justify-center gap-3 rounded-lg border border-[#2a9d5f] bg-[#0f2418] px-5 text-sm font-semibold text-[#88edab] md:w-60">
-                    <Check className="size-5" />
+                  <span className="inline-flex items-center gap-2 text-sm font-medium text-[#88edab] md:justify-self-end">
+                    <Check className="size-4" />
                     Completado
                   </span>
                 ) : isCurrentDay ? (

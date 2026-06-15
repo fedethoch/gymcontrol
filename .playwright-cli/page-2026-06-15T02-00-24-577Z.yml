@@ -1,0 +1,70 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - link "GC GymControl Recetas" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: GC
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: GymControl
+          - paragraph [ref=e9]: Recetas
+      - button "Abrir navegación" [ref=e10]:
+        - img
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: Nutrición
+          - heading "Recetas" [level=2] [ref=e16]
+          - paragraph [ref=e17]: Ideas de comidas armadas con el catálogo de alimentos y sus macros.
+        - generic [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - generic [ref=e22]: Buscar recetas
+              - img
+              - searchbox "Buscar recetas" [ref=e23]
+            - combobox [ref=e24]:
+              - img [ref=e25]
+            - combobox [ref=e27]
+          - generic [ref=e28]:
+            - button "1 porción Avena con banana y maní Avena cocida con banana en rodajas y manteca de maní. 434 kcal" [ref=e30]:
+              - generic [ref=e31]:
+                - img [ref=e33]
+                - generic [ref=e37]: 1 porción
+              - generic [ref=e39]:
+                - heading "Avena con banana y maní" [level=3] [ref=e40]
+                - paragraph [ref=e41]: Avena cocida con banana en rodajas y manteca de maní.
+                - paragraph [ref=e42]: 434 kcal
+            - button "1 porción Bowl de pollo y arroz Pechuga a la plancha con arroz blanco y brócoli al vapor. 477 kcal" [ref=e49]:
+              - generic [ref=e50]:
+                - img [ref=e52]
+                - generic [ref=e56]: 1 porción
+              - generic [ref=e58]:
+                - heading "Bowl de pollo y arroz" [level=3] [ref=e59]
+                - paragraph [ref=e60]: Pechuga a la plancha con arroz blanco y brócoli al vapor.
+                - paragraph [ref=e61]: 477 kcal
+            - button "1 porción Ensalada de atún Mix de hojas verdes con atún al natural, aceite de oliva y espinaca. 202 kcal" [ref=e68]:
+              - generic [ref=e69]:
+                - img [ref=e71]
+                - generic [ref=e75]: 1 porción
+              - generic [ref=e77]:
+                - heading "Ensalada de atún" [level=3] [ref=e78]
+                - paragraph [ref=e79]: Mix de hojas verdes con atún al natural, aceite de oliva y espinaca.
+                - paragraph [ref=e80]: 202 kcal
+            - button "1 porción Tostadas con huevo y palta Pan integral tostado con huevo revuelto y palta. 423 kcal" [ref=e87]:
+              - generic [ref=e88]:
+                - img [ref=e90]
+                - generic [ref=e94]: 1 porción
+              - generic [ref=e96]:
+                - heading "Tostadas con huevo y palta" [level=3] [ref=e97]
+                - paragraph [ref=e98]: Pan integral tostado con huevo revuelto y palta.
+                - paragraph [ref=e99]: 423 kcal
+            - button "1 porción Yogur con almendras Yogur griego descremado con almendras tostadas. 170 kcal" [ref=e106]:
+              - generic [ref=e107]:
+                - img [ref=e109]
+                - generic [ref=e113]: 1 porción
+              - generic [ref=e115]:
+                - heading "Yogur con almendras" [level=3] [ref=e116]
+                - paragraph [ref=e117]: Yogur griego descremado con almendras tostadas.
+                - paragraph [ref=e118]: 170 kcal
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e129] [cursor=pointer]:
+    - img [ref=e130]

@@ -1,0 +1,166 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - link "GC GymControl Dashboard Admin" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: GC
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: GymControl
+          - paragraph [ref=e9]: Dashboard Admin
+      - button "Abrir navegación" [ref=e10]:
+        - img
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: Dashboard Admin
+          - heading "Dashboard Admin" [level=1] [ref=e16]
+          - paragraph [ref=e17]: Supervisa el estado general de la plataforma y gestiona el contenido.
+        - generic [ref=e18]:
+          - generic [ref=e19]:
+            - img [ref=e21]
+            - generic [ref=e27]:
+              - paragraph [ref=e28]: "2"
+              - paragraph [ref=e29]: Ejercicios
+          - generic [ref=e30]:
+            - img [ref=e32]
+            - generic [ref=e35]:
+              - paragraph [ref=e36]: "2"
+              - paragraph [ref=e37]: Rutinas
+          - generic [ref=e38]:
+            - img [ref=e40]
+            - generic [ref=e45]:
+              - paragraph [ref=e46]: "4"
+              - paragraph [ref=e47]: Usuarios
+          - generic [ref=e48]:
+            - img [ref=e50]
+            - generic [ref=e52]:
+              - paragraph [ref=e53]: "0"
+              - paragraph [ref=e54]: Rutinas guardadas
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - generic [ref=e58]: Actividad reciente
+            - table [ref=e61]:
+              - rowgroup [ref=e62]:
+                - row "Accion Detalle Fecha" [ref=e63]:
+                  - columnheader "Accion" [ref=e64]
+                  - columnheader "Detalle" [ref=e65]
+                  - columnheader "Fecha" [ref=e66]
+              - rowgroup [ref=e67]:
+                - row "Usuario nuevo Se registro un nuevo usuario 12/06/2026" [ref=e68]:
+                  - cell "Usuario nuevo" [ref=e69]:
+                    - generic [ref=e70]:
+                      - img [ref=e72]
+                      - generic [ref=e75]: Usuario nuevo
+                  - cell "Se registro un nuevo usuario" [ref=e76]
+                  - cell "12/06/2026" [ref=e77]
+                - row "Rutina actualizada qa rutina 829015 editada 09/06/2026" [ref=e78]:
+                  - cell "Rutina actualizada" [ref=e79]:
+                    - generic [ref=e80]:
+                      - img [ref=e82]
+                      - generic [ref=e85]: Rutina actualizada
+                  - cell "qa rutina 829015 editada" [ref=e86]
+                  - cell "09/06/2026" [ref=e87]
+                - row "Ejercicio nuevo espalda test 09/06/2026" [ref=e88]:
+                  - cell "Ejercicio nuevo" [ref=e89]:
+                    - generic [ref=e90]:
+                      - img [ref=e92]
+                      - generic [ref=e98]: Ejercicio nuevo
+                  - cell "espalda test" [ref=e99]
+                  - cell "09/06/2026" [ref=e100]
+                - row "Rutina nueva test rutina 09/06/2026" [ref=e101]:
+                  - cell "Rutina nueva" [ref=e102]:
+                    - generic [ref=e103]:
+                      - img [ref=e105]
+                      - generic [ref=e106]: Rutina nueva
+                  - cell "test rutina" [ref=e107]
+                  - cell "09/06/2026" [ref=e108]
+                - row "Ejercicio nuevo test ejercicio 08/06/2026" [ref=e109]:
+                  - cell "Ejercicio nuevo" [ref=e110]:
+                    - generic [ref=e111]:
+                      - img [ref=e113]
+                      - generic [ref=e119]: Ejercicio nuevo
+                  - cell "test ejercicio" [ref=e120]
+                  - cell "08/06/2026" [ref=e121]
+          - generic [ref=e122]:
+            - generic [ref=e123]:
+              - generic [ref=e125]: Acciones rapidas
+              - generic [ref=e126]:
+                - link "Crear ejercicio" [ref=e127] [cursor=pointer]:
+                  - /url: /admin/ejercicios
+                  - img [ref=e129]
+                  - text: Crear ejercicio
+                  - img [ref=e130]
+                - link "Crear rutina" [ref=e132] [cursor=pointer]:
+                  - /url: /admin/rutinas
+                  - img [ref=e134]
+                  - text: Crear rutina
+                  - img [ref=e135]
+                - link "Ver catalogo admin" [ref=e137] [cursor=pointer]:
+                  - /url: /catalogo
+                  - img [ref=e139]
+                  - text: Ver catalogo admin
+                  - img [ref=e144]
+            - generic [ref=e146]:
+              - generic [ref=e148]: Resumen de gestion
+              - generic [ref=e149]:
+                - generic [ref=e150]:
+                  - generic [ref=e151]: Rutinas activas
+                  - generic [ref=e152]: "0"
+                - generic [ref=e153]:
+                  - generic [ref=e154]: Ejercicios nuevos esta semana
+                  - generic [ref=e155]: "2"
+                - generic [ref=e156]:
+                  - generic [ref=e157]: Usuarios con rutina asignada
+                  - generic [ref=e158]: 0%
+        - generic [ref=e159]:
+          - generic [ref=e160]:
+            - generic [ref=e162]: Ultimos ejercicios agregados
+            - table [ref=e165]:
+              - rowgroup [ref=e166]:
+                - row "Ejercicio Descripcion Fecha" [ref=e167]:
+                  - columnheader "Ejercicio" [ref=e168]
+                  - columnheader "Descripcion" [ref=e169]
+                  - columnheader "Fecha" [ref=e170]
+              - rowgroup [ref=e171]:
+                - row "espalda test Ejercicio espalda 09/06/2026" [ref=e172]:
+                  - cell "espalda test" [ref=e173]:
+                    - button "espalda test" [ref=e174]:
+                      - generic [ref=e176]: espalda test
+                  - cell "Ejercicio espalda" [ref=e177]
+                  - cell "09/06/2026" [ref=e178]
+                - row "test ejercicio test 08/06/2026" [ref=e179]:
+                  - cell "test ejercicio" [ref=e180]:
+                    - button "test ejercicio" [ref=e181]:
+                      - generic [ref=e183]: test ejercicio
+                  - cell "test" [ref=e184]
+                  - cell "08/06/2026" [ref=e185]
+            - link "Ver todos los ejercicios" [ref=e186] [cursor=pointer]:
+              - /url: /admin/ejercicios
+              - text: Ver todos los ejercicios
+              - img [ref=e187]
+          - generic [ref=e189]:
+            - generic [ref=e191]: Ultimas rutinas
+            - generic [ref=e192]:
+              - link "qa rutina 829015 editada 2 dias Intermedio" [ref=e193] [cursor=pointer]:
+                - /url: /admin/rutinas
+                - generic [ref=e195]:
+                  - paragraph [ref=e196]: qa rutina 829015 editada
+                  - generic [ref=e197]:
+                    - generic [ref=e198]: 2 dias
+                    - generic [ref=e199]: Intermedio
+                - img [ref=e200]
+              - link "test rutina 2 dias Intermedio" [ref=e202] [cursor=pointer]:
+                - /url: /admin/rutinas
+                - generic [ref=e204]:
+                  - paragraph [ref=e205]: test rutina
+                  - generic [ref=e206]:
+                    - generic [ref=e207]: 2 dias
+                    - generic [ref=e208]: Intermedio
+                - img [ref=e209]
+            - link "Ver todas las rutinas" [ref=e211] [cursor=pointer]:
+              - /url: /admin/rutinas
+              - text: Ver todas las rutinas
+              - img [ref=e212]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e219] [cursor=pointer]:
+    - img [ref=e220]

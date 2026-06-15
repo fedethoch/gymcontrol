@@ -39,6 +39,7 @@ export type AdminRoutineListItem = RoutineTemplate & {
   createdAtLabel: string;
   dayCount: number;
   itemCount: number;
+  usersCount: number;
 };
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createSupabaseServerClient>>;
@@ -76,6 +77,13 @@ type ExerciseRow = {
   name: string;
   description: string;
   image_url: string;
+  muscle_group: string | null;
+  equipment: string | null;
+  video_url: string | null;
+  min_reps: number | null;
+  max_reps: number | null;
+  steps: string[];
+  tips: string[];
 };
 
 type CreateRoutineInput = RoutineWriteInput & {
@@ -109,7 +117,14 @@ const ROUTINE_SELECT = `
         id,
         name,
         description,
-        image_url
+        image_url,
+        muscle_group,
+        equipment,
+        video_url,
+        min_reps,
+        max_reps,
+        steps,
+        tips
       )
     )
   )
@@ -126,6 +141,23 @@ export async function listAdminRoutines(): Promise<AdminRoutineListItem[]> {
     throw new Error(`No se pudo listar rutinas: ${error.message}`);
   }
 
+  const { data: savedRoutines, error: savedError } = await supabase
+    .from("saved_routines")
+    .select("routine_template_id");
+
+  if (savedError) {
+    throw new Error(`No se pudo contar usuarios por rutina: ${savedError.message}`);
+  }
+
+  const usersCountByRoutineId = new Map<string, number>();
+
+  for (const row of (savedRoutines ?? []) as { routine_template_id: string }[]) {
+    usersCountByRoutineId.set(
+      row.routine_template_id,
+      (usersCountByRoutineId.get(row.routine_template_id) ?? 0) + 1,
+    );
+  }
+
   return ((data ?? []) as unknown as RoutineRow[]).map((routine) => {
     const mapped = mapRoutineTemplate(routine);
 
@@ -135,6 +167,7 @@ export async function listAdminRoutines(): Promise<AdminRoutineListItem[]> {
       createdAtLabel: formatRoutineDate(routine.created_at),
       dayCount: mapped.days.length,
       itemCount: mapped.days.reduce((total, day) => total + day.items.length, 0),
+      usersCount: usersCountByRoutineId.get(routine.id) ?? 0,
     };
   });
 }
@@ -240,6 +273,21 @@ export async function updateRoutine(input: UpdateRoutineInput) {
   }
 }
 
+export async function deleteRoutine(id: string) {
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.from("routine_templates").delete().eq("id", id);
+
+  if (error) {
+    if (error.code === "23503") {
+      throw new Error(
+        "No se puede eliminar: la rutina esta en uso por usuarios que la guardaron o activaron.",
+      );
+    }
+
+    throw new Error(`No se pudo eliminar la rutina: ${error.message}`);
+  }
+}
+
 function mapRoutineTemplate(routine: RoutineRow): RoutineTemplate {
   const days = [...(routine.routine_days ?? [])]
     .sort((left, right) => left.day_order - right.day_order)
@@ -287,6 +335,13 @@ function mapRoutineExercise(item: RoutineItemRow): RoutineExerciseRef {
     name: exercise.name,
     description: exercise.description,
     imageUrl: exercise.image_url,
+    muscleGroup: exercise.muscle_group,
+    equipment: exercise.equipment,
+    videoUrl: exercise.video_url,
+    minReps: exercise.min_reps,
+    maxReps: exercise.max_reps,
+    steps: exercise.steps,
+    tips: exercise.tips,
   };
 }
 

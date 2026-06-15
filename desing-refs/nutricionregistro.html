@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GymControl — Nutrición / Registro</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ── tokens/colors.css ──────────────────────────────────────────────── */
+:root {
+  --gc-background:      #05070b;
+  --gc-sidebar:         #080b10;
+  --gc-workspace:       #0d1118;
+  --gc-card:            #121824;
+  --gc-card-alt:        #171d2a;
+  --gc-surface-deep:    #080b14;
+  --gc-border:          #252b36;
+  --gc-border-strong:   #323949;
+  --gc-foreground:      #f4f6fb;
+  --gc-foreground-muted:#98a2b7;
+  --gc-foreground-subtle:#6e7788;
+  --gc-accent:          #7c3aed;
+  --gc-accent-strong:   #8f4df3;
+  --gc-accent-bright:   #b995ff;
+  --gc-accent-foreground:#f7f5ff;
+  --gc-accent-deep:     #6335e8;
+  --gc-accent-tint-12:  rgba(124,58,237,0.12);
+  --gc-accent-tint-18:  rgba(124,58,237,0.18);
+  --gc-accent-tint-35:  rgba(124,58,237,0.35);
+  --gc-accent-soft-surface: #251640;
+  --gc-accent-soft-border:  #34245b;
+  --gc-success:         #22c55e;
+  --gc-success-surface: #13251a;
+  --gc-success-border:  #255936;
+  --gc-success-foreground:#d7f5df;
+}
+/* ── tokens/typography.css ──────────────────────────────────────────── */
+:root {
+  --gc-font-display: "Sora","IBM Plex Sans",system-ui,sans-serif;
+  --gc-font-body:    "IBM Plex Sans",system-ui,Arial,Helvetica,sans-serif;
+  --gc-font-mono:    "IBM Plex Mono",ui-monospace,"SFMono-Regular",monospace;
+  --gc-weight-regular: 400;
+  --gc-weight-medium:  500;
+  --gc-weight-semibold:600;
+  --gc-weight-bold:    700;
+  --gc-tracking-tight: -0.06em;
+  --gc-tracking-eyebrow: 0.16em;
+}
+/* ── tokens/effects.css ─────────────────────────────────────────────── */
+:root {
+  --gc-shadow-card:   0 14px 36px rgba(0,0,0,0.28);
+  --gc-glow-accent:   0 16px 34px rgba(124,58,237,0.34);
+  --gc-glow-logo:     0 12px 28px rgba(72,39,158,0.28);
+  --gc-grad-sidebar:  linear-gradient(180deg,#090c14 0%,#05070d 100%);
+  --gc-grad-page-glow:
+    radial-gradient(circle at 18% 0%,rgba(124,58,237,0.12),transparent 32%),
+    linear-gradient(180deg,#070a12 0%,#090d16 52%,#05070b 100%);
+  --gc-grad-divider:  linear-gradient(90deg,transparent,rgba(94,78,139,0.5),transparent);
+  --gc-ease: cubic-bezier(0.16,1,0.3,1);
+  --gc-duration: 0.2s;
+}
+/* ── base.css ───────────────────────────────────────────────────────── */
+*,*::before,*::after { box-sizing:border-box; }
+html,body { height:100%; margin:0; }
+body {
+  background: var(--gc-background);
+  color: var(--gc-foreground);
+  font-family: var(--gc-font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+::selection { background:var(--gc-accent); color:var(--gc-accent-foreground); }
+
+/* scrollbar */
+.gc-scroll::-webkit-scrollbar { width:10px; height:10px; }
+.gc-scroll::-webkit-scrollbar-thumb {
+  background:var(--gc-border-strong); border-radius:9999px;
+  border:3px solid transparent; background-clip:content-box;
+}
+.gc-scroll::-webkit-scrollbar-track { background:transparent; }
+
+/* ── page layout ────────────────────────────────────────────────────── */
+#root {
+  height:100vh;
+  background: var(--gc-grad-page-glow);
+  overflow-y: auto;
+}
+
+/* ── select / input reset ───────────────────────────────────────────── */
+select { appearance:none; -webkit-appearance:none; }
+input:focus, select:focus { outline:2px solid var(--gc-accent); outline-offset:1px; }
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; }
+</style>
+
+<!-- React -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useRef, useEffect } = React;
+
+// ── SVG helpers ────────────────────────────────────────────────────────────
+const Svg = ({ size, children }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    {children}
+  </svg>
+);
+const TrashIcon  = ({ size=16 }) => <Svg size={size}><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></Svg>;
+const EditIcon   = ({ size=16 }) => <Svg size={size}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"/></Svg>;
+const ChevDown   = ({ size=16 }) => <Svg size={size}><path d="m6 9 6 6 6-6"/></Svg>;
+const PlusIcon   = ({ size=16 }) => <Svg size={size}><path d="M12 5v14M5 12h14"/></Svg>;
+const SaveIcon   = ({ size=16 }) => <Svg size={size}><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></Svg>;
+
+// ── Data ───────────────────────────────────────────────────────────────────
+const FOOD_DB = [
+  { name:"Avena en hojuelas",    emoji:"🌾", kcal:380, p:13, c:63, g:7  },
+  { name:"Clara de huevo",       emoji:"🥚", kcal:54,  p:11, c:1,  g:0  },
+  { name:"Banana",               emoji:"🍌", kcal:89,  p:1,  c:23, g:0  },
+  { name:"Pechuga de pollo",     emoji:"🍗", kcal:165, p:31, c:0,  g:4  },
+  { name:"Arroz blanco",         emoji:"🍚", kcal:130, p:3,  c:28, g:0  },
+  { name:"Brócoli al vapor",     emoji:"🥦", kcal:35,  p:2,  c:7,  g:0  },
+  { name:"Yogur griego natural", emoji:"🥛", kcal:97,  p:9,  c:4,  g:5  },
+  { name:"Miel de abeja",        emoji:"🍯", kcal:304, p:0,  c:82, g:0  },
+  { name:"Almendras",            emoji:"🥜", kcal:579, p:21, c:22, g:50 },
+  { name:"Atún en agua",         emoji:"🐟", kcal:116, p:26, c:0,  g:1  },
+  { name:"Ensalada mixta",       emoji:"🥗", kcal:20,  p:1,  c:4,  g:0  },
+  { name:"Huevo entero",         emoji:"🍳", kcal:155, p:13, c:1,  g:11 },
+  { name:"Pan integral",         emoji:"🍞", kcal:247, p:9,  c:47, g:3  },
+  { name:"Pasta cocida",         emoji:"🍝", kcal:131, p:5,  c:25, g:1  },
+  { name:"Salmón",               emoji:"🐠", kcal:208, p:20, c:0,  g:13 },
+  { name:"Aguacate",             emoji:"🥑", kcal:160, p:2,  c:9,  g:15 },
+  { name:"Manzana",              emoji:"🍎", kcal:52,  p:0,  c:14, g:0  },
+  { name:"Proteína en polvo",    emoji:"💪", kcal:380, p:75, c:10, g:5  },
+];
+
+const GOALS = { kcal:2224, p:172, c:351, g:70 };
+
+const INITIAL_MEALS = [
+  { id:"desayuno", name:"Desayuno",  time:"08:15", emoji:"☀️", expanded:true, foods:[
+    { name:"Avena en hojuelas", emoji:"🌾", qty:60,  kcal:228, p:8,  c:38, g:4 },
+    { name:"Clara de huevo",    emoji:"🥚", qty:150, kcal:81,  p:17, c:1,  g:0 },
+    { name:"Banana",            emoji:"🍌", qty:120, kcal:107, p:1,  c:27, g:0 },
+  ]},
+  { id:"almuerzo", name:"Almuerzo", time:"13:30", emoji:"⚡", expanded:true, foods:[
+    { name:"Pechuga de pollo a la plancha", emoji:"🍗", qty:180, kcal:297, p:56, c:0,  g:7 },
+    { name:"Arroz blanco",                  emoji:"🍚", qty:150, kcal:195, p:5,  c:42, g:0 },
+    { name:"Brócoli al vapor",              emoji:"🥦", qty:100, kcal:35,  p:2,  c:7,  g:0 },
+  ]},
+  { id:"merienda", name:"Merienda", time:"17:00", emoji:"🍎", expanded:true, foods:[
+    { name:"Yogur griego natural", emoji:"🥛", qty:150, kcal:146, p:14, c:6, g:8 },
+    { name:"Miel de abeja",        emoji:"🍯", qty:10,  kcal:30,  p:0,  c:8, g:0 },
+    { name:"Almendras",            emoji:"🥜", qty:15,  kcal:87,  p:3,  c:3, g:8 },
+  ]},
+  { id:"cena", name:"Cena", time:"20:30", emoji:"🌙", expanded:true, foods:[
+    { name:"Atún en agua",   emoji:"🐟", qty:100, kcal:116, p:26, c:0, g:1 },
+    { name:"Ensalada mixta", emoji:"🥗", qty:100, kcal:20,  p:1,  c:4, g:0 },
+  ]},
+];
+
+// ── Donut chart ────────────────────────────────────────────────────────────
+function DonutChart({ value, max }) {
+  const r = 68, cx = 88, cy = 88;
+  const circ = 2 * Math.PI * r;
+  const pct  = Math.min(value / max, 1);
+  const dash = circ * pct;
+  const gap  = circ - dash;
+
+  return (
+    <div style={{ position:"relative", width:176, height:176 }}>
+      <svg width={176} height={176} viewBox="0 0 176 176">
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stopColor="#9333ea" />
+            <stop offset="100%" stopColor="#b995ff" />
+          </linearGradient>
+        </defs>
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke="#1a2035" strokeWidth={14} />
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke="url(#ringGrad)" strokeWidth={14}
+          strokeDasharray={`${dash} ${gap}`} strokeLinecap="round"
+          transform={`rotate(-90 ${cx} ${cy})`}
+          style={{ transition:"stroke-dasharray 0.6s ease" }} />
+      </svg>
+      <div style={{ position:"absolute", inset:0, display:"flex", flexDirection:"column",
+          alignItems:"center", justifyContent:"center", gap:1 }}>
+        <span style={{ fontFamily:"var(--gc-font-display)", fontSize:28, fontWeight:700,
+            color:"#fff", lineHeight:1.1 }}>{value.toLocaleString("es")}</span>
+        <span style={{ fontSize:12, color:"#98a2b7" }}>kcal</span>
+        <span style={{ fontSize:17, fontWeight:700, color:"#b995ff", lineHeight:1.3 }}>
+          {Math.round(pct * 100)}%
+        </span>
+        <span style={{ fontSize:11, color:"#6e7788" }}>del objetivo</span>
+      </div>
+    </div>
+  );
+}
+
+// ── Progress row ───────────────────────────────────────────────────────────
+function ProgressRow({ icon, label, value, max, unit }) {
+  const pct = Math.min((value / max) * 100, 100);
+  const display = unit === "kcal"
+    ? `${value.toLocaleString("es")} / ${max.toLocaleString("es")} kcal`
+    : `${value} / ${max} g`;
+  return (
+    <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:7 }}>
+          <span style={{ fontSize:15 }}>{icon}</span>
+          <span style={{ fontSize:13, color:"#d6dbe7" }}>{label}</span>
+        </div>
+        <span style={{ fontSize:12, color:"#98a2b7" }}>{display}</span>
+      </div>
+      <div style={{ height:6, borderRadius:99, background:"#1a2035", overflow:"hidden" }}>
+        <div style={{ height:"100%", width:`${pct}%`, borderRadius:99,
+            background:"linear-gradient(90deg,#7c3aed,#b995ff)", transition:"width 0.5s ease" }} />
+      </div>
+    </div>
+  );
+}
+
+// ── Meal card ──────────────────────────────────────────────────────────────
+function MealCard({ meal, onToggle, onDelete, onEdit }) {
+  const sum = k => meal.foods.reduce((s, f) => s + f[k], 0);
+  const kcal = sum("kcal"), mp = sum("p"), mc = sum("c"), mg = sum("g");
+
+  const Chip = ({ label, val, bg, color }) => (
+    <span style={{ display:"inline-flex", alignItems:"center", gap:3,
+        padding:"4px 8px", borderRadius:6, background:bg,
+        fontSize:12, fontWeight:600, color, whiteSpace:"nowrap" }}>
+      <span style={{ fontSize:11, opacity:0.8 }}>{label}</span> {val}g
+    </span>
+  );
+
+  const IconBtn = ({ onClick, children }) => (
+    <button onClick={onClick} style={{ background:"none",
+        border:"1px solid var(--gc-border)", borderRadius:7,
+        width:28, height:28, display:"flex", alignItems:"center",
+        justifyContent:"center", cursor:"pointer", color:"#6e7788" }}>
+      {children}
+    </button>
+  );
+
+  return (
+    <div style={{ background:"var(--gc-card)", border:"1px solid var(--gc-border)",
+        borderRadius:14, padding:16, display:"flex", flexDirection:"column", gap:10, minWidth:0 }}>
+      {/* header */}
+      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:8 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:10, minWidth:0 }}>
+          <span style={{ fontSize:20, flexShrink:0 }}>{meal.emoji}</span>
+          <div style={{ minWidth:0 }}>
+            <div style={{ fontWeight:600, fontSize:14, color:"#fff",
+                overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{meal.name}</div>
+            <div style={{ fontSize:12, color:"#98a2b7", marginTop:2 }}>{meal.time}</div>
+          </div>
+        </div>
+        <div style={{ display:"flex", alignItems:"center", gap:5, flexShrink:0 }}>
+          <span style={{ fontFamily:"var(--gc-font-display)", fontWeight:700,
+              fontSize:17, color:"#b995ff" }}>{kcal}</span>
+          <span style={{ fontSize:11, color:"#98a2b7" }}>kcal</span>
+          <button onClick={onToggle} style={{ background:"none", border:"none",
+              cursor:"pointer", color:"#6e7788", padding:2, display:"flex",
+              transform: meal.expanded ? "rotate(180deg)" : "rotate(0deg)",
+              transition:"transform 0.2s" }}>
+            <ChevDown size={14} />
+          </button>
+        </div>
+      </div>
+      {/* foods list */}
+      {meal.expanded && (
+        <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
+          {meal.foods.map((f, i) => (
+            <div key={i} style={{ display:"flex", justifyContent:"space-between",
+                alignItems:"center", fontSize:13 }}>
+              <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+                <span style={{ width:6, height:6, borderRadius:99, background:"#7c3aed",
+                    flexShrink:0, display:"inline-block" }} />
+                <span style={{ color:"#d6dbe7" }}>{f.name}</span>
+              </div>
+              <span style={{ color:"#6e7788", flexShrink:0 }}>{f.qty} g</span>
+            </div>
+          ))}
+        </div>
+      )}
+      {/* chips + actions */}
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", gap:6 }}>
+        <div style={{ display:"flex", gap:5, flexWrap:"wrap" }}>
+          <Chip label="P" val={mp} bg="rgba(124,58,237,0.18)"  color="#a78bfa" />
+          <Chip label="C" val={mc} bg="rgba(109,40,217,0.18)"  color="#8b5cf6" />
+          <Chip label="G" val={mg} bg="rgba(79,28,193,0.18)"   color="#7c3aed" />
+        </div>
+        <div style={{ display:"flex", gap:5 }}>
+          <IconBtn onClick={onEdit}>  <EditIcon  size={13} /></IconBtn>
+          <IconBtn onClick={onDelete}><TrashIcon size={13} /></IconBtn>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Heatmap ────────────────────────────────────────────────────────────────
+function NutritionHeatmap() {
+  const TOTAL=77, APRIL=5, MAY=6, ROWS=7;
+  const colors = ["#1a2035","#2d1b5e","#6335e8","#9a63ff"];
+  const dayLabels = ["L","M","M","J","V","S","D"];
+
+  const levels = Array.from({ length:TOTAL }, (_,i) => {
+    const d = TOTAL - 1 - i;
+    if (d < 8)  return 3;
+    if (d < 20) { const r=(i*17+3)%10; return r<1?0:r<3?1:r<6?2:3; }
+    const r=(i*13+7)%10; return r<2?0:r<4?1:r<7?2:3;
+  });
+
+  const Cols = ({ startCol, numCols }) =>
+    Array.from({ length:numCols }, (_,ci) => (
+      <div key={ci} style={{ display:"flex", flexDirection:"column", gap:4 }}>
+        {Array.from({ length:ROWS }, (_,di) => {
+          const idx = (startCol+ci)*ROWS+di;
+          return <div key={di} style={{ width:14, height:14, borderRadius:3,
+            background: idx < levels.length ? colors[levels[idx]] : "#1a2035" }} />;
+        })}
+      </div>
+    ));
+
+  return (
+    <div style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
+      <div style={{ display:"flex", flexDirection:"column", gap:4, paddingTop:20 }}>
+        {dayLabels.map((d,i) => (
+          <div key={i} style={{ height:14, lineHeight:"14px", fontSize:10,
+              color:"#6e7788", textAlign:"right", paddingRight:4 }}>{d}</div>
+        ))}
+      </div>
+      <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+        <div style={{ fontSize:11, color:"#98a2b7", paddingLeft:2 }}>Abril</div>
+        <div style={{ display:"flex", gap:4 }}><Cols startCol={0} numCols={APRIL} /></div>
+      </div>
+      <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+        <div style={{ fontSize:11, color:"#98a2b7", paddingLeft:2 }}>Mayo</div>
+        <div style={{ display:"flex", gap:4 }}><Cols startCol={APRIL} numCols={MAY} /></div>
+      </div>
+    </div>
+  );
+}
+
+// ── Main page ──────────────────────────────────────────────────────────────
+function NutricionRegistro() {
+  const [meals,      setMeals]      = useState(INITIAL_MEALS);
+  const [mealName,   setMealName]   = useState("Desayuno");
+  const [searchQ,    setSearchQ]    = useState("");
+  const [selectedF,  setSelectedF]  = useState(null);
+  const [unit,       setUnit]       = useState("Gramos");
+  const [qty,        setQty]        = useState(100);
+  const [addedFoods, setAddedFoods] = useState([]);
+  const [showDrop,   setShowDrop]   = useState(false);
+  const [dateOffset, setDateOffset] = useState(0);
+  const searchRef = useRef(null);
+
+  useEffect(() => {
+    const fn = e => { if (searchRef.current && !searchRef.current.contains(e.target)) setShowDrop(false); };
+    document.addEventListener("mousedown", fn);
+    return () => document.removeEventListener("mousedown", fn);
+  }, []);
+
+  const base = new Date(2025, 4, 16);
+  base.setDate(base.getDate() + dateOffset);
+  const dateLabel = base.toLocaleDateString("es-ES", { weekday:"long", day:"numeric", month:"long" });
+  const dateCap   = dateLabel.charAt(0).toUpperCase() + dateLabel.slice(1);
+
+  const allFoods = meals.flatMap(m => m.foods);
+  const totals = {
+    kcal: allFoods.reduce((s,f)=>s+f.kcal,0),
+    p:    allFoods.reduce((s,f)=>s+f.p,   0),
+    c:    allFoods.reduce((s,f)=>s+f.c,   0),
+    g:    allFoods.reduce((s,f)=>s+f.g,   0),
+  };
+
+  const filtered = FOOD_DB.filter(f => f.name.toLowerCase().includes(searchQ.toLowerCase()));
+
+  function addFood() {
+    if (!selectedF) return;
+    const fac = qty / 100;
+    setAddedFoods(prev => [...prev, {
+      name:selectedF.name, emoji:selectedF.emoji, qty,
+      kcal:Math.round(selectedF.kcal*fac), p:Math.round(selectedF.p*fac),
+      c:Math.round(selectedF.c*fac),       g:Math.round(selectedF.g*fac),
+    }]);
+    setSelectedF(null); setSearchQ(""); setQty(100);
+  }
+
+  function saveMeal() {
+    if (!addedFoods.length) return;
+    const n   = mealName.toLowerCase();
+    const emo = n.includes("desayuno")?"☀️":n.includes("almuerzo")?"⚡":
+                n.includes("cena")?"🌙":n.includes("merienda")?"🍎":"🍽️";
+    setMeals(prev => [...prev, {
+      id:`m-${Date.now()}`, name:mealName, emoji:emo, expanded:true,
+      time:new Date().toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"}),
+      foods:addedFoods,
+    }]);
+    setAddedFoods([]); setMealName("Nueva comida");
+  }
+
+  const inp = {
+    background:"var(--gc-card-alt)", border:"1px solid var(--gc-border)",
+    borderRadius:10, color:"#fff", fontSize:14, padding:"10px 14px",
+    outline:"none", fontFamily:"var(--gc-font-body)",
+    width:"100%", boxSizing:"border-box",
+  };
+
+  const Label = ({ children }) => (
+    <div style={{ fontSize:11, fontWeight:600, color:"#6e7788", marginBottom:8,
+        textTransform:"uppercase", letterSpacing:"0.1em" }}>{children}</div>
+  );
+
+  return (
+    <div className="gc-scroll" style={{ minHeight:"100vh", padding:"28px 32px",
+        display:"flex", flexDirection:"column", gap:24, maxWidth:1440, margin:"0 auto" }}>
+
+      {/* ── Header ── */}
+      <div style={{ display:"flex", justifyContent:"space-between",
+          alignItems:"flex-start", flexWrap:"wrap", gap:12 }}>
+        <div>
+          <h1 style={{ margin:0, fontFamily:"var(--gc-font-display)", fontSize:32,
+              fontWeight:600, letterSpacing:"-0.06em", color:"#fff" }}>
+            Registro diario de comidas
+          </h1>
+          <p style={{ margin:"6px 0 0", fontSize:14, color:"#98a2b7" }}>
+            Registra lo que comiste hoy y compara el total contra tu objetivo diario.
+          </p>
+        </div>
+        {/* date nav */}
+        <div style={{ display:"flex", alignItems:"center", background:"var(--gc-card)",
+            border:"1px solid var(--gc-border)", borderRadius:10, overflow:"hidden" }}>
+          <button onClick={()=>setDateOffset(d=>d-1)} style={{ background:"none", border:"none",
+              borderRight:"1px solid var(--gc-border)", padding:"10px 14px", cursor:"pointer",
+              color:"#98a2b7", fontSize:20, lineHeight:1, display:"flex", alignItems:"center" }}>
+            ‹
+          </button>
+          <div style={{ display:"flex", alignItems:"center", gap:8, padding:"10px 18px" }}>
+            <span style={{ fontSize:14 }}>📅</span>
+            <span style={{ fontSize:14, color:"#d6dbe7", fontWeight:500, whiteSpace:"nowrap" }}>
+              {dateCap}
+            </span>
+          </div>
+          <button onClick={()=>setDateOffset(d=>d+1)} style={{ background:"none", border:"none",
+              borderLeft:"1px solid var(--gc-border)", padding:"10px 14px", cursor:"pointer",
+              color:"#98a2b7", fontSize:20, lineHeight:1, display:"flex", alignItems:"center" }}>
+            ›
+          </button>
+        </div>
+      </div>
+
+      {/* ── 2-col grid: form + resumen ── */}
+      <div style={{ display:"grid", gridTemplateColumns:"minmax(0,1.2fr) minmax(300px,1fr)",
+          gap:20, alignItems:"start" }}>
+
+        {/* left: Nueva comida */}
+        <div style={{ background:"var(--gc-card)", border:"1px solid var(--gc-border)",
+            borderRadius:20, padding:24, display:"flex", flexDirection:"column", gap:18 }}>
+
+          {/* title */}
+          <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+            <span style={{ display:"grid", placeItems:"center", width:44, height:44,
+                borderRadius:12, background:"var(--gc-accent-soft-surface)",
+                border:"1px solid var(--gc-accent-soft-border)", fontSize:20 }}>🍽️</span>
+            <div>
+              <div style={{ fontFamily:"var(--gc-font-display)", fontWeight:600,
+                  fontSize:18, color:"#fff" }}>Nueva comida</div>
+              <div style={{ fontSize:13, color:"#98a2b7", marginTop:2 }}>
+                Agrega los alimentos que consumiste y guarda tu comida.
+              </div>
+            </div>
+          </div>
+
+          {/* nombre */}
+          <div>
+            <Label>Nombre de la comida</Label>
+            <div style={{ position:"relative" }}>
+              <span style={{ position:"absolute", left:12, top:"50%",
+                  transform:"translateY(-50%)", fontSize:14, pointerEvents:"none" }}>📅</span>
+              <input value={mealName} onChange={e=>setMealName(e.target.value)}
+                style={{ ...inp, paddingLeft:36 }} />
+            </div>
+          </div>
+
+          {/* search + unit + qty + add */}
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 110px 110px auto",
+              gap:10, alignItems:"end" }}>
+            {/* search */}
+            <div ref={searchRef} style={{ position:"relative" }}>
+              <Label>Buscar alimento</Label>
+              <div style={{ position:"relative" }}>
+                <span style={{ position:"absolute", left:12, top:"50%",
+                    transform:"translateY(-50%)", fontSize:12, color:"#6e7788",
+                    pointerEvents:"none" }}>🔍</span>
+                <input value={searchQ}
+                  onChange={e=>{ setSearchQ(e.target.value); setShowDrop(true); }}
+                  onFocus={()=>setShowDrop(true)}
+                  placeholder="Buscar alimento..."
+                  style={{ ...inp, paddingLeft:34 }} />
+              </div>
+              {showDrop && searchQ && (
+                <div style={{ position:"absolute", top:"calc(100% + 4px)", left:0, right:0,
+                    zIndex:20, background:"#141b28", border:"1px solid var(--gc-border)",
+                    borderRadius:10, overflow:"hidden" }}>
+                  {filtered.slice(0,6).map((f,i) => (
+                    <div key={i}
+                      onClick={()=>{ setSelectedF(f); setSearchQ(f.name); setShowDrop(false); }}
+                      style={{ padding:"10px 14px", cursor:"pointer", display:"flex",
+                        justifyContent:"space-between", alignItems:"center", fontSize:13,
+                        color:"#d6dbe7", borderBottom: i<5?"1px solid var(--gc-border)":"none" }}
+                      onMouseEnter={e=>e.currentTarget.style.background="rgba(124,58,237,0.1)"}
+                      onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+                      <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                        <span>{f.emoji}</span><span>{f.name}</span>
+                      </div>
+                      <span style={{ fontSize:12, color:"#6e7788" }}>{f.kcal} kcal/100g</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            {/* unit */}
+            <div>
+              <Label>Unidad</Label>
+              <select value={unit} onChange={e=>setUnit(e.target.value)}
+                style={{ ...inp, cursor:"pointer" }}>
+                <option>Gramos</option><option>ml</option>
+                <option>Unidad</option><option>Taza</option>
+              </select>
+            </div>
+            {/* qty */}
+            <div>
+              <Label>Cantidad</Label>
+              <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+                <input type="number" value={qty} min={1}
+                  onChange={e=>setQty(Number(e.target.value))}
+                  style={{ ...inp, width:68 }} />
+                <span style={{ color:"#6e7788", fontSize:13 }}>g</span>
+              </div>
+            </div>
+            {/* add btn */}
+            <button onClick={addFood} style={{ display:"flex", alignItems:"center", gap:6,
+                padding:"10px 16px", borderRadius:10, background:"var(--gc-card-alt)",
+                border:"1px solid var(--gc-border-strong)", color:"#fff", cursor:"pointer",
+                fontSize:13, fontWeight:600, whiteSpace:"nowrap",
+                fontFamily:"var(--gc-font-body)", height:42 }}>
+              <PlusIcon size={14} /> Agregar
+            </button>
+          </div>
+
+          {/* added foods table */}
+          {addedFoods.length > 0 && (
+            <div>
+              <div style={{ fontSize:13, color:"#6e7788", marginBottom:8 }}>
+                Alimentos agregados ({addedFoods.length})
+              </div>
+              <div style={{ border:"1px solid var(--gc-border)", borderRadius:12, overflow:"hidden" }}>
+                <div style={{ display:"grid",
+                    gridTemplateColumns:"1fr 70px 90px 44px 44px 44px 32px",
+                    padding:"7px 14px", background:"var(--gc-card-alt)",
+                    borderBottom:"1px solid var(--gc-border)", fontSize:11, fontWeight:600,
+                    color:"#6e7788", textTransform:"uppercase", letterSpacing:"0.08em" }}>
+                  {["Alimento","Cantidad","Calorías","P","C","G",""].map((h,i) =>
+                    <span key={i}>{h}</span>
+                  )}
+                </div>
+                {addedFoods.map((f,i) => (
+                  <div key={i} style={{ display:"grid",
+                      gridTemplateColumns:"1fr 70px 90px 44px 44px 44px 32px",
+                      padding:"10px 14px", borderTop:"1px solid var(--gc-border)",
+                      alignItems:"center", fontSize:13 }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:7, color:"#d6dbe7" }}>
+                      <span>{f.emoji}</span><span>{f.name}</span>
+                    </div>
+                    <span style={{ color:"#98a2b7" }}>{f.qty} g</span>
+                    <span style={{ color:"#98a2b7" }}>{f.kcal} kcal</span>
+                    <span style={{ color:"#98a2b7" }}>{f.p} g</span>
+                    <span style={{ color:"#98a2b7" }}>{f.c} g</span>
+                    <span style={{ color:"#98a2b7" }}>{f.g} g</span>
+                    <button onClick={()=>setAddedFoods(p=>p.filter((_,j)=>j!==i))}
+                      style={{ background:"none", border:"none", cursor:"pointer",
+                        color:"#6e7788", display:"flex", padding:4, borderRadius:4 }}>
+                      <TrashIcon size={13} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* save */}
+          <button onClick={saveMeal} style={{ width:"100%", padding:12, borderRadius:12,
+              background: addedFoods.length ? "var(--gc-accent)" : "var(--gc-card-alt)",
+              border:"none",
+              cursor: addedFoods.length ? "pointer" : "not-allowed",
+              color: addedFoods.length ? "#fff" : "#6e7788",
+              fontSize:15, fontWeight:600, display:"flex", alignItems:"center",
+              justifyContent:"center", gap:8, fontFamily:"var(--gc-font-body)",
+              transition:"all 0.2s" }}>
+            <SaveIcon size={16} /> Guardar comida
+          </button>
+        </div>
+
+        {/* right: Resumen */}
+        <div style={{ background:"var(--gc-card)", border:"1px solid var(--gc-border)",
+            borderRadius:20, padding:24, display:"flex", flexDirection:"column", gap:20 }}>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
+            <div>
+              <div style={{ fontFamily:"var(--gc-font-display)", fontWeight:600,
+                  fontSize:18, color:"#fff" }}>Resumen nutricional del día</div>
+              <div style={{ fontSize:13, color:"#98a2b7", marginTop:2 }}>
+                Así vas hoy frente a tu objetivo diario.
+              </div>
+            </div>
+            <button style={{ display:"flex", alignItems:"center", gap:6, padding:"7px 12px",
+                borderRadius:8, background:"var(--gc-card-alt)", border:"1px solid var(--gc-border)",
+                color:"#d6dbe7", cursor:"pointer", fontSize:13, fontWeight:500,
+                fontFamily:"var(--gc-font-body)", whiteSpace:"nowrap" }}>
+              ✏️ Editar objetivos
+            </button>
+          </div>
+
+          <div style={{ display:"flex", gap:20, alignItems:"center" }}>
+            <div style={{ flexShrink:0, display:"flex", flexDirection:"column", alignItems:"center" }}>
+              <DonutChart value={totals.kcal} max={GOALS.kcal} />
+              <div style={{ fontSize:12, color:"#6e7788", marginTop:4 }}>
+                Objetivo: {GOALS.kcal.toLocaleString("es")} kcal
+              </div>
+            </div>
+            <div style={{ flex:1, display:"flex", flexDirection:"column", gap:14 }}>
+              <ProgressRow icon="🔥" label="Calorías"      value={totals.kcal} max={GOALS.kcal} unit="kcal" />
+              <ProgressRow icon="💛" label="Proteína"      value={totals.p}    max={GOALS.p}    unit="g" />
+              <ProgressRow icon="🌿" label="Carbohidratos" value={totals.c}    max={GOALS.c}    unit="g" />
+              <ProgressRow icon="💧" label="Grasas"        value={totals.g}    max={GOALS.g}    unit="g" />
+            </div>
+          </div>
+
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12,
+              paddingTop:16, borderTop:"1px solid var(--gc-border)" }}>
+            {[["📊","Días registrados","12 / 16 días"],
+              ["📈","Promedio diario","1,598 kcal"],
+              ["🎯","Racha actual","8 días 🔥"]].map(([icon,lbl,val]) => (
+              <div key={lbl} style={{ display:"flex", alignItems:"center", gap:10 }}>
+                <span style={{ fontSize:20 }}>{icon}</span>
+                <div>
+                  <div style={{ fontSize:10, color:"#6e7788", textTransform:"uppercase",
+                      letterSpacing:"0.1em", fontWeight:600 }}>{lbl}</div>
+                  <div style={{ fontSize:15, fontWeight:700, color:"#fff",
+                      fontFamily:"var(--gc-font-display)", marginTop:2 }}>{val}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Comidas de hoy ── */}
+      <div>
+        <div style={{ display:"flex", justifyContent:"space-between",
+            alignItems:"center", marginBottom:16 }}>
+          <div>
+            <div style={{ fontFamily:"var(--gc-font-display)", fontWeight:600,
+                fontSize:20, color:"#fff" }}>Comidas de hoy</div>
+            <div style={{ fontSize:13, color:"#98a2b7", marginTop:2 }}>
+              Tus comidas registradas para hoy.
+            </div>
+          </div>
+          <button style={{ display:"flex", alignItems:"center", gap:6, padding:"9px 16px",
+              borderRadius:10, background:"var(--gc-card)", border:"1px solid var(--gc-border)",
+              color:"#fff", cursor:"pointer", fontSize:14, fontWeight:600,
+              fontFamily:"var(--gc-font-body)" }}>
+            <PlusIcon size={14} /> Nueva comida
+          </button>
+        </div>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))", gap:14 }}>
+          {meals.map(m => (
+            <MealCard key={m.id} meal={m}
+              onToggle={()=>setMeals(p=>p.map(x=>x.id===m.id?{...x,expanded:!x.expanded}:x))}
+              onDelete={()=>setMeals(p=>p.filter(x=>x.id!==m.id))}
+              onEdit={()=>{}} />
+          ))}
+        </div>
+      </div>
+
+      {/* ── Constancia ── */}
+      <div style={{ background:"var(--gc-card)", border:"1px solid var(--gc-border)",
+          borderRadius:20, padding:24, display:"grid",
+          gridTemplateColumns:"auto 1fr auto", gap:32, alignItems:"center" }}>
+        <div style={{ minWidth:180 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:6 }}>
+            <span style={{ fontSize:18 }}>⭐</span>
+            <div style={{ fontFamily:"var(--gc-font-display)", fontWeight:600,
+                fontSize:16, color:"#fff" }}>Constancia nutricional</div>
+          </div>
+          <div style={{ fontSize:13, color:"#98a2b7", marginBottom:16 }}>
+            Tu consistencia en el registro de comidas.
+          </div>
+          <div style={{ display:"flex", gap:20 }}>
+            <div>
+              <div style={{ fontFamily:"var(--gc-font-display)", fontSize:26,
+                  fontWeight:700, color:"#b995ff" }}>8 días</div>
+              <div style={{ fontSize:12, color:"#98a2b7" }}>Racha actual</div>
+            </div>
+            <div>
+              <div style={{ fontFamily:"var(--gc-font-display)", fontSize:26,
+                  fontWeight:700, color:"#b995ff" }}>12 días</div>
+              <div style={{ fontSize:12, color:"#98a2b7" }}>Registrados este mes</div>
+            </div>
+          </div>
+        </div>
+
+        <NutritionHeatmap />
+
+        <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+          {[["#9a63ff","Registro completo"],["#3b1d72","Registro parcial"],
+            ["#1a2035","Sin registro"]].map(([color,lbl]) => (
+            <div key={lbl} style={{ display:"flex", alignItems:"center",
+                gap:8, fontSize:13, color:"#98a2b7" }}>
+              <span style={{ width:14, height:14, borderRadius:3, background:color,
+                  flexShrink:0, display:"inline-block" }} />
+              {lbl}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* bottom padding */}
+      <div style={{ height:24 }} />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<NutricionRegistro />);
+</script>
+</body>
+</html>

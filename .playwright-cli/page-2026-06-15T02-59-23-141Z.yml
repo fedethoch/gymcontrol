@@ -1,0 +1,221 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - link "GC GymControl Alimentos" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: GC
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: GymControl
+          - paragraph [ref=e9]: Alimentos
+      - button "Abrir navegación" [ref=e10]:
+        - img
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - paragraph [ref=e16]: Gestión / Alimentos
+            - heading "Alimentos" [level=1] [ref=e17]
+            - paragraph [ref=e18]: "Gestiona el catálogo de alimentos con sus calorías y macronutrientes. (Vista de ejemplo: los cambios no se guardan todavía.)"
+          - button "Nuevo alimento" [ref=e19]:
+            - img
+            - text: Nuevo alimento
+        - generic [ref=e20]:
+          - generic [ref=e21]:
+            - generic [ref=e22]: Buscar alimento
+            - img
+            - searchbox "Buscar alimento" [ref=e23]
+          - combobox [ref=e24]:
+            - img [ref=e25]
+          - combobox [ref=e27]
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - generic [ref=e32]:
+              - generic [ref=e33]:
+                - img [ref=e35]
+                - generic [ref=e37]:
+                  - paragraph [ref=e38]: Aceite de oliva
+                  - paragraph [ref=e39]: Grasa · 100 g · 1 u ≈ 10 g
+              - generic [ref=e40]:
+                - button "Editar" [ref=e41]:
+                  - img
+                - button "Eliminar" [ref=e42]:
+                  - img
+            - paragraph [ref=e43]: 884 kcal
+            - generic [ref=e47]:
+              - generic [ref=e48]:
+                - text: Proteína
+                - generic [ref=e50]: 0g
+              - generic [ref=e51]:
+                - text: Carbohidratos
+                - generic [ref=e53]: 0g
+              - generic [ref=e54]:
+                - text: Grasas
+                - generic [ref=e56]: 100g
+          - generic [ref=e57]:
+            - generic [ref=e58]:
+              - generic [ref=e59]:
+                - img [ref=e61]
+                - generic [ref=e63]:
+                  - paragraph [ref=e64]: Almendras
+                  - paragraph [ref=e65]: Grasa · 100 g · 1 u ≈ 14 g
+              - generic [ref=e66]:
+                - button "Editar" [ref=e67]:
+                  - img
+                - button "Eliminar" [ref=e68]:
+                  - img
+            - paragraph [ref=e69]: 579 kcal
+            - generic [ref=e75]:
+              - generic [ref=e76]:
+                - text: Proteína
+                - generic [ref=e78]: 21g
+              - generic [ref=e79]:
+                - text: Carbohidratos
+                - generic [ref=e81]: 22g
+              - generic [ref=e82]:
+                - text: Grasas
+                - generic [ref=e84]: 50g
+          - generic [ref=e85]:
+            - generic [ref=e86]:
+              - generic [ref=e87]:
+                - img [ref=e89]
+                - generic [ref=e98]:
+                  - paragraph [ref=e99]: Arroz blanco cocido
+                  - paragraph [ref=e100]: Carbohidrato · 100 g · 1 u ≈ 150 g
+              - generic [ref=e101]:
+                - button "Editar" [ref=e102]:
+                  - img
+                - button "Eliminar" [ref=e103]:
+                  - img
+            - paragraph [ref=e104]: 130 kcal
+            - generic [ref=e109]:
+              - generic [ref=e110]:
+                - text: Proteína
+                - generic [ref=e112]: 3g
+              - generic [ref=e113]:
+                - text: Carbohidratos
+                - generic [ref=e115]: 28g
+              - generic [ref=e116]:
+                - text: Grasas
+                - generic [ref=e118]: 0g
+          - generic [ref=e119]:
+            - generic [ref=e120]:
+              - generic [ref=e121]:
+                - img [ref=e123]
+                - generic [ref=e127]:
+                  - paragraph [ref=e128]: Atún al natural
+                  - paragraph [ref=e129]: Proteína · 100 g · 1 u ≈ 80 g
+              - generic [ref=e130]:
+                - button "Editar" [ref=e131]:
+                  - img
+                - button "Eliminar" [ref=e132]:
+                  - img
+            - paragraph [ref=e133]: 116 kcal
+            - generic [ref=e138]:
+              - generic [ref=e139]:
+                - text: Proteína
+                - generic [ref=e141]: 26g
+              - generic [ref=e142]:
+                - text: Carbohidratos
+                - generic [ref=e144]: 0g
+              - generic [ref=e145]:
+                - text: Grasas
+                - generic [ref=e147]: 1g
+          - generic [ref=e148]:
+            - generic [ref=e149]:
+              - generic [ref=e150]:
+                - img [ref=e152]
+                - generic [ref=e161]:
+                  - paragraph [ref=e162]: Avena
+                  - paragraph [ref=e163]: Carbohidrato · 100 g · 1 u ≈ 40 g
+              - generic [ref=e164]:
+                - button "Editar" [ref=e165]:
+                  - img
+                - button "Eliminar" [ref=e166]:
+                  - img
+            - paragraph [ref=e167]: 389 kcal
+            - generic [ref=e173]:
+              - generic [ref=e174]:
+                - text: Proteína
+                - generic [ref=e176]: 17g
+              - generic [ref=e177]:
+                - text: Carbohidratos
+                - generic [ref=e179]: 66g
+              - generic [ref=e180]:
+                - text: Grasas
+                - generic [ref=e182]: 7g
+          - generic [ref=e183]:
+            - generic [ref=e184]:
+              - generic [ref=e185]:
+                - img [ref=e187]
+                - generic [ref=e196]:
+                  - paragraph [ref=e197]: Banana
+                  - paragraph [ref=e198]: Carbohidrato · 100 g · 1 u ≈ 120 g
+              - generic [ref=e199]:
+                - button "Editar" [ref=e200]:
+                  - img
+                - button "Eliminar" [ref=e201]:
+                  - img
+            - paragraph [ref=e202]: 89 kcal
+            - generic [ref=e207]:
+              - generic [ref=e208]:
+                - text: Proteína
+                - generic [ref=e210]: 1g
+              - generic [ref=e211]:
+                - text: Carbohidratos
+                - generic [ref=e213]: 23g
+              - generic [ref=e214]:
+                - text: Grasas
+                - generic [ref=e216]: 0g
+          - generic [ref=e217]:
+            - generic [ref=e218]:
+              - generic [ref=e219]:
+                - img [ref=e221]
+                - generic [ref=e224]:
+                  - paragraph [ref=e225]: Brócoli
+                  - paragraph [ref=e226]: Vegetal · 100 g · 1 u ≈ 80 g
+              - generic [ref=e227]:
+                - button "Editar" [ref=e228]:
+                  - img
+                - button "Eliminar" [ref=e229]:
+                  - img
+            - paragraph [ref=e230]: 34 kcal
+            - generic [ref=e235]:
+              - generic [ref=e236]:
+                - text: Proteína
+                - generic [ref=e238]: 3g
+              - generic [ref=e239]:
+                - text: Carbohidratos
+                - generic [ref=e241]: 7g
+              - generic [ref=e242]:
+                - text: Grasas
+                - generic [ref=e244]: 0g
+          - generic [ref=e245]:
+            - generic [ref=e246]:
+              - generic [ref=e247]:
+                - img [ref=e249]
+                - generic [ref=e253]:
+                  - paragraph [ref=e254]: Carne vacuna magra
+                  - paragraph [ref=e255]: Proteína · 100 g · 1 u ≈ 150 g
+              - generic [ref=e256]:
+                - button "Editar" [ref=e257]:
+                  - img
+                - button "Eliminar" [ref=e258]:
+                  - img
+            - paragraph [ref=e259]: 187 kcal
+            - generic [ref=e264]:
+              - generic [ref=e265]:
+                - text: Proteína
+                - generic [ref=e267]: 26g
+              - generic [ref=e268]:
+                - text: Carbohidratos
+                - generic [ref=e270]: 0g
+              - generic [ref=e271]:
+                - text: Grasas
+                - generic [ref=e273]: 9g
+        - generic [ref=e274]:
+          - button "1" [ref=e275]
+          - button "2" [ref=e276]
+          - button "3" [ref=e277]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e283] [cursor=pointer]:
+    - img [ref=e284]

@@ -2,12 +2,16 @@ import type { LucideIcon } from "lucide-react";
 import {
   BookOpen,
   Calendar,
+  ChefHat,
   ClipboardList,
   Dumbbell,
   Home,
   LayoutDashboard,
   LogIn,
+  Salad,
+  Settings,
   Shield,
+  UtensilsCrossed,
 } from "lucide-react";
 
 export type ShellRouteMeta = {
@@ -26,7 +30,7 @@ export type NavigationGroup = {
 
 export const shellNavigationGroups: NavigationGroup[] = [
   {
-    title: "Usuario",
+    title: "Entrenamiento",
     items: [
       {
         href: "/catalogo",
@@ -51,6 +55,35 @@ export const shellNavigationGroups: NavigationGroup[] = [
         description: "Abre la rutina semanal del entrenamiento actual.",
         section: "Usuario",
         icon: Calendar,
+      },
+    ],
+  },
+  {
+    title: "Nutrición",
+    items: [
+      {
+        href: "/alimentos",
+        label: "Alimentos",
+        eyebrow: "Alimentos",
+        description: "Explora alimentos, calorías y macronutrientes.",
+        section: "Usuario",
+        icon: Salad,
+      },
+      {
+        href: "/recetas",
+        label: "Recetas",
+        eyebrow: "Recetas",
+        description: "Descubre recetas armadas con el catálogo de alimentos.",
+        section: "Usuario",
+        icon: ChefHat,
+      },
+      {
+        href: "/nutricion/registro",
+        label: "Registro diario",
+        eyebrow: "Nutrición",
+        description: "Anotá tus comidas del día y seguí tu adherencia.",
+        section: "Usuario",
+        icon: UtensilsCrossed,
       },
     ],
   },
@@ -81,6 +114,22 @@ export const shellNavigationGroups: NavigationGroup[] = [
         section: "Admin",
         icon: ClipboardList,
       },
+      {
+        href: "/admin/alimentos",
+        label: "Alimentos",
+        eyebrow: "Catálogo admin",
+        description: "Administra el catálogo de alimentos y sus macros.",
+        section: "Admin",
+        icon: Salad,
+      },
+      {
+        href: "/admin/recetas",
+        label: "Recetas",
+        eyebrow: "Catálogo admin",
+        description: "Administra el catálogo de recetas y sus ingredientes.",
+        section: "Admin",
+        icon: ChefHat,
+      },
     ],
   },
 ];
@@ -96,6 +145,17 @@ export const shellUtilityLinks: ShellRouteMeta[] = [
   },
 ];
 
+export const shellSecondaryLinks: ShellRouteMeta[] = [
+  {
+    href: "/configuracion",
+    label: "Configuración",
+    eyebrow: "Configuración",
+    description: "Configurá tu perfil, tu objetivo nutricional y tu cuenta.",
+    section: "Usuario",
+    icon: Settings,
+  },
+];
+
 const shellRouteMetas: ShellRouteMeta[] = [
   {
     href: "/",
@@ -106,6 +166,7 @@ const shellRouteMetas: ShellRouteMeta[] = [
     icon: Home,
   },
   ...shellNavigationGroups.flatMap((group) => group.items),
+  ...shellSecondaryLinks,
   ...shellUtilityLinks,
 ];
 

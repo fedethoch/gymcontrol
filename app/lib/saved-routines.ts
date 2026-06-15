@@ -62,6 +62,13 @@ type ExerciseRow = {
   name: string;
   description: string;
   image_url: string;
+  muscle_group: string | null;
+  equipment: string | null;
+  video_url: string | null;
+  min_reps: number | null;
+  max_reps: number | null;
+  steps: string[];
+  tips: string[];
 };
 
 type RoutineTemplateSummaryRow = {
@@ -132,7 +139,14 @@ const SAVED_ROUTINE_LIST_SELECT = `
           id,
           name,
           description,
-          image_url
+          image_url,
+          muscle_group,
+          equipment,
+          video_url,
+          min_reps,
+          max_reps,
+          steps,
+          tips
         )
       )
     )
@@ -167,7 +181,14 @@ const SAVED_ROUTINE_DETAIL_SELECT = `
           id,
           name,
           description,
-          image_url
+          image_url,
+          muscle_group,
+          equipment,
+          video_url,
+          min_reps,
+          max_reps,
+          steps,
+          tips
         )
       )
     )
@@ -596,6 +617,13 @@ function mapExercise(item: RoutineItemRow): RoutineExerciseRef {
     name: exercise.name,
     description: exercise.description,
     imageUrl: exercise.image_url,
+    muscleGroup: exercise.muscle_group,
+    equipment: exercise.equipment,
+    videoUrl: exercise.video_url,
+    minReps: exercise.min_reps,
+    maxReps: exercise.max_reps,
+    steps: exercise.steps,
+    tips: exercise.tips,
   };
 }
 

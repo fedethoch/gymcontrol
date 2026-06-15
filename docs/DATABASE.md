@@ -427,8 +427,8 @@ Estado confirmado de tracking despues de la vista diaria interactiva:
 
 - existen `workout_sessions` y `workout_session_items` con RLS owner-only
 - `workout_sessions` fija una sola sesion por `(user_id, saved_routine_id, routine_day_id, training_date)`
-- `workout_session_items` guarda `performed_reps`, `used_weight` nullable e `is_completed` por `routine_item_id`
-- las migraciones versionadas son `supabase/migrations/20260609_g15_workout_tracking.sql` y `supabase/migrations/20260609_g16_workout_tracking_policy_hardening.sql`
+- `workout_session_items` guarda `performed_reps`, `used_weight` (texto, valores por serie separados por `/`) nullable e `is_completed` por `routine_item_id`
+- las migraciones versionadas son `supabase/migrations/20260609_g15_workout_tracking.sql`, `supabase/migrations/20260609_g16_workout_tracking_policy_hardening.sql` y `workout_session_items_text_reps_weight`
 
 Bootstrap admin minimo:
 
@@ -484,6 +484,7 @@ Esta seccion fija el criterio tecnico minimo para pasar el modelo a Supabase sin
 - `id uuid primary key`
 - `user_id uuid not null unique references auth.users(id) on delete cascade`
 - `type_rol text not null check (type_rol in ('admin', 'user'))`
+- `display_name text` (g26, nombre para mostrar/personalizar la UI)
 - `created_at timestamptz not null default now()`
 - `updated_at timestamptz not null default now()`
 
@@ -496,6 +497,12 @@ Esta seccion fija el criterio tecnico minimo para pasar el modelo a Supabase sin
 - `created_by uuid not null references public.profiles(id) on delete restrict`
 - `created_at timestamptz not null default now()`
 - `updated_at timestamptz not null default now()`
+- `muscle_group text check (muscle_group in ('Pecho','Espalda','Piernas','Hombros','Biceps','Triceps','Core'))`
+- `equipment text check (equipment in ('Barra','Mancuernas','Maquina','Polea','Peso corporal','Kettlebell'))`
+- `video_url text`
+- `min_reps integer` / `max_reps integer` (rango de reps ideales; ambos null o ambos definidos con `min_reps >= 1 and min_reps <= max_reps`, via `exercises_rep_range_check`)
+- `steps text[] not null default '{}'` (pasos de ejecucion, tab Tecnica)
+- `tips text[] not null default '{}'` (claves de tecnica, tab Tecnica)
 
 ### `routine_templates`
 
@@ -559,8 +566,8 @@ Esta seccion fija el criterio tecnico minimo para pasar el modelo a Supabase sin
 - `id uuid primary key`
 - `workout_session_id uuid not null references workout_sessions(id) on delete cascade`
 - `routine_item_id uuid not null references routine_items(id) on delete cascade`
-- `performed_reps integer`
-- `used_weight numeric(8,2)`
+- `performed_reps text` (valores por serie separados por `/`, ej. `"12/10/8"`)
+- `used_weight text` (valores por serie separados por `/`, ej. `"40/40/35"`)
 - `is_completed boolean not null default false`
 - `created_at timestamptz not null default now()`
 - `updated_at timestamptz not null default now()`
@@ -603,3 +610,110 @@ El esquema queda cerrado con estas reglas adicionales, que ya forman parte de la
   - `workout_session_items.routine_item_id`
 
 No se agregan indices compuestos ni optimizaciones prematuras.
+
+## Apartado de nutricion (G18)
+
+Migraciones: `20260613_g18_nutrition_core.sql` (esquema + RLS + storage), `20260613_g19_nutrition_seed.sql` (seed de alimentos y dietas).
+
+### `foods`
+
+- `id uuid primary key`
+- `name text not null`
+- `image_url text not null` (sin uso por ahora, catalogo usa iconos por categoria)
+- `category text not null check (category in ('protein','carb','fat','vegetable','mixed'))`
+- `serving_g integer not null default 100 check (serving_g > 0)`
+- `measure text not null default 'g' check (measure in ('g','unit'))` (medida por defecto, g22)
+- `grams_per_unit numeric check (grams_per_unit is null or grams_per_unit > 0)` (g24; si esta seteado, el alimento se puede registrar tambien por unidades/porciones)
+- `calories integer not null check (calories >= 0)`
+- `protein_g integer not null check (protein_g >= 0)`
+- `carbs_g integer not null check (carbs_g >= 0)`
+- `fat_g integer not null check (fat_g >= 0)`
+- `created_by uuid not null references profiles(id) on delete restrict`
+- `created_at`, `updated_at`
+- RLS: lectura publica (anon + authenticated), escritura solo admin (mismo patron que `exercises`)
+
+### `nutrition_profiles`
+
+- `id uuid primary key`
+- `user_id uuid not null unique references auth.users(id) on delete cascade`
+- `gender text not null check (gender in ('male','female'))`
+- `age integer not null check (age > 0)`
+- `height_cm numeric not null check (height_cm > 0)`
+- `weight_kg numeric not null check (weight_kg > 0)`
+- `body_fat_pct numeric` (nullable, `check (0 < body_fat_pct < 100)`)
+- `activity_level text not null check (...)`, `goal text not null check (...)`
+- columnas cacheadas del calculo: `bmr_kcal`, `maintenance_kcal`, `target_kcal`, `protein_g`, `carbs_g`, `fat_g` (todas `integer >= 0`)
+- `created_at`, `updated_at`
+- RLS: owner-only (`auth.uid() = user_id`) para select/insert/update/delete, mismo patron que `saved_routines`
+
+### Storage `food-images`
+
+Bucket publico (5MB, jpg/png/webp), mismas policies que `exercise-images` (lectura publica, escritura admin). Creado para uso futuro; el admin de alimentos actual no sube imagenes.
+
+### Indices
+
+- `foods.created_by`, `foods.category`
+
+## Apartado de nutricion - extras (G21)
+
+Migracion: `20260613_g21_nutrition_fase3.sql`. Nota: las dietas predefinidas (`diet_templates`, `diet_template_meals`, `saved_diets`) se eliminaron en `g25_drop_diets`, reemplazadas por el registro diario (`meal_logs`).
+
+### `meal_logs`
+
+- `id uuid primary key`
+- `user_id uuid not null references auth.users(id) on delete cascade`
+- `log_date date not null`
+- `created_at`, `updated_at`
+- unique por `(user_id, log_date)`
+- RLS: owner-only, mismo patron que `workout_sessions`
+
+### `meal_log_meals` (g23)
+
+- `id uuid primary key`
+- `meal_log_id uuid not null references meal_logs(id) on delete cascade`
+- `name text not null`, `position integer not null`
+- agrupa los items de una comida del dia (ej. "Desayuno")
+
+### `meal_log_items`
+
+- `id uuid primary key`
+- `meal_id uuid not null references meal_log_meals(id) on delete cascade`
+- `food_id uuid not null references foods(id) on delete restrict`
+- `grams numeric(7,1) not null check (grams > 0)` (valor autoritativo para macros)
+- `measure text not null default 'g' check (measure in ('g','unit'))` (g24, lo que ingreso el usuario)
+- `quantity numeric not null check (quantity > 0)` (g24, cantidad en `measure`)
+- `created_at`
+- RLS: owner-only via `meal_logs.user_id`, mismo patron que `workout_session_items`
+
+### Indices
+
+- `meal_logs.user_id`, `meal_logs.log_date`
+- `meal_log_items.food_id`
+
+## Recetas (G26-27)
+
+### `recipes`
+
+- `id uuid primary key default gen_random_uuid()`
+- `name text not null`
+- `description text`
+- `image_url text`
+- `category text not null check (category in ('protein','carb','fat','vegetable','mixed'))`
+- `servings integer not null default 1 check (servings > 0)`
+- `created_by uuid references profiles(id)`
+- `created_at`, `updated_at`
+- RLS: lectura publica, escritura solo admin (mismo patron que `foods`)
+
+### `recipe_items`
+
+- `id uuid primary key default gen_random_uuid()`
+- `recipe_id uuid not null references recipes(id) on delete cascade`
+- `food_id uuid not null references foods(id) on delete restrict`
+- `grams numeric(7,1) not null check (grams > 0)`
+- macros del item se derivan en runtime: `food.{calories,protein_g,carbs_g,fat_g} * (grams / food.serving_g)`, mismo patron que `meal_log_items`
+- RLS: lectura publica, escritura solo admin
+
+### Indices
+
+- `recipes.category`
+- `recipe_items.recipe_id`, `recipe_items.food_id`

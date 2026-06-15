@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import { DashboardRoutinesClient } from "@/app/dashboard/DashboardRoutinesClient";
+import { StatusToast } from "@/app/components/shared/StatusToast";
 import { Button } from "@/app/components/ui/Button";
 import { Card, CardContent } from "@/app/components/ui/Card";
 import { fadeUp, MotionDiv, staggerContainer } from "@/app/components/ui/motion";
@@ -56,6 +57,7 @@ export default async function DashboardPage({
       : params.status === "rename-error"
         ? "No se pudo actualizar el nombre de la rutina."
         : null;
+  const statusIsError = Boolean(params.status?.endsWith("-error"));
 
   const metrics = [
     {
@@ -97,7 +99,7 @@ export default async function DashboardPage({
       >
         <div>
           <h1 className="font-display text-3xl font-semibold leading-none tracking-[-0.06em] text-white sm:text-4xl">
-            Mis rutinas
+            {auth.profile.displayName ? `Hola, ${auth.profile.displayName}` : "Mis rutinas"}
           </h1>
           <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)] sm:text-base">
             Administra, renombra y elige tu rutina activa.
@@ -105,21 +107,8 @@ export default async function DashboardPage({
         </div>
       </MotionDiv>
 
-      {reasonMessage ? (
-        <Card className="border-[#5b2ab3] bg-[#17132a]">
-          <CardContent className="p-4 text-sm leading-6 text-[#e9ddff]">
-            {reasonMessage}
-          </CardContent>
-        </Card>
-      ) : null}
-
-      {statusMessage ? (
-        <Card className="border-[#3f325b] bg-[#17132a]">
-          <CardContent className="p-4 text-sm leading-6 text-[#e9ddff]">
-            {statusMessage}
-          </CardContent>
-        </Card>
-      ) : null}
+      <StatusToast message={reasonMessage} isError clearParams={["reason"]} />
+      <StatusToast message={statusMessage} isError={statusIsError} clearParams={["status", "savedRoutineId"]} />
 
       {activeRoutine ? (
         <MotionDiv
@@ -188,7 +177,7 @@ export default async function DashboardPage({
                 <Card
                   className="bg-[linear-gradient(145deg,#0d1322_0%,#080d17_100%)] transition-[transform,border-color] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]"
                 >
-                  <CardContent className="flex h-full min-h-[8.125rem] items-center gap-3 p-3.5">
+                  <CardContent className="flex h-full min-h-[8.125rem] items-center gap-3 p-3.5 sm:p-3.5">
                     <span className="grid size-9 shrink-0 place-items-center rounded-full border border-[#5b2ab3] bg-[#27164d] text-[#9a63ff]">
                       <Icon className="size-4" />
                     </span>

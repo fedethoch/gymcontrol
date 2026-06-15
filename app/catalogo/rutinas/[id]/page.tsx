@@ -249,7 +249,7 @@ export default async function CatalogRoutineDetailPage({
                       className="text-sm font-semibold text-white"
                       htmlFor="customName"
                     >
-                      Nombre propio opcional
+                      Nombre propio (opcional)
                     </label>
                     <Input
                       id="customName"

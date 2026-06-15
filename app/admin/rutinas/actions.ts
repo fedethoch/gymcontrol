@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/app/lib/auth";
 import { listExerciseCatalogItems } from "@/app/lib/exercises";
 import type { RoutineFormPayload, RoutineFormState } from "@/app/lib/routine-form";
-import { createRoutine, getRoutineById, updateRoutine } from "@/app/lib/routines";
+import { createRoutine, deleteRoutine, getRoutineById, updateRoutine } from "@/app/lib/routines";
 import { parseRoutinePayload } from "@/app/lib/routine-validation";
 
 export async function saveRoutineAction(
@@ -85,4 +85,23 @@ export async function saveRoutineAction(
       dayErrors: {},
     },
   };
+}
+
+export async function deleteRoutineAction(id: string): Promise<{ ok: true } | { ok: false; message: string }> {
+  await requireAdmin();
+
+  try {
+    await deleteRoutine(id);
+  } catch (error) {
+    return {
+      ok: false,
+      message: error instanceof Error ? error.message : "No se pudo eliminar la rutina.",
+    };
+  }
+
+  revalidatePath("/admin/rutinas");
+  revalidatePath("/catalogo");
+  revalidatePath(`/catalogo/rutinas/${id}`);
+
+  return { ok: true };
 }

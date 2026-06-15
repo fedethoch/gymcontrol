@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Login — GymControl</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    background: var(--gc-background);
+  }
+
+  /* ── Left panel ────────────────────────────────── */
+  .left-panel {
+    position: relative;
+    flex: 1.1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 48px 52px;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% -10%, rgba(124,58,237,0.22) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 50% at 90% 110%, rgba(72,39,158,0.15) 0%, transparent 50%),
+      linear-gradient(160deg, #080b14 0%, #05070b 100%);
+    border-right: 1px solid var(--gc-border);
+    overflow: hidden;
+  }
+
+  /* grid pattern overlay */
+  .left-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 80% 80% at 30% 40%, black 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* decorative large glow orb */
+  .left-panel::after {
+    content: "";
+    position: absolute;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.13) 0%, transparent 70%);
+    top: 50%;
+    left: 30%;
+    transform: translate(-50%, -55%);
+    pointer-events: none;
+  }
+
+  .brand {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: var(--gc-accent-deep);
+    border: 1px solid rgba(124,58,237,0.5);
+    box-shadow: var(--gc-glow-logo);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+
+  .brand-logo svg {
+    color: #e0d4ff;
+  }
+
+  .brand-name {
+    font-family: var(--gc-font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--gc-foreground);
+  }
+
+  /* hero content */
+  .left-hero {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 0;
+  }
+
+  .left-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--gc-font-body);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--gc-accent-bright);
+    margin-bottom: 20px;
+  }
+
+  .left-eyebrow-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gc-accent-bright);
+    box-shadow: 0 0 8px rgba(185,149,255,0.7);
+  }
+
+  .left-heading {
+    font-family: var(--gc-font-display);
+    font-size: clamp(2.6rem, 4.5vw, 3.8rem);
+    font-weight: 700;
+    letter-spacing: -0.07em;
+    line-height: 1.06;
+    color: #fff;
+    margin: 0 0 22px;
+  }
+
+  .left-heading span {
+    color: var(--gc-accent-bright);
+  }
+
+  .left-sub {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--gc-foreground-muted);
+    max-width: 380px;
+    margin: 0;
+  }
+
+  /* stat chips */
+  .stat-chips {
+    display: flex;
+    gap: 12px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+
+  .stat-chip {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 14px 18px;
+    background: rgba(18, 24, 36, 0.7);
+    border: 1px solid var(--gc-border);
+    border-radius: 14px;
+    backdrop-filter: blur(8px);
+  }
+
+  .chip-value {
+    font-family: var(--gc-font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.06em;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .chip-label {
+    font-size: 0.75rem;
+    color: var(--gc-foreground-subtle);
+  }
+
+  /* bottom quote */
+  .left-footer {
+    position: relative;
+    z-index: 1;
+  }
+
+  .left-quote {
+    font-size: 0.8125rem;
+    color: var(--gc-foreground-subtle);
+    line-height: 1.6;
+    border-left: 2px solid rgba(124,58,237,0.5);
+    padding-left: 14px;
+    font-style: italic;
+  }
+
+  /* ── Right panel ────────────────────────────────── */
+  .right-panel {
+    flex: 0 0 460px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 40px;
+    background: var(--gc-workspace);
+    overflow-y: auto;
+  }
+
+  .form-shell {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .form-eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--gc-foreground-subtle);
+    margin-bottom: 8px;
+  }
+
+  .form-title {
+    font-family: var(--gc-font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    color: var(--gc-foreground);
+    margin: 0 0 6px;
+  }
+
+  .form-sub {
+    font-size: 0.875rem;
+    color: var(--gc-foreground-muted);
+    margin: 0 0 32px;
+    line-height: 1.55;
+  }
+
+  /* form fields */
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--gc-foreground-muted);
+    letter-spacing: 0.01em;
+  }
+
+  .input-wrap {
+    position: relative;
+  }
+
+  .input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gc-foreground-subtle);
+    pointer-events: none;
+    transition: color 0.18s;
+  }
+
+  .field input {
+    width: 100%;
+    padding: 11px 14px 11px 40px;
+    background: var(--gc-card-alt);
+    border: 1px solid var(--gc-border);
+    border-radius: 10px;
+    font-family: var(--gc-font-body);
+    font-size: 0.9375rem;
+    color: var(--gc-foreground);
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    box-sizing: border-box;
+  }
+
+  .field input::placeholder {
+    color: var(--gc-foreground-subtle);
+  }
+
+  .field input:focus {
+    border-color: var(--gc-accent);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18);
+  }
+
+  .field input:focus + .input-icon,
+  .input-wrap:focus-within .input-icon {
+    color: var(--gc-accent-bright);
+  }
+
+  /* password toggle */
+  .pw-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: var(--gc-foreground-subtle);
+    transition: color 0.18s;
+    display: grid;
+    place-items: center;
+  }
+
+  .pw-toggle:hover {
+    color: var(--gc-foreground-muted);
+  }
+
+  /* meta row */
+  .field-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8125rem;
+    color: var(--gc-foreground-muted);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .remember input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--gc-border-strong);
+    border-radius: 4px;
+    background: var(--gc-card-alt);
+    cursor: pointer;
+    position: relative;
+    transition: background 0.18s, border-color 0.18s;
+    flex-shrink: 0;
+  }
+
+  .remember input[type="checkbox"]:checked {
+    background: var(--gc-accent);
+    border-color: var(--gc-accent);
+  }
+
+  .remember input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 2px;
+    width: 5px;
+    height: 8px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+  }
+
+  .forgot-link {
+    font-size: 0.8125rem;
+    color: var(--gc-accent-bright);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.18s;
+  }
+
+  .forgot-link:hover {
+    color: #fff;
+  }
+
+  /* submit */
+  .btn-primary {
+    width: 100%;
+    padding: 13px 20px;
+    background: var(--gc-accent);
+    border: none;
+    border-radius: 10px;
+    font-family: var(--gc-font-body);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--gc-accent-foreground);
+    cursor: pointer;
+    transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .btn-primary:hover {
+    background: var(--gc-accent-strong);
+    box-shadow: var(--gc-glow-accent);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  /* divider */
+  .or-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 24px 0;
+  }
+
+  .or-line {
+    flex: 1;
+    height: 1px;
+    background: var(--gc-border);
+  }
+
+  .or-text {
+    font-size: 0.75rem;
+    color: var(--gc-foreground-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+  }
+
+  /* social / alt actions */
+  .btn-ghost {
+    width: 100%;
+    padding: 11px 20px;
+    background: var(--gc-card);
+    border: 1px solid var(--gc-border);
+    border-radius: 10px;
+    font-family: var(--gc-font-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gc-foreground-muted);
+    cursor: pointer;
+    transition: border-color 0.18s, color 0.18s, background 0.18s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--gc-border-strong);
+    color: var(--gc-foreground);
+    background: var(--gc-card-alt);
+  }
+
+  /* register link */
+  .register-row {
+    margin-top: 28px;
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--gc-foreground-subtle);
+  }
+
+  .register-row a {
+    color: var(--gc-accent-bright);
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 4px;
+    transition: color 0.18s;
+  }
+
+  .register-row a:hover {
+    color: #fff;
+  }
+
+  /* error state */
+  .field.error input {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.14);
+  }
+
+  .field-error-msg {
+    font-size: 0.75rem;
+    color: #f87171;
+    margin-top: 2px;
+    display: none;
+  }
+
+  .field.error .field-error-msg {
+    display: block;
+  }
+
+  /* loading state */
+  .btn-primary.loading {
+    pointer-events: none;
+    opacity: 0.75;
+  }
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* responsive */
+  @media (max-width: 820px) {
+    .left-panel { display: none; }
+    .right-panel { flex: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Left panel ─────────────────────────────────────── -->
+<div class="left-panel">
+
+  <div class="brand">
+    <div class="brand-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m6.5 6.5 11 11"/><path d="M21 21l-1-1"/><path d="M3 3l1 1"/>
+        <path d="M18 22l4-4"/><path d="M2 6l4-4"/><path d="M3 10l7-7"/><path d="M14 21l7-7"/>
+      </svg>
+    </div>
+    <span class="brand-name">GymControl</span>
+  </div>
+
+  <div class="left-hero">
+    <div class="left-eyebrow">
+      <span class="left-eyebrow-dot"></span>
+      Plataforma de entrenamiento
+    </div>
+
+    <h1 class="left-heading">
+      Tu mejor<br />versión empieza<br /><span>hoy.</span>
+    </h1>
+
+    <p class="left-sub">
+      Gestioná rutinas, seguí tu progreso y alcanzá tus metas con una plataforma diseñada para atletas serios.
+    </p>
+
+    <div class="stat-chips">
+      <div class="stat-chip">
+        <span class="chip-value">128+</span>
+        <span class="chip-label">Ejercicios</span>
+      </div>
+      <div class="stat-chip">
+        <span class="chip-value">24</span>
+        <span class="chip-label">Rutinas</span>
+      </div>
+      <div class="stat-chip">
+        <span class="chip-value">156</span>
+        <span class="chip-label">Usuarios activos</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="left-footer">
+    <p class="left-quote">
+      "Cada repetición te acerca a tu mejor versión."
+    </p>
+  </div>
+
+</div>
+
+<!-- ── Right panel ────────────────────────────────────── -->
+<div class="right-panel">
+  <div class="form-shell">
+
+    <div class="form-eyebrow">Bienvenido de vuelta</div>
+    <h2 class="form-title">Iniciá sesión</h2>
+    <p class="form-sub">Ingresá tus credenciales para acceder a tu panel.</p>
+
+    <form id="login-form" novalidate>
+      <div class="field-group">
+
+        <div class="field" id="field-email">
+          <label for="email">Correo electrónico</label>
+          <div class="input-wrap">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="tu@correo.com"
+              autocomplete="email"
+            />
+            <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+          </div>
+          <span class="field-error-msg">Ingresá un correo válido.</span>
+        </div>
+
+        <div class="field" id="field-password">
+          <label for="password">Contraseña</label>
+          <div class="input-wrap">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+            />
+            <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <button type="button" class="pw-toggle" id="pw-toggle" aria-label="Mostrar contraseña">
+              <svg id="eye-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+          <span class="field-error-msg">Ingresá tu contraseña.</span>
+        </div>
+
+      </div>
+
+      <div class="field-meta">
+        <label class="remember">
+          <input type="checkbox" id="remember" />
+          Recordarme
+        </label>
+        <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      <button type="submit" class="btn-primary" id="submit-btn">
+        <span id="btn-label">Iniciar sesión</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+        </svg>
+      </button>
+
+      <div class="or-divider">
+        <span class="or-line"></span>
+        <span class="or-text">o continuá con</span>
+        <span class="or-line"></span>
+      </div>
+
+      <button type="button" class="btn-ghost">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Continuar con Google
+      </button>
+
+    </form>
+
+    <div class="register-row">
+      ¿No tenés cuenta?
+      <a href="#">Registrate gratis</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  /* ── Password toggle ── */
+  const pwInput   = document.getElementById("password");
+  const pwToggle  = document.getElementById("pw-toggle");
+  const eyeIcon   = document.getElementById("eye-icon");
+
+  const eyeOpen = `<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>`;
+  const eyeSlash = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-10-7-10-7a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+
+  pwToggle.addEventListener("click", () => {
+    const show = pwInput.type === "password";
+    pwInput.type = show ? "text" : "password";
+    eyeIcon.innerHTML = show ? eyeSlash : eyeOpen;
+  });
+
+  /* ── Form validation & submit ── */
+  const form      = document.getElementById("login-form");
+  const submitBtn = document.getElementById("submit-btn");
+  const btnLabel  = document.getElementById("btn-label");
+
+  function validateEmail(v) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
+
+  function setError(fieldId, show) {
+    document.getElementById(fieldId).classList.toggle("error", show);
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const pw    = document.getElementById("password").value;
+
+    const emailOk = validateEmail(email);
+    const pwOk    = pw.length >= 1;
+
+    setError("field-email",    !emailOk);
+    setError("field-password", !pwOk);
+
+    if (!emailOk || !pwOk) return;
+
+    /* simulate loading */
+    submitBtn.classList.add("loading");
+    btnLabel.textContent = "Ingresando…";
+    submitBtn.innerHTML = `<div class="spinner"></div><span>Ingresando…</span>`;
+
+    setTimeout(() => {
+      submitBtn.classList.remove("loading");
+      submitBtn.innerHTML = `<span>Iniciá sesión</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`;
+    }, 1800);
+  });
+
+  /* clear errors on input */
+  document.getElementById("email").addEventListener("input",    () => setError("field-email",    false));
+  document.getElementById("password").addEventListener("input", () => setError("field-password", false));
+</script>
+</body>
+</html>

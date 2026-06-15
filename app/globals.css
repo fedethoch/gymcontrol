@@ -88,6 +88,7 @@ a {
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
 }
 
 .font-display {
@@ -96,6 +97,7 @@ a {
 
 .page-frame {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.25rem;
   width: 100%;
   min-height: 100%;
