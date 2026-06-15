@@ -3,6 +3,7 @@
 import { ImageIcon, Search } from "lucide-react";
 import { useState } from "react";
 
+import { FilterSheet } from "@/app/components/shared/FilterSheet";
 import { MacroBar } from "@/app/components/shared/MacroBar";
 import { Input } from "@/app/components/ui/Input";
 import {
@@ -47,9 +48,25 @@ export function RecipeCatalogClient({ recipes }: RecipeCatalogClientProps) {
     return true;
   });
 
+  const categorySelect = (
+    <Select value={category} onValueChange={setCategory}>
+      <SelectTrigger className="h-12 rounded-xl border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)]">
+        <SelectValue placeholder="Categoría" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="all">Todas las categorías</SelectItem>
+        {FOOD_CATEGORIES.map((value) => (
+          <SelectItem key={value} value={value}>
+            {FOOD_CATEGORY_LABELS[value]}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+
   return (
     <section className="grid content-start gap-5">
-      <div className="grid gap-4 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)]">
+      <div className="grid gap-3 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)] sm:gap-4">
         <label className="relative flex h-12 items-center">
           <span className="sr-only">Buscar recetas</span>
           <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#7d8697]" />
@@ -62,19 +79,14 @@ export function RecipeCatalogClient({ recipes }: RecipeCatalogClientProps) {
           />
         </label>
 
-        <Select value={category} onValueChange={setCategory}>
-          <SelectTrigger className="h-12 rounded-xl border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)]">
-            <SelectValue placeholder="Categoría" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todas las categorías</SelectItem>
-            {FOOD_CATEGORIES.map((value) => (
-              <SelectItem key={value} value={value}>
-                {FOOD_CATEGORY_LABELS[value]}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="hidden lg:block">{categorySelect}</div>
+
+        <FilterSheet
+          activeCount={category !== "all" ? 1 : 0}
+          onClear={() => setCategory("all")}
+        >
+          {categorySelect}
+        </FilterSheet>
       </div>
 
       {filtered.length === 0 ? (
@@ -93,7 +105,7 @@ export function RecipeCatalogClient({ recipes }: RecipeCatalogClientProps) {
           variants={staggerContainer}
           initial="hidden"
           animate="visible"
-          className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid grid-cols-2 gap-3 lg:grid-cols-3"
         >
           {filtered.map((recipe) => (
             <motion.div key={recipe.id} variants={fadeUp}>
@@ -119,7 +131,7 @@ function RecipeCard({ recipe, onSelect }: { recipe: Recipe; onSelect: () => void
       onClick={onSelect}
       className="group flex h-full w-full flex-col gap-3 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] text-left transition-colors duration-200 hover:bg-[rgba(255,255,255,0.03)]"
     >
-      <div className="relative aspect-[16/10] w-full shrink-0 bg-[var(--card)]">
+      <div className="relative aspect-[16/9] w-full shrink-0 bg-[var(--card)]">
         {recipe.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -132,22 +144,22 @@ function RecipeCard({ recipe, onSelect }: { recipe: Recipe; onSelect: () => void
             <ImageIcon className="size-8 text-[#5b6577]" aria-hidden="true" />
           </div>
         )}
-        <span className="absolute right-2.5 top-2.5 rounded-full border border-[var(--border)] bg-[var(--card-alt)]/80 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#9aa3b8] backdrop-blur-sm">
+        <span className="absolute right-2 top-2 rounded-full border border-[var(--border)] bg-[var(--card-alt)]/80 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.1em] text-[#9aa3b8] backdrop-blur-sm sm:right-2.5 sm:top-2.5 sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-[0.14em]">
           {recipe.servings} {recipe.servings === 1 ? "porción" : "porciones"}
         </span>
       </div>
 
-      <div className="flex flex-1 flex-col gap-3 p-4 pt-0">
+      <div className="flex flex-1 flex-col gap-2 p-3 pt-0 sm:gap-3 sm:p-4">
         <div className="min-w-0 flex-1">
           <h3 className="font-display truncate text-sm font-semibold tracking-[-0.02em] text-white">
             {recipe.name}
           </h3>
           {recipe.description ? (
-            <p className="mt-1 line-clamp-2 text-xs leading-5 text-[var(--foreground-muted)]">
+            <p className="mt-1 line-clamp-1 text-xs leading-5 text-[var(--foreground-muted)] sm:line-clamp-2">
               {recipe.description}
             </p>
           ) : null}
-          <p className="mt-2 text-xs uppercase tracking-[0.12em] text-[#7d8697]">
+          <p className="mt-1.5 text-xs uppercase tracking-[0.12em] text-[#7d8697] sm:mt-2">
             {recipe.calories} kcal
           </p>
         </div>

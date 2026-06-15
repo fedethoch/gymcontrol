@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
+import { FilterSheet } from "@/app/components/shared/FilterSheet";
 import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
 import { fadeUp, motion, staggerContainer } from "@/app/components/ui/motion";
@@ -103,9 +104,69 @@ export function RoutineCatalogClient({ routines }: RoutineCatalogClientProps) {
   const paginatedRoutines = filteredRoutines.slice(pageStart, pageStart + PAGE_SIZE);
   const visiblePages = getVisiblePages(page, totalPages);
 
+  const activeFilterCount = [difficulty, objective, dayCount].filter(
+    (value) => value !== "all",
+  ).length;
+
+  function handleClearFilters() {
+    handleFilterChange(setDifficulty, "all");
+    handleFilterChange(setObjective, "all");
+    handleFilterChange(setDayCount, "all");
+  }
+
+  const filterSelects = (
+    <>
+      <CatalogSelect
+        value={difficulty}
+        placeholder="Dificultad"
+        onValueChange={(value) => handleFilterChange(setDifficulty, value)}
+      >
+        <SelectItem value="all">Todas</SelectItem>
+        {Object.entries(ROUTINE_DIFFICULTY_LABELS).map(([value, label]) => (
+          <SelectItem key={value} value={value}>
+            {label}
+          </SelectItem>
+        ))}
+      </CatalogSelect>
+
+      <CatalogSelect
+        value={objective}
+        placeholder="Objetivo"
+        onValueChange={(value) => handleFilterChange(setObjective, value)}
+      >
+        <SelectItem value="all">Todos</SelectItem>
+        {Object.entries(ROUTINE_OBJECTIVE_LABELS).map(([value, label]) => (
+          <SelectItem key={value} value={value}>
+            {label}
+          </SelectItem>
+        ))}
+      </CatalogSelect>
+
+      <CatalogSelect
+        value={dayCount}
+        placeholder="Dias"
+        onValueChange={(value) => handleFilterChange(setDayCount, value)}
+      >
+        <SelectItem value="all">Todos los dias</SelectItem>
+        {dayOptions.map((value) => (
+          <SelectItem key={value} value={String(value)}>
+            {value} dias
+          </SelectItem>
+        ))}
+      </CatalogSelect>
+
+      <CatalogSelect value={sortBy} placeholder="Ordenar" onValueChange={handleSortChange}>
+        <SelectItem value="recent">Recientes</SelectItem>
+        <SelectItem value="name">Nombre A-Z</SelectItem>
+        <SelectItem value="days">Mas dias</SelectItem>
+        <SelectItem value="rows">Mas filas</SelectItem>
+      </CatalogSelect>
+    </>
+  );
+
   return (
     <section className="grid content-start gap-5">
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_repeat(4,minmax(0,0.7fr))]">
+      <div className="grid gap-3 lg:grid-cols-[minmax(0,1.2fr)_repeat(4,minmax(0,0.7fr))] lg:gap-4">
         <label className="relative flex h-12 items-center">
           <span className="sr-only">Buscar rutinas</span>
           <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#7d8697]" />
@@ -118,55 +179,11 @@ export function RoutineCatalogClient({ routines }: RoutineCatalogClientProps) {
           />
         </label>
 
-        <CatalogSelect
-          value={difficulty}
-          placeholder="Dificultad"
-          onValueChange={(value) => handleFilterChange(setDifficulty, value)}
-        >
-          <SelectItem value="all">Todas</SelectItem>
-          {Object.entries(ROUTINE_DIFFICULTY_LABELS).map(([value, label]) => (
-            <SelectItem key={value} value={value}>
-              {label}
-            </SelectItem>
-          ))}
-        </CatalogSelect>
+        <div className="hidden gap-4 lg:contents">{filterSelects}</div>
 
-        <CatalogSelect
-          value={objective}
-          placeholder="Objetivo"
-          onValueChange={(value) => handleFilterChange(setObjective, value)}
-        >
-          <SelectItem value="all">Todos</SelectItem>
-          {Object.entries(ROUTINE_OBJECTIVE_LABELS).map(([value, label]) => (
-            <SelectItem key={value} value={value}>
-              {label}
-            </SelectItem>
-          ))}
-        </CatalogSelect>
-
-        <CatalogSelect
-          value={dayCount}
-          placeholder="Dias"
-          onValueChange={(value) => handleFilterChange(setDayCount, value)}
-        >
-          <SelectItem value="all">Todos los dias</SelectItem>
-          {dayOptions.map((value) => (
-            <SelectItem key={value} value={String(value)}>
-              {value} dias
-            </SelectItem>
-          ))}
-        </CatalogSelect>
-
-        <CatalogSelect
-          value={sortBy}
-          placeholder="Ordenar"
-          onValueChange={handleSortChange}
-        >
-          <SelectItem value="recent">Recientes</SelectItem>
-          <SelectItem value="name">Nombre A-Z</SelectItem>
-          <SelectItem value="days">Mas dias</SelectItem>
-          <SelectItem value="rows">Mas filas</SelectItem>
-        </CatalogSelect>
+        <FilterSheet activeCount={activeFilterCount} onClear={handleClearFilters}>
+          {filterSelects}
+        </FilterSheet>
       </div>
 
       {paginatedRoutines.length === 0 ? (
@@ -187,7 +204,7 @@ export function RoutineCatalogClient({ routines }: RoutineCatalogClientProps) {
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+            className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-3 2xl:grid-cols-4"
           >
             {paginatedRoutines.map((routine) => (
               <motion.div key={routine.id} variants={fadeUp}>
@@ -276,50 +293,51 @@ function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
   const objective = ROUTINE_OBJECTIVE_LABELS[routine.objective];
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#111723_0%,#0b1017_100%)] shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-transform duration-200 hover:-translate-y-0.5 hover:border-[rgba(185,149,255,0.24)] sm:min-h-[32rem]">
-      <div className="relative h-48 overflow-hidden border-b border-[rgba(255,255,255,0.08)] bg-[#141a24] sm:h-[22rem]">
+    <article className="group flex flex-col overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#111723_0%,#0b1017_100%)] shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-transform duration-200 hover:-translate-y-0.5 hover:border-[rgba(185,149,255,0.24)]">
+      <div className="relative h-28 overflow-hidden border-b border-[rgba(255,255,255,0.08)] bg-[#141a24] sm:h-40">
         {imageUrl ? (
           <Image
             alt={routine.name}
             className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1536px) 50vw, 25vw"
+            sizes="(max-width: 768px) 50vw, (max-width: 1536px) 33vw, 25vw"
             src={imageUrl}
           />
         ) : (
           <div className="thumb-fitness h-full w-full" />
         )}
-        <div className="absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(180deg,transparent,rgba(5,7,11,0.86))]" />
+        <div className="absolute inset-x-0 bottom-0 h-12 bg-[linear-gradient(180deg,transparent,rgba(5,7,11,0.86))]" />
       </div>
 
-      <div className="flex flex-1 flex-col gap-4 p-4">
-        <div className="flex min-h-[2.75rem] flex-wrap items-start gap-x-3 gap-y-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9ea7b9]">
+      <div className="flex flex-1 flex-col gap-2 p-3 sm:gap-3 sm:p-4">
+        <div className="flex flex-wrap items-start gap-x-2 gap-y-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#9ea7b9] sm:text-[11px] sm:tracking-[0.12em]">
           <span>{dayCount} dias</span>
           <span aria-hidden="true" className="text-[#556074]">
             /
           </span>
           <span>{itemCount} filas</span>
-          <span aria-hidden="true" className="text-[#556074]">
+          <span aria-hidden="true" className="hidden text-[#556074] sm:inline">
             /
           </span>
-          <span>{difficulty}</span>
-          <span aria-hidden="true" className="text-[#556074]">
+          <span className="hidden sm:inline">{difficulty}</span>
+          <span aria-hidden="true" className="hidden text-[#556074] sm:inline">
             /
           </span>
-          <span>{objective}</span>
+          <span className="hidden sm:inline">{objective}</span>
         </div>
 
         <div>
-          <h3 className="font-display text-lg font-semibold tracking-[-0.04em] text-white">
+          <h3 className="font-display text-sm font-semibold tracking-[-0.04em] text-white sm:text-lg">
             {routine.name}
           </h3>
-          <p className="mt-2 line-clamp-4 text-sm leading-6 text-[var(--foreground-muted)]">
+          <p className="mt-1 line-clamp-2 text-xs leading-5 text-[var(--foreground-muted)] sm:mt-2 sm:text-sm sm:leading-6">
             {routine.description || "Rutina semanal disponible para explorar."}
           </p>
         </div>
 
         <Button
           asChild
+          size="sm"
           className="mt-auto w-full justify-between rounded-xl border border-[rgba(185,149,255,0.2)] bg-[rgba(124,58,237,0.12)] text-white hover:bg-[rgba(124,58,237,0.18)]"
         >
           <Link href={`/catalogo/rutinas/${routine.id}`}>

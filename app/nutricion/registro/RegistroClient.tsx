@@ -274,15 +274,9 @@ export function RegistroClient({
   );
 
   return (
-    <div className="grid gap-6">
-      {/* Mobile: botón que abre el drawer "Nueva comida" */}
-      <Button type="button" className="lg:hidden" onClick={() => setNewMealOpen(true)}>
-        <Plus className="size-4" />
-        Nueva comida
-      </Button>
-
+    <div className="grid gap-4 sm:gap-6">
       <Drawer open={newMealOpen} onOpenChange={setNewMealOpen}>
-        <DrawerContent className="lg:hidden">
+        <DrawerContent>
           <DrawerHeader>
             <DrawerTitle className="sr-only">Nueva comida</DrawerTitle>
             <DrawerDescription className="sr-only">
@@ -294,94 +288,92 @@ export function RegistroClient({
         </DrawerContent>
       </Drawer>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(300px,1fr)] lg:items-stretch">
-        {/* Nueva comida (desktop) */}
-        <Card className="hidden h-full flex-col lg:flex">
-          <CardHeader>{newMealIntro}</CardHeader>
-          <CardContent className="flex flex-1 flex-col">{newMealBody}</CardContent>
-        </Card>
-
-        {/* Resumen */}
-        <Card className="flex h-full flex-col">
-          <CardHeader className="flex flex-row items-start justify-between gap-3">
-            <div>
-              <CardTitle>Resumen nutricional del día</CardTitle>
-              <p className="text-sm text-[var(--foreground-muted)]">Así vas hoy frente a tu objetivo diario.</p>
-            </div>
-            <Button asChild type="button" variant="outline" size="sm" className="shrink-0">
-              <Link href="/configuracion">
-                <Settings2 className="size-4" />
-                Editar objetivos
-              </Link>
-            </Button>
-          </CardHeader>
-          <CardContent className="flex flex-1 flex-col gap-5">
-            <div className="mt-4 flex flex-col items-center gap-6 sm:flex-row sm:items-center">
-              <AnimatedProgressRing
-                value={targetKcal > 0 ? Math.min(100, Math.round((totalKcal / targetKcal) * 100)) : 0}
-                size={200}
-                strokeWidth={16}
-                progressColor="var(--accent-bright)"
-              >
-                <div className="flex flex-col items-center">
-                  <Flame className="mb-1 size-6 text-[var(--accent-bright)]" />
-                  <span className="font-display text-3xl font-bold tracking-[-0.04em] text-white">{totalKcal}</span>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#7887a6]">
-                    de {targetKcal} kcal
-                  </span>
-                </div>
-              </AnimatedProgressRing>
-
-              <div className="grid w-full flex-1 gap-3">
-                <TargetBar
-                  icon={Flame}
-                  label="Calorías"
-                  current={totalKcal}
-                  target={targetKcal}
-                  unit="kcal"
-                  color="var(--accent-bright)"
-                />
-                <TargetBar
-                  icon={Beef}
-                  label={MACRO_LABELS.protein}
-                  current={totalMacros.proteinG}
-                  target={targetMacros.proteinG}
-                  unit="g"
-                  color={MACRO_COLORS.protein}
-                />
-                <TargetBar
-                  icon={Wheat}
-                  label={MACRO_LABELS.carbs}
-                  current={totalMacros.carbsG}
-                  target={targetMacros.carbsG}
-                  unit="g"
-                  color={MACRO_COLORS.carbs}
-                />
-                <TargetBar
-                  icon={Droplet}
-                  label={MACRO_LABELS.fat}
-                  current={totalMacros.fatG}
-                  target={targetMacros.fatG}
-                  unit="g"
-                  color={MACRO_COLORS.fat}
-                />
+      {/* Resumen nutricional del día */}
+      <Card>
+        <CardHeader className="flex flex-row items-start justify-between gap-3">
+          <div>
+            <CardTitle>Resumen nutricional del día</CardTitle>
+            <p className="text-sm text-[var(--foreground-muted)]">Así vas hoy frente a tu objetivo diario.</p>
+          </div>
+          <Button asChild type="button" variant="outline" size="sm" className="shrink-0">
+            <Link href="/configuracion">
+              <Settings2 className="size-4" />
+              <span className="hidden sm:inline">Editar objetivos</span>
+            </Link>
+          </Button>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4 sm:gap-5">
+          <div className="flex items-center gap-4 sm:gap-6">
+            <AnimatedProgressRing
+              value={targetKcal > 0 ? Math.min(100, Math.round((totalKcal / targetKcal) * 100)) : 0}
+              size={104}
+              strokeWidth={12}
+              progressColor="var(--accent-bright)"
+            >
+              <div className="flex flex-col items-center">
+                <Flame className="mb-0.5 size-4 text-[var(--accent-bright)] sm:size-6" />
+                <span className="font-display text-lg font-bold tracking-[-0.04em] text-white sm:text-3xl">{totalKcal}</span>
+                <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-[#7887a6] sm:text-[10px] sm:tracking-[0.18em]">
+                  de {targetKcal} kcal
+                </span>
               </div>
-            </div>
+            </AnimatedProgressRing>
 
-            <div className="mt-auto grid grid-cols-3 gap-3 border-t border-[var(--border)] pt-4">
-              <SummaryStat label="Comidas hoy" value={String(meals.length)} />
-              <SummaryStat label="Promedio diario" value={avgDailyKcal > 0 ? `${avgDailyKcal} kcal` : "—"} />
-              <SummaryStat label="Racha actual" value={`${streak} días`} />
+            <div className="grid w-full flex-1 gap-2 sm:gap-3">
+              <TargetBar
+                icon={Flame}
+                label="Calorías"
+                current={totalKcal}
+                target={targetKcal}
+                unit="kcal"
+                color="var(--accent-bright)"
+              />
+              <TargetBar
+                icon={Beef}
+                label={MACRO_LABELS.protein}
+                current={totalMacros.proteinG}
+                target={targetMacros.proteinG}
+                unit="g"
+                color={MACRO_COLORS.protein}
+              />
+              <TargetBar
+                icon={Wheat}
+                label={MACRO_LABELS.carbs}
+                current={totalMacros.carbsG}
+                target={targetMacros.carbsG}
+                unit="g"
+                color={MACRO_COLORS.carbs}
+              />
+              <TargetBar
+                icon={Droplet}
+                label={MACRO_LABELS.fat}
+                current={totalMacros.fatG}
+                target={targetMacros.fatG}
+                unit="g"
+                color={MACRO_COLORS.fat}
+              />
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-3 border-t border-[var(--border)] pt-3 sm:pt-4">
+            <SummaryStat label="Comidas hoy" value={String(meals.length)} />
+            <SummaryStat label="Promedio diario" value={avgDailyKcal > 0 ? `${avgDailyKcal} kcal` : "—"} />
+            <SummaryStat label="Racha actual" value={`${streak} días`} />
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Comidas de hoy */}
       <Card>
-        <CardHeader>
-          <CardTitle>Comidas de hoy</CardTitle>
-          <p className="text-sm text-[var(--foreground-muted)]">Tus comidas registradas para hoy.</p>
+        <CardHeader className="flex flex-row items-center justify-between gap-3">
+          <div>
+            <CardTitle>Comidas de hoy</CardTitle>
+            <p className="text-sm text-[var(--foreground-muted)]">Tus comidas registradas para hoy.</p>
+          </div>
+          <Button type="button" size="sm" className="shrink-0" onClick={() => setNewMealOpen(true)}>
+            <Plus className="size-4" />
+            Nueva comida
+          </Button>
         </CardHeader>
         <CardContent>
           {meals.length === 0 ? (
@@ -410,23 +402,23 @@ export function RegistroClient({
       </Card>
 
       {/* Constancia + tip */}
-      <div className="grid gap-6 lg:grid-cols-2 lg:items-stretch">
+      <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:items-stretch">
         <Card className="flex h-full flex-col">
           <CardHeader>
-            <div className="flex items-center gap-3">
-              <span className="grid size-11 shrink-0 place-items-center rounded-xl border border-[var(--accent-soft-border)] bg-[var(--accent-soft-surface)] text-[var(--accent-bright)]">
-                <UtensilsCrossed className="size-5" />
+            <div className="flex items-center gap-2 sm:gap-3">
+              <span className="grid size-9 shrink-0 place-items-center rounded-xl border border-[var(--accent-soft-border)] bg-[var(--accent-soft-surface)] text-[var(--accent-bright)] sm:size-11">
+                <UtensilsCrossed className="size-4 sm:size-5" />
               </span>
-              <div>
-                <CardTitle>Constancia nutricional</CardTitle>
-                <p className="mt-0.5 text-sm text-[var(--foreground-muted)]">
+              <div className="min-w-0">
+                <CardTitle className="text-sm sm:text-base">Constancia nutricional</CardTitle>
+                <p className="mt-0.5 hidden text-sm text-[var(--foreground-muted)] sm:block">
                   Tus últimas 10 semanas registrando comidas.
                 </p>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="flex flex-1 flex-col gap-5 sm:flex-row sm:items-center">
-            <div className="flex shrink-0 gap-4 sm:flex-col sm:gap-4">
+          <CardContent className="flex flex-1 flex-col gap-3 sm:gap-5 sm:flex-row sm:items-center">
+            <div className="flex shrink-0 gap-3 sm:flex-col sm:gap-4">
               <SummaryStat label="Racha actual" value={`${streak} días`} />
               <SummaryStat label="Días este mes" value={String(daysThisMonth)} />
             </div>
@@ -917,17 +909,17 @@ function NutritionTipCard({
 
   return (
     <Card className="flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(13,19,34,0.96)_0%,rgba(8,12,20,0.98)_100%)] shadow-[0_18px_48px_rgba(0,0,0,0.24)]">
-      <CardContent className="flex flex-1 flex-col gap-4 p-6">
-        <div className="flex items-center gap-4">
+      <CardContent className="flex flex-1 flex-col gap-2 p-3 sm:gap-4 sm:p-6">
+        <div className="flex items-center gap-2 sm:gap-4">
           <span
             aria-hidden="true"
-            className="grid size-12 shrink-0 place-items-center rounded-xl border border-[#34245b] bg-[#251640] text-[#b987ff]"
+            className="grid size-9 shrink-0 place-items-center rounded-xl border border-[#34245b] bg-[#251640] text-[#b987ff] sm:size-12"
           >
-            <Flame className="size-6" />
+            <Flame className="size-4 sm:size-6" />
           </span>
-          <h2 className="font-display text-xl font-semibold leading-tight text-white">{title}</h2>
+          <h2 className="font-display text-sm font-semibold leading-tight text-white sm:text-xl">{title}</h2>
         </div>
-        <p className="text-sm leading-6 text-[#c6cede]">{message}</p>
+        <p className="line-clamp-3 text-xs leading-5 text-[#c6cede] sm:line-clamp-none sm:text-sm sm:leading-6">{message}</p>
       </CardContent>
     </Card>
   );

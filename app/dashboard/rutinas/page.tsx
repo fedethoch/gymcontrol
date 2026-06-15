@@ -112,20 +112,18 @@ export default async function DashboardRoutinesPage() {
           </div>
         </header>
 
-        <Card className="flex overflow-hidden rounded-[1.4rem] border-[#263044] bg-[linear-gradient(145deg,rgba(13,19,34,0.9),rgba(7,11,19,0.96))] shadow-[0_18px_55px_rgba(0,0,0,0.28)] lg:min-h-32 lg:items-center">
-          <CardContent className="flex w-full !py-4 px-5 sm:!py-4 sm:px-5">
-            <div className="grid w-full gap-4 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-center lg:gap-5">
-              <div className="flex flex-col justify-center gap-4 lg:border-r lg:border-[#1d2434] lg:pr-6">
-                <div className="grid gap-2">
-                  <p className="text-sm font-medium text-[#b7bfce]">Rutina activa</p>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <h2 className="font-display text-[1.6rem] font-semibold leading-tight text-white sm:text-3xl">
-                      {activeRoutine.displayName}
-                    </h2>
-                  </div>
+        <Card className="flex overflow-hidden rounded-[1.4rem] border-[#263044] bg-[linear-gradient(145deg,rgba(13,19,34,0.9),rgba(7,11,19,0.96))] shadow-[0_18px_55px_rgba(0,0,0,0.28)] lg:items-center">
+          <CardContent className="flex w-full !py-3 px-4 sm:!py-4 sm:px-5">
+            <div className="grid w-full gap-3 sm:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] sm:items-center sm:gap-5">
+              <div className="flex flex-col justify-center gap-2 sm:gap-3 sm:border-r sm:border-[#1d2434] sm:pr-5">
+                <div className="grid gap-1">
+                  <p className="text-xs font-medium text-[#b7bfce] sm:text-sm">Rutina activa</p>
+                  <h2 className="font-display text-lg font-semibold leading-tight text-white sm:text-[1.6rem] lg:text-3xl">
+                    {activeRoutine.displayName}
+                  </h2>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[#d2d8e4]">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[#d2d8e4]">
                   <SummaryPill icon={CalendarDays}>{totalDays} dias por semana</SummaryPill>
                   <span className="hidden h-5 w-px bg-[#293247] sm:block" />
                   <SummaryPill icon={Dumbbell}>
@@ -134,26 +132,26 @@ export default async function DashboardRoutinesPage() {
                 </div>
               </div>
 
-              <div className="flex flex-col justify-center gap-3 lg:pl-0">
+              <div className="flex flex-col justify-center gap-2 sm:gap-3">
                 <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#c25cff]">
                   Resumen semanal
                 </p>
 
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))] xl:items-center">
-                  <div className="flex items-center gap-4 sm:col-span-2 xl:col-span-1">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))] xl:items-center">
+                  <div className="col-span-2 flex items-center gap-3 sm:gap-4 xl:col-span-1">
                     <AnimatedProgressRing
                       value={weeklyProgressPercent}
-                      size={64}
+                      size={56}
                       strokeWidth={6}
                       progressColor="#7c3aed"
                     >
-                      <div className="grid size-[3.25rem] place-items-center rounded-full bg-[#0a0f19] text-sm font-semibold text-[#cbb6ff]">
+                      <div className="grid size-11 place-items-center rounded-full bg-[#0a0f19] text-xs font-semibold text-[#cbb6ff] sm:size-[3.25rem] sm:text-sm">
                         {weeklyProgressPercent}%
                       </div>
                     </AnimatedProgressRing>
                     <div>
-                      <p className="text-sm text-[#b7bfce]">Progreso semanal</p>
-                      <p className="font-display mt-1 text-xl font-semibold text-white">
+                      <p className="text-xs text-[#b7bfce] sm:text-sm">Progreso semanal</p>
+                      <p className="font-display mt-0.5 text-base font-semibold text-white sm:mt-1 sm:text-xl">
                         {weeklyProgressLabel.replace("/", "de")} dias
                       </p>
                     </div>
@@ -260,13 +258,13 @@ function MetricItem({
         : "border-[#253047] bg-[#0c111d] text-[#9db5ff]";
 
   return (
-    <div className="flex items-center gap-3">
-      <span className={cn("grid size-11 shrink-0 place-items-center rounded-full border-4", toneClass)}>
-        <Icon className="size-5" />
+    <div className="flex items-center gap-2 sm:gap-3">
+      <span className={cn("grid size-9 shrink-0 place-items-center rounded-full border-4 sm:size-11", toneClass)}>
+        <Icon className="size-4 sm:size-5" />
       </span>
       <div>
-        <p className="text-sm text-[#b7bfce]">{label}</p>
-        <p className="font-display mt-1 text-lg font-semibold text-white">
+        <p className="text-xs text-[#b7bfce] sm:text-sm">{label}</p>
+        <p className="font-display mt-0.5 text-base font-semibold text-white sm:mt-1 sm:text-lg">
           {value}
         </p>
       </div>

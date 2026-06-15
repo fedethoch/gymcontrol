@@ -22,6 +22,7 @@ import {
 import { toast } from "sonner";
 
 import { deleteRoutineAction, saveRoutineAction } from "@/app/admin/rutinas/actions";
+import { FilterSheet } from "@/app/components/shared/FilterSheet";
 import { Badge } from "@/app/components/ui/Badge";
 import { Button } from "@/app/components/ui/Button";
 import { Card, CardContent } from "@/app/components/ui/Card";
@@ -216,35 +217,81 @@ export function RoutineAdminClient({
   const hasFilters = search.trim() !== "" || difficultyFilter !== "all" || objectiveFilter !== "all";
   const hasExercises = initialExercises.length > 0;
 
+  const filterSelects = (
+    <>
+      <Select
+        value={difficultyFilter}
+        onValueChange={(value) =>
+          handleFilterChange(setDifficultyFilter, value as RoutineDifficulty | "all")
+        }
+      >
+        <SelectTrigger className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
+          <SelectValue placeholder="Dificultad" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Todas las dificultades</SelectItem>
+          {ROUTINE_DIFFICULTIES.map((option) => (
+            <SelectItem key={option} value={option}>
+              {ROUTINE_DIFFICULTY_LABELS[option]}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      <Select
+        value={objectiveFilter}
+        onValueChange={(value) =>
+          handleFilterChange(setObjectiveFilter, value as RoutineObjective | "all")
+        }
+      >
+        <SelectTrigger className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
+          <SelectValue placeholder="Objetivo" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Todos los objetivos</SelectItem>
+          {ROUTINE_OBJECTIVES.map((option) => (
+            <SelectItem key={option} value={option}>
+              {ROUTINE_OBJECTIVE_LABELS[option]}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </>
+  );
+
+  const activeFilterCount = [difficultyFilter, objectiveFilter].filter(
+    (value) => value !== "all",
+  ).length;
+
   return (
     <section className="page-frame dashboard-page-frame">
-      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <SectionEyebrow>Gestion / Rutinas</SectionEyebrow>
-          <h1 className="font-display mt-2 text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
-            Rutinas
-          </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--foreground-muted)]">
-            Gestiona el catalogo de rutinas semanales de la plataforma.
-          </p>
-        </div>
-        <Button
-          type="button"
-          onClick={() => {
-            setFormKey((value) => value + 1);
-            setFormTarget({ mode: "create" });
-          }}
-        >
-          <Plus className="size-4" />
-          Nueva rutina
-        </Button>
+      <header>
+        <SectionEyebrow>Gestion / Rutinas</SectionEyebrow>
+        <h1 className="font-display mt-2 text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
+          Rutinas
+        </h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--foreground-muted)]">
+          Gestiona el catalogo de rutinas semanales de la plataforma.
+        </p>
       </header>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3">
         <StatTile icon={ClipboardList} value={stats.total} label="Total de rutinas" />
         <StatTile icon={ChevronDown} value={stats.avgDays} label="Promedio de dias" />
         <StatTile icon={Users} value={stats.activeUsers} label="Usuarios activos" />
       </div>
+
+      <Button
+        type="button"
+        className="w-full"
+        onClick={() => {
+          setFormKey((value) => value + 1);
+          setFormTarget({ mode: "create" });
+        }}
+      >
+        <Plus className="size-4" />
+        Nueva rutina
+      </Button>
 
       <div className="grid gap-3 sm:grid-cols-[1.4fr_1fr_1fr] sm:items-center">
         <label className="relative block">
@@ -259,43 +306,17 @@ export function RoutineAdminClient({
           />
         </label>
 
-        <Select
-          value={difficultyFilter}
-          onValueChange={(value) =>
-            handleFilterChange(setDifficultyFilter, value as RoutineDifficulty | "all")
-          }
-        >
-          <SelectTrigger className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
-            <SelectValue placeholder="Dificultad" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todas las dificultades</SelectItem>
-            {ROUTINE_DIFFICULTIES.map((option) => (
-              <SelectItem key={option} value={option}>
-                {ROUTINE_DIFFICULTY_LABELS[option]}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="hidden lg:contents">{filterSelects}</div>
 
-        <Select
-          value={objectiveFilter}
-          onValueChange={(value) =>
-            handleFilterChange(setObjectiveFilter, value as RoutineObjective | "all")
-          }
+        <FilterSheet
+          activeCount={activeFilterCount}
+          onClear={() => {
+            handleFilterChange(setDifficultyFilter, "all");
+            handleFilterChange(setObjectiveFilter, "all");
+          }}
         >
-          <SelectTrigger className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
-            <SelectValue placeholder="Objetivo" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos los objetivos</SelectItem>
-            {ROUTINE_OBJECTIVES.map((option) => (
-              <SelectItem key={option} value={option}>
-                {ROUTINE_OBJECTIVE_LABELS[option]}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          {filterSelects}
+        </FilterSheet>
       </div>
 
       <Card className="overflow-hidden">
@@ -597,16 +618,16 @@ function StatTile({
   label: string;
 }) {
   return (
-    <Card className="flex h-36 items-center gap-5 p-7">
-      <span className="grid size-16 shrink-0 place-items-center rounded-xl border border-[#5b2ab3] bg-[#281a45] text-[var(--accent-bright)]">
-        <Icon className="size-7" />
-      </span>
-      <div>
-        <p className="font-display text-4xl font-semibold tracking-[-0.05em] text-white">
+    <Card className="flex flex-col gap-2 p-3 sm:p-4">
+      <div className="flex items-center gap-3">
+        <span className="grid size-9 shrink-0 place-items-center rounded-xl border border-[#5b2ab3] bg-[#281a45] text-[var(--accent-bright)] sm:size-11">
+          <Icon className="size-4 sm:size-5" />
+        </span>
+        <p className="font-display text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
           {value}
         </p>
-        <p className="mt-1 text-base text-[var(--foreground-muted)]">{label}</p>
       </div>
+      <p className="truncate text-xs text-[var(--foreground-muted)] sm:text-sm">{label}</p>
     </Card>
   );
 }

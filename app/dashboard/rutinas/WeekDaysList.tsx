@@ -45,7 +45,7 @@ export function WeekDaysList({
             <Link
               href={href}
               className={cn(
-                "group block rounded-[1.25rem] border px-5 py-5 transition-[border-color,box-shadow,transform] hover:-translate-y-0.5 sm:px-7",
+                "group block rounded-[1.25rem] border px-4 py-3.5 transition-[border-color,box-shadow,transform] hover:-translate-y-0.5 sm:px-5 sm:py-4",
                 isCompleted
                   ? "border-[#1e5a3d] bg-[linear-gradient(105deg,rgba(12,45,28,0.64),rgba(8,20,14,0.96)_55%,rgba(9,19,15,0.96))] shadow-[0_18px_44px_rgba(38,131,82,0.16)]"
                   : isCurrentDay
@@ -53,42 +53,45 @@ export function WeekDaysList({
                   : "border-[#263044] bg-[linear-gradient(145deg,rgba(13,19,34,0.92),rgba(7,11,19,0.98))] hover:border-[#40506f]",
               )}
             >
-              <div className="grid gap-4 md:min-h-20 md:grid-cols-[4.5rem_minmax(0,1fr)_8rem_auto] md:items-center">
+              <div className="flex items-center gap-4">
                 <DayMarker
                   dayNumber={day.dayOrder}
                   isCurrentDay={isCurrentDay}
                   isCompleted={isCompleted}
                 />
 
-                <div className="min-w-0">
-                  <p className="text-sm text-[#b7bfce]">{`Dia ${day.dayOrder}`}</p>
-                  <h3 className="font-display mt-1 text-xl font-semibold leading-tight text-white sm:text-2xl">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs text-[#b7bfce] sm:text-sm">{`Dia ${day.dayOrder}`}</p>
+                  <h3 className="font-display mt-0.5 text-lg font-semibold leading-tight text-white sm:text-xl">
                     {day.dayName}
                   </h3>
-                  <p className="mt-1 text-sm text-[var(--foreground-muted)]">
-                    {isCompleted ? "Completado esta semana" : `${day.itemsCount} ejercicios`}
-                  </p>
-                </div>
-
-                <div className="inline-flex items-center gap-2 text-sm text-[#c8d0df] md:justify-self-start">
-                  <Clock3 className="size-4 text-[#b2c7ff]" />
-                  <span>60 min</span>
+                  <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[var(--foreground-muted)] sm:text-sm">
+                    <span>
+                      {isCompleted ? "Completado esta semana" : `${day.itemsCount} ejercicios`}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 text-[#c8d0df]">
+                      <Clock3 className="size-3.5 text-[#b2c7ff]" />
+                      60 min
+                    </span>
+                  </div>
                 </div>
 
                 {isCompleted ? (
-                  <span className="inline-flex items-center gap-2 text-sm font-medium text-[#88edab] md:justify-self-end">
+                  <span className="inline-flex shrink-0 items-center gap-2 text-sm font-medium text-[#88edab]">
                     <Check className="size-4" />
-                    Completado
+                    <span className="hidden sm:inline">Completado</span>
                   </span>
-                ) : isCurrentDay ? (
-                  <span className="inline-flex h-12 w-full items-center justify-center gap-3 rounded-lg bg-[linear-gradient(90deg,#6a36f0,#8e4dff)] px-5 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(109,64,239,0.34)] md:w-60">
-                    Ver entrenamiento
-                    <ChevronRight className="size-5" />
-                  </span>
-                ) : (
-                  <ChevronRight className="size-6 justify-self-end text-[#9ba8c3] transition-transform group-hover:translate-x-1" />
-                )}
+                ) : !isCurrentDay ? (
+                  <ChevronRight className="size-5 shrink-0 text-[#9ba8c3] transition-transform group-hover:translate-x-1" />
+                ) : null}
               </div>
+
+              {isCurrentDay && !isCompleted ? (
+                <span className="mt-3 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[linear-gradient(90deg,#6a36f0,#8e4dff)] text-sm font-semibold text-white shadow-[0_14px_34px_rgba(109,64,239,0.34)]">
+                  Ver entrenamiento
+                  <ChevronRight className="size-4" />
+                </span>
+              ) : null}
             </Link>
           </motion.div>
         );
@@ -109,7 +112,7 @@ function DayMarker({
   return (
     <span
       className={cn(
-        "grid size-16 shrink-0 place-items-center rounded-full border-4 text-xl font-semibold",
+        "grid size-12 shrink-0 place-items-center rounded-full border-4 text-base font-semibold sm:size-14 sm:text-lg",
         isCompleted
           ? "border-[#29d26f] bg-[#10291b] text-[#8bf2ae] shadow-[0_0_0_7px_rgba(41,210,111,0.08)]"
           : isCurrentDay
@@ -117,7 +120,7 @@ function DayMarker({
           : "border-[#20283a] bg-[#0a0f19] text-[#d8e0ef]",
       )}
     >
-      {isCompleted ? <Check className="size-7" /> : dayNumber}
+      {isCompleted ? <Check className="size-5 sm:size-6" /> : dayNumber}
     </span>
   );
 }

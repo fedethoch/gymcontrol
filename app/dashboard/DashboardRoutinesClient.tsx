@@ -23,6 +23,7 @@ import {
   renameSavedRoutineAction,
   toggleActiveSavedRoutineAction,
 } from "@/app/dashboard/actions";
+import { FilterSheet } from "@/app/components/shared/FilterSheet";
 import { Badge } from "@/app/components/ui/Badge";
 import { Button } from "@/app/components/ui/Button";
 import {
@@ -105,6 +106,45 @@ export function DashboardRoutinesClient({
     setPage(1);
   }
 
+  const activeFilterCount = [objective, dayCount].filter((value) => value !== "all").length;
+
+  function handleClearFilters() {
+    updateObjective("all");
+    updateDayCount("all");
+  }
+
+  const filterSelects = (
+    <>
+      <DashboardSelect value={objective} onValueChange={updateObjective}>
+        <SelectItem value="all">
+          <span className="inline-flex h-full w-full items-center justify-center gap-2">
+            <Target className="size-4" />
+            Todos los objetivos
+          </span>
+        </SelectItem>
+        {Object.entries(ROUTINE_OBJECTIVE_LABELS).map(([value, label]) => (
+          <SelectItem key={value} value={value}>
+            {label}
+          </SelectItem>
+        ))}
+      </DashboardSelect>
+
+      <DashboardSelect value={dayCount} onValueChange={updateDayCount}>
+        <SelectItem value="all">
+          <span className="inline-flex h-full w-full items-center justify-center gap-2">
+            <CalendarDays className="size-4" />
+            Todos los días
+          </span>
+        </SelectItem>
+        {dayOptions.map((value) => (
+          <SelectItem key={value} value={String(value)}>
+            {value} días
+          </SelectItem>
+        ))}
+      </DashboardSelect>
+    </>
+  );
+
   return (
     <section className="grid gap-4">
       <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_13rem_12rem]">
@@ -120,33 +160,11 @@ export function DashboardRoutinesClient({
           />
         </label>
 
-        <DashboardSelect value={objective} onValueChange={updateObjective}>
-          <SelectItem value="all">
-            <span className="inline-flex h-full w-full items-center justify-center gap-2">
-              <Target className="size-4" />
-              Todos los objetivos
-            </span>
-          </SelectItem>
-          {Object.entries(ROUTINE_OBJECTIVE_LABELS).map(([value, label]) => (
-            <SelectItem key={value} value={value}>
-              {label}
-            </SelectItem>
-          ))}
-        </DashboardSelect>
+        <div className="hidden lg:contents">{filterSelects}</div>
 
-        <DashboardSelect value={dayCount} onValueChange={updateDayCount}>
-          <SelectItem value="all">
-            <span className="inline-flex h-full w-full items-center justify-center gap-2">
-              <CalendarDays className="size-4" />
-              Todos los días
-            </span>
-          </SelectItem>
-          {dayOptions.map((value) => (
-            <SelectItem key={value} value={String(value)}>
-              {value} días
-            </SelectItem>
-          ))}
-        </DashboardSelect>
+        <FilterSheet activeCount={activeFilterCount} onClear={handleClearFilters}>
+          {filterSelects}
+        </FilterSheet>
       </div>
 
       {visibleRoutines.length === 0 ? (
@@ -161,7 +179,7 @@ export function DashboardRoutinesClient({
           </div>
         </div>
       ) : (
-        <div className="grid gap-3 2xl:grid-cols-2">
+        <div className="grid gap-3 lg:grid-cols-2">
           {visibleRoutines.map((routine) => (
             <DashboardRoutineCard
               key={routine.id}
@@ -241,8 +259,8 @@ function DashboardRoutineCard({
   const deleteFormRef = useRef<HTMLFormElement>(null);
 
   return (
-    <article className="grid overflow-hidden rounded-2xl border border-[#20283a] bg-[linear-gradient(145deg,#0d1322_0%,#080d17_100%)] shadow-[0_18px_42px_rgba(0,0,0,0.22)] lg:grid-cols-[12.5rem_minmax(0,1fr)] 2xl:grid-cols-[12.5rem_minmax(0,1fr)_11.5rem]">
-      <div className="relative min-h-28 overflow-hidden border-b border-[#20283a] bg-[#111827] sm:min-h-40 lg:border-b-0 lg:border-r">
+    <article className="grid overflow-hidden rounded-2xl border border-[#20283a] bg-[linear-gradient(145deg,#0d1322_0%,#080d17_100%)] shadow-[0_18px_42px_rgba(0,0,0,0.22)] sm:grid-cols-[10rem_minmax(0,1fr)] 2xl:grid-cols-[12.5rem_minmax(0,1fr)_11.5rem]">
+      <div className="relative min-h-24 overflow-hidden border-b border-[#20283a] bg-[#111827] sm:min-h-28 sm:border-b-0 sm:border-r">
         {routine.coverImageUrl ? (
           <Image
             alt={routine.displayName}
@@ -257,17 +275,17 @@ function DashboardRoutineCard({
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,7,11,0.28),rgba(5,7,11,0.06)),linear-gradient(180deg,transparent_45%,rgba(5,7,11,0.75))]" />
       </div>
 
-      <div className="min-w-0 p-4">
+      <div className="min-w-0 p-3 sm:p-4">
         <div className="flex flex-wrap items-center gap-2">
           {isActive ? <Badge variant="accent">Activa</Badge> : null}
-          <h3 className="font-display min-w-0 truncate text-xl font-semibold tracking-[-0.05em] text-white">
+          <h3 className="font-display min-w-0 truncate text-base font-semibold tracking-[-0.05em] text-white sm:text-xl">
             {routine.displayName}
           </h3>
         </div>
-        <p className="mt-2 line-clamp-2 text-sm leading-6 text-[var(--foreground-muted)]">
+        <p className="mt-1.5 line-clamp-2 text-xs leading-5 text-[var(--foreground-muted)] sm:mt-2 sm:text-sm sm:leading-6">
           {routine.templateDescription || `Plantilla: ${routine.templateName}`}
         </p>
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="mt-2 flex flex-wrap gap-1.5 sm:mt-3 sm:gap-2">
           <MetaPill icon={CalendarDays}>{routine.dayCount} días</MetaPill>
           <MetaPill icon={TrendingUp}>
             {ROUTINE_DIFFICULTY_LABELS[routine.difficulty]}
@@ -276,12 +294,12 @@ function DashboardRoutineCard({
             {ROUTINE_OBJECTIVE_LABELS[routine.objective]}
           </MetaPill>
         </div>
-        <p className="mt-3 text-sm text-[#8790a5]">
+        <p className="mt-2 text-xs text-[#8790a5] sm:mt-3 sm:text-sm">
           Guardada el: {routine.savedAtLabel}
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 border-t border-[#20283a] p-4 sm:grid-cols-[1fr_1fr_auto] lg:col-span-2 2xl:col-span-1 2xl:border-l 2xl:border-t-0 2xl:grid-cols-1 2xl:px-6">
+      <div className="grid grid-cols-2 gap-2 border-t border-[#20283a] p-3 sm:col-span-2 sm:grid-cols-[1fr_1fr_auto] sm:p-4 2xl:col-span-1 2xl:border-l 2xl:border-t-0 2xl:grid-cols-1 2xl:px-6">
         <Button asChild className="h-10 rounded-lg">
           <Link href={`/catalogo/rutinas/${routine.routineTemplateId}`}>
             {isActive ? <Star className="size-4" /> : null}

@@ -108,16 +108,16 @@ export default async function Home() {
           <div className="absolute inset-0 bg-[linear-gradient(90deg,#080b14_0%,rgba(8,11,20,0.1)_34%,rgba(8,11,20,0.34)_100%)]" />
         </div>
 
-        <CardContent className="relative flex flex-col p-5 sm:px-6 sm:py-5">
+        <CardContent className="relative flex flex-col p-4 sm:px-6 sm:py-5">
           <div className="max-w-[50rem]">
             <Badge variant="accent" className="gap-2 bg-[#1a1230]/90">
               <span className="size-1.5 rounded-full bg-[#8b5cff]" />
               Semana activa
             </Badge>
 
-            <div className="mt-4">
-              <p className="text-base font-medium text-white">Hoy toca:</p>
-              <h2 className="font-display mt-2 text-3xl font-semibold leading-[1.05] text-white sm:text-[2.65rem] lg:text-[3.8rem]">
+            <div className="mt-3">
+              <p className="text-sm font-medium text-white">Hoy toca:</p>
+              <h2 className="font-display mt-1.5 text-2xl font-semibold leading-[1.05] text-white sm:text-3xl lg:text-4xl">
                 {activeRoutine && nextPendingDay ? (
                   <>
                     <span className="text-[#8b4dff]">Dia {nextPendingDay.dayOrder}</span>
@@ -130,20 +130,15 @@ export default async function Home() {
                   "Sin rutina activa"
                 )}
               </h2>
-              <p className="mt-3 max-w-3xl text-base leading-7 text-[#c5cad8]">
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-[#c5cad8] sm:text-base sm:leading-7">
                 {activeRoutine
-                  ? (
-                      <>
-                        <span className="block">Enfocate en tu fuerza y progresion.</span>
-                        <span className="block">Cada repeticion te acerca a tu mejor version.</span>
-                      </>
-                    )
+                  ? "Enfocate en tu fuerza y progresion. Cada repeticion te acerca a tu mejor version."
                   : "Elegi o activa una rutina desde Mis rutinas para ver tu proximo entrenamiento aca."}
               </p>
             </div>
           </div>
 
-          <div className="mt-5 grid gap-3 sm:flex sm:flex-wrap sm:items-center">
+          <div className="mt-4 grid gap-3 sm:flex sm:flex-wrap sm:items-center">
             <Button
               asChild
               size="lg"
@@ -182,7 +177,7 @@ export default async function Home() {
         viewport={{ once: true, margin: "-80px" }}
         className="grid auto-rows-max gap-4 lg:grid-cols-3"
       >
-        <MotionDiv variants={fadeUp} className="h-full">
+        <MotionDiv variants={fadeUp} className="h-full lg:order-1">
           <WeeklyProgressCard
             completedDayCount={completedDayCount}
             firstDayLabel={firstRoutineDay ? `Dia ${firstRoutineDay.dayOrder}` : "Dia 1"}
@@ -192,17 +187,19 @@ export default async function Home() {
           />
         </MotionDiv>
 
-        <MotionDiv variants={fadeUp} className="h-full">
-          <WeeklyStreakCard currentStreak={currentStreak} />
-        </MotionDiv>
+        <div className="grid grid-cols-2 gap-4 lg:order-2 lg:col-span-2 lg:grid-cols-2">
+          <MotionDiv variants={fadeUp} className="h-full">
+            <WeeklyStreakCard currentStreak={currentStreak} />
+          </MotionDiv>
 
-        <MotionDiv variants={fadeUp} className="h-full">
-          <ActiveRoutineCard
-            difficultyLabel={activeDifficultyLabel}
-            displayName={activeRoutine?.displayName ?? "Sin rutina activa"}
-            status={activeRoutineListItem ? activeRoutineStatus : "Pendiente"}
-          />
-        </MotionDiv>
+          <MotionDiv variants={fadeUp} className="h-full">
+            <ActiveRoutineCard
+              difficultyLabel={activeDifficultyLabel}
+              displayName={activeRoutine?.displayName ?? "Sin rutina activa"}
+              status={activeRoutineListItem ? activeRoutineStatus : "Pendiente"}
+            />
+          </MotionDiv>
+        </div>
       </MotionSection>
 
       <MotionSection
@@ -239,25 +236,25 @@ function WeeklyProgressCard({
 }) {
   return (
     <Card className="flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(14,19,32,0.96)_0%,rgba(8,12,22,0.98)_100%)] shadow-[0_18px_48px_rgba(73,34,146,0.16)] transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]">
-      <CardContent className="min-h-[14rem] flex-1 p-4 sm:min-h-[17rem] sm:p-6">
+      <CardContent className="flex-1 p-4 sm:p-6">
         <MetricTitle icon={TrendingUp} title="Progreso semanal" />
 
-        <div className="mt-6 grid gap-6 sm:grid-cols-[10rem_minmax(0,1fr)] sm:items-center">
-          <AnimatedProgressRing value={progressPercent} progressColor="#7c3aed">
-            <div className="grid size-28 place-items-center rounded-full bg-[#0a0f19] text-3xl font-semibold text-white shadow-[inset_0_0_28px_rgba(0,0,0,0.36)]">
+        <div className="mt-4 grid gap-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:items-center sm:gap-6">
+          <AnimatedProgressRing value={progressPercent} progressColor="#7c3aed" size={88}>
+            <div className="grid size-[4.4rem] place-items-center rounded-full bg-[#0a0f19] text-xl font-semibold text-white shadow-[inset_0_0_28px_rgba(0,0,0,0.36)] sm:size-28 sm:text-3xl">
               {progressPercent}%
             </div>
           </AnimatedProgressRing>
 
           <div className="min-w-0">
-            <p className="font-display text-4xl font-semibold leading-none text-white">
+            <p className="font-display text-2xl font-semibold leading-none text-white sm:text-4xl">
               {progressPercent}%
             </p>
-            <p className="mt-3 text-base leading-6 text-[#c6cede]">
+            <p className="mt-2 text-sm leading-6 text-[#c6cede] sm:mt-3 sm:text-base">
               {completedDayCount} de {totalDays} dias
             </p>
 
-            <div className="mt-6">
+            <div className="mt-3 sm:mt-6">
               <div className="relative h-2 rounded-full bg-[#252c43]">
                 <div
                   className="h-full rounded-full bg-[linear-gradient(90deg,#7c3aed,#9d6cff)]"
@@ -281,26 +278,26 @@ function WeeklyProgressCard({
 function WeeklyStreakCard({ currentStreak }: { currentStreak: number }) {
   return (
     <Card className="relative flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(13,19,34,0.96)_0%,rgba(8,12,20,0.98)_100%)] shadow-[0_18px_48px_rgba(0,0,0,0.24)] transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]">
-      <CardContent className="relative min-h-[14rem] flex-1 p-4 sm:min-h-[17rem] sm:p-6">
+      <CardContent className="relative flex-1 p-4 sm:p-6">
         <MetricTitle icon={Flame} title="Racha semanal" />
 
-        <div className="mt-6 max-w-[13rem] sm:mt-12">
-          <p className="font-display text-5xl font-semibold leading-none text-white sm:text-7xl">
+        <div className="mt-4 max-w-[13rem] sm:mt-12">
+          <p className="font-display text-3xl font-semibold leading-none text-white sm:text-7xl">
             {currentStreak}
-            <span className="ml-2 align-baseline text-2xl font-semibold text-[#9b4dff]">
+            <span className="ml-2 align-baseline text-base font-semibold text-[#9b4dff] sm:text-2xl">
               dias
             </span>
           </p>
-          <p className="mt-5 text-base leading-7 text-[#c6cede]">
+          <p className="mt-3 text-sm leading-6 text-[#c6cede] sm:mt-5 sm:text-base sm:leading-7">
             Segun entrenamientos completados esta semana
           </p>
         </div>
 
         <span
           aria-hidden="true"
-          className="absolute bottom-14 right-8 grid size-32 place-items-center rounded-full border border-[#303a55] bg-[radial-gradient(circle,rgba(124,58,237,0.18),rgba(8,12,20,0.08)_62%,transparent_100%)] text-[#8c7af6] shadow-[0_0_42px_rgba(124,58,237,0.18)]"
+          className="absolute bottom-2 right-2 grid size-16 place-items-center rounded-full border border-[#303a55] bg-[radial-gradient(circle,rgba(124,58,237,0.18),rgba(8,12,20,0.08)_62%,transparent_100%)] text-[#8c7af6] shadow-[0_0_42px_rgba(124,58,237,0.18)] sm:bottom-14 sm:right-8 sm:size-32"
         >
-          <Flame className="size-14" />
+          <Flame className="size-8 sm:size-14" />
         </span>
       </CardContent>
     </Card>
@@ -318,14 +315,14 @@ function ActiveRoutineCard({
 }) {
   return (
     <Card className="relative flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(13,19,34,0.96)_0%,rgba(8,12,20,0.98)_100%)] shadow-[0_18px_48px_rgba(0,0,0,0.24)] transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]">
-      <CardContent className="relative min-h-[14rem] flex-1 p-4 sm:min-h-[17rem] sm:p-6">
+      <CardContent className="relative flex-1 p-4 sm:p-6">
         <MetricTitle icon={CalendarDays} title="Rutina activa" />
 
-        <div className="mt-8 max-w-[16rem] sm:mt-16">
-          <p className="font-display line-clamp-2 break-words text-3xl font-semibold leading-tight text-white sm:text-4xl">
+        <div className="mt-4 max-w-[16rem] sm:mt-16">
+          <p className="font-display line-clamp-2 break-words text-lg font-semibold leading-tight text-white sm:text-4xl">
             {displayName}
           </p>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap gap-2 sm:mt-4">
             {difficultyLabel ? (
               <Badge variant="accent" className="normal-case tracking-normal">
                 {difficultyLabel} - {status}
@@ -340,9 +337,9 @@ function ActiveRoutineCard({
 
         <span
           aria-hidden="true"
-          className="absolute bottom-14 right-10 grid size-32 place-items-center rounded-full border border-[#303a55] bg-[radial-gradient(circle,rgba(124,58,237,0.18),rgba(8,12,20,0.08)_62%,transparent_100%)] text-[#b995ff] shadow-[0_0_42px_rgba(124,58,237,0.18)]"
+          className="absolute bottom-2 right-2 grid size-16 place-items-center rounded-full border border-[#303a55] bg-[radial-gradient(circle,rgba(124,58,237,0.18),rgba(8,12,20,0.08)_62%,transparent_100%)] text-[#b995ff] shadow-[0_0_42px_rgba(124,58,237,0.18)] sm:bottom-14 sm:right-10 sm:size-32"
         >
-          <CalendarDays className="size-14" />
+          <CalendarDays className="size-8 sm:size-14" />
         </span>
       </CardContent>
     </Card>
@@ -357,14 +354,14 @@ function MetricTitle({
   title: string;
 }) {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-3 sm:gap-4">
       <span
         aria-hidden="true"
-        className="grid size-12 shrink-0 place-items-center rounded-xl border border-[#34245b] bg-[#251640] text-[#b987ff]"
+        className="grid size-9 shrink-0 place-items-center rounded-xl border border-[#34245b] bg-[#251640] text-[#b987ff] sm:size-12"
       >
-        <Icon className="size-6" />
+        <Icon className="size-4 sm:size-6" />
       </span>
-      <h2 className="font-display text-xl font-semibold leading-tight text-white">
+      <h2 className="font-display text-base font-semibold leading-tight text-white sm:text-xl">
         {title}
       </h2>
     </div>

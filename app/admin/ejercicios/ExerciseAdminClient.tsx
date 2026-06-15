@@ -29,6 +29,7 @@ import { toast } from "sonner";
 
 import { deleteExerciseAction, saveExerciseAction } from "@/app/admin/ejercicios/actions";
 import { ExerciseDetailModal } from "@/app/components/shared/ExerciseDetailModal";
+import { FilterSheet } from "@/app/components/shared/FilterSheet";
 import { Badge } from "@/app/components/ui/Badge";
 import { Button } from "@/app/components/ui/Button";
 import { Card, CardContent } from "@/app/components/ui/Card";
@@ -206,35 +207,69 @@ export function ExerciseAdminClient({ initialExercises }: ExerciseAdminClientPro
 
   const hasFilters = search.trim() !== "" || muscleFilter !== "all" || equipFilter !== "all";
 
+  const filterSelects = (
+    <>
+      <Select value={muscleFilter} onValueChange={(value) => handleFilterChange(setMuscleFilter, value)}>
+        <SelectTrigger className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
+          <SelectValue placeholder="Grupo muscular" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Todos los grupos</SelectItem>
+          {EXERCISE_MUSCLE_GROUPS.map((group) => (
+            <SelectItem key={group} value={group}>
+              {muscleLabel(group)}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      <Select value={equipFilter} onValueChange={(value) => handleFilterChange(setEquipFilter, value)}>
+        <SelectTrigger className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
+          <SelectValue placeholder="Equipamiento" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Todo el equipamiento</SelectItem>
+          {EXERCISE_EQUIPMENT_OPTIONS.map((option) => (
+            <SelectItem key={option} value={option}>
+              {equipmentLabel(option)}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </>
+  );
+
+  const activeFilterCount = [muscleFilter, equipFilter].filter((value) => value !== "all").length;
+
   return (
     <section className="page-frame dashboard-page-frame">
-      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <SectionEyebrow>Gestion / Ejercicios</SectionEyebrow>
-          <h1 className="font-display mt-2 text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
-            Ejercicios
-          </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--foreground-muted)]">
-            Gestiona el catalogo completo de ejercicios disponibles en la plataforma.
-          </p>
-        </div>
-        <Button
-          type="button"
-          onClick={() => {
-            setFormKey((value) => value + 1);
-            setDrawer({ mode: "create" });
-          }}
-        >
-          <Plus className="size-4" />
-          Nuevo ejercicio
-        </Button>
+      <header>
+        <SectionEyebrow>Gestion / Ejercicios</SectionEyebrow>
+        <h1 className="font-display mt-2 text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
+          Ejercicios
+        </h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--foreground-muted)]">
+          Gestiona el catalogo completo de ejercicios disponibles en la plataforma.
+        </p>
       </header>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3">
         <StatTile icon={Dumbbell} value={stats.total} label="Total de ejercicios" />
         <StatTile icon={Sparkles} value={stats.thisWeek} label="Agregados esta semana" />
         <StatTile icon={Target} value={stats.groups} label="Grupos musculares" />
       </div>
+
+      <Button
+        type="button"
+        className="w-full"
+        onClick={() => {
+          setFormKey((value) => value + 1);
+          setDrawer({ mode: "create" });
+        }}
+      >
+        <Plus className="size-4" />
+        Nuevo ejercicio
+      </Button>
 
       <div className="grid gap-3 sm:grid-cols-[1.4fr_1fr_1fr] sm:items-center">
         <label className="relative block">
@@ -249,33 +284,17 @@ export function ExerciseAdminClient({ initialExercises }: ExerciseAdminClientPro
           />
         </label>
 
-        <Select value={muscleFilter} onValueChange={(value) => handleFilterChange(setMuscleFilter, value)}>
-          <SelectTrigger className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
-            <SelectValue placeholder="Grupo muscular" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos los grupos</SelectItem>
-            {EXERCISE_MUSCLE_GROUPS.map((group) => (
-              <SelectItem key={group} value={group}>
-                {muscleLabel(group)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="hidden lg:contents">{filterSelects}</div>
 
-        <Select value={equipFilter} onValueChange={(value) => handleFilterChange(setEquipFilter, value)}>
-          <SelectTrigger className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
-            <SelectValue placeholder="Equipamiento" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todo el equipamiento</SelectItem>
-            {EXERCISE_EQUIPMENT_OPTIONS.map((option) => (
-              <SelectItem key={option} value={option}>
-                {equipmentLabel(option)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <FilterSheet
+          activeCount={activeFilterCount}
+          onClear={() => {
+            handleFilterChange(setMuscleFilter, "all");
+            handleFilterChange(setEquipFilter, "all");
+          }}
+        >
+          {filterSelects}
+        </FilterSheet>
       </div>
 
       <Card className="overflow-hidden">
@@ -577,16 +596,16 @@ function StatTile({
   label: string;
 }) {
   return (
-    <Card className="flex h-36 items-center gap-5 p-7">
-      <span className="grid size-16 shrink-0 place-items-center rounded-xl border border-[#5b2ab3] bg-[#281a45] text-[var(--accent-bright)]">
-        <Icon className="size-7" />
-      </span>
-      <div>
-        <p className="font-display text-4xl font-semibold tracking-[-0.05em] text-white">
+    <Card className="flex flex-col gap-2 p-3 sm:p-4">
+      <div className="flex items-center gap-3">
+        <span className="grid size-9 shrink-0 place-items-center rounded-xl border border-[#5b2ab3] bg-[#281a45] text-[var(--accent-bright)] sm:size-11">
+          <Icon className="size-4 sm:size-5" />
+        </span>
+        <p className="font-display text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
           {value}
         </p>
-        <p className="mt-1 text-base text-[var(--foreground-muted)]">{label}</p>
       </div>
+      <p className="truncate text-xs text-[var(--foreground-muted)] sm:text-sm">{label}</p>
     </Card>
   );
 }
