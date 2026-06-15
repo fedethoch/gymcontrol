@@ -117,7 +117,7 @@ export default async function Home() {
 
             <div className="mt-4">
               <p className="text-base font-medium text-white">Hoy toca:</p>
-              <h2 className="font-display mt-2 text-[2.65rem] font-semibold leading-[1] text-white sm:text-[3.8rem]">
+              <h2 className="font-display mt-2 text-3xl font-semibold leading-[1.05] text-white sm:text-[2.65rem] lg:text-[3.8rem]">
                 {activeRoutine && nextPendingDay ? (
                   <>
                     <span className="text-[#8b4dff]">Dia {nextPendingDay.dayOrder}</span>
@@ -143,7 +143,7 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="mt-5 flex flex-wrap items-center gap-3">
+          <div className="mt-5 grid gap-3 sm:flex sm:flex-wrap sm:items-center">
             <Button
               asChild
               size="lg"
@@ -239,7 +239,7 @@ function WeeklyProgressCard({
 }) {
   return (
     <Card className="flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(14,19,32,0.96)_0%,rgba(8,12,22,0.98)_100%)] shadow-[0_18px_48px_rgba(73,34,146,0.16)] transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]">
-      <CardContent className="min-h-[17rem] flex-1 p-6">
+      <CardContent className="min-h-[14rem] flex-1 p-4 sm:min-h-[17rem] sm:p-6">
         <MetricTitle icon={TrendingUp} title="Progreso semanal" />
 
         <div className="mt-6 grid gap-6 sm:grid-cols-[10rem_minmax(0,1fr)] sm:items-center">
@@ -281,11 +281,11 @@ function WeeklyProgressCard({
 function WeeklyStreakCard({ currentStreak }: { currentStreak: number }) {
   return (
     <Card className="relative flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(13,19,34,0.96)_0%,rgba(8,12,20,0.98)_100%)] shadow-[0_18px_48px_rgba(0,0,0,0.24)] transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]">
-      <CardContent className="relative min-h-[17rem] flex-1 p-6">
+      <CardContent className="relative min-h-[14rem] flex-1 p-4 sm:min-h-[17rem] sm:p-6">
         <MetricTitle icon={Flame} title="Racha semanal" />
 
-        <div className="mt-12 max-w-[13rem]">
-          <p className="font-display text-7xl font-semibold leading-none text-white">
+        <div className="mt-6 max-w-[13rem] sm:mt-12">
+          <p className="font-display text-5xl font-semibold leading-none text-white sm:text-7xl">
             {currentStreak}
             <span className="ml-2 align-baseline text-2xl font-semibold text-[#9b4dff]">
               dias
@@ -318,11 +318,11 @@ function ActiveRoutineCard({
 }) {
   return (
     <Card className="relative flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(13,19,34,0.96)_0%,rgba(8,12,20,0.98)_100%)] shadow-[0_18px_48px_rgba(0,0,0,0.24)] transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]">
-      <CardContent className="relative min-h-[17rem] flex-1 p-6">
+      <CardContent className="relative min-h-[14rem] flex-1 p-4 sm:min-h-[17rem] sm:p-6">
         <MetricTitle icon={CalendarDays} title="Rutina activa" />
 
-        <div className="mt-16 max-w-[16rem]">
-          <p className="font-display line-clamp-2 break-words text-4xl font-semibold leading-tight text-white">
+        <div className="mt-8 max-w-[16rem] sm:mt-16">
+          <p className="font-display line-clamp-2 break-words text-3xl font-semibold leading-tight text-white sm:text-4xl">
             {displayName}
           </p>
           <div className="mt-4 flex flex-wrap gap-2">

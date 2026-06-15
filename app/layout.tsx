@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 
 import { getOptionalAuthContext } from "@/app/lib/auth";
 
+import { MobileTabBar } from "./components/shared/MobileTabBar";
 import { PrimaryNavigation } from "./components/shared/PrimaryNavigation";
 import { AppShell } from "./components/ui/AppShell";
 import "./globals.css";
@@ -55,6 +56,10 @@ export default async function RootLayout({
           <div className="shell-workspace">
             <main className="shell-main">{children}</main>
           </div>
+          <MobileTabBar
+            isAuthenticated={Boolean(auth)}
+            role={auth?.profile.role ?? null}
+          />
         </AppShell>
         <Toaster richColors position="top-center" />
       </body>

@@ -1,6 +1,6 @@
 import "server-only";
 
-const OTP_EMAIL_COOLDOWN_MS = 60_000;
+const OTP_EMAIL_COOLDOWN_MS = 30_000;
 const OTP_WINDOW_MS = 15 * 60_000;
 const OTP_MAX_REQUESTS_PER_EMAIL = 5;
 const OTP_MAX_REQUESTS_PER_IP = 20;

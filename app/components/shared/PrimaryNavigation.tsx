@@ -112,7 +112,7 @@ type NavigationPanelProps = {
   onNavigate: () => void;
 };
 
-function NavigationPanel({
+export function NavigationPanel({
   pathname,
   collapsed,
   isAuthenticated,

@@ -20,8 +20,21 @@ import {
 import { toast } from "sonner";
 
 import { TrainingCalendarCard } from "@/app/components/shared/TrainingCalendarCard";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/app/components/ui/Accordion";
 import { Button } from "@/app/components/ui/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/Card";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+} from "@/app/components/ui/Drawer";
 import { Input } from "@/app/components/ui/Input";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
 import {
@@ -73,6 +86,7 @@ export function RegistroClient({
   const [draftItems, setDraftItems] = useState<DraftItem[]>([]);
   const [isSavingMeal, setIsSavingMeal] = useState(false);
   const [editingMealId, setEditingMealId] = useState<string | null>(null);
+  const [newMealOpen, setNewMealOpen] = useState(false);
 
   const totalKcal = meals.reduce((total, meal) => total + meal.kcal, 0);
   const totalMacros: Macros = meals.reduce<Macros>(
@@ -131,6 +145,7 @@ export function RegistroClient({
       setMeals(log.meals);
       setMealName("");
       setDraftItems([]);
+      setNewMealOpen(false);
       toast.success("Comida creada.");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "No se pudo crear la comida.");
@@ -177,88 +192,113 @@ export function RegistroClient({
     );
   }
 
+  const newMealBody = (
+    <div className="flex flex-1 flex-col gap-4">
+      <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+        Nombre de la comida
+        <Input
+          placeholder="Ej. Desayuno"
+          value={mealName}
+          onChange={(event) => setMealName(event.target.value)}
+        />
+      </label>
+
+      <FoodPickerRow foods={foods} onAdd={handleAddDraftItem} actionLabel="Agregar" />
+
+      <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-[var(--border)]">
+        <div className="grid grid-cols-[1fr_auto_auto_auto] gap-3 bg-[var(--card-alt)] px-3.5 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#7887a6]">
+          <span>Alimento</span>
+          <span className="text-right">Cantidad</span>
+          <span className="text-right">Calorías</span>
+          <span />
+        </div>
+        {draftItems.length === 0 ? (
+          <div className="flex flex-1 flex-col items-center justify-center gap-2 px-4 py-8 text-center">
+            <UtensilsCrossed className="size-6 text-[#3c4456]" />
+            <p className="text-sm text-[#7887a6]">Agregá alimentos a esta comida.</p>
+          </div>
+        ) : (
+          draftItems.map((item) => {
+            const food = foods.find((candidate) => candidate.id === item.foodId);
+
+            if (!food) {
+              return null;
+            }
+
+            const preview = previewItem(food, item.measure, item.quantity);
+
+            return (
+              <div
+                key={item.localId}
+                className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-3 border-t border-[var(--border)] px-3.5 py-2.5 text-sm"
+              >
+                <span className="truncate font-semibold text-white">{food.name}</span>
+                <span className="text-right text-[var(--foreground-muted)]">
+                  {item.measure === "unit" ? `${roundQuantity(item.quantity)} u` : `${item.quantity} g`}
+                </span>
+                <span className="text-right text-[var(--foreground-muted)]">{preview.kcal} kcal</span>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="justify-self-end"
+                  onClick={() => handleRemoveDraftItem(item.localId)}
+                >
+                  <Trash2 className="size-4" />
+                </Button>
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      <Button type="button" onClick={handleSaveMeal} disabled={isSavingMeal}>
+        {isSavingMeal ? <LoaderCircle className="size-4 animate-spin" /> : <Plus className="size-4" />}
+        Guardar comida
+      </Button>
+    </div>
+  );
+
+  const newMealIntro = (
+    <div className="flex items-center gap-3">
+      <span className="grid size-11 shrink-0 place-items-center rounded-xl border border-[var(--accent-soft-border)] bg-[var(--accent-soft-surface)] text-[var(--accent-bright)]">
+        <UtensilsCrossed className="size-5" />
+      </span>
+      <div>
+        <CardTitle>Nueva comida</CardTitle>
+        <p className="mt-0.5 text-sm text-[var(--foreground-muted)]">
+          Agregá los alimentos que consumiste y guardá tu comida.
+        </p>
+      </div>
+    </div>
+  );
+
   return (
     <div className="grid gap-6">
+      {/* Mobile: botón que abre el drawer "Nueva comida" */}
+      <Button type="button" className="lg:hidden" onClick={() => setNewMealOpen(true)}>
+        <Plus className="size-4" />
+        Nueva comida
+      </Button>
+
+      <Drawer open={newMealOpen} onOpenChange={setNewMealOpen}>
+        <DrawerContent className="lg:hidden">
+          <DrawerHeader>
+            <DrawerTitle className="sr-only">Nueva comida</DrawerTitle>
+            <DrawerDescription className="sr-only">
+              Agregá los alimentos que consumiste y guardá tu comida.
+            </DrawerDescription>
+            {newMealIntro}
+          </DrawerHeader>
+          <div className="px-4 pb-4">{newMealBody}</div>
+        </DrawerContent>
+      </Drawer>
+
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(300px,1fr)] lg:items-stretch">
-        {/* Nueva comida */}
-        <Card className="flex h-full flex-col">
-          <CardHeader>
-            <div className="flex items-center gap-3">
-              <span className="grid size-11 shrink-0 place-items-center rounded-xl border border-[var(--accent-soft-border)] bg-[var(--accent-soft-surface)] text-[var(--accent-bright)]">
-                <UtensilsCrossed className="size-5" />
-              </span>
-              <div>
-                <CardTitle>Nueva comida</CardTitle>
-                <p className="mt-0.5 text-sm text-[var(--foreground-muted)]">
-                  Agregá los alimentos que consumiste y guardá tu comida.
-                </p>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="flex flex-1 flex-col gap-4">
-            <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-              Nombre de la comida
-              <Input
-                placeholder="Ej. Desayuno"
-                value={mealName}
-                onChange={(event) => setMealName(event.target.value)}
-              />
-            </label>
-
-            <FoodPickerRow foods={foods} onAdd={handleAddDraftItem} actionLabel="Agregar" />
-
-            <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-[var(--border)]">
-              <div className="grid grid-cols-[1fr_auto_auto_auto] gap-3 bg-[var(--card-alt)] px-3.5 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#7887a6]">
-                <span>Alimento</span>
-                <span className="text-right">Cantidad</span>
-                <span className="text-right">Calorías</span>
-                <span />
-              </div>
-              {draftItems.length === 0 ? (
-                <div className="flex flex-1 flex-col items-center justify-center gap-2 px-4 py-8 text-center">
-                  <UtensilsCrossed className="size-6 text-[#3c4456]" />
-                  <p className="text-sm text-[#7887a6]">Agregá alimentos a esta comida.</p>
-                </div>
-              ) : (
-                draftItems.map((item) => {
-                  const food = foods.find((candidate) => candidate.id === item.foodId);
-
-                  if (!food) {
-                    return null;
-                  }
-
-                  const preview = previewItem(food, item.measure, item.quantity);
-
-                  return (
-                    <div
-                      key={item.localId}
-                      className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-3 border-t border-[var(--border)] px-3.5 py-2.5 text-sm"
-                    >
-                      <span className="truncate font-semibold text-white">{food.name}</span>
-                      <span className="text-right text-[var(--foreground-muted)]">
-                        {item.measure === "unit" ? `${roundQuantity(item.quantity)} u` : `${item.quantity} g`}
-                      </span>
-                      <span className="text-right text-[var(--foreground-muted)]">{preview.kcal} kcal</span>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="justify-self-end"
-                        onClick={() => handleRemoveDraftItem(item.localId)}
-                      >
-                        <Trash2 className="size-4" />
-                      </Button>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-
-            <Button type="button" onClick={handleSaveMeal} disabled={isSavingMeal}>
-              {isSavingMeal ? <LoaderCircle className="size-4 animate-spin" /> : <Plus className="size-4" />}
-              Guardar comida
-            </Button>
-          </CardContent>
+        {/* Nueva comida (desktop) */}
+        <Card className="hidden h-full flex-col lg:flex">
+          <CardHeader>{newMealIntro}</CardHeader>
+          <CardContent className="flex flex-1 flex-col">{newMealBody}</CardContent>
         </Card>
 
         {/* Resumen */}
@@ -507,6 +547,81 @@ function MealCard({
     }
   }
 
+  const itemsList = (
+    <div className="grid gap-2">
+      {meal.items.map((item) => {
+        const itemFood = foods.find((food) => food.id === item.foodId);
+        const itemGramsPerUnit =
+          itemFood?.gramsPerUnit ?? (itemFood?.measure === "unit" ? itemFood.servingG : null);
+        const canChooseUnit = itemGramsPerUnit != null;
+        const isEditingItem = editingItemId === item.id;
+
+        return (
+          <div
+            key={item.id}
+            className="flex flex-wrap items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--card)] px-3.5 py-3"
+          >
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-semibold text-white">{item.foodName}</p>
+              {!isEditingItem && (
+                <p className="text-xs text-[var(--foreground-muted)]">
+                  {item.measure === "unit" ? `${roundQuantity(item.quantity)} u` : `${item.grams} g`} · {item.kcal} kcal
+                </p>
+              )}
+            </div>
+            {isEditing && isEditingItem && (
+              <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+                {canChooseUnit && (
+                  <Select value={editMeasure} onValueChange={(value) => setEditMeasure(value as FoodMeasure)}>
+                    <SelectTrigger className="w-24 sm:w-28">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="g">Gramos</SelectItem>
+                      <SelectItem value="unit">Unidades</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+                <Input
+                  type="number"
+                  min={editMeasure === "unit" ? 0.5 : 1}
+                  step={editMeasure === "unit" ? 0.5 : 1}
+                  value={editQuantity}
+                  onChange={(event) => setEditQuantity(event.target.value)}
+                  className="w-16 sm:w-20"
+                />
+                <Button type="button" variant="outline" size="icon" onClick={() => handleSaveItem(item.id)} disabled={isSavingItem}>
+                  {isSavingItem ? <LoaderCircle className="size-4 animate-spin" /> : <Check className="size-4" />}
+                </Button>
+              </div>
+            )}
+            {isEditing && !isEditingItem && (
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handleStartEditItem(item.id, item.measure, item.quantity)}
+                >
+                  <Pencil className="size-4" />
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handleDelete(item.id)}
+                  disabled={deletingId === item.id}
+                >
+                  {deletingId === item.id ? <LoaderCircle className="size-4 animate-spin" /> : <Trash2 className="size-4" />}
+                </Button>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+
   return (
     <div className="flex h-full flex-col gap-3 rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-4">
       {/* Top: nombre + kcal */}
@@ -538,79 +653,17 @@ function MealCard({
       {/* Medio: alimentos con gramos */}
       {meal.items.length === 0 ? (
         <p className="text-sm text-[#7887a6]">Sin alimentos todavía.</p>
+      ) : isEditing ? (
+        itemsList
       ) : (
-        <div className="grid gap-2">
-          {meal.items.map((item) => {
-            const itemFood = foods.find((food) => food.id === item.foodId);
-            const itemGramsPerUnit =
-              itemFood?.gramsPerUnit ?? (itemFood?.measure === "unit" ? itemFood.servingG : null);
-            const canChooseUnit = itemGramsPerUnit != null;
-            const isEditingItem = editingItemId === item.id;
-
-            return (
-              <div
-                key={item.id}
-                className="flex flex-wrap items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--card)] px-3.5 py-3"
-              >
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-white">{item.foodName}</p>
-                  {!isEditingItem && (
-                    <p className="text-xs text-[var(--foreground-muted)]">
-                      {item.measure === "unit" ? `${roundQuantity(item.quantity)} u` : `${item.grams} g`} · {item.kcal} kcal
-                    </p>
-                  )}
-                </div>
-                {isEditing && isEditingItem && (
-                  <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
-                    {canChooseUnit && (
-                      <Select value={editMeasure} onValueChange={(value) => setEditMeasure(value as FoodMeasure)}>
-                        <SelectTrigger className="w-24 sm:w-28">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="g">Gramos</SelectItem>
-                          <SelectItem value="unit">Unidades</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    )}
-                    <Input
-                      type="number"
-                      min={editMeasure === "unit" ? 0.5 : 1}
-                      step={editMeasure === "unit" ? 0.5 : 1}
-                      value={editQuantity}
-                      onChange={(event) => setEditQuantity(event.target.value)}
-                      className="w-16 sm:w-20"
-                    />
-                    <Button type="button" variant="outline" size="icon" onClick={() => handleSaveItem(item.id)} disabled={isSavingItem}>
-                      {isSavingItem ? <LoaderCircle className="size-4 animate-spin" /> : <Check className="size-4" />}
-                    </Button>
-                  </div>
-                )}
-                {isEditing && !isEditingItem && (
-                  <div className="flex items-center gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      onClick={() => handleStartEditItem(item.id, item.measure, item.quantity)}
-                    >
-                      <Pencil className="size-4" />
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      onClick={() => handleDelete(item.id)}
-                      disabled={deletingId === item.id}
-                    >
-                      {deletingId === item.id ? <LoaderCircle className="size-4 animate-spin" /> : <Trash2 className="size-4" />}
-                    </Button>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+        <Accordion type="single" collapsible className="-my-1">
+          <AccordionItem value="items" className="border-none">
+            <AccordionTrigger className="py-1.5 text-xs font-semibold text-[#9aa3b8] hover:text-white">
+              {meal.items.length} alimento{meal.items.length === 1 ? "" : "s"}
+            </AccordionTrigger>
+            <AccordionContent>{itemsList}</AccordionContent>
+          </AccordionItem>
+        </Accordion>
       )}
 
       {isEditing && <FoodPickerRow foods={foods} onAdd={handleAddItem} actionLabel="Agregar" />}

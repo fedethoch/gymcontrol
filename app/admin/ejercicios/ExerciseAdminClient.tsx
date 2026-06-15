@@ -294,6 +294,8 @@ export function ExerciseAdminClient({ initialExercises }: ExerciseAdminClientPro
               </div>
             </div>
           ) : (
+            <>
+            <div className="hidden md:block">
             <Table>
               <TableHeader>
                 <TableRow className="hover:bg-transparent">
@@ -392,6 +394,83 @@ export function ExerciseAdminClient({ initialExercises }: ExerciseAdminClientPro
                 ))}
               </TableBody>
             </Table>
+            </div>
+
+            <div className="grid gap-3 p-4 md:hidden">
+              {pageData.map((exercise) => (
+                <div
+                  key={exercise.id}
+                  className="min-w-0 rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-4"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedExercise(exercise)}
+                      className="flex min-w-0 items-center gap-3 text-left"
+                    >
+                      <span
+                        className="grid size-10 shrink-0 place-items-center rounded-xl border border-[var(--border)]"
+                        style={{
+                          background: exercise.muscleGroup
+                            ? MUSCLE_GRADIENTS[exercise.muscleGroup]
+                            : MUSCLE_GRADIENTS.Core,
+                        }}
+                      >
+                        <Dumbbell className="size-4 text-white/20" />
+                      </span>
+                      <div className="min-w-0">
+                        <p className="truncate font-medium text-white underline-offset-4 hover:underline">
+                          {exercise.name}
+                        </p>
+                        <p className="truncate text-xs text-[var(--foreground-muted)]">
+                          {exercise.description}
+                        </p>
+                      </div>
+                    </button>
+                    <div className="flex shrink-0 gap-1">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="size-11"
+                        title="Editar"
+                        onClick={() => {
+                          setFormKey((value) => value + 1);
+                          setDrawer({ mode: "edit", exercise });
+                        }}
+                      >
+                        <PencilLine className="size-4" />
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="size-11 hover:text-red-400"
+                        title="Eliminar"
+                        onClick={() => setDeleteTarget(exercise)}
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    {exercise.muscleGroup ? (
+                      <span
+                        className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${MUSCLE_BADGE_STYLES[exercise.muscleGroup] ?? MUSCLE_BADGE_STYLES.Core}`}
+                      >
+                        {muscleLabel(exercise.muscleGroup)}
+                      </span>
+                    ) : null}
+                    {exercise.equipment ? (
+                      <Badge variant="neutral">{equipmentLabel(exercise.equipment)}</Badge>
+                    ) : null}
+                    <span className="text-xs text-[#7d8697]">{exercise.createdAtLabel}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            </>
           )}
         </CardContent>
       </Card>

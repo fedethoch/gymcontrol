@@ -7,6 +7,7 @@ import {
   ExerciseDetailModal,
   type ExerciseDetail,
 } from "@/app/components/shared/ExerciseDetailModal";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/Tabs";
 import { motion, staggerContainer } from "@/app/components/ui/motion";
 
 const fadeRow = { hidden: { opacity: 0 }, visible: { opacity: 1 } };
@@ -28,9 +29,80 @@ type RoutineDetailClientProps = {
 export function RoutineDetailClient({ routine }: RoutineDetailClientProps) {
   const [selectedExercise, setSelectedExercise] = useState<ExerciseDetail | null>(null);
 
+  function renderDayCards(day: RoutineDay) {
+    return (
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-40px" }}
+        className="grid gap-3"
+      >
+        {day.items.map((item) => (
+          <motion.div
+            key={item.id}
+            variants={fadeRow}
+            className="rounded-2xl border border-[rgba(148,163,184,0.13)] bg-[rgba(255,255,255,0.02)] p-4"
+          >
+            <button
+              type="button"
+              className="font-semibold text-left text-white transition-colors hover:text-[var(--accent-bright)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-bright)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0f1a]"
+              onClick={() =>
+                setSelectedExercise({
+                  ...item.exercise,
+                  series: item.series,
+                  repsTarget: item.repetitions,
+                  rir: item.rir,
+                  rest: item.rest,
+                })
+              }
+            >
+              {item.exercise.name}
+            </button>
+            <div className="mt-3 grid grid-cols-4 gap-2 text-center text-xs">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.12em] text-[#7d8697]">Series</p>
+                <p className="mt-1 font-medium text-white">{item.series}</p>
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.12em] text-[#7d8697]">Reps</p>
+                <p className="mt-1 font-medium text-white">{item.repetitions}</p>
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.12em] text-[#7d8697]">RIR</p>
+                <p className="mt-1 font-medium text-white">{item.rir}</p>
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.12em] text-[#7d8697]">Descanso</p>
+                <p className="mt-1 font-medium text-white">{item.rest}</p>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
+    );
+  }
+
   return (
     <>
-      <section className="grid gap-5">
+      {/* Mobile/tablet: tabs por dia */}
+      <Tabs defaultValue={routine.days[0]?.id} className="lg:hidden">
+        <TabsList className="w-full justify-start overflow-x-auto">
+          {routine.days.map((day) => (
+            <TabsTrigger key={day.id} value={day.id} className="shrink-0">
+              {day.dayName || `Dia ${day.dayOrder}`}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        {routine.days.map((day) => (
+          <TabsContent key={day.id} value={day.id}>
+            {renderDayCards(day)}
+          </TabsContent>
+        ))}
+      </Tabs>
+
+      {/* Desktop: dias apilados con tabla */}
+      <section className="hidden gap-5 lg:grid">
         {routine.days.map((day) => (
           <div
             key={day.id}
@@ -43,7 +115,6 @@ export function RoutineDetailClient({ routine }: RoutineDetailClientProps) {
               </h3>
             </div>
 
-            <div className="hidden md:block">
             <Table className="min-w-[44rem]">
               <TableHeader>
                 <TableRow className="hover:bg-transparent">
@@ -92,57 +163,6 @@ export function RoutineDetailClient({ routine }: RoutineDetailClientProps) {
                 ))}
               </motion.tbody>
             </Table>
-            </div>
-
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              className="grid gap-3 md:hidden"
-            >
-              {day.items.map((item) => (
-                <motion.div
-                  key={item.id}
-                  variants={fadeRow}
-                  className="rounded-2xl border border-[rgba(148,163,184,0.13)] bg-[rgba(255,255,255,0.02)] p-4"
-                >
-                  <button
-                    type="button"
-                    className="font-semibold text-left text-white transition-colors hover:text-[var(--accent-bright)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-bright)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0f1a]"
-                    onClick={() =>
-                      setSelectedExercise({
-                        ...item.exercise,
-                        series: item.series,
-                        repsTarget: item.repetitions,
-                        rir: item.rir,
-                        rest: item.rest,
-                      })
-                    }
-                  >
-                    {item.exercise.name}
-                  </button>
-                  <div className="mt-3 grid grid-cols-4 gap-2 text-center text-xs">
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.12em] text-[#7d8697]">Series</p>
-                      <p className="mt-1 font-medium text-white">{item.series}</p>
-                    </div>
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.12em] text-[#7d8697]">Reps</p>
-                      <p className="mt-1 font-medium text-white">{item.repetitions}</p>
-                    </div>
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.12em] text-[#7d8697]">RIR</p>
-                      <p className="mt-1 font-medium text-white">{item.rir}</p>
-                    </div>
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.12em] text-[#7d8697]">Descanso</p>
-                      <p className="mt-1 font-medium text-white">{item.rest}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
           </div>
         ))}
       </section>

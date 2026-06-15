@@ -242,7 +242,7 @@ function DashboardRoutineCard({
 
   return (
     <article className="grid overflow-hidden rounded-2xl border border-[#20283a] bg-[linear-gradient(145deg,#0d1322_0%,#080d17_100%)] shadow-[0_18px_42px_rgba(0,0,0,0.22)] lg:grid-cols-[12.5rem_minmax(0,1fr)] 2xl:grid-cols-[12.5rem_minmax(0,1fr)_11.5rem]">
-      <div className="relative min-h-40 overflow-hidden border-b border-[#20283a] bg-[#111827] lg:border-b-0 lg:border-r">
+      <div className="relative min-h-28 overflow-hidden border-b border-[#20283a] bg-[#111827] sm:min-h-40 lg:border-b-0 lg:border-r">
         {routine.coverImageUrl ? (
           <Image
             alt={routine.displayName}
@@ -281,7 +281,7 @@ function DashboardRoutineCard({
         </p>
       </div>
 
-      <div className="grid gap-2 border-t border-[#20283a] p-4 sm:grid-cols-[1fr_1fr_auto] lg:col-span-2 2xl:col-span-1 2xl:border-l 2xl:border-t-0 2xl:grid-cols-1 2xl:px-6">
+      <div className="grid grid-cols-2 gap-2 border-t border-[#20283a] p-4 sm:grid-cols-[1fr_1fr_auto] lg:col-span-2 2xl:col-span-1 2xl:border-l 2xl:border-t-0 2xl:grid-cols-1 2xl:px-6">
         <Button asChild className="h-10 rounded-lg">
           <Link href={`/catalogo/rutinas/${routine.routineTemplateId}`}>
             {isActive ? <Star className="size-4" /> : null}
@@ -309,7 +309,7 @@ function DashboardRoutineCard({
           }}
         >
           <DropdownMenuTrigger asChild>
-            <Button type="button" variant="outline" className="h-10 rounded-lg">
+            <Button type="button" variant="outline" className="col-span-2 h-10 rounded-lg sm:col-span-1">
               <MoreHorizontal className="size-5" />
               <span className="sr-only">Mas acciones</span>
             </Button>

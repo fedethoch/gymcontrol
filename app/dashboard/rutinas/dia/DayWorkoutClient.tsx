@@ -267,10 +267,10 @@ export function DayWorkoutClient({
                   </Badge>
                 ) : null}
               </div>
-              <h1 className="mt-2 font-display text-4xl font-semibold leading-none tracking-normal text-white sm:text-[2.65rem]">
+              <h1 className="mt-2 font-display text-2xl font-semibold leading-none tracking-normal text-white sm:text-3xl lg:text-[2.65rem]">
                 {`Dia ${dayOrder} - ${dayName}`}
               </h1>
-              <p className="mt-2 max-w-3xl text-base leading-6 text-[#d3d8e4]">
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-[#d3d8e4] sm:text-base">
                 Completa tu entrenamiento de hoy y registra tu rendimiento
               </p>
             </div>
@@ -278,7 +278,7 @@ export function DayWorkoutClient({
         </header>
 
         <section className="grid gap-3 rounded-2xl border border-[#172236] bg-[linear-gradient(180deg,rgba(9,18,31,0.94),rgba(6,13,23,0.98))] px-5 py-3 shadow-[0_24px_70px_rgba(0,0,0,0.28)] xl:px-8 xl:py-4">
-          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[1.35fr_0.8fr_0.95fr_1.25fr] xl:gap-0">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-2 xl:grid-cols-[1.35fr_0.8fr_0.95fr_1.25fr] xl:gap-0">
             <SummaryMetric
               label="Rutina activa"
               labelClassName="text-base leading-6"

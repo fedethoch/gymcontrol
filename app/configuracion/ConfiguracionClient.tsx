@@ -4,6 +4,12 @@ import { useMemo, useState } from "react";
 import { Beef, Droplet, Flame, LoaderCircle, LogOut, TriangleAlert, Wheat } from "lucide-react";
 import { toast } from "sonner";
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/app/components/ui/Accordion";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
 import { BodyFatFigure } from "@/app/components/shared/BodyFatFigure";
 import { Button } from "@/app/components/ui/Button";
@@ -121,135 +127,198 @@ export function ConfiguracionClient({
     }
   }
 
+  const accountBody = (
+    <div className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+      <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+        Nombre para mostrar
+        <Input
+          placeholder="Ej. Fede"
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
+          maxLength={40}
+        />
+      </label>
+      <Button type="button" onClick={handleSaveName} disabled={isSavingName}>
+        {isSavingName ? <LoaderCircle className="size-4 animate-spin" /> : null}
+        Guardar nombre
+      </Button>
+    </div>
+  );
+
+  const basicsBody = (
+    <div className="grid gap-4">
+      <div className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+        Género
+        <div className="grid grid-cols-2 gap-1.5">
+          {GENDERS.map((value) => (
+            <ToggleOption
+              key={value}
+              active={gender === value}
+              label={value === "male" ? "Hombre" : "Mujer"}
+              onClick={() => setGender(value)}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+        <label className="grid min-w-0 gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+          Edad (años)
+          <Input type="number" min={10} max={100} value={age} onChange={(e) => setAge(e.target.value)} />
+        </label>
+        <label className="grid min-w-0 gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+          Altura (cm)
+          <Input type="number" min={100} max={250} value={heightCm} onChange={(e) => setHeightCm(e.target.value)} />
+        </label>
+        <label className="grid min-w-0 gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+          Peso (kg)
+          <Input type="number" min={30} max={250} value={weightKg} onChange={(e) => setWeightKg(e.target.value)} />
+        </label>
+      </div>
+    </div>
+  );
+
+  const bodyFatDescription = (
+    <p className="text-sm text-[var(--foreground-muted)]">
+      Si conocés tu porcentaje aproximado, elegí el rango que más se parezca al tuyo.
+      Mejora la precisión del cálculo de calorías.
+    </p>
+  );
+
+  const bodyFatBody = (
+    <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_10rem]">
+      <div className="grid gap-2.5 sm:grid-cols-2">
+        <ToggleOption
+          active={bodyFatPct === null}
+          label="No lo sé"
+          description="Usamos tu peso, altura, edad y género."
+          onClick={() => setBodyFatPct(null)}
+        />
+        {BODY_FAT_REFERENCES.map((reference) => (
+          <ToggleOption
+            key={reference.range}
+            active={bodyFatPct === reference.value}
+            label={`${reference.label} · ${reference.range}`}
+            description={reference.description}
+            onClick={() => setBodyFatPct(reference.value)}
+          />
+        ))}
+      </div>
+      <BodyFatFigure gender={gender} value={bodyFatPct} className="justify-self-center" />
+    </div>
+  );
+
+  const activityBody = (
+    <div className="grid gap-2.5 sm:grid-cols-2">
+      {ACTIVITY_LEVELS.map((value) => (
+        <ToggleOption
+          key={value}
+          active={activityLevel === value}
+          label={ACTIVITY_LEVEL_INFO[value].label}
+          description={ACTIVITY_LEVEL_INFO[value].description}
+          onClick={() => setActivityLevel(value)}
+        />
+      ))}
+    </div>
+  );
+
+  const goalBody = (
+    <div className="grid gap-2.5 sm:grid-cols-3">
+      {GOALS.map((value) => (
+        <ToggleOption
+          key={value}
+          active={goal === value}
+          label={GOAL_INFO[value].label}
+          description={GOAL_INFO[value].description}
+          onClick={() => setGoal(value)}
+        />
+      ))}
+    </div>
+  );
+
+  const saveButton = (
+    <Button type="button" size="lg" className="justify-center" onClick={handleSaveProfile} disabled={isPending}>
+      {isPending ? <LoaderCircle className="size-4 animate-spin" /> : null}
+      Guardar perfil
+    </Button>
+  );
+
   return (
     <div className="grid gap-5">
-      <div className="grid gap-5">
+      {/* Mobile: secciones del perfil agrupadas en accordion */}
+      <Accordion
+        type="multiple"
+        defaultValue={["cuenta", "datos", "grasa", "actividad", "objetivo"]}
+        className="grid gap-3 lg:hidden"
+      >
+        <AccordionItem value="cuenta" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
+          <AccordionTrigger>Tu cuenta</AccordionTrigger>
+          <AccordionContent>{accountBody}</AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="datos" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
+          <AccordionTrigger>Datos básicos</AccordionTrigger>
+          <AccordionContent>{basicsBody}</AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="grasa" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
+          <AccordionTrigger>Porcentaje de grasa corporal</AccordionTrigger>
+          <AccordionContent>
+            <div className="grid gap-3">
+              {bodyFatDescription}
+              {bodyFatBody}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="actividad" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
+          <AccordionTrigger>Nivel de actividad física</AccordionTrigger>
+          <AccordionContent>{activityBody}</AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="objetivo" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
+          <AccordionTrigger>Objetivo</AccordionTrigger>
+          <AccordionContent>{goalBody}</AccordionContent>
+        </AccordionItem>
+      </Accordion>
+
+      {/* Desktop: cards apiladas como antes */}
+      <div className="hidden gap-5 lg:grid">
         <Card>
           <CardHeader>
             <CardTitle>Tu cuenta</CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
-            <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-              Nombre para mostrar
-              <Input
-                placeholder="Ej. Fede"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-                maxLength={40}
-              />
-            </label>
-            <Button type="button" onClick={handleSaveName} disabled={isSavingName}>
-              {isSavingName ? <LoaderCircle className="size-4 animate-spin" /> : null}
-              Guardar nombre
-            </Button>
-          </CardContent>
+          <CardContent>{accountBody}</CardContent>
         </Card>
 
         <Card>
           <CardHeader>
             <CardTitle>Datos básicos</CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-4">
-            <div className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-              Género
-              <div className="grid grid-cols-2 gap-1.5">
-                {GENDERS.map((value) => (
-                  <ToggleOption
-                    key={value}
-                    active={gender === value}
-                    label={value === "male" ? "Hombre" : "Mujer"}
-                    onClick={() => setGender(value)}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2 sm:gap-3">
-              <label className="grid min-w-0 gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-                Edad (años)
-                <Input type="number" min={10} max={100} value={age} onChange={(e) => setAge(e.target.value)} />
-              </label>
-              <label className="grid min-w-0 gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-                Altura (cm)
-                <Input type="number" min={100} max={250} value={heightCm} onChange={(e) => setHeightCm(e.target.value)} />
-              </label>
-              <label className="grid min-w-0 gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-                Peso (kg)
-                <Input type="number" min={30} max={250} value={weightKg} onChange={(e) => setWeightKg(e.target.value)} />
-              </label>
-            </div>
-          </CardContent>
+          <CardContent>{basicsBody}</CardContent>
         </Card>
 
         <Card>
           <CardHeader>
             <CardTitle>Porcentaje de grasa corporal (opcional)</CardTitle>
-            <p className="text-sm text-[var(--foreground-muted)]">
-              Si conocés tu porcentaje aproximado, elegí el rango que más se parezca al tuyo.
-              Mejora la precisión del cálculo de calorías.
-            </p>
+            {bodyFatDescription}
           </CardHeader>
-          <CardContent className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_10rem]">
-            <div className="grid gap-2.5 sm:grid-cols-2">
-              <ToggleOption
-                active={bodyFatPct === null}
-                label="No lo sé"
-                description="Usamos tu peso, altura, edad y género."
-                onClick={() => setBodyFatPct(null)}
-              />
-              {BODY_FAT_REFERENCES.map((reference) => (
-                <ToggleOption
-                  key={reference.range}
-                  active={bodyFatPct === reference.value}
-                  label={`${reference.label} · ${reference.range}`}
-                  description={reference.description}
-                  onClick={() => setBodyFatPct(reference.value)}
-                />
-              ))}
-            </div>
-            <BodyFatFigure gender={gender} value={bodyFatPct} className="justify-self-center" />
-          </CardContent>
+          <CardContent>{bodyFatBody}</CardContent>
         </Card>
 
         <Card>
           <CardHeader>
             <CardTitle>Nivel de actividad física</CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-2.5 sm:grid-cols-2">
-            {ACTIVITY_LEVELS.map((value) => (
-              <ToggleOption
-                key={value}
-                active={activityLevel === value}
-                label={ACTIVITY_LEVEL_INFO[value].label}
-                description={ACTIVITY_LEVEL_INFO[value].description}
-                onClick={() => setActivityLevel(value)}
-              />
-            ))}
-          </CardContent>
+          <CardContent>{activityBody}</CardContent>
         </Card>
 
         <Card>
           <CardHeader>
             <CardTitle>Objetivo</CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-2.5 sm:grid-cols-3">
-            {GOALS.map((value) => (
-              <ToggleOption
-                key={value}
-                active={goal === value}
-                label={GOAL_INFO[value].label}
-                description={GOAL_INFO[value].description}
-                onClick={() => setGoal(value)}
-              />
-            ))}
-          </CardContent>
+          <CardContent>{goalBody}</CardContent>
         </Card>
-
-        <Button type="button" size="lg" className="justify-center" onClick={handleSaveProfile} disabled={isPending}>
-          {isPending ? <LoaderCircle className="size-4 animate-spin" /> : null}
-          Guardar perfil
-        </Button>
       </div>
+
+      <div className="lg:hidden">{saveButton}</div>
+      <div className="hidden lg:block">{saveButton}</div>
 
       <Card>
         <CardHeader>
