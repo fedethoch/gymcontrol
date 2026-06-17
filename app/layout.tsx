@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, Sora } from "next/font/google";
 
 import { Toaster } from "sonner";
@@ -12,6 +12,7 @@ import {
 import { MobileTabBar } from "./components/shared/MobileTabBar";
 import { PrimaryNavigation } from "./components/shared/PrimaryNavigation";
 import { AppShell } from "./components/ui/AppShell";
+import { PwaRuntime } from "./components/pwa/PwaRuntime";
 import "./globals.css";
 
 const displayFont = Sora({
@@ -33,16 +34,34 @@ const monoFont = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  applicationName: "GymControl",
   title: "GymControl",
   description: "Shell base del MVP de GymControl para usuario y admin",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "GymControl",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   icons: {
     icon: [
-      { url: "/logo/logo.png", type: "image/png" },
+      { url: "/logo/logo-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/logo/logo-512.png", sizes: "512x512", type: "image/png" },
       { url: "/favicon.ico", sizes: "any" },
     ],
     shortcut: "/favicon.ico",
-    apple: "/logo/logo.png",
+    apple: "/logo/apple-touch-icon.png",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#05070b",
 };
 
 export const dynamic = "force-dynamic";
@@ -80,6 +99,7 @@ export default async function RootLayout({
             role={auth?.profile.role ?? null}
           />
         </AppShell>
+        <PwaRuntime />
         <Toaster richColors position="top-center" />
       </body>
     </html>
