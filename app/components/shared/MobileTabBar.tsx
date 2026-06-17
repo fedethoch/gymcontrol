@@ -63,9 +63,9 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
   return (
     <nav
       aria-label="Navegación inferior"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-[#171d31] bg-[linear-gradient(180deg,#0a0d16_0%,#05070d_100%)] pb-[env(safe-area-inset-bottom)] lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-[#171d31] bg-[linear-gradient(180deg,#0a0d16_0%,#05070d_100%)] pb-[max(env(safe-area-inset-bottom),0.35rem)] lg:hidden"
     >
-      <div className="grid min-h-[4rem] grid-cols-5">
+      <div className="grid min-h-[3.25rem] grid-cols-5">
         {tabs.map((tab) => {
           const active = resolveShellRouteMeta(pathname).href === tab.href;
           const Icon = tab.icon;
@@ -75,11 +75,11 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
               key={tab.href}
               href={tab.href}
               className={cn(
-                "flex flex-col items-center justify-center gap-1 px-1 py-2 text-[11px] font-semibold leading-none transition-colors",
+                "flex flex-col items-center justify-center gap-0.5 px-1 py-1.5 text-[10px] font-semibold leading-none transition-colors",
                 active ? "text-[var(--accent-bright)]" : "text-[#8a93ad] hover:text-white",
               )}
             >
-              <Icon className="size-5" />
+              <Icon className="size-[1.125rem]" />
               {tab.label}
             </Link>
           );
@@ -89,9 +89,9 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
           <SheetTrigger asChild>
             <button
               type="button"
-              className="flex flex-col items-center justify-center gap-1 px-1 py-2 text-[11px] font-semibold leading-none text-[#8a93ad] transition-colors hover:text-white"
+              className="flex flex-col items-center justify-center gap-0.5 px-1 py-1.5 text-[10px] font-semibold leading-none text-[#8a93ad] transition-colors hover:text-white"
             >
-              <Menu className="size-5" />
+              <Menu className="size-[1.125rem]" />
               Más
             </button>
           </SheetTrigger>
