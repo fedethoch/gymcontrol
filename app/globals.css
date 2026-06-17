@@ -116,14 +116,14 @@ a {
 }
 
 .pwa-standalone .mobile-tab-bar {
-  bottom: 0;
-  padding-bottom: env(safe-area-inset-bottom);
+  bottom: calc(env(safe-area-inset-bottom) * -1);
+  padding-bottom: 0;
 }
 
 @media (display-mode: standalone) {
   .mobile-tab-bar {
-    bottom: 0;
-    padding-bottom: env(safe-area-inset-bottom);
+    bottom: calc(env(safe-area-inset-bottom) * -1);
+    padding-bottom: 0;
   }
 }
 
@@ -139,7 +139,7 @@ a {
   min-height: 100%;
   padding: 1rem;
   padding-top: calc(4.75rem + env(safe-area-inset-top));
-  padding-bottom: 1rem;
+  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
 }
 
 .dashboard-page-frame {
