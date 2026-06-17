@@ -116,7 +116,7 @@ a {
 }
 
 .pwa-standalone .mobile-tab-bar {
-  height: 3.5rem;
+  height: 2.5rem;
   padding-bottom: 0;
 }
 
@@ -131,7 +131,7 @@ a {
   gap: 0.125rem;
   min-height: 100%;
   padding-top: 0.5rem;
-  padding-bottom: 0.125rem;
+  padding-bottom: 0;
   font-size: 0.5rem;
 }
 
@@ -141,12 +141,12 @@ a {
 }
 
 .pwa-standalone .page-frame {
-  padding-bottom: 3.75rem;
+  padding-bottom: 2.75rem;
 }
 
 @media (display-mode: standalone) {
   .mobile-tab-bar {
-    height: 3.5rem;
+    height: 2.5rem;
     padding-bottom: 0;
   }
 
@@ -161,7 +161,7 @@ a {
     gap: 0.125rem;
     min-height: 100%;
     padding-top: 0.5rem;
-    padding-bottom: 0.125rem;
+    padding-bottom: 0;
     font-size: 0.5rem;
   }
 
@@ -171,7 +171,7 @@ a {
   }
 
   .page-frame {
-    padding-bottom: 3.75rem;
+    padding-bottom: 2.75rem;
   }
 }
 
