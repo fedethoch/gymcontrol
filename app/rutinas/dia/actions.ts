@@ -109,7 +109,7 @@ function parseSeriesValues(
 }
 
 function revalidateWorkoutPaths() {
-  revalidatePath("/dashboard");
-  revalidatePath("/dashboard/rutinas");
-  revalidatePath("/dashboard/rutinas/dia");
+  revalidatePath("/");
+  revalidatePath("/rutinas");
+  revalidatePath("/rutinas/dia");
 }

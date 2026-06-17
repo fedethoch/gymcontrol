@@ -245,7 +245,7 @@ export default async function CatalogRoutineDetailPage({
                     variant="outline"
                     className="h-11 rounded-lg border-[rgba(148,163,184,0.25)] bg-transparent px-5 text-base"
                   >
-                    <Link href="/dashboard/rutinas">
+          <Link href="/rutinas">
                       <FolderOpen className="size-5" />
                       Ir a mis rutinas
                     </Link>

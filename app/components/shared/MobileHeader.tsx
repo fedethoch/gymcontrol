@@ -77,7 +77,7 @@ type MobileHeaderProps = {
 function resolveMobileArea(pathname: string) {
   const currentRoute = resolveShellRouteMeta(pathname);
 
-  if (pathname.startsWith("/dashboard") || pathname.startsWith("/catalogo")) {
+  if (pathname.startsWith("/rutinas") || pathname.startsWith("/catalogo")) {
     return "Entrenamiento";
   }
 

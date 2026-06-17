@@ -40,7 +40,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const auth = await getOptionalAuthContext();
 
   if (auth) {
-    redirect(auth.profile.role === "admin" ? "/admin" : "/dashboard");
+    redirect(auth.profile.role === "admin" ? "/admin" : "/");
   }
 
   const params = await searchParams;

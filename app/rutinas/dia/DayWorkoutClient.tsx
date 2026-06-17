@@ -13,7 +13,7 @@ import { ArrowLeft, Check, ChevronDown, ChevronRight, Clock3, Dumbbell, Trending
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 
-import { autosaveWorkoutSessionItemAction } from "@/app/dashboard/rutinas/dia/actions";
+import { autosaveWorkoutSessionItemAction } from "@/app/rutinas/dia/actions";
 import {
   ExerciseDetailModal,
   type ExerciseDetail,
@@ -247,7 +247,7 @@ export function DayWorkoutClient({
               size="icon"
               className="mt-2 size-11 shrink-0 rounded-full border-[#253149] bg-[#07101b]/86 text-[#d8e0f1] hover:border-[#9d5cff] hover:bg-[#0b1524]"
             >
-              <Link href="/dashboard/rutinas">
+              <Link href="/rutinas">
                 <ArrowLeft className="size-5" />
                 <span className="sr-only">Volver a mis rutinas</span>
               </Link>

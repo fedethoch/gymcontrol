@@ -120,7 +120,7 @@ export async function requireAdmin() {
   const auth = await requireUser();
 
   if (auth.profile.role !== "admin") {
-    redirect("/dashboard?reason=admin-required");
+    redirect("/");
   }
 
   return auth;

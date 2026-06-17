@@ -6,7 +6,6 @@ import {
   ClipboardList,
   Dumbbell,
   Home,
-  LayoutDashboard,
   LogIn,
   Salad,
   Settings,
@@ -41,15 +40,7 @@ export const shellNavigationGroups: NavigationGroup[] = [
         icon: BookOpen,
       },
       {
-        href: "/dashboard",
-        label: "Mis rutinas",
-        eyebrow: "Dashboard",
-        description: "Consulta tus rutinas guardadas y elige la activa.",
-        section: "Usuario",
-        icon: LayoutDashboard,
-      },
-      {
-        href: "/dashboard/rutinas",
+        href: "/rutinas",
         label: "Semana activa",
         eyebrow: "Rutina activa",
         description: "Abre la rutina semanal del entrenamiento actual.",
@@ -92,7 +83,7 @@ export const shellNavigationGroups: NavigationGroup[] = [
     items: [
       {
         href: "/admin",
-        label: "Dashboard Admin",
+        label: "Panel Admin",
         eyebrow: "Admin",
         description: "Gestiona rutinas y ejercicios sin salir del shell común.",
         section: "Admin",
@@ -160,8 +151,8 @@ const shellRouteMetas: ShellRouteMeta[] = [
   {
     href: "/",
     label: "Inicio",
-    eyebrow: "Shell base",
-    description: "Base visual compartida para el MVP de GymControl.",
+    eyebrow: "Inicio",
+    description: "Consulta tus rutinas guardadas y elige la activa.",
     section: "Base",
     icon: Home,
   },

@@ -27,8 +27,8 @@ export async function saveRoutineFromCatalogAction(formData: FormData) {
       customName,
     });
 
-    revalidatePath("/dashboard");
-    revalidatePath("/dashboard/rutinas");
+  revalidatePath("/");
+  revalidatePath("/rutinas");
     revalidatePath(`/catalogo/rutinas/${routineTemplateId}`);
 
     destination = `/catalogo/rutinas/${routineTemplateId}?status=${result.status}&savedRoutineId=${result.routine.id}`;
@@ -57,8 +57,8 @@ export async function activateRoutineFromCatalogAction(formData: FormData) {
     });
 
     if (result) {
-      revalidatePath("/dashboard");
-      revalidatePath("/dashboard/rutinas");
+  revalidatePath("/");
+  revalidatePath("/rutinas");
       revalidatePath(`/catalogo/rutinas/${routineTemplateId}`);
 
       const status = result.status === "activated" ? "active" : "inactive";

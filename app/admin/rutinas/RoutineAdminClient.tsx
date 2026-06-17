@@ -34,7 +34,6 @@ import {
   DialogTitle,
 } from "@/app/components/ui/Dialog";
 import { Input } from "@/app/components/ui/Input";
-import { SectionEyebrow } from "@/app/components/ui/SectionEyebrow";
 import {
   Select,
   SelectContent,
@@ -221,13 +220,9 @@ export function RoutineAdminClient({
   return (
     <section className="page-frame dashboard-page-frame">
       <header>
-        <SectionEyebrow>Gestion / Rutinas</SectionEyebrow>
-        <h1 className="font-display mt-2 text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
+        <h1 className="font-display text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
           Rutinas
         </h1>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--foreground-muted)]">
-          Gestiona el catalogo de rutinas semanales de la plataforma.
-        </p>
       </header>
 
       <div className="grid grid-cols-2 gap-3">

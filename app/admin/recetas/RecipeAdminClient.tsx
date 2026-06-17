@@ -16,7 +16,6 @@ import {
 } from "@/app/components/ui/Dialog";
 import { FilterPanel } from "@/app/components/shared/FilterPanel";
 import { Input } from "@/app/components/ui/Input";
-import { SectionEyebrow } from "@/app/components/ui/SectionEyebrow";
 import {
   Sheet,
   SheetContent,
@@ -110,13 +109,9 @@ export function RecipeAdminClient({ initialRecipes, foods }: RecipeAdminClientPr
   return (
     <section className="page-frame dashboard-page-frame">
       <header>
-        <SectionEyebrow>Gestión / Recetas</SectionEyebrow>
-        <h1 className="font-display mt-2 text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
+        <h1 className="font-display text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
           Recetas
         </h1>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--foreground-muted)]">
-          Gestiona el catálogo de recetas armadas con ingredientes del catálogo de alimentos.
-        </p>
       </header>
 
       <div className="flex items-center gap-2">

@@ -1,73 +1,26 @@
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 
-import { DayWorkoutClient } from "@/app/dashboard/rutinas/dia/DayWorkoutClient";
-import { requireUser } from "@/app/lib/auth";
-import { ROUTINE_DIFFICULTY_LABELS } from "@/app/lib/routine-metadata";
-import { getSavedRoutineByIdForUser } from "@/app/lib/saved-routines";
-import { getExerciseHistoryByRoutineItem, getWorkoutSessionForWeek } from "@/app/lib/workout-tracking";
-
-type DayPageProps = {
+type LegacyDashboardRoutineDayPageProps = {
   searchParams: Promise<{
     savedRoutineId?: string;
     day?: string;
   }>;
 };
 
-export default async function DayRoutinePage({ searchParams }: DayPageProps) {
-  const [params, auth] = await Promise.all([searchParams, requireUser()]);
-  const savedRoutineId = params.savedRoutineId?.trim();
-  const dayOrder = Number.parseInt(params.day ?? "", 10);
+export default async function LegacyDashboardRoutineDayPage({
+  searchParams,
+}: LegacyDashboardRoutineDayPageProps) {
+  const params = await searchParams;
+  const query = new URLSearchParams();
 
-  if (!savedRoutineId || Number.isNaN(dayOrder)) {
-    notFound();
+  if (params.savedRoutineId) {
+    query.set("savedRoutineId", params.savedRoutineId);
   }
 
-  const routine = await getSavedRoutineByIdForUser({ savedRoutineId, userId: auth.user.id });
-
-  if (!routine) {
-    notFound();
+  if (params.day) {
+    query.set("day", params.day);
   }
 
-  const selectedDay = routine.days.find((day) => day.dayOrder === dayOrder);
-
-  if (!selectedDay) {
-    notFound();
-  }
-
-  const [session, historyByRoutineItemId] = await Promise.all([
-    getWorkoutSessionForWeek({
-      savedRoutineId,
-      routineDayId: selectedDay.id,
-      userId: auth.user.id,
-    }),
-    getExerciseHistoryByRoutineItem({
-      userId: auth.user.id,
-      savedRoutineId,
-      routineItemIds: selectedDay.items.map((item) => item.id),
-    }),
-  ]);
-
-  return (
-    <DayWorkoutClient
-      savedRoutineId={routine.id}
-      routineDayId={selectedDay.id}
-      routineName={routine.displayName}
-      difficultyLabel={ROUTINE_DIFFICULTY_LABELS[routine.difficulty]}
-      dayOrder={selectedDay.dayOrder}
-      dayName={selectedDay.dayName}
-      rows={selectedDay.items.map((item, index) => ({
-        id: item.id,
-        number: index + 1,
-        exercise: { ...item.exercise, history: historyByRoutineItemId[item.id] ?? [] },
-        series: item.series,
-        repsTarget: item.repetitions,
-        rir: String(item.rir),
-        rest: item.rest,
-        performedReps: session?.itemsByRoutineItemId[item.id]?.performedReps ?? null,
-        usedWeight: session?.itemsByRoutineItemId[item.id]?.usedWeight ?? null,
-        isCompleted: session?.itemsByRoutineItemId[item.id]?.isCompleted ?? false,
-      }))}
-      sessionStatus={session?.status ?? null}
-    />
-  );
+  const suffix = query.toString();
+  redirect(suffix ? `/rutinas/dia?${suffix}` : "/rutinas/dia");
 }

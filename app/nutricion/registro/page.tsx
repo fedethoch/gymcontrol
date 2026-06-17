@@ -27,10 +27,6 @@ export default async function RegistroNutricionPage() {
 
   return (
     <section className="page-frame content-start bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.15),transparent_31%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
-      <div>
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#b985ff]">Nutrición</p>
-      </div>
-
       <RegistroClient
         foods={foods}
         logDate={logDate}

@@ -33,7 +33,7 @@ export function WeekDaysList({
       {days.map((day, index) => {
         const isCompleted = completedSet.has(day.id);
         const isCurrentDay = !isCompleted && day.id === currentDayId;
-        const href = `/dashboard/rutinas/dia?savedRoutineId=${activeRoutineId}&day=${day.dayOrder}`;
+        const href = `/rutinas/dia?savedRoutineId=${activeRoutineId}&day=${day.dayOrder}`;
 
         return (
           <motion.div

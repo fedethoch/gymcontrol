@@ -72,10 +72,10 @@ export default async function Home() {
 
   const primaryHref =
     activeRoutine && nextPendingDay
-      ? `/dashboard/rutinas/dia?savedRoutineId=${activeRoutine.id}&day=${nextPendingDay.dayOrder}`
+      ? `/rutinas/dia?savedRoutineId=${activeRoutine.id}&day=${nextPendingDay.dayOrder}`
       : activeRoutine
-        ? "/dashboard/rutinas"
-        : "/dashboard";
+        ? "/rutinas"
+        : "/";
 
   const meals = mealLog?.meals ?? [];
   const totalKcal = meals.reduce((sum, m) => sum + m.kcal, 0);
@@ -110,9 +110,6 @@ export default async function Home() {
 
   return (
     <section className="page-frame auto-rows-max content-start bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
-      <header>
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#b985ff]">Inicio</p>
-      </header>
 
       {/* Hero: hoy toca — image placeholder banner */}
       <div className="relative overflow-hidden rounded-2xl bg-[#11151f]">

@@ -26,7 +26,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/components/ui/Card";
-import { SectionEyebrow } from "@/app/components/ui/SectionEyebrow";
 import {
   Table,
   TableHead,
@@ -68,13 +67,9 @@ export default async function AdminPage() {
   return (
     <section className="page-frame">
       <header>
-        <SectionEyebrow>Dashboard Admin</SectionEyebrow>
-        <h1 className="font-display mt-2 text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
+        <h1 className="font-display text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
           Dashboard Admin
         </h1>
-        <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)]">
-          Supervisa el estado general de la plataforma y gestiona el contenido.
-        </p>
       </header>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
