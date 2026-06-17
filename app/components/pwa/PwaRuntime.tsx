@@ -16,6 +16,13 @@ export function PwaRuntime() {
   const handledLaunchRef = useRef(false);
 
   useEffect(() => {
+    document.documentElement.classList.toggle(
+      "pwa-standalone",
+      isStandaloneDisplay(),
+    );
+  }, []);
+
+  useEffect(() => {
     if (
       process.env.NODE_ENV !== "production" ||
       !("serviceWorker" in navigator)
