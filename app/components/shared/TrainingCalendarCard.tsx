@@ -6,31 +6,31 @@ import { CalendarRange, type LucideIcon } from "lucide-react";
 
 import { Card, CardContent } from "@/app/components/ui/Card";
 
-const WEEKS = 10;
-const TOTAL_DAYS = WEEKS * 7;
-
 type TrainingCalendarCardProps = {
   completedDates: Set<string>;
   title?: string;
   subtitle?: string;
   icon?: LucideIcon;
   bare?: boolean;
+  weeks?: number;
 };
 
 export function TrainingCalendarCard({
   completedDates,
   title = "Constancia",
-  subtitle = `Tus ultimas ${WEEKS} semanas de entrenamiento.`,
+  subtitle,
   icon: Icon = CalendarRange,
   bare = false,
+  weeks = 10,
 }: TrainingCalendarCardProps) {
+  const totalDays = weeks * 7;
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   const [hoverPos, setHoverPos] = useState<{ x: number; y: number } | null>(null);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   const days: { key: string; completed: boolean; isToday: boolean }[] = [];
-  for (let i = TOTAL_DAYS - 1; i >= 0; i--) {
+  for (let i = totalDays - 1; i >= 0; i--) {
     const date = new Date(today);
     date.setDate(today.getDate() - i);
     const key = formatDateOnly(date);
@@ -43,7 +43,7 @@ export function TrainingCalendarCard({
   const padded = [...Array.from({ length: leadingOffset }, () => null), ...days];
 
   const calendar = (
-    <div className="relative overflow-x-auto">
+    <div className="relative w-full overflow-hidden">
       {hoveredKey && hoverPos ? (
         <div
           className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md border border-[#34245b] bg-[#15102a] px-2 py-1 text-xs font-medium text-white shadow-[0_8px_20px_rgba(0,0,0,0.35)]"
@@ -53,7 +53,7 @@ export function TrainingCalendarCard({
         </div>
       ) : null}
       <div
-        className="grid w-fit gap-1"
+        className="mx-auto grid w-fit gap-1"
         style={{
           gridTemplateRows: "repeat(7, minmax(0, 1fr))",
           gridAutoFlow: "column",
@@ -96,22 +96,20 @@ export function TrainingCalendarCard({
 
   return (
     <Card className="flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(13,19,34,0.96)_0%,rgba(8,12,20,0.98)_100%)] shadow-[0_18px_48px_rgba(0,0,0,0.24)]">
-      <CardContent className="flex-1 p-6">
-        <div className="flex items-center gap-4">
+      <CardContent className="flex-1 p-3">
+        <div className="flex items-center gap-2">
           <span
             aria-hidden="true"
-            className="grid size-12 shrink-0 place-items-center rounded-xl border border-[#34245b] bg-[#251640] text-[#b987ff]"
+            className="grid size-7 shrink-0 place-items-center rounded-lg border border-[#34245b] bg-[#251640] text-[#b987ff]"
           >
-            <Icon className="size-6" />
+            <Icon className="size-4" />
           </span>
-          <h2 className="font-display text-xl font-semibold leading-tight text-white">
+          <h2 className="font-display text-sm font-semibold leading-tight text-white">
             {title}
           </h2>
         </div>
 
-        <p className="mt-4 text-sm leading-6 text-[#c6cede]">{subtitle}</p>
-
-        <div className="mt-5">{calendar}</div>
+        <div className="mt-3">{calendar}</div>
       </CardContent>
     </Card>
   );

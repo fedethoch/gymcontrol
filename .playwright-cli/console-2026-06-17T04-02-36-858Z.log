@@ -1,0 +1,95 @@
+[     241ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[     317ms] [LOG] [Fast Refresh] done in 177ms @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[     437ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[     466ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[     476ms] [WARNING] %c%s%c @supabase/ssr: could not base64url-decode chunked cookie value, treating as absent. Cookie chunks may have been written partially across responses. background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px  Server   Error: Invalid UTF-8 sequence
+    at stringFromUTF8 (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C00wg__pnpm_044ikdl._.js?0:10114:19)
+    at stringFromBase64URL (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C00wg__pnpm_044ikdl._.js?1:10046:17)
+    at decodeChunkedCookieValue (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C00wg__pnpm_044ikdl._.js?2:10160:364)
+    at Object.getItem (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C00wg__pnpm_044ikdl._.js?3:10419:24)
+    at getItemAsync (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C01ca_@supabase_auth-js_dist_module_0tw8y44._.js?4:594:19)
+    at SupabaseAuthClient.__loadSession (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C01ca_@supabase_auth-js_dist_module_0tw8y44._.js?5:6071:34)
+    at SupabaseAuthClient._useSession (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C01ca_@supabase_auth-js_dist_module_0tw8y44._.js?6:6054:28)
+    at SupabaseAuthClient._emitInitialSession (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C01ca_@supabase_auth-js_dist_module_0tw8y44._.js?7:7252:16)
+    at resolveErrorDev (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1919:105)
+    at getOutlinedModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1469:28)
+    at parseModelString (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1584:50)
+    at reviveModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2522:66)
+    at parseModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2517:16)
+    at initializeModelChunk (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1084:25)
+    at getOutlinedModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1407:17)
+    at parseModelString (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1639:50)
+    at reviveModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2522:66)
+    at reviveModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2525:61)
+    at parseModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2517:16)
+    at initializeModelChunk (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1084:25)
+    at resolveConsoleEntry (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2047:96)
+    at processFullStringRow (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2453:17)
+    at processFullBinaryRow (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2393:9)
+    at processBinaryChunk (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2502:221)
+    at progress (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2676:20) @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[     476ms] [WARNING] %c%s%c @supabase/ssr: could not base64url-decode chunked cookie value, treating as absent. Cookie chunks may have been written partially across responses. background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px  Server   Error: Invalid UTF-8 sequence
+    at stringFromUTF8 (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C00wg__pnpm_044ikdl._.js?0:10114:19)
+    at stringFromBase64URL (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C00wg__pnpm_044ikdl._.js?1:10046:17)
+    at decodeChunkedCookieValue (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C00wg__pnpm_044ikdl._.js?2:10160:364)
+    at Object.getItem (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C00wg__pnpm_044ikdl._.js?3:10419:24)
+    at getItemAsync (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C01ca_@supabase_auth-js_dist_module_0tw8y44._.js?4:594:19)
+    at SupabaseAuthClient.__loadSession (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C01ca_@supabase_auth-js_dist_module_0tw8y44._.js?5:6071:34)
+    at SupabaseAuthClient._useSession (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C01ca_@supabase_auth-js_dist_module_0tw8y44._.js?6:6054:28)
+    at SupabaseAuthClient._emitInitialSession (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C01ca_@supabase_auth-js_dist_module_0tw8y44._.js?7:7252:16)
+    at resolveErrorDev (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1919:105)
+    at getOutlinedModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1469:28)
+    at parseModelString (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1584:50)
+    at reviveModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2522:66)
+    at parseModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2517:16)
+    at initializeModelChunk (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1084:25)
+    at getOutlinedModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1407:17)
+    at parseModelString (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1639:50)
+    at reviveModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2522:66)
+    at reviveModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2525:61)
+    at parseModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2517:16)
+    at initializeModelChunk (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1084:25)
+    at resolveConsoleEntry (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2047:96)
+    at processFullStringRow (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2453:17)
+    at processFullBinaryRow (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2393:9)
+    at processBinaryChunk (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2502:221)
+    at progress (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2676:20) @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[     477ms] [WARNING] %c%s%c @supabase/ssr: could not base64url-decode chunked cookie value, treating as absent. Cookie chunks may have been written partially across responses. background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px  Server   Error: Invalid UTF-8 sequence
+    at stringFromUTF8 (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C00wg__pnpm_044ikdl._.js?0:10114:19)
+    at stringFromBase64URL (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C00wg__pnpm_044ikdl._.js?1:10046:17)
+    at decodeChunkedCookieValue (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C00wg__pnpm_044ikdl._.js?2:10160:364)
+    at Object.getItem (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C00wg__pnpm_044ikdl._.js?3:10419:24)
+    at getItemAsync (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C01ca_@supabase_auth-js_dist_module_0tw8y44._.js?4:594:19)
+    at SupabaseAuthClient.__loadSession (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C01ca_@supabase_auth-js_dist_module_0tw8y44._.js?5:6071:34)
+    at SupabaseAuthClient._useSession (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C01ca_@supabase_auth-js_dist_module_0tw8y44._.js?6:6054:28)
+    at SupabaseAuthClient._getUser (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C01ca_@supabase_auth-js_dist_module_0tw8y44._.js?9:6240:20)
+    at <anonymous> (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C01ca_@supabase_auth-js_dist_module_0tw8y44._.js?10:6224:20)
+    at <anonymous> (about://React/Server/C:%5CUsers%5Cfedet%5CDocuments%5CGitHub%5Cgymcontrol%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C01ca_@supabase_auth-js_dist_module_0tw8y44._.js?11:6003:28)
+    at resolveErrorDev (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1919:105)
+    at getOutlinedModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1469:28)
+    at parseModelString (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1584:50)
+    at reviveModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2522:66)
+    at parseModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2517:16)
+    at initializeModelChunk (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1084:25)
+    at getOutlinedModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1407:17)
+    at parseModelString (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1639:50)
+    at reviveModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2522:66)
+    at reviveModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2525:61)
+    at parseModel (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2517:16)
+    at initializeModelChunk (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:1084:25)
+    at resolveConsoleEntry (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2047:96)
+    at processFullStringRow (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2453:17)
+    at processFullBinaryRow (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2393:9)
+    at processBinaryChunk (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2502:221)
+    at progress (http://localhost:3000/_next/static/chunks/03xv_next_dist_compiled_react-server-dom-turbopack_0_9-04y._.js:2676:20) @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[     663ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[     805ms] [LOG] [Fast Refresh] done in 253ms @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[    7522ms] [ERROR] Failed to load resource: the server responded with a status of 429 (Too Many Requests) @ http://localhost:3000/api/auth/request-otp:0
+[    8196ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[    8309ms] [LOG] [Fast Refresh] done in 229ms @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[   55333ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[   56341ms] [LOG] [Fast Refresh] done in 1119ms @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[   61548ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[   62571ms] [LOG] [Fast Refresh] done in 1132ms @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[   69297ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[   70258ms] [LOG] [Fast Refresh] done in 1074ms @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477

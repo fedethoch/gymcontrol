@@ -277,8 +277,37 @@ export function DayWorkoutClient({
           </div>
         </header>
 
-        <section className="grid gap-3 rounded-2xl border border-[#172236] bg-[linear-gradient(180deg,rgba(9,18,31,0.94),rgba(6,13,23,0.98))] px-5 py-3 shadow-[0_24px_70px_rgba(0,0,0,0.28)] xl:px-8 xl:py-4">
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-2 xl:grid-cols-[1.35fr_0.8fr_0.95fr_1.25fr] xl:gap-0">
+        <section className="rounded-2xl border border-[#172236] bg-[linear-gradient(180deg,rgba(9,18,31,0.94),rgba(6,13,23,0.98))] px-5 py-3 shadow-[0_24px_70px_rgba(0,0,0,0.28)] xl:px-8 xl:py-4">
+          {/* Mobile layout: ring left, data right */}
+          <div className="flex items-center gap-5 xl:hidden">
+            <AnimatedProgressRing
+              value={progressPercent}
+              size={69.6}
+              strokeWidth={8}
+              progressColor="#a855ff"
+              trackColor="rgba(24,37,57,0.86)"
+            >
+              <div className="grid size-[3.35rem] place-items-center rounded-full border border-[#1c2b42] bg-[#07101b] text-center leading-none">
+                <span className="text-sm font-semibold text-white">
+                  {completedCount}/{rows.length}
+                </span>
+              </div>
+            </AnimatedProgressRing>
+            <div className="flex min-w-0 flex-col gap-3">
+              <div>
+                <p className="text-[10px] text-[#aeb8cc]">Tiempo estimado</p>
+                <p className="text-sm font-semibold text-white">
+                  {rows.length > 0 ? "60 min" : "Sin carga"}
+                </p>
+              </div>
+              <div>
+                <p className="text-[10px] text-[#aeb8cc]">Ejercicios</p>
+                <p className="text-sm font-semibold text-white">{rows.length} ejercicios</p>
+              </div>
+            </div>
+          </div>
+          {/* Desktop layout: original 4-col grid */}
+          <div className="hidden xl:grid xl:grid-cols-[1.35fr_0.8fr_0.95fr_1.25fr]">
             <SummaryMetric
               label="Rutina activa"
               labelClassName="text-base leading-6"

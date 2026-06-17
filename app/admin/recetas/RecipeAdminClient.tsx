@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChefHat, LoaderCircle, PencilLine, Plus, Search, Trash2, TriangleAlert, X } from "lucide-react";
+import { LoaderCircle, PencilLine, Plus, Search, Trash2, TriangleAlert, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { MacroBar } from "@/app/components/shared/MacroBar";
@@ -14,14 +14,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/app/components/ui/Dialog";
+import { FilterPanel } from "@/app/components/shared/FilterPanel";
 import { Input } from "@/app/components/ui/Input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/components/ui/Select";
 import { SectionEyebrow } from "@/app/components/ui/SectionEyebrow";
 import {
   Sheet,
@@ -39,12 +33,16 @@ import {
   TableRow,
 } from "@/app/components/ui/Table";
 import { deleteRecipeAction, saveRecipeAction } from "@/app/admin/recetas/actions";
-import { CATEGORY_ACCENT, CATEGORY_GRADIENTS, CATEGORY_ICONS } from "@/app/lib/nutrition-style";
 import {
-  FOOD_CATEGORIES,
-  FOOD_CATEGORY_LABELS,
+  RECIPE_CATEGORY_ACCENT,
+  RECIPE_CATEGORY_GRADIENTS,
+  RECIPE_CATEGORY_ICONS,
+} from "@/app/lib/nutrition-style";
+import {
+  RECIPE_CATEGORIES,
+  RECIPE_CATEGORY_LABELS,
   type Food,
-  type FoodCategory,
+  type RecipeCategory,
   type Recipe,
   type RecipeIngredient,
 } from "@/app/lib/nutrition-types";
@@ -111,30 +109,18 @@ export function RecipeAdminClient({ initialRecipes, foods }: RecipeAdminClientPr
 
   return (
     <section className="page-frame dashboard-page-frame">
-      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <SectionEyebrow>Gestión / Recetas</SectionEyebrow>
-          <h1 className="font-display mt-2 text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
-            Recetas
-          </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--foreground-muted)]">
-            Gestiona el catálogo de recetas armadas con ingredientes del catálogo de alimentos.
-          </p>
-        </div>
-        <Button
-          type="button"
-          onClick={() => {
-            setFormKey((value) => value + 1);
-            setDrawer({ mode: "create" });
-          }}
-        >
-          <Plus className="size-4" />
-          Nueva receta
-        </Button>
+      <header>
+        <SectionEyebrow>Gestión / Recetas</SectionEyebrow>
+        <h1 className="font-display mt-2 text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
+          Recetas
+        </h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--foreground-muted)]">
+          Gestiona el catálogo de recetas armadas con ingredientes del catálogo de alimentos.
+        </p>
       </header>
 
-      <div className="grid gap-3 sm:grid-cols-[1.4fr_1fr]">
-        <label className="relative block">
+      <div className="flex items-center gap-2">
+        <label className="relative flex-1">
           <span className="sr-only">Buscar receta</span>
           <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#7d8697]" />
           <Input
@@ -149,25 +135,38 @@ export function RecipeAdminClient({ initialRecipes, foods }: RecipeAdminClientPr
           />
         </label>
 
-        <Select
-          value={categoryFilter}
-          onValueChange={(value) => {
-            setCategoryFilter(value);
+        <FilterPanel
+          groups={[
+            {
+              label: "Categoría",
+              options: RECIPE_CATEGORIES.map((v) => ({
+                value: v,
+                label: RECIPE_CATEGORY_LABELS[v],
+              })),
+              value: categoryFilter,
+              onChange: (v) => {
+                setCategoryFilter(v);
+                setPage(0);
+              },
+            },
+          ]}
+          onClear={() => {
+            setCategoryFilter("all");
             setPage(0);
           }}
+        />
+
+        <Button
+          type="button"
+          className="shrink-0"
+          onClick={() => {
+            setFormKey((value) => value + 1);
+            setDrawer({ mode: "create" });
+          }}
         >
-          <SelectTrigger className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
-            <SelectValue placeholder="Categoría" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todas las categorías</SelectItem>
-            {FOOD_CATEGORIES.map((value) => (
-              <SelectItem key={value} value={value}>
-                {FOOD_CATEGORY_LABELS[value]}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <Plus className="size-4" />
+          <span className="hidden sm:inline">Nueva receta</span>
+        </Button>
       </div>
 
       <Card className="overflow-hidden">
@@ -201,7 +200,7 @@ export function RecipeAdminClient({ initialRecipes, foods }: RecipeAdminClientPr
               </TableHeader>
               <TableBody>
                 {pageData.map((recipe) => {
-                  const Icon = CATEGORY_ICONS[recipe.category];
+                  const Icon = RECIPE_CATEGORY_ICONS[recipe.category];
 
                   return (
                     <TableRow key={recipe.id}>
@@ -209,14 +208,14 @@ export function RecipeAdminClient({ initialRecipes, foods }: RecipeAdminClientPr
                         <div className="flex items-center gap-3">
                           <span
                             className="grid size-10 shrink-0 place-items-center rounded-xl border border-[var(--border)]"
-                            style={{ background: CATEGORY_GRADIENTS[recipe.category] }}
+                            style={{ background: RECIPE_CATEGORY_GRADIENTS[recipe.category] }}
                           >
-                            <Icon className="size-4" style={{ color: CATEGORY_ACCENT[recipe.category] }} />
+                            <Icon className="size-4" style={{ color: RECIPE_CATEGORY_ACCENT[recipe.category] }} />
                           </span>
                           <p className="font-medium">{recipe.name}</p>
                         </div>
                       </TableCell>
-                      <TableCell className="text-center">{FOOD_CATEGORY_LABELS[recipe.category]}</TableCell>
+                      <TableCell className="text-center">{RECIPE_CATEGORY_LABELS[recipe.category]}</TableCell>
                       <TableCell className="text-center whitespace-nowrap">{recipe.servings}</TableCell>
                       <TableCell className="text-center whitespace-nowrap">{recipe.calories} kcal</TableCell>
                       <TableCell>
@@ -261,7 +260,7 @@ export function RecipeAdminClient({ initialRecipes, foods }: RecipeAdminClientPr
 
             <div className="grid gap-3 p-4 md:hidden">
               {pageData.map((recipe) => {
-                const Icon = CATEGORY_ICONS[recipe.category];
+                const Icon = RECIPE_CATEGORY_ICONS[recipe.category];
 
                 return (
                   <div
@@ -272,14 +271,14 @@ export function RecipeAdminClient({ initialRecipes, foods }: RecipeAdminClientPr
                       <div className="flex min-w-0 items-center gap-3">
                         <span
                           className="grid size-10 shrink-0 place-items-center rounded-xl border border-[var(--border)]"
-                          style={{ background: CATEGORY_GRADIENTS[recipe.category] }}
+                          style={{ background: RECIPE_CATEGORY_GRADIENTS[recipe.category] }}
                         >
-                          <Icon className="size-4" style={{ color: CATEGORY_ACCENT[recipe.category] }} />
+                          <Icon className="size-4" style={{ color: RECIPE_CATEGORY_ACCENT[recipe.category] }} />
                         </span>
                         <div className="min-w-0">
                           <p className="truncate font-medium text-white">{recipe.name}</p>
                           <p className="truncate text-xs text-[var(--foreground-muted)]">
-                            {FOOD_CATEGORY_LABELS[recipe.category]} · {recipe.servings} porciones · {recipe.calories} kcal
+                            {RECIPE_CATEGORY_LABELS[recipe.category]} · {recipe.servings} porciones · {recipe.calories} kcal
                           </p>
                         </div>
                       </div>
@@ -398,7 +397,7 @@ function RecipeFormSheet({ open, recipe, foods, onClose, onSave }: RecipeFormShe
 
   const [name, setName] = useState(() => recipe?.name ?? "");
   const [description, setDescription] = useState(() => recipe?.description ?? "");
-  const [category, setCategory] = useState<FoodCategory>(() => recipe?.category ?? "protein");
+  const [category, setCategory] = useState<RecipeCategory>(() => recipe?.category ?? "comida");
   const [servings, setServings] = useState(() => String(recipe?.servings ?? 1));
   const [ingredients, setIngredients] = useState<RecipeIngredient[]>(() => recipe?.ingredients ?? []);
   const [ingredientQuery, setIngredientQuery] = useState("");
@@ -481,19 +480,27 @@ function RecipeFormSheet({ open, recipe, foods, onClose, onSave }: RecipeFormShe
         <form className="flex min-h-0 flex-1 flex-col" onSubmit={handleSubmit}>
           <div className="grid flex-1 gap-5 overflow-y-auto px-5 py-2">
             <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card-alt)]">
-              <div className="relative flex h-24 items-center gap-3 px-4" style={{ background: CATEGORY_GRADIENTS[category] }}>
-                <div className="grid size-12 shrink-0 place-items-center rounded-xl bg-black/30">
-                  <ChefHat className="size-6 text-white" />
-                </div>
-                <div className="min-w-0">
-                  <p className="truncate font-display text-base font-semibold text-white">
-                    {name || "Nombre de la receta..."}
-                  </p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.12em] text-white/70">
-                    {FOOD_CATEGORY_LABELS[category]}
-                  </p>
-                </div>
-              </div>
+              {(() => {
+                const CategoryIcon = RECIPE_CATEGORY_ICONS[category];
+                return (
+                  <div
+                    className="flex h-24 flex-col items-center justify-center gap-1.5 px-4 text-center"
+                    style={{ background: RECIPE_CATEGORY_GRADIENTS[category] }}
+                  >
+                    <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-black/30">
+                      <CategoryIcon className="size-5" style={{ color: RECIPE_CATEGORY_ACCENT[category] }} />
+                    </div>
+                    <div>
+                      <p className="truncate font-display text-base font-semibold text-white">
+                        {name || "Nombre de la receta..."}
+                      </p>
+                      <p className="mt-0.5 text-xs uppercase tracking-[0.12em] text-white/70">
+                        {RECIPE_CATEGORY_LABELS[category]}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
 
             <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
@@ -513,8 +520,8 @@ function RecipeFormSheet({ open, recipe, foods, onClose, onSave }: RecipeFormShe
 
             <div className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
               Categoría
-              <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3">
-                {FOOD_CATEGORIES.map((value) => (
+              <div className="grid grid-cols-3 gap-1.5">
+                {RECIPE_CATEGORIES.map((value) => (
                   <button
                     key={value}
                     type="button"
@@ -525,7 +532,7 @@ function RecipeFormSheet({ open, recipe, foods, onClose, onSave }: RecipeFormShe
                         : "rounded-lg border border-[var(--border)] bg-[var(--card-alt)] px-2.5 py-1.5 text-center text-xs font-semibold text-[#9aa3b8] hover:text-white"
                     }
                   >
-                    {FOOD_CATEGORY_LABELS[value]}
+                    {RECIPE_CATEGORY_LABELS[value]}
                   </button>
                 ))}
               </div>

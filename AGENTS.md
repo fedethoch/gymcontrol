@@ -1,8 +1,14 @@
-# GymControl Agents Guide
+# AGENTS.md (Gymcontrol)
 
 Router corto de contexto. Regla principal: no explorar todo el repo por defecto.
 
-## Lectura corta
+## Global agent rules
+
+Antes de cualquier tarea, leer y aplicar tambien `C:\Users\fedet\.codex\AGENTS.md` como contexto global, salvo conflicto con instrucciones de mayor prioridad.
+
+## Context router
+
+Do not read all files. Pick only the relevant source from this map.
 
 1. `docs/codex/ROUTING_GRAPH.md`
 2. `docs/codex/FILE_OWNERSHIP.md`
@@ -24,7 +30,6 @@ Router corto de contexto. Regla principal: no explorar todo el repo por defecto.
 - preferir la validacion minima mas barata
 - no pegar logs largos
 - devolver outputs compactos
-- no hacer refactors no pedidos
 
 ## Fuentes de verdad
 
@@ -82,3 +87,26 @@ When modifying `docs/codex/`:
 - do not document speculative features
 - do not add categories that do not exist yet
 - keep `AGENTS.md` as a router, not a manual
+
+## graphify
+
+- **graphify** (`.codex/skills/graphify/SKILL.md`) - any input to knowledge graph. Trigger: `/graphify`
+When the user types `/graphify`, invoke the Skill tool with `skill: "graphify"` before doing anything else.
+
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
+
+## Frontend
+- Framework: React + Tailwind 
+- Componentes base: shadcn/ui — no crear componentes desde cero si ya existe uno
+- Íconos: lucide-react únicamente
+- No usar estilos inline salvo excepciones justificadas
+- Siempre mobile-first
+
+## Admin account
+- You can find the credentials in .env.local at the name of "EMAIL" and "EMAIL_PASSWORD"

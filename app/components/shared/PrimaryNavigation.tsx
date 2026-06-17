@@ -241,55 +241,6 @@ export function PrimaryNavigation({
 
   return (
     <TooltipProvider>
-      <div className="border-b border-[#171d31] bg-[linear-gradient(180deg,#090c14_0%,#060810_100%)] px-4 py-3 lg:hidden">
-        <div className="flex items-center justify-between gap-4">
-          <Link href="/" className="flex min-w-0 items-center gap-3">
-            <span className="grid size-10 shrink-0 place-items-center rounded-2xl border border-[#6d40ef] bg-[#6335e8] font-display text-sm font-bold tracking-normal text-white shadow-[0_10px_24px_rgba(72,39,158,0.28)]">
-              GC
-            </span>
-            <span className="min-w-0">
-              <p className="truncate text-[10px] font-semibold uppercase tracking-[0.22em] text-[#8f98bf]">
-                GymControl
-              </p>
-              <p className="truncate font-display text-sm font-semibold tracking-normal text-white">
-                {currentRoute.label}
-              </p>
-            </span>
-          </Link>
-
-          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-            <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label="Abrir navegación"
-                className="rounded-xl border border-[#1d2338] bg-[#0f121e] text-[#c4cbed] hover:border-[#302758] hover:bg-[#151929] hover:text-white"
-              >
-                <Menu className="size-4" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="left"
-              className="border-r-[#171d31] bg-[linear-gradient(180deg,#090c14_0%,#05070d_100%)] p-0"
-            >
-              <SheetHeader className="sr-only">
-                <SheetTitle>GymControl</SheetTitle>
-                <SheetDescription>
-                  Navegación principal del shell de usuario y admin.
-                </SheetDescription>
-              </SheetHeader>
-              <NavigationPanel
-                pathname={pathname}
-                collapsed={false}
-                isAuthenticated={isAuthenticated}
-                role={role}
-                onNavigate={() => setMobileOpen(false)}
-              />
-            </SheetContent>
-          </Sheet>
-        </div>
-      </div>
-
       <aside
         className={cn(
           "shell-sidebar hidden h-full shrink-0 border-r border-[#171d31] transition-[width] duration-300 lg:flex",

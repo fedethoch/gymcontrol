@@ -3,19 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 
-import { FilterSheet } from "@/app/components/shared/FilterSheet";
+import { FilterPanel } from "@/app/components/shared/FilterPanel";
 import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
 import { fadeUp, motion, staggerContainer } from "@/app/components/ui/motion";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/components/ui/Select";
 import {
   ROUTINE_DIFFICULTY_LABELS,
   ROUTINE_OBJECTIVE_LABELS,
@@ -114,60 +107,10 @@ export function RoutineCatalogClient({ routines }: RoutineCatalogClientProps) {
     handleFilterChange(setDayCount, "all");
   }
 
-  const filterSelects = (
-    <>
-      <CatalogSelect
-        value={difficulty}
-        placeholder="Dificultad"
-        onValueChange={(value) => handleFilterChange(setDifficulty, value)}
-      >
-        <SelectItem value="all">Todas</SelectItem>
-        {Object.entries(ROUTINE_DIFFICULTY_LABELS).map(([value, label]) => (
-          <SelectItem key={value} value={value}>
-            {label}
-          </SelectItem>
-        ))}
-      </CatalogSelect>
-
-      <CatalogSelect
-        value={objective}
-        placeholder="Objetivo"
-        onValueChange={(value) => handleFilterChange(setObjective, value)}
-      >
-        <SelectItem value="all">Todos</SelectItem>
-        {Object.entries(ROUTINE_OBJECTIVE_LABELS).map(([value, label]) => (
-          <SelectItem key={value} value={value}>
-            {label}
-          </SelectItem>
-        ))}
-      </CatalogSelect>
-
-      <CatalogSelect
-        value={dayCount}
-        placeholder="Dias"
-        onValueChange={(value) => handleFilterChange(setDayCount, value)}
-      >
-        <SelectItem value="all">Todos los dias</SelectItem>
-        {dayOptions.map((value) => (
-          <SelectItem key={value} value={String(value)}>
-            {value} dias
-          </SelectItem>
-        ))}
-      </CatalogSelect>
-
-      <CatalogSelect value={sortBy} placeholder="Ordenar" onValueChange={handleSortChange}>
-        <SelectItem value="recent">Recientes</SelectItem>
-        <SelectItem value="name">Nombre A-Z</SelectItem>
-        <SelectItem value="days">Mas dias</SelectItem>
-        <SelectItem value="rows">Mas filas</SelectItem>
-      </CatalogSelect>
-    </>
-  );
-
   return (
     <section className="grid content-start gap-5">
-      <div className="grid gap-3 lg:grid-cols-[minmax(0,1.2fr)_repeat(4,minmax(0,0.7fr))] lg:gap-4">
-        <label className="relative flex h-12 items-center">
+      <div className="flex items-center gap-2">
+        <label className="relative flex h-12 flex-1 items-center">
           <span className="sr-only">Buscar rutinas</span>
           <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#7d8697]" />
           <Input
@@ -179,11 +122,49 @@ export function RoutineCatalogClient({ routines }: RoutineCatalogClientProps) {
           />
         </label>
 
-        <div className="hidden gap-4 lg:contents">{filterSelects}</div>
-
-        <FilterSheet activeCount={activeFilterCount} onClear={handleClearFilters}>
-          {filterSelects}
-        </FilterSheet>
+        <FilterPanel
+          groups={[
+            {
+              label: "Dificultad",
+              options: Object.entries(ROUTINE_DIFFICULTY_LABELS).map(([v, l]) => ({
+                value: v,
+                label: l,
+              })),
+              value: difficulty,
+              onChange: (v) => handleFilterChange(setDifficulty, v),
+            },
+            {
+              label: "Objetivo",
+              options: Object.entries(ROUTINE_OBJECTIVE_LABELS).map(([v, l]) => ({
+                value: v,
+                label: l,
+              })),
+              value: objective,
+              onChange: (v) => handleFilterChange(setObjective, v),
+            },
+            {
+              label: "Días por semana",
+              options: dayOptions.map((v) => ({
+                value: String(v),
+                label: `${v} días`,
+              })),
+              value: dayCount,
+              onChange: (v) => handleFilterChange(setDayCount, v),
+            },
+            {
+              label: "Ordenar por",
+              options: [
+                { value: "recent", label: "Recientes" },
+                { value: "name", label: "Nombre A-Z" },
+                { value: "days", label: "Más días" },
+                { value: "rows", label: "Más filas" },
+              ],
+              value: sortBy,
+              onChange: handleSortChange,
+            },
+          ]}
+          onClear={handleClearFilters}
+        />
       </div>
 
       {paginatedRoutines.length === 0 ? (
@@ -207,7 +188,7 @@ export function RoutineCatalogClient({ routines }: RoutineCatalogClientProps) {
             className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-3 2xl:grid-cols-4"
           >
             {paginatedRoutines.map((routine) => (
-              <motion.div key={routine.id} variants={fadeUp}>
+              <motion.div key={routine.id} variants={fadeUp} className="h-full">
                 <RoutineCatalogCard routine={routine} />
               </motion.div>
             ))}
@@ -264,27 +245,6 @@ export function RoutineCatalogClient({ routines }: RoutineCatalogClientProps) {
   );
 }
 
-function CatalogSelect({
-  value,
-  placeholder,
-  onValueChange,
-  children,
-}: {
-  value: string;
-  placeholder: string;
-  onValueChange: (value: string) => void;
-  children: ReactNode;
-}) {
-  return (
-    <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger className="h-12 rounded-xl border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)]">
-        <SelectValue placeholder={placeholder} />
-      </SelectTrigger>
-      <SelectContent>{children}</SelectContent>
-    </Select>
-  );
-}
-
 function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
   const dayCount = routine.days.length;
   const itemCount = getRoutineItemCount(routine);
@@ -293,8 +253,8 @@ function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
   const objective = ROUTINE_OBJECTIVE_LABELS[routine.objective];
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#111723_0%,#0b1017_100%)] shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-transform duration-200 hover:-translate-y-0.5 hover:border-[rgba(185,149,255,0.24)]">
-      <div className="relative h-28 overflow-hidden border-b border-[rgba(255,255,255,0.08)] bg-[#141a24] sm:h-40">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#111723_0%,#0b1017_100%)] shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-transform duration-200 hover:-translate-y-0.5 hover:border-[rgba(185,149,255,0.24)]">
+      <div className="relative h-36 overflow-hidden border-b border-[rgba(255,255,255,0.08)] bg-[#141a24] sm:h-44">
         {imageUrl ? (
           <Image
             alt={routine.name}
@@ -330,7 +290,7 @@ function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
           <h3 className="font-display text-sm font-semibold tracking-[-0.04em] text-white sm:text-lg">
             {routine.name}
           </h3>
-          <p className="mt-1 line-clamp-2 text-xs leading-5 text-[var(--foreground-muted)] sm:mt-2 sm:text-sm sm:leading-6">
+          <p className="mt-1 line-clamp-1 text-xs leading-5 text-[var(--foreground-muted)] sm:mt-2 sm:text-sm sm:leading-6">
             {routine.description || "Rutina semanal disponible para explorar."}
           </p>
         </div>
@@ -341,8 +301,8 @@ function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
           className="mt-auto w-full justify-between rounded-xl border border-[rgba(185,149,255,0.2)] bg-[rgba(124,58,237,0.12)] text-white hover:bg-[rgba(124,58,237,0.18)]"
         >
           <Link href={`/catalogo/rutinas/${routine.id}`}>
-            Ver rutina
-            <ChevronRight className="size-4" />
+            <span className="text-[11px] sm:text-sm">Ver rutina</span>
+            <ChevronRight className="size-3.5 sm:size-4" />
           </Link>
         </Button>
       </div>

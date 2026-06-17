@@ -1,4 +1,4 @@
-import type { FoodCategory } from "@/app/lib/nutrition-types";
+import type { RecipeCategory } from "@/app/lib/nutrition-types";
 
 export type RecipeFormField = "name" | "description" | "category" | "servings" | "ingredients";
 
@@ -31,7 +31,7 @@ export const INITIAL_RECIPE_FORM_STATE: RecipeFormState = {
 export type ParsedRecipePayload = {
   name: string;
   description: string;
-  category: FoodCategory;
+  category: RecipeCategory;
   servings: number;
   ingredients: { foodId: string; grams: number }[];
 };

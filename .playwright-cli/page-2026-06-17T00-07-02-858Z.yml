@@ -1,0 +1,94 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - main [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e7]:
+          - generic [ref=e8]:
+            - link "Volver al catálogo" [ref=e9] [cursor=pointer]:
+              - /url: /catalogo
+              - img
+            - paragraph [ref=e10]: Catalogo
+          - heading "Detalle de rutina" [level=1] [ref=e11]
+          - paragraph [ref=e12]: Revisa la estructura completa antes de guardar la rutina.
+        - generic [ref=e14]:
+          - img "qa rutina 829015 editada" [ref=e15]
+          - generic [ref=e17]:
+            - heading "qa rutina 829015 editada" [level=2] [ref=e18]
+            - generic [ref=e19]:
+              - generic [ref=e20]:
+                - img [ref=e21]
+                - text: 2 días
+              - generic [ref=e23]:
+                - img [ref=e24]
+                - text: Mantenimiento
+              - generic [ref=e29]:
+                - img [ref=e30]
+                - text: Intermedio
+        - button "Desactivar rutina" [ref=e34]:
+          - img
+          - text: Desactivar rutina
+        - generic [ref=e36]:
+          - generic [ref=e37]:
+            - heading "Dia QA 1 2 ejercicios" [level=3] [ref=e38]:
+              - button "Dia QA 1 2 ejercicios" [expanded] [active] [ref=e39]:
+                - generic [ref=e40]:
+                  - img [ref=e41]
+                  - generic [ref=e43]: Dia QA 1
+                  - generic [ref=e44]: 2 ejercicios
+                - img
+            - region "Dia QA 1 2 ejercicios" [ref=e85]:
+              - table [ref=e89]:
+                - rowgroup [ref=e90]:
+                  - row "Ejercicio Series Reps RIR Descanso" [ref=e91]:
+                    - columnheader "Ejercicio" [ref=e92]
+                    - columnheader "Series" [ref=e93]
+                    - columnheader "Reps" [ref=e94]
+                    - columnheader "RIR" [ref=e95]
+                    - columnheader "Descanso" [ref=e96]
+                - rowgroup [ref=e97]:
+                  - row "espalda test 4 8-10 2 90s" [ref=e98]:
+                    - cell "espalda test" [ref=e99]:
+                      - button "espalda test" [ref=e100]
+                    - cell "4" [ref=e101]
+                    - cell "8-10" [ref=e102]
+                    - cell "2" [ref=e103]
+                    - cell "90s" [ref=e104]
+                  - row "test ejercicio 3 10-12 1 60s" [ref=e105]:
+                    - cell "test ejercicio" [ref=e106]:
+                      - button "test ejercicio" [ref=e107]
+                    - cell "3" [ref=e108]
+                    - cell "10-12" [ref=e109]
+                    - cell "1" [ref=e110]
+                    - cell "60s" [ref=e111]
+          - heading "Dia QA 2 1 ejercicios" [level=3] [ref=e46]:
+            - button "Dia QA 2 1 ejercicios" [ref=e47]:
+              - generic [ref=e48]:
+                - img [ref=e49]
+                - generic [ref=e51]: Dia QA 2
+                - generic [ref=e52]: 1 ejercicios
+              - img
+    - navigation "Navegación inferior" [ref=e53]:
+      - generic [ref=e54]:
+        - link "Admin" [ref=e55] [cursor=pointer]:
+          - /url: /admin
+          - img [ref=e56]
+          - text: Admin
+        - link "Ejercicios" [ref=e58] [cursor=pointer]:
+          - /url: /admin/ejercicios
+          - img [ref=e59]
+          - text: Ejercicios
+        - link "Rutinas" [ref=e64] [cursor=pointer]:
+          - /url: /admin/rutinas
+          - img [ref=e65]
+          - text: Rutinas
+        - link "Alimentos" [ref=e67] [cursor=pointer]:
+          - /url: /admin/alimentos
+          - img [ref=e68]
+          - text: Alimentos
+        - button "Más" [ref=e73]:
+          - img [ref=e74]
+          - text: Más
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e80] [cursor=pointer]:
+    - img [ref=e81]
+  - alert [ref=e84]

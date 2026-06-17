@@ -1,0 +1,101 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - main [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - paragraph [ref=e7]: Nutrición
+          - heading "Registro diario de comidas" [level=2] [ref=e8]
+          - paragraph [ref=e9]: Anotá lo que comiste hoy y compará el total contra tu objetivo diario.
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - generic [ref=e12]:
+              - img [ref=e13]
+              - generic [ref=e15]: Calorías
+              - link [ref=e16] [cursor=pointer]:
+                - /url: /configuracion
+                - img
+            - generic [ref=e17]:
+              - generic [ref=e18]:
+                - generic [ref=e19]: "0"
+                - generic [ref=e20]: consumidas
+              - generic [ref=e22]:
+                - img [ref=e23]
+                - generic [ref=e27]:
+                  - generic [ref=e28]: "2724"
+                  - generic [ref=e29]: objetivo
+              - generic [ref=e30]:
+                - generic [ref=e31]: "2724"
+                - generic [ref=e32]: restantes
+          - generic [ref=e33]:
+            - generic [ref=e34]:
+              - img [ref=e35]
+              - generic [ref=e40]: Macros
+            - generic [ref=e41]:
+              - generic [ref=e42]:
+                - generic [ref=e44]:
+                  - img [ref=e45]
+                  - img [ref=e49]
+                - generic [ref=e53]:
+                  - paragraph [ref=e54]: Proteína
+                  - paragraph [ref=e56]: 0g/172g
+                  - paragraph [ref=e57]: 0%
+              - generic [ref=e58]:
+                - generic [ref=e60]:
+                  - img [ref=e61]
+                  - img [ref=e65]
+                - generic [ref=e74]:
+                  - paragraph [ref=e75]: Carbohidratos
+                  - paragraph [ref=e77]: 0g/351g
+                  - paragraph [ref=e78]: 0%
+              - generic [ref=e79]:
+                - generic [ref=e81]:
+                  - img [ref=e82]
+                  - img [ref=e86]
+                - generic [ref=e88]:
+                  - paragraph [ref=e89]: Grasas
+                  - paragraph [ref=e91]: 0g/70g
+                  - paragraph [ref=e92]: 0%
+          - generic [ref=e93]:
+            - generic [ref=e94]:
+              - heading "Comidas de hoy" [level=2] [ref=e95]
+              - button "Nueva" [ref=e96]:
+                - img
+                - text: Nueva
+            - paragraph [ref=e97]: Todavía no creaste comidas hoy. Usá "Nueva" para empezar.
+          - generic [ref=e99]:
+            - img [ref=e100]
+            - generic [ref=e102]:
+              - paragraph [ref=e103]: 0 días seguidos
+              - generic [ref=e104]:
+                - generic [ref=e106]: L
+                - generic [ref=e109]: M
+                - generic [ref=e112]: M
+                - generic [ref=e115]: J
+                - generic [ref=e118]: V
+                - generic [ref=e121]: S
+                - generic [ref=e124]: D
+          - paragraph [ref=e127]: “Cada repetición te acerca a quien quieres ser.”
+    - navigation "Navegación inferior" [ref=e128]:
+      - generic [ref=e129]:
+        - link "Admin" [ref=e130] [cursor=pointer]:
+          - /url: /admin
+          - img [ref=e131]
+          - text: Admin
+        - link "Ejercicios" [ref=e133] [cursor=pointer]:
+          - /url: /admin/ejercicios
+          - img [ref=e134]
+          - text: Ejercicios
+        - link "Rutinas" [ref=e139] [cursor=pointer]:
+          - /url: /admin/rutinas
+          - img [ref=e140]
+          - text: Rutinas
+        - link "Alimentos" [ref=e142] [cursor=pointer]:
+          - /url: /admin/alimentos
+          - img [ref=e143]
+          - text: Alimentos
+        - button "Más" [ref=e148]:
+          - img [ref=e149]
+          - text: Más
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e155] [cursor=pointer]:
+    - img [ref=e156]

@@ -3,16 +3,9 @@
 import { ImageIcon, Search } from "lucide-react";
 import { useState } from "react";
 
-import { FilterSheet } from "@/app/components/shared/FilterSheet";
+import { FilterPanel } from "@/app/components/shared/FilterPanel";
 import { MacroBar } from "@/app/components/shared/MacroBar";
 import { Input } from "@/app/components/ui/Input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/components/ui/Select";
 import {
   Sheet,
   SheetContent,
@@ -20,11 +13,11 @@ import {
   SheetTitle,
 } from "@/app/components/ui/Sheet";
 import {
-  CATEGORY_ACCENT,
-  CATEGORY_GRADIENTS,
-  CATEGORY_ICONS,
+  RECIPE_CATEGORY_ACCENT,
+  RECIPE_CATEGORY_GRADIENTS,
+  RECIPE_CATEGORY_ICONS,
 } from "@/app/lib/nutrition-style";
-import { FOOD_CATEGORIES, FOOD_CATEGORY_LABELS, type Recipe } from "@/app/lib/nutrition-types";
+import { RECIPE_CATEGORIES, RECIPE_CATEGORY_LABELS, type Recipe } from "@/app/lib/nutrition-types";
 import { fadeUp, motion, staggerContainer } from "@/app/components/ui/motion";
 
 type RecipeCatalogClientProps = {
@@ -48,26 +41,10 @@ export function RecipeCatalogClient({ recipes }: RecipeCatalogClientProps) {
     return true;
   });
 
-  const categorySelect = (
-    <Select value={category} onValueChange={setCategory}>
-      <SelectTrigger className="h-12 rounded-xl border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)]">
-        <SelectValue placeholder="Categoría" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="all">Todas las categorías</SelectItem>
-        {FOOD_CATEGORIES.map((value) => (
-          <SelectItem key={value} value={value}>
-            {FOOD_CATEGORY_LABELS[value]}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
-
   return (
     <section className="grid content-start gap-5">
-      <div className="grid gap-3 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)] sm:gap-4">
-        <label className="relative flex h-12 items-center">
+      <div className="flex items-center gap-2">
+        <label className="relative flex h-12 flex-1 items-center">
           <span className="sr-only">Buscar recetas</span>
           <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#7d8697]" />
           <Input
@@ -79,14 +56,20 @@ export function RecipeCatalogClient({ recipes }: RecipeCatalogClientProps) {
           />
         </label>
 
-        <div className="hidden lg:block">{categorySelect}</div>
-
-        <FilterSheet
-          activeCount={category !== "all" ? 1 : 0}
+        <FilterPanel
+          groups={[
+            {
+              label: "Categoría",
+              options: RECIPE_CATEGORIES.map((v) => ({
+                value: v,
+                label: RECIPE_CATEGORY_LABELS[v],
+              })),
+              value: category,
+              onChange: setCategory,
+            },
+          ]}
           onClear={() => setCategory("all")}
-        >
-          {categorySelect}
-        </FilterSheet>
+        />
       </div>
 
       {filtered.length === 0 ? (
@@ -190,7 +173,7 @@ function RecipeDetailSheet({
 
   if (!displayRecipe) return null;
 
-  const Icon = CATEGORY_ICONS[displayRecipe.category];
+  const Icon = RECIPE_CATEGORY_ICONS[displayRecipe.category];
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -204,11 +187,11 @@ function RecipeDetailSheet({
 
           <div
             className="relative flex h-44 shrink-0 items-end p-5"
-            style={{ background: CATEGORY_GRADIENTS[displayRecipe.category] }}
+            style={{ background: RECIPE_CATEGORY_GRADIENTS[displayRecipe.category] }}
           >
             <Icon
               className="absolute right-5 top-5 size-12 opacity-30"
-              style={{ color: CATEGORY_ACCENT[displayRecipe.category] }}
+              style={{ color: RECIPE_CATEGORY_ACCENT[displayRecipe.category] }}
               aria-hidden="true"
             />
             <div>
@@ -216,7 +199,7 @@ function RecipeDetailSheet({
                 {displayRecipe.name}
               </SheetTitle>
               <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#b985ff]">
-                {FOOD_CATEGORY_LABELS[displayRecipe.category]} · {displayRecipe.servings}{" "}
+                {RECIPE_CATEGORY_LABELS[displayRecipe.category]} · {displayRecipe.servings}{" "}
                 {displayRecipe.servings === 1 ? "porción" : "porciones"}
               </p>
             </div>

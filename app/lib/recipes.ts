@@ -1,7 +1,7 @@
 import "server-only";
 
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
-import type { FoodCategory, Recipe, RecipeIngredient } from "@/app/lib/nutrition-types";
+import type { Recipe, RecipeCategory, RecipeIngredient } from "@/app/lib/nutrition-types";
 
 export type AdminRecipeListItem = Recipe & {
   createdAt: string;
@@ -26,7 +26,7 @@ type RecipeRow = {
   name: string;
   description: string | null;
   image_url: string | null;
-  category: FoodCategory;
+  category: RecipeCategory;
   servings: number;
   created_at: string;
   recipe_items: RecipeItemRow[] | null;
@@ -86,7 +86,7 @@ export async function getRecipeById(id: string): Promise<Recipe | null> {
 type RecipeInput = {
   name: string;
   description: string;
-  category: FoodCategory;
+  category: RecipeCategory;
   servings: number;
   ingredients: { foodId: string; grams: number }[];
 };

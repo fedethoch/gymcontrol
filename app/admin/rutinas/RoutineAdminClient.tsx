@@ -22,7 +22,7 @@ import {
 import { toast } from "sonner";
 
 import { deleteRoutineAction, saveRoutineAction } from "@/app/admin/rutinas/actions";
-import { FilterSheet } from "@/app/components/shared/FilterSheet";
+import { FilterPanel } from "@/app/components/shared/FilterPanel";
 import { Badge } from "@/app/components/ui/Badge";
 import { Button } from "@/app/components/ui/Button";
 import { Card, CardContent } from "@/app/components/ui/Card";
@@ -124,8 +124,9 @@ export function RoutineAdminClient({
             (initialRoutines.reduce((sum, routine) => sum + routine.dayCount, 0) / total) * 10,
           ) / 10;
     const activeUsers = initialRoutines.reduce((sum, routine) => sum + routine.usersCount, 0);
+    const withUsers = initialRoutines.filter((r) => r.usersCount > 0).length;
 
-    return { total, avgDays, activeUsers };
+    return { total, avgDays, activeUsers, withUsers };
   }, [initialRoutines]);
 
   const filtered = useMemo(() => {
@@ -217,52 +218,6 @@ export function RoutineAdminClient({
   const hasFilters = search.trim() !== "" || difficultyFilter !== "all" || objectiveFilter !== "all";
   const hasExercises = initialExercises.length > 0;
 
-  const filterSelects = (
-    <>
-      <Select
-        value={difficultyFilter}
-        onValueChange={(value) =>
-          handleFilterChange(setDifficultyFilter, value as RoutineDifficulty | "all")
-        }
-      >
-        <SelectTrigger className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
-          <SelectValue placeholder="Dificultad" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">Todas las dificultades</SelectItem>
-          {ROUTINE_DIFFICULTIES.map((option) => (
-            <SelectItem key={option} value={option}>
-              {ROUTINE_DIFFICULTY_LABELS[option]}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      <Select
-        value={objectiveFilter}
-        onValueChange={(value) =>
-          handleFilterChange(setObjectiveFilter, value as RoutineObjective | "all")
-        }
-      >
-        <SelectTrigger className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
-          <SelectValue placeholder="Objetivo" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">Todos los objetivos</SelectItem>
-          {ROUTINE_OBJECTIVES.map((option) => (
-            <SelectItem key={option} value={option}>
-              {ROUTINE_OBJECTIVE_LABELS[option]}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </>
-  );
-
-  const activeFilterCount = [difficultyFilter, objectiveFilter].filter(
-    (value) => value !== "all",
-  ).length;
-
   return (
     <section className="page-frame dashboard-page-frame">
       <header>
@@ -277,24 +232,13 @@ export function RoutineAdminClient({
 
       <div className="grid grid-cols-2 gap-3">
         <StatTile icon={ClipboardList} value={stats.total} label="Total de rutinas" />
-        <StatTile icon={ChevronDown} value={stats.avgDays} label="Promedio de dias" />
+        <StatTile icon={CalendarDays} value={stats.avgDays} label="Promedio de dias" />
         <StatTile icon={Users} value={stats.activeUsers} label="Usuarios activos" />
+        <StatTile icon={Dumbbell} value={stats.withUsers} label="Con usuarios" />
       </div>
 
-      <Button
-        type="button"
-        className="w-full"
-        onClick={() => {
-          setFormKey((value) => value + 1);
-          setFormTarget({ mode: "create" });
-        }}
-      >
-        <Plus className="size-4" />
-        Nueva rutina
-      </Button>
-
-      <div className="grid gap-3 sm:grid-cols-[1.4fr_1fr_1fr] sm:items-center">
-        <label className="relative block">
+      <div className="flex items-center gap-2">
+        <label className="relative flex-1">
           <span className="sr-only">Buscar rutina</span>
           <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#7d8697]" />
           <Input
@@ -306,17 +250,46 @@ export function RoutineAdminClient({
           />
         </label>
 
-        <div className="hidden lg:contents">{filterSelects}</div>
-
-        <FilterSheet
-          activeCount={activeFilterCount}
+        <FilterPanel
+          groups={[
+            {
+              label: "Dificultad",
+              options: ROUTINE_DIFFICULTIES.map((v) => ({
+                value: v,
+                label: ROUTINE_DIFFICULTY_LABELS[v],
+              })),
+              value: difficultyFilter,
+              onChange: (v) =>
+                handleFilterChange(setDifficultyFilter, v as typeof difficultyFilter),
+            },
+            {
+              label: "Objetivo",
+              options: ROUTINE_OBJECTIVES.map((v) => ({
+                value: v,
+                label: ROUTINE_OBJECTIVE_LABELS[v],
+              })),
+              value: objectiveFilter,
+              onChange: (v) =>
+                handleFilterChange(setObjectiveFilter, v as typeof objectiveFilter),
+            },
+          ]}
           onClear={() => {
             handleFilterChange(setDifficultyFilter, "all");
             handleFilterChange(setObjectiveFilter, "all");
           }}
+        />
+
+        <Button
+          type="button"
+          className="shrink-0"
+          onClick={() => {
+            setFormKey((value) => value + 1);
+            setFormTarget({ mode: "create" });
+          }}
         >
-          {filterSelects}
-        </FilterSheet>
+          <Plus className="size-4" />
+          <span className="hidden sm:inline">Nueva rutina</span>
+        </Button>
       </div>
 
       <Card className="overflow-hidden">
@@ -442,7 +415,7 @@ export function RoutineAdminClient({
             </table>
             </div>
 
-            <div className="grid gap-3 p-4 md:hidden">
+            <div className="grid gap-2 p-3 md:hidden">
               {pageData.map((routine) => {
                 const exercisesPerDay =
                   routine.dayCount === 0 ? 0 : Math.round(routine.itemCount / routine.dayCount);
@@ -450,7 +423,7 @@ export function RoutineAdminClient({
                 return (
                   <div
                     key={routine.id}
-                    className="min-w-0 rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-4"
+                    className="min-w-0 rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-3"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
@@ -514,7 +487,6 @@ export function RoutineAdminClient({
                       </div>
                     </div>
 
-                    <p className="mt-3 text-xs text-[#7d8697]">Creada {routine.createdAtLabel}</p>
                   </div>
                 );
               })}

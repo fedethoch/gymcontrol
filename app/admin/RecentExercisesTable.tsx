@@ -14,20 +14,22 @@ export function RecentExercisesTable({ exercises }: { exercises: AdminExerciseLi
       <TableBody>
         {exercises.map((exercise) => (
           <TableRow key={exercise.id}>
-            <TableCell className="text-white">
+            <TableCell className="py-2.5 text-white">
               <button
                 type="button"
                 onClick={() => setSelectedExercise(exercise)}
                 className="flex items-center gap-3 text-left"
               >
-                <span className="thumb-fitness size-10 rounded-xl border border-[var(--border)]" />
-                <span className="font-medium underline-offset-4 hover:underline">
+                <span className="thumb-fitness size-8 shrink-0 rounded-xl border border-[var(--border)] sm:size-10" />
+                <span className="line-clamp-1 font-medium underline-offset-4 hover:underline">
                   {exercise.name}
                 </span>
               </button>
             </TableCell>
-            <TableCell>{exercise.description}</TableCell>
-            <TableCell>{exercise.createdAtLabel}</TableCell>
+            <TableCell className="max-w-[7rem] truncate py-2.5 sm:max-w-none">
+              {exercise.description}
+            </TableCell>
+            <TableCell className="py-2.5">{exercise.createdAtLabel}</TableCell>
           </TableRow>
         ))}
       </TableBody>

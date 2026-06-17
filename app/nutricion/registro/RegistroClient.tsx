@@ -19,15 +19,15 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-import { TrainingCalendarCard } from "@/app/components/shared/TrainingCalendarCard";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/app/components/ui/Accordion";
+import { MobileHeaderBadgeSync } from "@/app/components/shared/MobileHeader";
 import { Button } from "@/app/components/ui/Button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/Card";
+import { CardTitle } from "@/app/components/ui/Card";
 import {
   Drawer,
   DrawerContent,
@@ -99,7 +99,6 @@ export function RegistroClient({
   );
 
   const streak = calculateStreak(loggedDates, logDate);
-  const daysThisMonth = loggedDates.filter((date) => date.startsWith(logDate.slice(0, 7))).length;
 
   function handleAddDraftItem(foodId: string, measure: FoodMeasure, quantity: number) {
     setDraftItems((current) => [...current, { localId: crypto.randomUUID(), foodId, measure, quantity }]);
@@ -260,12 +259,12 @@ export function RegistroClient({
   );
 
   const newMealIntro = (
-    <div className="flex items-center gap-3">
-      <span className="grid size-11 shrink-0 place-items-center rounded-xl border border-[var(--accent-soft-border)] bg-[var(--accent-soft-surface)] text-[var(--accent-bright)]">
-        <UtensilsCrossed className="size-5" />
+    <div className="flex flex-col items-center gap-2 text-center">
+      <span className="grid size-12 place-items-center rounded-xl border border-[var(--accent-soft-border)] bg-[var(--accent-soft-surface)] text-[var(--accent-bright)]">
+        <UtensilsCrossed className="size-6" />
       </span>
       <div>
-        <CardTitle>Nueva comida</CardTitle>
+        <CardTitle className="text-lg">Nueva comida</CardTitle>
         <p className="mt-0.5 text-sm text-[var(--foreground-muted)]">
           Agregá los alimentos que consumiste y guardá tu comida.
         </p>
@@ -274,7 +273,15 @@ export function RegistroClient({
   );
 
   return (
-    <div className="grid gap-4 sm:gap-6">
+    <div className="grid gap-3">
+      <MobileHeaderBadgeSync
+        badge={{
+          label: String(streak),
+          ariaLabel: `${streak} días de racha de nutrición`,
+          tone: "warm",
+        }}
+      />
+
       <Drawer open={newMealOpen} onOpenChange={setNewMealOpen}>
         <DrawerContent>
           <DrawerHeader>
@@ -288,148 +295,143 @@ export function RegistroClient({
         </DrawerContent>
       </Drawer>
 
-      {/* Resumen nutricional del día */}
-      <Card>
-        <CardHeader className="flex flex-row items-start justify-between gap-3">
-          <div>
-            <CardTitle>Resumen nutricional del día</CardTitle>
-            <p className="text-sm text-[var(--foreground-muted)]">Así vas hoy frente a tu objetivo diario.</p>
-          </div>
-          <Button asChild type="button" variant="outline" size="sm" className="shrink-0">
+      {/* Row 1: Calorías card */}
+      <div className="rounded-2xl bg-[#0e131e] p-3">
+        <div className="mb-2 flex items-center gap-1.5">
+          <Flame className="size-3.5 text-[var(--accent-bright)]" />
+          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#7887a6]">Calorías</span>
+          <Button asChild type="button" variant="outline" size="sm" className="ml-auto h-6 gap-1 border-[rgba(255,255,255,0.1)] px-2 text-[10px]">
             <Link href="/configuracion">
-              <Settings2 className="size-4" />
-              <span className="hidden sm:inline">Editar objetivos</span>
+              <Settings2 className="size-3" />
+              <span className="hidden sm:inline">Editar</span>
             </Link>
           </Button>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4 sm:gap-5">
-          <div className="flex items-center gap-4 sm:gap-6">
+        </div>
+        <div className="grid grid-cols-3 items-center">
+          <div className="flex flex-col items-center">
+            <span className="font-display text-xl font-bold text-white">{totalKcal}</span>
+            <span className="text-[9px] text-[#7887a6]">consumidas</span>
+          </div>
+          <div className="flex justify-center">
             <AnimatedProgressRing
               value={targetKcal > 0 ? Math.min(100, Math.round((totalKcal / targetKcal) * 100)) : 0}
-              size={104}
-              strokeWidth={12}
+              size={72}
+              strokeWidth={8}
               progressColor="var(--accent-bright)"
             >
               <div className="flex flex-col items-center">
-                <Flame className="mb-0.5 size-4 text-[var(--accent-bright)] sm:size-6" />
-                <span className="font-display text-lg font-bold tracking-[-0.04em] text-white sm:text-3xl">{totalKcal}</span>
-                <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-[#7887a6] sm:text-[10px] sm:tracking-[0.18em]">
-                  de {targetKcal} kcal
-                </span>
+                <span className="font-display text-xs font-bold text-white">{targetKcal}</span>
+                <span className="text-[7px] text-[#7887a6]">objetivo</span>
               </div>
             </AnimatedProgressRing>
-
-            <div className="grid w-full flex-1 gap-2 sm:gap-3">
-              <TargetBar
-                icon={Flame}
-                label="Calorías"
-                current={totalKcal}
-                target={targetKcal}
-                unit="kcal"
-                color="var(--accent-bright)"
-              />
-              <TargetBar
-                icon={Beef}
-                label={MACRO_LABELS.protein}
-                current={totalMacros.proteinG}
-                target={targetMacros.proteinG}
-                unit="g"
-                color={MACRO_COLORS.protein}
-              />
-              <TargetBar
-                icon={Wheat}
-                label={MACRO_LABELS.carbs}
-                current={totalMacros.carbsG}
-                target={targetMacros.carbsG}
-                unit="g"
-                color={MACRO_COLORS.carbs}
-              />
-              <TargetBar
-                icon={Droplet}
-                label={MACRO_LABELS.fat}
-                current={totalMacros.fatG}
-                target={targetMacros.fatG}
-                unit="g"
-                color={MACRO_COLORS.fat}
-              />
-            </div>
           </div>
-
-          <div className="grid grid-cols-3 gap-3 border-t border-[var(--border)] pt-3 sm:pt-4">
-            <SummaryStat label="Comidas hoy" value={String(meals.length)} />
-            <SummaryStat label="Promedio diario" value={avgDailyKcal > 0 ? `${avgDailyKcal} kcal` : "—"} />
-            <SummaryStat label="Racha actual" value={`${streak} días`} />
+          <div className="flex flex-col items-center">
+            <span className="font-display text-xl font-bold text-white">{Math.max(0, targetKcal - totalKcal)}</span>
+            <span className="text-[9px] text-[#7887a6]">restantes</span>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {/* Comidas de hoy */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between gap-3">
-          <div>
-            <CardTitle>Comidas de hoy</CardTitle>
-            <p className="text-sm text-[var(--foreground-muted)]">Tus comidas registradas para hoy.</p>
-          </div>
+      {/* Row 2: Macros card */}
+      <div className="rounded-2xl bg-[#0e131e] px-3 py-3">
+        <div className="mb-2 flex items-center gap-1.5">
+          <UtensilsCrossed className="size-3.5 text-[#7887a6]" />
+          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#7887a6]">Macros</span>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {(
+            [
+              { Icon: Beef, label: MACRO_LABELS.protein, value: totalMacros.proteinG, target: targetMacros.proteinG, color: MACRO_COLORS.protein },
+              { Icon: Wheat, label: MACRO_LABELS.carbs, value: totalMacros.carbsG, target: targetMacros.carbsG, color: MACRO_COLORS.carbs },
+              { Icon: Droplet, label: MACRO_LABELS.fat, value: totalMacros.fatG, target: targetMacros.fatG, color: MACRO_COLORS.fat },
+            ] as { Icon: LucideIcon; label: string; value: number; target: number; color: string }[]
+          ).map(({ Icon: MacroIcon, label, value, target, color }) => {
+            const pct = target > 0 ? Math.min(100, Math.round((value / target) * 100)) : 0;
+            return (
+              <div key={label} className="flex items-start gap-1.5">
+                <div className="shrink-0">
+                  <AnimatedProgressRing value={pct} size={46} strokeWidth={5} progressColor={color}>
+                    <MacroIcon className="size-3.5" style={{ color }} />
+                  </AnimatedProgressRing>
+                </div>
+                <div className="min-w-0 flex-1 pt-0.5 text-center">
+                  <p className="truncate text-[8px] font-bold text-white">{label}</p>
+                  <p className="mt-0.5 pl-1 text-left text-[9px] font-bold text-white">{Math.round(value)}g/{Math.round(target)}g</p>
+                  <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-[#1a2235]">
+                    <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }} />
+                  </div>
+                  <p className="mt-1 text-[8px] text-[#7887a6]">{pct}%</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Row 3: Comidas de hoy */}
+      <div className="rounded-2xl bg-[#0e131e] p-3">
+        <div className="mb-3 flex items-center justify-between gap-2">
+          <h2 className="font-display text-base font-semibold text-white">Comidas de hoy</h2>
           <Button type="button" size="sm" className="shrink-0" onClick={() => setNewMealOpen(true)}>
             <Plus className="size-4" />
-            Nueva comida
+            Nueva
           </Button>
-        </CardHeader>
-        <CardContent>
-          {meals.length === 0 ? (
-            <p className="text-sm text-[#7887a6]">
-              Todavía no creaste comidas hoy. Usá &quot;Nueva comida&quot; para empezar.
-            </p>
-          ) : (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {meals.map((meal) => (
-                <MealCard
-                  key={meal.id}
-                  meal={meal}
-                  foods={foods}
-                  isEditing={editingMealId === meal.id}
-                  onToggleEdit={() => setEditingMealId((current) => (current === meal.id ? null : meal.id))}
-                  onDeleteMeal={() => handleDeleteMeal(meal.id)}
-                  onRenameMeal={(name) => handleRenameMeal(meal.id, name)}
-                  onAddItem={(foodId, measure, quantity) => handleAddItem(meal.id, foodId, measure, quantity)}
-                  onDeleteItem={handleDeleteItem}
-                  onUpdateItem={handleUpdateItem}
-                />
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+        </div>
+        {meals.length === 0 ? (
+          <p className="text-sm text-[#7887a6]">
+            Todavía no creaste comidas hoy. Usá &quot;Nueva&quot; para empezar.
+          </p>
+        ) : (
+          <div className="grid gap-3 sm:grid-cols-2">
+            {meals.map((meal) => (
+              <MealCard
+                key={meal.id}
+                meal={meal}
+                foods={foods}
+                isEditing={editingMealId === meal.id}
+                onToggleEdit={() => setEditingMealId((current) => (current === meal.id ? null : meal.id))}
+                onDeleteMeal={() => handleDeleteMeal(meal.id)}
+                onRenameMeal={(name) => handleRenameMeal(meal.id, name)}
+                onAddItem={(foodId, measure, quantity) => handleAddItem(meal.id, foodId, measure, quantity)}
+                onDeleteItem={handleDeleteItem}
+                onUpdateItem={handleUpdateItem}
+              />
+            ))}
+          </div>
+        )}
+      </div>
 
-      {/* Constancia + tip */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:items-stretch">
-        <Card className="flex h-full flex-col">
-          <CardHeader>
-            <div className="flex items-center gap-2 sm:gap-3">
-              <span className="grid size-9 shrink-0 place-items-center rounded-xl border border-[var(--accent-soft-border)] bg-[var(--accent-soft-surface)] text-[var(--accent-bright)] sm:size-11">
-                <UtensilsCrossed className="size-4 sm:size-5" />
-              </span>
-              <div className="min-w-0">
-                <CardTitle className="text-sm sm:text-base">Constancia nutricional</CardTitle>
-                <p className="mt-0.5 hidden text-sm text-[var(--foreground-muted)] sm:block">
-                  Tus últimas 10 semanas registrando comidas.
-                </p>
-              </div>
+      {/* Row 4: Constancia */}
+      <div className="rounded-2xl bg-[#0e131e] p-3">
+        <div className="flex items-start gap-3">
+          <Flame className="mt-0.5 size-6 shrink-0 text-orange-400" />
+          <div className="flex-1">
+            <p className="font-display font-semibold text-white">{streak} días seguidos</p>
+            <div className="mt-2 flex justify-between">
+              {(["L","M","M","J","V","S","D"] as const).map((letter, i) => {
+                const d = new Date();
+                const todayDow = (d.getDay() + 6) % 7;
+                d.setDate(d.getDate() - todayDow + i);
+                const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+                const logged = loggedDates.includes(key);
+                return (
+                  <div key={i} className="flex flex-col items-center gap-1">
+                    <span className="text-[9px] font-medium text-[#7887a6]">{letter}</span>
+                    <div className={`size-4 rounded-full border-2 ${logged ? "border-orange-400 bg-orange-400" : "border-[#3a4560] bg-transparent"}`} />
+                  </div>
+                );
+              })}
             </div>
-          </CardHeader>
-          <CardContent className="flex flex-1 flex-col gap-3 sm:gap-5 sm:flex-row sm:items-center">
-            <div className="flex shrink-0 gap-3 sm:flex-col sm:gap-4">
-              <SummaryStat label="Racha actual" value={`${streak} días`} />
-              <SummaryStat label="Días este mes" value={String(daysThisMonth)} />
-            </div>
-            <div className="h-px w-full bg-[var(--border)] sm:h-auto sm:w-px" />
-            <div className="min-w-0 flex-1">
-              <TrainingCalendarCard completedDates={new Set(loggedDates)} bare />
-            </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
+      </div>
 
-        <NutritionTipCard totalKcal={totalKcal} targetKcal={targetKcal} mealsCount={meals.length} />
+      {/* Row 5: Frase motivadora (placeholder bg) */}
+      <div className="relative flex min-h-[72px] items-center justify-center overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#1a1535_0%,#0e1528_100%)] px-4 py-4">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(124,58,237,0.25),transparent_70%)]" />
+        <p className="relative text-center text-sm font-semibold italic text-white/80">
+          &ldquo;Cada repetición te acerca a quien quieres ser.&rdquo;
+        </p>
       </div>
     </div>
   );
@@ -615,7 +617,7 @@ function MealCard({
   );
 
   return (
-    <div className="flex h-full flex-col gap-3 rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-4">
+    <div className="flex h-full flex-col gap-3 rounded-2xl bg-[#0e131e] p-4">
       {/* Top: nombre + kcal */}
       <div className="flex items-center justify-between gap-2">
         {isEditing ? (
@@ -908,20 +910,18 @@ function NutritionTipCard({
   const { title, message } = getNutritionTip(pct, mealsCount, remainingKcal);
 
   return (
-    <Card className="flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(13,19,34,0.96)_0%,rgba(8,12,20,0.98)_100%)] shadow-[0_18px_48px_rgba(0,0,0,0.24)]">
-      <CardContent className="flex flex-1 flex-col gap-2 p-3 sm:gap-4 sm:p-6">
-        <div className="flex items-center gap-2 sm:gap-4">
-          <span
-            aria-hidden="true"
-            className="grid size-9 shrink-0 place-items-center rounded-xl border border-[#34245b] bg-[#251640] text-[#b987ff] sm:size-12"
-          >
-            <Flame className="size-4 sm:size-6" />
-          </span>
-          <h2 className="font-display text-sm font-semibold leading-tight text-white sm:text-xl">{title}</h2>
-        </div>
-        <p className="line-clamp-3 text-xs leading-5 text-[#c6cede] sm:line-clamp-none sm:text-sm sm:leading-6">{message}</p>
-      </CardContent>
-    </Card>
+    <div className="flex h-full flex-col rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-3">
+      <div className="flex items-center gap-2">
+        <span
+          aria-hidden="true"
+          className="grid size-9 shrink-0 place-items-center rounded-xl border border-[#34245b] bg-[#251640] text-[#b987ff]"
+        >
+          <Flame className="size-4" />
+        </span>
+        <h2 className="font-display text-sm font-semibold leading-tight text-white">{title}</h2>
+      </div>
+      <p className="mt-2 text-xs leading-5 text-[#c6cede]">{message}</p>
+    </div>
   );
 }
 
@@ -929,27 +929,27 @@ function getNutritionTip(pct: number, mealsCount: number, remainingKcal: number)
   if (mealsCount === 0) {
     return {
       title: "Empezá tu día",
-      message: "Todavía no registraste comidas hoy. Agregá la primera con \"Nueva comida\" para arrancar a sumar contra tu objetivo.",
+      message: "Sin comidas registradas. Usá \"Nueva comida\" para arrancar.",
     };
   }
 
   if (pct >= 100) {
     return {
       title: "Objetivo alcanzado",
-      message: `Llegaste al ${pct}% de tu objetivo calórico con ${mealsCount} comida${mealsCount === 1 ? "" : "s"} registrada${mealsCount === 1 ? "" : "s"}. Buen trabajo hoy.`,
+      message: `Llegaste al ${pct}% con ${mealsCount} comida${mealsCount === 1 ? "" : "s"}. ¡Buen trabajo!`,
     };
   }
 
   if (pct >= 70) {
     return {
       title: "Seguí así",
-      message: `🔥 Vas ${pct}% de tu objetivo. Te faltan ${remainingKcal} kcal, alcanza con una comida más para cerrar el día equilibrado.`,
+      message: `Vas en ${pct}%. Te faltan ${remainingKcal} kcal para cerrar el día.`,
     };
   }
 
   return {
     title: "Vas en camino",
-    message: `Llevás ${pct}% de tu objetivo diario (${remainingKcal} kcal restantes). Planificá tu próxima comida para mantener el ritmo.`,
+    message: `Llevás ${pct}% · ${remainingKcal} kcal restantes.`,
   };
 }
 

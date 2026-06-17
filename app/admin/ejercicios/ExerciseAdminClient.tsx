@@ -29,7 +29,7 @@ import { toast } from "sonner";
 
 import { deleteExerciseAction, saveExerciseAction } from "@/app/admin/ejercicios/actions";
 import { ExerciseDetailModal } from "@/app/components/shared/ExerciseDetailModal";
-import { FilterSheet } from "@/app/components/shared/FilterSheet";
+import { FilterPanel } from "@/app/components/shared/FilterPanel";
 import { Badge } from "@/app/components/ui/Badge";
 import { Button } from "@/app/components/ui/Button";
 import { Card, CardContent } from "@/app/components/ui/Card";
@@ -119,8 +119,11 @@ export function ExerciseAdminClient({ initialExercises }: ExerciseAdminClientPro
     const groups = new Set(
       initialExercises.map((exercise) => exercise.muscleGroup).filter(Boolean),
     ).size;
+    const equip = new Set(
+      initialExercises.map((exercise) => exercise.equipment).filter(Boolean),
+    ).size;
 
-    return { total: initialExercises.length, thisWeek, groups };
+    return { total: initialExercises.length, thisWeek, groups, equip };
   }, [initialExercises, weekAgo]);
 
   const filtered = useMemo(() => {
@@ -207,40 +210,6 @@ export function ExerciseAdminClient({ initialExercises }: ExerciseAdminClientPro
 
   const hasFilters = search.trim() !== "" || muscleFilter !== "all" || equipFilter !== "all";
 
-  const filterSelects = (
-    <>
-      <Select value={muscleFilter} onValueChange={(value) => handleFilterChange(setMuscleFilter, value)}>
-        <SelectTrigger className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
-          <SelectValue placeholder="Grupo muscular" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">Todos los grupos</SelectItem>
-          {EXERCISE_MUSCLE_GROUPS.map((group) => (
-            <SelectItem key={group} value={group}>
-              {muscleLabel(group)}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      <Select value={equipFilter} onValueChange={(value) => handleFilterChange(setEquipFilter, value)}>
-        <SelectTrigger className="h-11 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
-          <SelectValue placeholder="Equipamiento" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">Todo el equipamiento</SelectItem>
-          {EXERCISE_EQUIPMENT_OPTIONS.map((option) => (
-            <SelectItem key={option} value={option}>
-              {equipmentLabel(option)}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </>
-  );
-
-  const activeFilterCount = [muscleFilter, equipFilter].filter((value) => value !== "all").length;
-
   return (
     <section className="page-frame dashboard-page-frame">
       <header>
@@ -257,22 +226,11 @@ export function ExerciseAdminClient({ initialExercises }: ExerciseAdminClientPro
         <StatTile icon={Dumbbell} value={stats.total} label="Total de ejercicios" />
         <StatTile icon={Sparkles} value={stats.thisWeek} label="Agregados esta semana" />
         <StatTile icon={Target} value={stats.groups} label="Grupos musculares" />
+        <StatTile icon={Tags} value={stats.equip} label="Tipos de equipamiento" />
       </div>
 
-      <Button
-        type="button"
-        className="w-full"
-        onClick={() => {
-          setFormKey((value) => value + 1);
-          setDrawer({ mode: "create" });
-        }}
-      >
-        <Plus className="size-4" />
-        Nuevo ejercicio
-      </Button>
-
-      <div className="grid gap-3 sm:grid-cols-[1.4fr_1fr_1fr] sm:items-center">
-        <label className="relative block">
+      <div className="flex items-center gap-2">
+        <label className="relative flex-1">
           <span className="sr-only">Buscar ejercicio</span>
           <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#7d8697]" />
           <Input
@@ -284,17 +242,44 @@ export function ExerciseAdminClient({ initialExercises }: ExerciseAdminClientPro
           />
         </label>
 
-        <div className="hidden lg:contents">{filterSelects}</div>
-
-        <FilterSheet
-          activeCount={activeFilterCount}
+        <FilterPanel
+          groups={[
+            {
+              label: "Grupo muscular",
+              options: EXERCISE_MUSCLE_GROUPS.map((g) => ({
+                value: g,
+                label: muscleLabel(g) ?? g,
+              })),
+              value: muscleFilter,
+              onChange: (v) => handleFilterChange(setMuscleFilter, v),
+            },
+            {
+              label: "Equipamiento",
+              options: EXERCISE_EQUIPMENT_OPTIONS.map((o) => ({
+                value: o,
+                label: equipmentLabel(o) ?? o,
+              })),
+              value: equipFilter,
+              onChange: (v) => handleFilterChange(setEquipFilter, v),
+            },
+          ]}
           onClear={() => {
             handleFilterChange(setMuscleFilter, "all");
             handleFilterChange(setEquipFilter, "all");
           }}
+        />
+
+        <Button
+          type="button"
+          className="shrink-0"
+          onClick={() => {
+            setFormKey((value) => value + 1);
+            setDrawer({ mode: "create" });
+          }}
         >
-          {filterSelects}
-        </FilterSheet>
+          <Plus className="size-4" />
+          <span className="hidden sm:inline">Nuevo ejercicio</span>
+        </Button>
       </div>
 
       <Card className="overflow-hidden">

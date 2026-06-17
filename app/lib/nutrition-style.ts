@@ -1,6 +1,6 @@
-import { Beef, Droplet, Leaf, UtensilsCrossed, Wheat } from "lucide-react";
+import { Apple, Beef, Droplet, Leaf, Sunrise, UtensilsCrossed, Wheat } from "lucide-react";
 
-import type { FoodCategory } from "@/app/lib/nutrition-types";
+import type { FoodCategory, RecipeCategory } from "@/app/lib/nutrition-types";
 
 /**
  * Paleta fija de macronutrientes. Se usa en toda la seccion de nutricion
@@ -41,4 +41,23 @@ export const CATEGORY_ACCENT: Record<FoodCategory, string> = {
   fat: MACRO_COLORS.fat,
   vegetable: "#7adf9c",
   mixed: "#b995ff",
+};
+
+// Recipe-specific category maps (meal-type: desayuno/comida/snack)
+export const RECIPE_CATEGORY_ICONS: Record<RecipeCategory, typeof Beef> = {
+  desayuno: Sunrise,
+  comida: UtensilsCrossed,
+  snack: Apple,
+};
+
+export const RECIPE_CATEGORY_GRADIENTS: Record<RecipeCategory, string> = {
+  desayuno: "linear-gradient(140deg,#3a2c08 0%,#1e1a10 50%,#0a0906 100%)",
+  comida: "linear-gradient(140deg,#3a1a08 0%,#1e1410 50%,#0a0806 100%)",
+  snack: "linear-gradient(140deg,#0e2614 0%,#0d1a14 50%,#070a0a 100%)",
+};
+
+export const RECIPE_CATEGORY_ACCENT: Record<RecipeCategory, string> = {
+  desayuno: "#f5c518",
+  comida: "#f4874b",
+  snack: "#4cd38b",
 };

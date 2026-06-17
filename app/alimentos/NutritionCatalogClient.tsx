@@ -4,14 +4,8 @@ import { Search } from "lucide-react";
 import { useState } from "react";
 
 import { MacroBar } from "@/app/components/shared/MacroBar";
+import { FilterPanel } from "@/app/components/shared/FilterPanel";
 import { Input } from "@/app/components/ui/Input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/components/ui/Select";
 import {
   Sheet,
   SheetContent,
@@ -49,8 +43,8 @@ export function NutritionCatalogClient({ foods }: NutritionCatalogClientProps) {
 
   return (
     <section className="grid content-start gap-5">
-      <div className="grid gap-4 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)]">
-        <label className="relative flex h-12 items-center">
+      <div className="flex items-center gap-2">
+        <label className="relative flex h-12 flex-1 items-center">
           <span className="sr-only">Buscar alimentos</span>
           <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#7d8697]" />
           <Input
@@ -62,19 +56,20 @@ export function NutritionCatalogClient({ foods }: NutritionCatalogClientProps) {
           />
         </label>
 
-        <Select value={category} onValueChange={setCategory}>
-          <SelectTrigger className="h-12 rounded-xl border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)]">
-            <SelectValue placeholder="Categoría" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todas las categorías</SelectItem>
-            {FOOD_CATEGORIES.map((value) => (
-              <SelectItem key={value} value={value}>
-                {FOOD_CATEGORY_LABELS[value]}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <FilterPanel
+          groups={[
+            {
+              label: "Categoría",
+              options: FOOD_CATEGORIES.map((v) => ({
+                value: v,
+                label: FOOD_CATEGORY_LABELS[v],
+              })),
+              value: category,
+              onChange: setCategory,
+            },
+          ]}
+          onClear={() => setCategory("all")}
+        />
       </div>
 
       {filtered.length === 0 ? (

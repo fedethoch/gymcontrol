@@ -1,0 +1,16 @@
+[    1203ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[    1220ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[    1371ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[    1459ms] [LOG] [Fast Refresh] done in 207ms @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[   40111ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[   40802ms] [LOG] [Fast Refresh] done in 805ms @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[  115768ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[  116035ms] [LOG] [Fast Refresh] done in 361ms @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[  116593ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[  117053ms] [LOG] [Fast Refresh] done in 564ms @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[  121958ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[  122205ms] [LOG] [Fast Refresh] done in 338ms @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[  122712ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[  123110ms] [LOG] [Fast Refresh] done in 500ms @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[  123246ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[  123263ms] [LOG] [Fast Refresh] done in 121ms @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477

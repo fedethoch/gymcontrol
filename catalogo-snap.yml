@@ -1,0 +1,88 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - link "GC GymControl Catálogo" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: GC
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: GymControl
+          - paragraph [ref=e9]: Catálogo
+      - button "Abrir navegación" [ref=e10]:
+        - img
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: Catalogo
+          - heading "Catalogo de rutinas" [level=2] [ref=e16]
+          - paragraph [ref=e17]: Explora rutinas disponibles y prepara el guardado.
+        - generic [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - generic [ref=e22]: Buscar rutinas
+              - img
+              - searchbox "Buscar rutinas" [ref=e23]
+            - button "Filtros" [ref=e25]:
+              - img
+              - text: Filtros
+          - generic [ref=e26]:
+            - article [ref=e28]:
+              - img "qa rutina 829015 editada" [ref=e30]
+              - generic [ref=e32]:
+                - generic [ref=e33]:
+                  - generic [ref=e34]: 2 dias
+                  - generic [ref=e35]: /
+                  - generic [ref=e36]: 3 filas
+                - generic [ref=e37]:
+                  - heading "qa rutina 829015 editada" [level=3] [ref=e38]
+                  - paragraph [ref=e39]: Rutina QA G11 con dos dias y multiples filas.
+                - link "Ver rutina" [ref=e40] [cursor=pointer]:
+                  - /url: /catalogo/rutinas/479d079f-12e8-4283-b5fa-749267db8aa7
+                  - text: Ver rutina
+                  - img
+            - article [ref=e42]:
+              - img "test rutina" [ref=e44]
+              - generic [ref=e46]:
+                - generic [ref=e47]:
+                  - generic [ref=e48]: 2 dias
+                  - generic [ref=e49]: /
+                  - generic [ref=e50]: 3 filas
+                - generic [ref=e51]:
+                  - heading "test rutina" [level=3] [ref=e52]
+                  - paragraph [ref=e53]: test
+                - link "Ver rutina" [ref=e54] [cursor=pointer]:
+                  - /url: /catalogo/rutinas/a4a9ba57-b6ab-4850-8906-13b384d4ac86
+                  - text: Ver rutina
+                  - img
+          - generic [ref=e55]:
+            - button "Pagina anterior" [disabled]:
+              - img
+              - generic: Pagina anterior
+            - button "1" [ref=e57]
+            - button "Pagina siguiente" [disabled]:
+              - img
+              - generic: Pagina siguiente
+    - navigation "Navegación inferior" [ref=e58]:
+      - generic [ref=e59]:
+        - link "Admin" [ref=e60] [cursor=pointer]:
+          - /url: /admin
+          - img [ref=e61]
+          - text: Admin
+        - link "Ejercicios" [ref=e63] [cursor=pointer]:
+          - /url: /admin/ejercicios
+          - img [ref=e64]
+          - text: Ejercicios
+        - link "Rutinas" [ref=e69] [cursor=pointer]:
+          - /url: /admin/rutinas
+          - img [ref=e70]
+          - text: Rutinas
+        - link "Alimentos" [ref=e72] [cursor=pointer]:
+          - /url: /admin/alimentos
+          - img [ref=e73]
+          - text: Alimentos
+        - button "Más" [ref=e78]:
+          - img [ref=e79]
+          - text: Más
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e85] [cursor=pointer]:
+    - img [ref=e86]
+  - alert [ref=e89]

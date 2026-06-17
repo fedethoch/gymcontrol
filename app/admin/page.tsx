@@ -5,9 +5,7 @@ import {
   ClipboardList,
   Dumbbell,
   LayoutGrid,
-  Pencil,
   Plus,
-  UserPlus,
   Users,
 } from "lucide-react";
 
@@ -15,8 +13,8 @@ import {
   getAdminStats,
   getManagementSummary,
   getRecentActivity,
-  type RecentActivityKind,
 } from "@/app/lib/admin-stats";
+import { RecentActivityTable } from "@/app/admin/RecentActivityTable";
 import { RecentExercisesTable } from "@/app/admin/RecentExercisesTable";
 import { listAdminExercises } from "@/app/lib/exercises";
 import { listAdminRoutines } from "@/app/lib/routines";
@@ -31,13 +29,10 @@ import {
 import { SectionEyebrow } from "@/app/components/ui/SectionEyebrow";
 import {
   Table,
-  TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/app/components/ui/Table";
-
 const DIFFICULTY_BADGE_VARIANT: Record<RoutineDifficulty, "accent" | "neutral" | "success"> = {
   intermedio: "accent",
   avanzado: "neutral",
@@ -50,14 +45,6 @@ const quickActions = [
   { href: "/catalogo", icon: LayoutGrid, label: "Ver catalogo admin" },
 ];
 
-const ACTIVITY_ICONS: Record<RecentActivityKind, typeof Plus> = {
-  rutina_nueva: Plus,
-  ejercicio_nuevo: Dumbbell,
-  rutina_actualizada: Pencil,
-  usuario_nuevo: UserPlus,
-  rutina_guardada: Bookmark,
-};
-
 export default async function AdminPage() {
   const [stats, latestExercises, latestRoutines, managementSummary, recentActivity] =
     await Promise.all([
@@ -65,10 +52,10 @@ export default async function AdminPage() {
       listAdminExercises(),
       listAdminRoutines(),
       getManagementSummary(),
-      getRecentActivity(6),
+      getRecentActivity(8),
     ]);
 
-  const exercises = latestExercises.slice(0, 4);
+  const exercises = latestExercises.slice(0, 3);
   const routines = latestRoutines.slice(0, 3);
 
   const statTiles = [
@@ -126,40 +113,12 @@ export default async function AdminPage() {
               </div>
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow className="hover:bg-transparent">
-                  <TableHead>Accion</TableHead>
-                  <TableHead>Detalle</TableHead>
-                  <TableHead>Fecha</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {recentActivity.map((entry, index) => {
-                  const Icon = ACTIVITY_ICONS[entry.kind];
-
-                  return (
-                    <TableRow key={`${entry.kind}-${entry.at}-${index}`}>
-                      <TableCell className="text-white">
-                        <div className="flex items-center gap-3">
-                          <span className="grid size-8 shrink-0 place-items-center rounded-[9px] border border-[#5b2ab3] bg-[#281a45] text-[var(--accent-bright)]">
-                            <Icon className="size-3.5" />
-                          </span>
-                          <span className="font-medium">{entry.action}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell>{entry.detail}</TableCell>
-                      <TableCell>{formatActivityDate(entry.at)}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+            <RecentActivityTable activities={recentActivity} />
           )}
         </CardContent>
       </Card>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-2 gap-4">
         <Card className="flex flex-1 flex-col overflow-hidden">
           <CardHeader className="border-b border-[var(--border)] py-3">
             <CardTitle>Acciones rapidas</CardTitle>
@@ -212,7 +171,7 @@ export default async function AdminPage() {
         </Card>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Card className="flex h-full flex-col overflow-hidden">
           <CardHeader className="border-b border-[var(--border)] py-3">
             <CardTitle>Ultimos ejercicios agregados</CardTitle>
@@ -246,14 +205,14 @@ export default async function AdminPage() {
             href="/admin/ejercicios"
             className="mt-auto flex items-center justify-center gap-1.5 border-t border-[var(--border)] py-3 text-sm font-semibold text-[var(--accent-bright)] transition-colors hover:text-white"
           >
-            Ver todos los ejercicios
+            Ver todos
             <ChevronRight className="size-4" />
           </Link>
         </Card>
 
         <Card className="flex h-full flex-col overflow-hidden">
           <CardHeader className="border-b border-[var(--border)] py-3">
-            <CardTitle>Ultimas rutinas</CardTitle>
+            <CardTitle>Ultimas rutinas agregadas</CardTitle>
           </CardHeader>
           <CardContent className="p-0 sm:p-0">
           {routines.length === 0 ? (
@@ -295,36 +254,11 @@ export default async function AdminPage() {
           href="/admin/rutinas"
           className="mt-auto flex items-center justify-center gap-1.5 border-t border-[var(--border)] py-3 text-sm font-semibold text-[var(--accent-bright)] transition-colors hover:text-white"
         >
-          Ver todas las rutinas
+          Ver todas
           <ChevronRight className="size-4" />
         </Link>
         </Card>
       </div>
     </section>
   );
-}
-
-function formatActivityDate(value: string) {
-  const date = new Date(value);
-  const now = new Date();
-  const dayMs = 24 * 60 * 60 * 1000;
-  const diffDays = Math.floor((startOfDay(now).getTime() - startOfDay(date).getTime()) / dayMs);
-
-  if (diffDays === 0) {
-    return "Hoy";
-  }
-
-  if (diffDays === 1) {
-    return "Ayer";
-  }
-
-  return new Intl.DateTimeFormat("es-AR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(date);
-}
-
-function startOfDay(date: Date) {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }

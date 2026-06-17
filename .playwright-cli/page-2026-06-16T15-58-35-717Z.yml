@@ -1,0 +1,80 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - main [ref=e4]:
+      - generic [ref=e5]:
+        - heading "Inicio" [level=1] [ref=e7]
+        - generic [ref=e8]:
+          - paragraph [ref=e9]: "Hoy toca:"
+          - heading "Dia 1 · Dia QA 1" [level=2] [ref=e10]:
+            - generic [ref=e11]: Dia 1
+            - text: · Dia QA 1
+          - link "Comenzar" [ref=e13] [cursor=pointer]:
+            - /url: /dashboard/rutinas/dia?savedRoutineId=4292766a-1eba-4ed0-8df2-d028a08905d1&day=1
+        - generic [ref=e14]:
+          - generic [ref=e16]:
+            - generic [ref=e17]:
+              - img [ref=e18]
+              - generic [ref=e20]: Nutrición
+            - generic [ref=e22]:
+              - img [ref=e23]
+              - generic [ref=e27]:
+                - generic [ref=e28]: "0"
+                - generic [ref=e29]: kcal
+            - paragraph [ref=e30]: 2724 kcal restantes
+            - generic [ref=e31]:
+              - generic [ref=e34]: P
+              - generic [ref=e38]: C
+              - generic [ref=e42]: G
+          - generic [ref=e45]:
+            - generic [ref=e46]:
+              - img [ref=e47]
+              - generic [ref=e49]: Carga muscular
+            - generic [ref=e51]:
+              - generic:
+                - generic:
+                  - img
+                - generic:
+                  - img
+              - generic [ref=e118]:
+                - generic [ref=e119]: Baja
+                - generic [ref=e125]: Alta
+          - generic [ref=e127]:
+            - generic [ref=e128]:
+              - img [ref=e129]
+              - generic [ref=e134]: Comidas hoy
+            - generic [ref=e135]:
+              - generic [ref=e136]: "0"
+              - generic [ref=e137]: comidas · 0 kcal
+            - paragraph [ref=e138]: Sin comidas registradas hoy.
+            - link "Ver registro →" [ref=e139] [cursor=pointer]:
+              - /url: /nutricion/registro
+          - generic [ref=e142]:
+            - img [ref=e143]
+            - generic [ref=e145]: Constancia
+          - generic [ref=e187]:
+            - img [ref=e188]
+            - generic [ref=e193]: Nutrición
+    - navigation "Navegación inferior" [ref=e233]:
+      - generic [ref=e234]:
+        - link "Admin" [ref=e235] [cursor=pointer]:
+          - /url: /admin
+          - img [ref=e236]
+          - text: Admin
+        - link "Ejercicios" [ref=e238] [cursor=pointer]:
+          - /url: /admin/ejercicios
+          - img [ref=e239]
+          - text: Ejercicios
+        - link "Rutinas" [ref=e244] [cursor=pointer]:
+          - /url: /admin/rutinas
+          - img [ref=e245]
+          - text: Rutinas
+        - link "Alimentos" [ref=e247] [cursor=pointer]:
+          - /url: /admin/alimentos
+          - img [ref=e248]
+          - text: Alimentos
+        - button "Más" [ref=e253]:
+          - img [ref=e254]
+          - text: Más
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e260] [cursor=pointer]:
+    - img [ref=e261]

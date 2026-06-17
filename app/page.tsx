@@ -1,21 +1,25 @@
 import Link from "next/link";
 import {
-  CalendarDays,
+  CalendarRange,
   Dumbbell,
   Flame,
-  Repeat2,
-  TrendingUp,
+  Image as ImageIcon,
+  UtensilsCrossed,
+  Zap,
 } from "lucide-react";
 
-import { Badge } from "@/app/components/ui/Badge";
+import { BodyMuscleFigure } from "@/app/components/shared/BodyMuscleFigure";
+import { NutritionCalendarCard } from "@/app/components/shared/NutritionCalendarCard";
+import { TrainingCalendarCard } from "@/app/components/shared/TrainingCalendarCard";
 import { Button } from "@/app/components/ui/Button";
-import { Card, CardContent } from "@/app/components/ui/Card";
 import { fadeUp, MotionDiv, MotionSection, staggerContainer } from "@/app/components/ui/motion";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
-import { TrainingCalendarCard } from "@/app/components/shared/TrainingCalendarCard";
-import { WeeklyAttendanceCard } from "@/app/components/shared/WeeklyAttendanceCard";
 import { requireUser } from "@/app/lib/auth";
-import { ROUTINE_DIFFICULTY_LABELS } from "@/app/lib/routine-metadata";
+import { getLoggedDatesForUser, getMealLogForDate, getLocalTrainingDate } from "@/app/lib/meal-logs";
+import { calculateNutritionPlan } from "@/app/lib/nutrition-calc";
+import { MOCK_PROFILE_DEFAULTS } from "@/app/lib/nutrition-mock";
+import { getNutritionProfile } from "@/app/lib/nutrition-profile";
+import type { Macros } from "@/app/lib/nutrition-types";
 import {
   getSavedRoutineByIdForUser,
   listSavedRoutinesForUser,
@@ -27,11 +31,19 @@ import {
 
 export default async function Home() {
   const auth = await requireUser();
-  const savedRoutines = await listSavedRoutinesForUser(auth.user.id);
+  const logDate = getLocalTrainingDate();
+
+  const [savedRoutines, mealLog, nutritionProfile, nutritionLoggedDates] = await Promise.all([
+    listSavedRoutinesForUser(auth.user.id),
+    getMealLogForDate({ userId: auth.user.id, logDate }),
+    getNutritionProfile(auth.user.id),
+    getLoggedDatesForUser({ userId: auth.user.id, days: 70 }),
+  ]);
+
   const activeRoutineListItem =
     savedRoutines.find((routine) => routine.isActive) ?? savedRoutines[0] ?? null;
 
-  const [activeRoutine, weeklySummaries] = activeRoutineListItem
+  const [activeRoutine, weeklySummaries, completedTrainingDates] = activeRoutineListItem
     ? await Promise.all([
         getSavedRoutineByIdForUser({
           savedRoutineId: activeRoutineListItem.id,
@@ -42,328 +54,313 @@ export default async function Home() {
           savedRoutineIds: [activeRoutineListItem.id],
           plannedDaysBySavedRoutineId: { [activeRoutineListItem.id]: activeRoutineListItem.dayCount },
         }),
+        getCompletedTrainingDates({
+          userId: auth.user.id,
+          savedRoutineId: activeRoutineListItem.id,
+          days: 70,
+        }),
       ])
-    : [null, {}];
+    : [null, {}, new Set<string>()];
+
+  const plan = nutritionProfile?.plan ?? calculateNutritionPlan(MOCK_PROFILE_DEFAULTS);
 
   const totalDays = activeRoutine?.days.length ?? 0;
   const weeklySummary = activeRoutine ? weeklySummaries[activeRoutine.id] : null;
   const completedDayIds = new Set(weeklySummary?.completedRoutineDayIds ?? []);
-  const completedDayCount = weeklySummary?.completedDayCount ?? 0;
-  const currentStreak = weeklySummary?.currentStreak ?? 0;
-  const weeklyProgressPercent =
-    totalDays > 0 ? Math.min(100, Math.round((completedDayCount / totalDays) * 100)) : 0;
   const nextPendingDay =
     activeRoutine?.days.find((day) => !completedDayIds.has(day.id)) ?? null;
+
   const primaryHref =
     activeRoutine && nextPendingDay
       ? `/dashboard/rutinas/dia?savedRoutineId=${activeRoutine.id}&day=${nextPendingDay.dayOrder}`
       : activeRoutine
         ? "/dashboard/rutinas"
         : "/dashboard";
-  const primaryCtaLabel = activeRoutine
-    ? nextPendingDay
-      ? "Ver entrenamiento"
-      : "Ver semana activa"
-    : "Ir a Mis rutinas";
-  const activeRoutineStatus = "Activa";
-  const firstRoutineDay = activeRoutine?.days[0] ?? null;
-  const lastRoutineDay =
-    activeRoutine && activeRoutine.days.length > 0
-      ? activeRoutine.days[activeRoutine.days.length - 1]
-      : null;
-  const activeDifficultyLabel = activeRoutineListItem
-    ? ROUTINE_DIFFICULTY_LABELS[activeRoutineListItem.difficulty]
-    : null;
-  const completedTrainingDates = activeRoutine
-    ? await getCompletedTrainingDates({
-        userId: auth.user.id,
-        savedRoutineId: activeRoutine.id,
-        days: 70,
-      })
-    : new Set<string>();
-  const completedThisWeek = weeklySummary?.completedTrainingDatesCount ?? 0;
+
+  const meals = mealLog?.meals ?? [];
+  const totalKcal = meals.reduce((sum, m) => sum + m.kcal, 0);
+  const totalMacros: Macros = meals.reduce<Macros>(
+    (acc, m) => ({
+      proteinG: acc.proteinG + m.macros.proteinG,
+      carbsG: acc.carbsG + m.macros.carbsG,
+      fatG: acc.fatG + m.macros.fatG,
+    }),
+    { proteinG: 0, carbsG: 0, fatG: 0 },
+  );
+  const kcalPercent =
+    plan.targetKcal > 0
+      ? Math.min(100, Math.round((totalKcal / plan.targetKcal) * 100))
+      : 0;
+  const kcalRemaining = Math.max(0, plan.targetKcal - totalKcal);
+
+  const muscleLoad = activeRoutine
+    ? activeRoutine.days
+        .flatMap((d) => d.items.map((i) => i.exercise.muscleGroup))
+        .filter((g): g is string => Boolean(g))
+        .reduce<Record<string, number>>((acc, g) => {
+          acc[g] = (acc[g] ?? 0) + 1;
+          return acc;
+        }, {})
+    : {};
+  const muscleEntries = Object.entries(muscleLoad)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 4);
+  const maxMuscleCount = muscleEntries[0]?.[1] ?? 1;
+
 
   return (
     <section className="page-frame auto-rows-max content-start bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
       <header>
-        <h1 className="font-display text-3xl font-semibold text-white sm:text-4xl">
-          Inicio
-        </h1>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--foreground-muted)] sm:text-base">
-          Continua tu semana desde el proximo entrenamiento pendiente.
-        </p>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#b985ff]">Inicio</p>
       </header>
 
-      <Card className="relative h-fit self-start overflow-hidden border-[#27304a] bg-[#080b14] shadow-[0_22px_70px_rgba(0,0,0,0.34)]">
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,10,18,0.99)_0%,rgba(8,10,18,0.96)_38%,rgba(8,10,18,0.76)_63%,rgba(8,10,18,0.9)_100%)]" />
-        <div className="absolute inset-y-0 right-0 hidden w-[58%] overflow-hidden lg:block">
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,10,18,0.32)_0%,rgba(30,16,56,0.42)_46%,rgba(6,8,14,0.86)_100%),linear-gradient(165deg,#151126_0%,#111827_46%,#05070b_100%)]" />
-          <div className="absolute left-10 top-0 h-full w-1 bg-[#7d45ff]/55 blur-[1px]" />
-          <div className="absolute right-16 top-0 h-full w-1 bg-white/10" />
-          <div className="absolute right-40 top-10 h-24 w-40 rounded-t-[2rem] border-t-[10px] border-[#070913] opacity-80" />
-          <div className="absolute bottom-[3.1rem] right-32 h-4 w-72 rounded-full bg-[#141824] shadow-[0_0_0_18px_rgba(3,5,10,0.72),0_26px_36px_rgba(0,0,0,0.65)]" />
-          <div className="absolute bottom-[2.8rem] right-[19rem] size-20 rounded-full border-[16px] border-[#080a10] bg-[#151827] shadow-[0_0_32px_rgba(126,62,255,0.26)]" />
-          <div className="absolute bottom-[2.8rem] right-24 size-20 rounded-full border-[16px] border-[#080a10] bg-[#151827] shadow-[0_0_32px_rgba(126,62,255,0.2)]" />
-          <div className="absolute inset-x-0 bottom-0 h-20 bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.055)_0_1px,transparent_1px_10px)] opacity-35" />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,#080b14_0%,rgba(8,11,20,0.1)_34%,rgba(8,11,20,0.34)_100%)]" />
+      {/* Hero: hoy toca — image placeholder banner */}
+      <div className="relative overflow-hidden rounded-2xl bg-[#11151f]">
+        {/* Placeholder bg */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <ImageIcon className="size-16 text-[#1e2540]" />
         </div>
-
-        <CardContent className="relative flex flex-col p-4 sm:px-6 sm:py-5">
-          <div className="max-w-[50rem]">
-            <Badge variant="accent" className="gap-2 bg-[#1a1230]/90">
-              <span className="size-1.5 rounded-full bg-[#8b5cff]" />
-              Semana activa
-            </Badge>
-
-            <div className="mt-3">
-              <p className="text-sm font-medium text-white">Hoy toca:</p>
-              <h2 className="font-display mt-1.5 text-2xl font-semibold leading-[1.05] text-white sm:text-3xl lg:text-4xl">
-                {activeRoutine && nextPendingDay ? (
-                  <>
-                    <span className="text-[#8b4dff]">Dia {nextPendingDay.dayOrder}</span>
-                    <span className="text-[#d8dbe7]"> - </span>
-                    {nextPendingDay.dayName}
-                  </>
-                ) : activeRoutine ? (
-                  "Semana completa"
-                ) : (
-                  "Sin rutina activa"
-                )}
-              </h2>
-              <p className="mt-2 max-w-3xl text-sm leading-6 text-[#c5cad8] sm:text-base sm:leading-7">
-                {activeRoutine
-                  ? "Enfocate en tu fuerza y progresion. Cada repeticion te acerca a tu mejor version."
-                  : "Elegi o activa una rutina desde Mis rutinas para ver tu proximo entrenamiento aca."}
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-4 grid gap-3 sm:flex sm:flex-wrap sm:items-center">
+        {/* Scrim */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
+        {/* Content */}
+        <div className="relative z-10 flex flex-col gap-2 p-4 pb-5">
+          <p className="text-xs font-medium text-[#9a9eb0]">Hoy toca:</p>
+          <h2 className="font-display text-xl font-semibold leading-tight text-white sm:text-2xl lg:text-3xl">
+            {activeRoutine && nextPendingDay ? (
+              <>
+                <span className="text-[#8b4dff]">Dia {nextPendingDay.dayOrder}</span>
+                <span className="text-[#d8dbe7]"> · </span>
+                {nextPendingDay.dayName}
+              </>
+            ) : activeRoutine ? (
+              "Semana completa"
+            ) : (
+              "Sin rutina activa"
+            )}
+          </h2>
+          <div className="mt-1">
             <Button
               asChild
-              size="lg"
-              className="min-w-0 px-6 shadow-[0_16px_34px_rgba(124,58,237,0.34)]"
+              size="sm"
+              className="w-1/3 justify-center px-3 shadow-[0_8px_24px_rgba(124,58,237,0.28)]"
             >
-              <Link href={primaryHref}>
-                <Dumbbell className="size-4" />
-                {primaryCtaLabel}
-              </Link>
+              <Link href={primaryHref}>Comenzar</Link>
             </Button>
-
-            {activeRoutine ? (
-              <>
-                <Button asChild variant="outline" size="lg" className="px-5">
-                  <Link href="/dashboard">
-                    <Repeat2 className="size-4" />
-                    Cambiar rutina activa
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="px-5">
-                  <Link href="/dashboard/rutinas">
-                    <CalendarDays className="size-4" />
-                    Ver semana completa
-                  </Link>
-                </Button>
-              </>
-            ) : null}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
+      {/* Card grid: 2 columns on mobile, 3 on desktop */}
       <MotionSection
         variants={staggerContainer}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-        className="grid auto-rows-max gap-4 lg:grid-cols-3"
+        viewport={{ once: true, margin: "-60px" }}
+        className="grid grid-cols-2 gap-2 lg:grid-cols-3"
       >
-        <MotionDiv variants={fadeUp} className="h-full lg:order-1">
-          <WeeklyProgressCard
-            completedDayCount={completedDayCount}
-            firstDayLabel={firstRoutineDay ? `Dia ${firstRoutineDay.dayOrder}` : "Dia 1"}
-            lastDayLabel={lastRoutineDay ? `Dia ${lastRoutineDay.dayOrder}` : "Dia 1"}
-            progressPercent={weeklyProgressPercent}
-            totalDays={totalDays}
+        {/* Nutrición */}
+        <MotionDiv variants={fadeUp} className="col-span-1 h-full">
+          <NutricionCard
+            totalKcal={totalKcal}
+            targetKcal={plan.targetKcal}
+            kcalPercent={kcalPercent}
+            kcalRemaining={kcalRemaining}
+            totalMacros={totalMacros}
+            targetMacros={plan.macros}
           />
         </MotionDiv>
 
-        <div className="grid grid-cols-2 gap-4 lg:order-2 lg:col-span-2 lg:grid-cols-2">
-          <MotionDiv variants={fadeUp} className="h-full">
-            <WeeklyStreakCard currentStreak={currentStreak} />
-          </MotionDiv>
-
-          <MotionDiv variants={fadeUp} className="h-full">
-            <ActiveRoutineCard
-              difficultyLabel={activeDifficultyLabel}
-              displayName={activeRoutine?.displayName ?? "Sin rutina activa"}
-              status={activeRoutineListItem ? activeRoutineStatus : "Pendiente"}
-            />
-          </MotionDiv>
-        </div>
-      </MotionSection>
-
-      <MotionSection
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-        className="grid auto-rows-max gap-4 lg:grid-cols-2"
-      >
-        <MotionDiv variants={fadeUp} className="h-full">
-          <TrainingCalendarCard completedDates={completedTrainingDates} />
+        {/* Carga muscular */}
+        <MotionDiv variants={fadeUp} className="col-span-1 h-full">
+          <CargaMuscularCard muscleLoad={muscleLoad} maxCount={maxMuscleCount} />
         </MotionDiv>
 
-        <MotionDiv variants={fadeUp} className="h-full">
-          <WeeklyAttendanceCard completedThisWeek={completedThisWeek} plannedDays={totalDays} />
+        {/* Comidas hoy — full ancho en mobile */}
+        <MotionDiv variants={fadeUp} className="col-span-2 h-full lg:col-span-1">
+          <ComidasHoyCard meals={meals} totalKcal={totalKcal} />
+        </MotionDiv>
+
+        {/* Constancia */}
+        <MotionDiv variants={fadeUp} className="col-span-1 h-full">
+          <div className="flex h-full flex-col gap-2 rounded-2xl bg-[#0e131e] p-3">
+            <CardLabel icon={CalendarRange} label="Constancia" />
+            <div className="flex flex-1 items-center justify-center">
+              <TrainingCalendarCard completedDates={completedTrainingDates} weeks={5} bare />
+            </div>
+          </div>
+        </MotionDiv>
+
+        {/* Calendario de nutrición */}
+        <MotionDiv variants={fadeUp} className="col-span-1 h-full">
+          <div className="flex h-full flex-col gap-2 rounded-2xl bg-[#0e131e] p-3">
+            <CardLabel icon={UtensilsCrossed} label="Nutrición" />
+            <div className="flex flex-1 items-center justify-center">
+              <NutritionCalendarCard loggedDates={new Set(nutritionLoggedDates)} weeks={5} bare />
+            </div>
+          </div>
         </MotionDiv>
       </MotionSection>
     </section>
   );
 }
 
-function WeeklyProgressCard({
-  completedDayCount,
-  firstDayLabel,
-  lastDayLabel,
-  progressPercent,
-  totalDays,
+function CardLabel({
+  icon: Icon,
+  label,
 }: {
-  completedDayCount: number;
-  firstDayLabel: string;
-  lastDayLabel: string;
-  progressPercent: number;
-  totalDays: number;
+  icon: typeof Flame;
+  label: string;
 }) {
   return (
-    <Card className="flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(14,19,32,0.96)_0%,rgba(8,12,22,0.98)_100%)] shadow-[0_18px_48px_rgba(73,34,146,0.16)] transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]">
-      <CardContent className="flex-1 p-4 sm:p-6">
-        <MetricTitle icon={TrendingUp} title="Progreso semanal" />
+    <div className="flex items-center gap-1.5">
+      <Icon className="size-3.5 text-[#9a63ff]" />
+      <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#7887a6]">
+        {label}
+      </span>
+    </div>
+  );
+}
 
-        <div className="mt-4 grid gap-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:items-center sm:gap-6">
-          <AnimatedProgressRing value={progressPercent} progressColor="#7c3aed" size={88}>
-            <div className="grid size-[4.4rem] place-items-center rounded-full bg-[#0a0f19] text-xl font-semibold text-white shadow-[inset_0_0_28px_rgba(0,0,0,0.36)] sm:size-28 sm:text-3xl">
-              {progressPercent}%
+function NutricionCard({
+  totalKcal,
+  targetKcal,
+  kcalPercent,
+  kcalRemaining,
+  totalMacros,
+  targetMacros,
+}: {
+  totalKcal: number;
+  targetKcal: number;
+  kcalPercent: number;
+  kcalRemaining: number;
+  totalMacros: Macros;
+  targetMacros: Macros;
+}) {
+  const macros = [
+    { label: "Proteína", value: totalMacros.proteinG, target: targetMacros.proteinG, color: "#4ade80" },
+    { label: "Carbohid.", value: totalMacros.carbsG, target: targetMacros.carbsG, color: "#fb923c" },
+    { label: "Grasas", value: totalMacros.fatG, target: targetMacros.fatG, color: "#f472b6" },
+  ];
+
+  return (
+    <div className="flex h-full flex-col gap-2 rounded-2xl bg-[#0e131e] p-3">
+        <CardLabel icon={Flame} label="Nutrición" />
+
+        {/* Circle — fills most of the card width */}
+        <div className="flex justify-center">
+          <AnimatedProgressRing
+            value={kcalPercent}
+            size={96}
+            strokeWidth={9}
+            progressColor="var(--accent-bright)"
+          >
+            <div className="flex flex-col items-center">
+              <span className="font-display text-base font-bold leading-none text-white">
+                {totalKcal}
+              </span>
+              <span className="text-[8px] text-[#7887a6]">kcal</span>
             </div>
           </AnimatedProgressRing>
-
-          <div className="min-w-0">
-            <p className="font-display text-2xl font-semibold leading-none text-white sm:text-4xl">
-              {progressPercent}%
-            </p>
-            <p className="mt-2 text-sm leading-6 text-[#c6cede] sm:mt-3 sm:text-base">
-              {completedDayCount} de {totalDays} dias
-            </p>
-
-            <div className="mt-3 sm:mt-6">
-              <div className="relative h-2 rounded-full bg-[#252c43]">
-                <div
-                  className="h-full rounded-full bg-[linear-gradient(90deg,#7c3aed,#9d6cff)]"
-                  style={{ width: `${progressPercent}%` }}
-                />
-                <span className="absolute left-0 top-1/2 size-4 -translate-y-1/2 rounded-full border-4 border-[#49317e] bg-[#15101f]" />
-                <span className="absolute right-0 top-1/2 size-4 -translate-y-1/2 rounded-full border-4 border-[#49317e] bg-[#15101f]" />
-              </div>
-              <div className="mt-3 flex justify-between text-sm text-[#9da8bf]">
-                <span>{firstDayLabel}</span>
-                <span>{lastDayLabel}</span>
-              </div>
-            </div>
-          </div>
         </div>
-      </CardContent>
-    </Card>
+
+        {/* Restantes — single line */}
+        <p className="text-center text-xs font-semibold text-[#c5cad8]">
+          <span className="text-white">{kcalRemaining}</span> kcal restantes
+        </p>
+
+        {/* Macro bars — stacked */}
+        <div className="flex flex-col gap-1">
+          {macros.map(({ label, value, target, color }) => {
+            const pct = target > 0 ? Math.min(100, Math.round((value / target) * 100)) : 0;
+            const remaining = Math.max(0, Math.round(target - value));
+            return (
+              <div key={label} className="grid gap-0.5">
+                <div className="flex items-center justify-between gap-1">
+                  <span className="truncate text-[8px] font-bold" style={{ color }}>{label}</span>
+                  <span className="shrink-0 text-[8px] text-[#7887a6]">{Math.round(value)}G/{remaining}G</span>
+                </div>
+                <div className="h-1.5 overflow-hidden rounded-full bg-[#1a2235]">
+                  <div
+                    className="h-full rounded-full"
+                    style={{ width: `${pct}%`, backgroundColor: color }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+    </div>
   );
 }
 
-function WeeklyStreakCard({ currentStreak }: { currentStreak: number }) {
-  return (
-    <Card className="relative flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(13,19,34,0.96)_0%,rgba(8,12,20,0.98)_100%)] shadow-[0_18px_48px_rgba(0,0,0,0.24)] transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]">
-      <CardContent className="relative flex-1 p-4 sm:p-6">
-        <MetricTitle icon={Flame} title="Racha semanal" />
-
-        <div className="mt-4 max-w-[13rem] sm:mt-12">
-          <p className="font-display text-3xl font-semibold leading-none text-white sm:text-7xl">
-            {currentStreak}
-            <span className="ml-2 align-baseline text-base font-semibold text-[#9b4dff] sm:text-2xl">
-              dias
-            </span>
-          </p>
-          <p className="mt-3 text-sm leading-6 text-[#c6cede] sm:mt-5 sm:text-base sm:leading-7">
-            Segun entrenamientos completados esta semana
-          </p>
-        </div>
-
-        <span
-          aria-hidden="true"
-          className="absolute bottom-2 right-2 grid size-16 place-items-center rounded-full border border-[#303a55] bg-[radial-gradient(circle,rgba(124,58,237,0.18),rgba(8,12,20,0.08)_62%,transparent_100%)] text-[#8c7af6] shadow-[0_0_42px_rgba(124,58,237,0.18)] sm:bottom-14 sm:right-8 sm:size-32"
-        >
-          <Flame className="size-8 sm:size-14" />
-        </span>
-      </CardContent>
-    </Card>
-  );
-}
-
-function ActiveRoutineCard({
-  difficultyLabel,
-  displayName,
-  status,
+function CargaMuscularCard({
+  muscleLoad,
+  maxCount,
 }: {
-  difficultyLabel: string | null;
-  displayName: string;
-  status: string;
+  muscleLoad: Record<string, number>;
+  maxCount: number;
 }) {
-  return (
-    <Card className="relative flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(13,19,34,0.96)_0%,rgba(8,12,20,0.98)_100%)] shadow-[0_18px_48px_rgba(0,0,0,0.24)] transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef]">
-      <CardContent className="relative flex-1 p-4 sm:p-6">
-        <MetricTitle icon={CalendarDays} title="Rutina activa" />
+  const isEmpty = Object.keys(muscleLoad).length === 0;
 
-        <div className="mt-4 max-w-[16rem] sm:mt-16">
-          <p className="font-display line-clamp-2 break-words text-lg font-semibold leading-tight text-white sm:text-4xl">
-            {displayName}
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2 sm:mt-4">
-            {difficultyLabel ? (
-              <Badge variant="accent" className="normal-case tracking-normal">
-                {difficultyLabel} - {status}
-              </Badge>
-            ) : (
-              <Badge variant="neutral" className="normal-case tracking-normal">
-                {status}
-              </Badge>
+  return (
+    <div className="flex h-full flex-col gap-2 rounded-2xl bg-[#0e131e] p-3">
+        <CardLabel icon={Zap} label="Carga muscular" />
+
+        {isEmpty ? (
+          <div className="flex flex-1 items-center justify-center">
+            <p className="text-center text-[10px] text-[#7887a6]">Sin rutina activa</p>
+          </div>
+        ) : (
+          <div className="flex flex-1 flex-col">
+            <BodyMuscleFigure muscleLoad={muscleLoad} maxCount={maxCount} />
+          </div>
+        )}
+    </div>
+  );
+}
+
+function ComidasHoyCard({
+  meals,
+  totalKcal,
+}: {
+  meals: { id: string; name: string; kcal: number }[];
+  totalKcal: number;
+}) {
+  const preview = meals.slice(0, 3);
+
+  return (
+    <div className="flex h-full flex-col gap-2 rounded-2xl bg-[#0e131e] p-3">
+        <CardLabel icon={UtensilsCrossed} label="Comidas hoy" />
+
+        <div className="flex items-baseline gap-1.5">
+          <span className="font-display text-2xl font-bold text-white">{meals.length}</span>
+          <span className="text-xs text-[#7887a6]">comidas · {totalKcal} kcal</span>
+        </div>
+
+        {preview.length === 0 ? (
+          <p className="text-xs text-[#7887a6]">Sin comidas registradas hoy.</p>
+        ) : (
+          <div className="flex flex-1 flex-col justify-center gap-1">
+            {preview.map((meal) => (
+              <div key={meal.id} className="flex items-center justify-between gap-1">
+                <span className="min-w-0 truncate text-xs font-medium text-[#c2cbe0]">
+                  {meal.name}
+                </span>
+                <span className="shrink-0 text-[10px] text-[#7887a6]">{meal.kcal}k</span>
+              </div>
+            ))}
+            {meals.length > 3 && (
+              <p className="text-[10px] text-[#7887a6]">+{meals.length - 3} más</p>
             )}
           </div>
-        </div>
+        )}
 
-        <span
-          aria-hidden="true"
-          className="absolute bottom-2 right-2 grid size-16 place-items-center rounded-full border border-[#303a55] bg-[radial-gradient(circle,rgba(124,58,237,0.18),rgba(8,12,20,0.08)_62%,transparent_100%)] text-[#b995ff] shadow-[0_0_42px_rgba(124,58,237,0.18)] sm:bottom-14 sm:right-10 sm:size-32"
+        <Link
+          href="/nutricion/registro"
+          className="mt-auto text-[10px] font-semibold text-[#9a63ff] hover:text-white"
         >
-          <CalendarDays className="size-8 sm:size-14" />
-        </span>
-      </CardContent>
-    </Card>
-  );
-}
-
-function MetricTitle({
-  icon: Icon,
-  title,
-}: {
-  icon: typeof CalendarDays;
-  title: string;
-}) {
-  return (
-    <div className="flex items-center gap-3 sm:gap-4">
-      <span
-        aria-hidden="true"
-        className="grid size-9 shrink-0 place-items-center rounded-xl border border-[#34245b] bg-[#251640] text-[#b987ff] sm:size-12"
-      >
-        <Icon className="size-4 sm:size-6" />
-      </span>
-      <h2 className="font-display text-base font-semibold leading-tight text-white sm:text-xl">
-        {title}
-      </h2>
+          Ver registro →
+        </Link>
     </div>
   );
 }

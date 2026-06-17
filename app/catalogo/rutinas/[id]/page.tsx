@@ -2,12 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 import type { ComponentType } from "react";
 import {
-  AlertCircle,
   ArrowLeft,
   BarChart3,
   CalendarDays,
   Check,
-  CheckCircle2,
   Dumbbell,
   FolderOpen,
   ListChecks,
@@ -18,6 +16,7 @@ import {
 import { notFound } from "next/navigation";
 
 import { RoutineDetailClient } from "@/app/catalogo/rutinas/[id]/RoutineDetailClient";
+import { StatusToast } from "@/app/components/shared/StatusToast";
 import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
 import { getOptionalAuthContext } from "@/app/lib/auth";
@@ -64,23 +63,51 @@ export default async function CatalogRoutineDetailPage({
   const itemCount = routine.days.reduce((total, day) => total + day.items.length, 0);
   const coverImageUrl = routine.days[0]?.items[0]?.exercise.imageUrl || "";
   const objectiveLabel = ROUTINE_OBJECTIVE_LABELS[routine.objective];
-  const isSaveError = query.status === "save-error";
-  const isActiveError = query.status === "active-error";
   const isSavedState =
     savedRoutine !== null ||
     query.status === "created" ||
     query.status === "already-saved";
   const savedRoutineId = savedRoutine?.id ?? query.savedRoutineId;
   const isRoutineActive = savedRoutine?.isActive ?? query.status === "active";
-  const showSavedFeedback = isRoutineActive;
+
+  const toastMessage =
+    query.status === "created"
+      ? "Rutina guardada en tu cuenta."
+      : query.status === "already-saved"
+        ? "Rutina ya guardada en tu cuenta."
+        : query.status === "active"
+          ? "Rutina activada."
+          : null;
+  const toastError =
+    query.status === "save-error"
+      ? "No se pudo guardar la rutina. Intenta nuevamente."
+      : query.status === "active-error"
+        ? "No se pudo activar la rutina. Intenta nuevamente."
+        : null;
 
   return (
     <section className="page-frame bg-[radial-gradient(circle_at_20%_0%,rgba(124,58,237,0.13),transparent_30%),linear-gradient(180deg,#070a12_0%,#090d16_48%,#05070b_100%)]">
-      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <StatusToast message={toastMessage} clearParams={["status", "savedRoutineId"]} />
+      <StatusToast message={toastError} isError clearParams={["status", "savedRoutineId"]} />
+
+      <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#b985ff]">
-            Catalogo
-          </p>
+          {/* Breadcrumb row — tiny back btn visible on mobile only */}
+          <div className="flex items-center gap-2">
+            <Button
+              asChild
+              variant="ghost"
+              size="icon"
+              className="sm:hidden -ml-1 size-6 text-[#9a63ff] hover:text-white"
+            >
+              <Link href="/catalogo" aria-label="Volver al catálogo">
+                <ArrowLeft className="size-3.5" />
+              </Link>
+            </Button>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#b985ff]">
+              Catalogo
+            </p>
+          </div>
           <h1 className="font-display mt-2 text-3xl font-semibold tracking-[-0.06em] text-white">
             Detalle de rutina
           </h1>
@@ -88,10 +115,11 @@ export default async function CatalogRoutineDetailPage({
             Revisa la estructura completa antes de guardar la rutina.
           </p>
         </div>
+        {/* Full back button — hidden on mobile, visible on sm+ */}
         <Button
           asChild
           variant="outline"
-          className="w-fit border-[rgba(148,163,184,0.18)] bg-[#090d17]/80 text-white hover:border-[var(--accent)] hover:bg-[#111827]"
+          className="hidden sm:flex w-fit border-[rgba(148,163,184,0.18)] bg-[#090d17]/80 text-white hover:border-[var(--accent)] hover:bg-[#111827]"
         >
           <Link href="/catalogo">
             <ArrowLeft className="size-4" />
@@ -101,7 +129,7 @@ export default async function CatalogRoutineDetailPage({
       </header>
 
       <div className="grid gap-5 xl:grid-cols-[1.02fr_0.98fr]">
-        <div className="relative min-h-[19rem] overflow-hidden rounded-2xl border border-[rgba(148,163,184,0.22)] bg-[#080b13] shadow-[0_22px_70px_rgba(0,0,0,0.42)] sm:min-h-[23rem] xl:min-h-[23.5rem]">
+        <div className="relative min-h-[8rem] overflow-hidden rounded-2xl border border-[rgba(148,163,184,0.22)] bg-[#080b13] shadow-[0_22px_70px_rgba(0,0,0,0.42)] sm:min-h-[23rem] xl:min-h-[23.5rem]">
           {coverImageUrl ? (
             <>
               <Image
@@ -116,7 +144,27 @@ export default async function CatalogRoutineDetailPage({
           ) : (
             <div className="thumb-fitness absolute inset-0" />
           )}
-          <div className="absolute bottom-5 left-5 right-5 max-w-sm rounded-xl border border-[rgba(148,163,184,0.13)] bg-[#101726]/88 p-3.5 shadow-[0_18px_48px_rgba(0,0,0,0.42)] backdrop-blur">
+          {/* Mobile overlay: name + chips */}
+          <div className="absolute bottom-0 left-0 right-0 xl:hidden bg-gradient-to-t from-black/80 via-black/50 to-transparent px-4 pb-4 pt-12">
+            <h2 className="font-display text-lg font-semibold text-white leading-tight">{routine.name}</h2>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-[rgba(139,92,246,0.5)] bg-[rgba(20,15,36,0.7)] px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+                <CalendarDays className="size-3 text-[var(--accent-bright)]" />
+                {dayCount} días
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-[rgba(139,92,246,0.5)] bg-[rgba(20,15,36,0.7)] px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+                <RefreshCw className="size-3 text-[var(--accent-bright)]" />
+                {objectiveLabel}
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-[rgba(139,92,246,0.5)] bg-[rgba(20,15,36,0.7)] px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+                <BarChart3 className="size-3 text-[var(--accent-bright)]" />
+                {ROUTINE_DIFFICULTY_LABELS[routine.difficulty]}
+              </span>
+            </div>
+          </div>
+
+          {/* Desktop overlay: existing card */}
+          <div className="hidden xl:block absolute bottom-5 left-5 right-5 max-w-sm rounded-xl border border-[rgba(148,163,184,0.13)] bg-[#101726]/88 p-3.5 shadow-[0_18px_48px_rgba(0,0,0,0.42)] backdrop-blur">
             <div className="flex items-center gap-4">
               <div className="grid size-12 place-items-center rounded-xl bg-[rgba(124,58,237,0.16)] text-[var(--accent-bright)]">
                 <Dumbbell className="size-6" />
@@ -133,7 +181,7 @@ export default async function CatalogRoutineDetailPage({
           </div>
         </div>
 
-        <aside className="flex flex-col rounded-2xl border border-[rgba(139,92,246,0.48)] bg-[linear-gradient(135deg,rgba(12,16,28,0.98),rgba(9,13,23,0.92))] p-5 shadow-[0_22px_70px_rgba(0,0,0,0.34)] sm:p-6 xl:min-h-[23.5rem]">
+        <aside className="hidden xl:flex flex-col rounded-2xl border border-[rgba(139,92,246,0.48)] bg-[linear-gradient(135deg,rgba(12,16,28,0.98),rgba(9,13,23,0.92))] p-5 shadow-[0_22px_70px_rgba(0,0,0,0.34)] sm:p-6 xl:min-h-[23.5rem]">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--accent-bright)]">
             DETALLE DE RUTINA
           </p>
@@ -156,20 +204,6 @@ export default async function CatalogRoutineDetailPage({
             </div>
           ) : null}
 
-          {showSavedFeedback ? (
-            <div className="mt-4 rounded-xl border border-[rgba(139,92,246,0.5)] bg-[rgba(55,31,101,0.28)] p-4 text-sm leading-6 text-[#eee7ff]">
-              <div className="flex gap-3.5">
-                <CheckCircle2 className="mt-0.5 size-7 shrink-0 text-[var(--accent-bright)]" />
-                <div>
-                  <p className="font-semibold text-white">Rutina guardada en tu cuenta.</p>
-                  <p className="mt-1 text-[#c7bedf]">
-                    Puedes abrirla o gestionarla desde tus rutinas guardadas.
-                  </p>
-                </div>
-              </div>
-            </div>
-          ) : null}
-
           {isSavedState && !isRoutineActive ? (
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
               <InfoTile label="Dias por semana" value={`${dayCount}`} />
@@ -182,31 +216,7 @@ export default async function CatalogRoutineDetailPage({
             </div>
           ) : null}
 
-          {isSaveError || isActiveError ? (
-            <div className="mt-4 rounded-xl border border-[rgba(248,113,113,0.34)] bg-[rgba(88,28,45,0.34)] p-4 text-sm leading-6 text-[#fbd5df]">
-              <div className="flex gap-3">
-                <AlertCircle className="mt-0.5 size-5 shrink-0 text-[#fda4af]" />
-                <div>
-                  <p className="font-semibold text-white">
-                    {isActiveError
-                      ? "No se pudo activar la rutina. Intenta nuevamente."
-                      : "No se pudo guardar la rutina. Intenta nuevamente."}
-                  </p>
-                  <p className="mt-1 text-[#f5b8c7]">
-                    Revisa la sesion e intenta nuevamente.
-                  </p>
-                </div>
-              </div>
-            </div>
-          ) : null}
-
-          <div
-            className={
-              isSavedState && !isSaveError && !isActiveError
-                ? "mt-auto pt-4"
-                : "mt-4"
-            }
-          >
+          <div className={isSavedState ? "mt-auto pt-4" : "mt-4"}>
             {auth ? (
               isSavedState ? (
                 <div className="flex flex-wrap gap-3">
@@ -273,6 +283,59 @@ export default async function CatalogRoutineDetailPage({
             )}
           </div>
         </aside>
+      </div>
+
+      {/* Mobile action buttons — shown below image, hidden on xl (aside handles it there) */}
+      <div className="xl:hidden">
+        {auth ? (
+          isSavedState ? (
+            <form action={activateRoutineFromCatalogAction} className="w-full">
+              <input type="hidden" name="savedRoutineId" value={savedRoutineId ?? ""} />
+              <input type="hidden" name="routineTemplateId" value={routine.id} />
+              <Button
+                type="submit"
+                className={
+                  isRoutineActive
+                    ? "h-10 w-full rounded-lg border border-[#2f2847] bg-[#141827] px-4 text-sm text-[#c7bedf] shadow-none hover:bg-[#1a2033] hover:text-white"
+                    : "h-10 w-full rounded-lg px-4 text-sm"
+                }
+                disabled={!savedRoutineId}
+              >
+                {isRoutineActive ? (
+                  <Power className="size-4" />
+                ) : (
+                  <Check className="size-4" />
+                )}
+                {isRoutineActive ? "Desactivar rutina" : "Activar rutina"}
+              </Button>
+            </form>
+          ) : (
+            <form action={saveRoutineFromCatalogAction} className="grid gap-3">
+              <input type="hidden" name="routineTemplateId" value={routine.id} />
+              <div className="grid gap-2">
+                <label className="text-sm font-semibold text-white" htmlFor="customNameMobile">
+                  Nombre propio (opcional)
+                </label>
+                <Input
+                  id="customNameMobile"
+                  name="customName"
+                  maxLength={120}
+                  placeholder={routine.name}
+                />
+              </div>
+              <Button type="submit" className="h-10 rounded-lg text-sm">
+                Guardar rutina
+              </Button>
+            </form>
+          )
+        ) : (
+          <Button asChild className="h-10 rounded-lg px-4 text-sm">
+            <Link href="/auth/login?reason=auth-required">
+              <LogIn className="size-4" />
+              Iniciar sesion para guardar
+            </Link>
+          </Button>
+        )}
       </div>
 
       <RoutineDetailClient routine={routine} />

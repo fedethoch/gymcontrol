@@ -4,27 +4,22 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   CalendarDays,
+  Check,
   ChevronLeft,
   ChevronRight,
-  Check,
   MoreHorizontal,
   Pencil,
   Search,
-  SlidersHorizontal,
-  Star,
-  Target,
   Trash2,
-  TrendingUp,
 } from "lucide-react";
-import { useRef, useState, type ComponentType, type ReactNode } from "react";
+import { useRef, useState } from "react";
 
 import {
   deleteSavedRoutineAction,
   renameSavedRoutineAction,
   toggleActiveSavedRoutineAction,
 } from "@/app/dashboard/actions";
-import { FilterSheet } from "@/app/components/shared/FilterSheet";
-import { Badge } from "@/app/components/ui/Badge";
+import { FilterPanel } from "@/app/components/shared/FilterPanel";
 import { Button } from "@/app/components/ui/Button";
 import {
   DropdownMenu,
@@ -33,13 +28,6 @@ import {
   DropdownMenuTrigger,
 } from "@/app/components/ui/DropdownMenu";
 import { Input } from "@/app/components/ui/Input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/components/ui/Select";
 import {
   ROUTINE_DIFFICULTY_LABELS,
   ROUTINE_OBJECTIVE_LABELS,
@@ -106,49 +94,15 @@ export function DashboardRoutinesClient({
     setPage(1);
   }
 
-  const activeFilterCount = [objective, dayCount].filter((value) => value !== "all").length;
-
   function handleClearFilters() {
     updateObjective("all");
     updateDayCount("all");
   }
 
-  const filterSelects = (
-    <>
-      <DashboardSelect value={objective} onValueChange={updateObjective}>
-        <SelectItem value="all">
-          <span className="inline-flex h-full w-full items-center justify-center gap-2">
-            <Target className="size-4" />
-            Todos los objetivos
-          </span>
-        </SelectItem>
-        {Object.entries(ROUTINE_OBJECTIVE_LABELS).map(([value, label]) => (
-          <SelectItem key={value} value={value}>
-            {label}
-          </SelectItem>
-        ))}
-      </DashboardSelect>
-
-      <DashboardSelect value={dayCount} onValueChange={updateDayCount}>
-        <SelectItem value="all">
-          <span className="inline-flex h-full w-full items-center justify-center gap-2">
-            <CalendarDays className="size-4" />
-            Todos los días
-          </span>
-        </SelectItem>
-        {dayOptions.map((value) => (
-          <SelectItem key={value} value={String(value)}>
-            {value} días
-          </SelectItem>
-        ))}
-      </DashboardSelect>
-    </>
-  );
-
   return (
     <section className="grid gap-4">
-      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_13rem_12rem]">
-        <label className="relative block">
+      <div className="flex items-center gap-2">
+        <label className="relative flex-1">
           <span className="sr-only">Buscar mis rutinas</span>
           <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[#9a63ff]" />
           <Input
@@ -160,11 +114,29 @@ export function DashboardRoutinesClient({
           />
         </label>
 
-        <div className="hidden lg:contents">{filterSelects}</div>
-
-        <FilterSheet activeCount={activeFilterCount} onClear={handleClearFilters}>
-          {filterSelects}
-        </FilterSheet>
+        <FilterPanel
+          groups={[
+            {
+              label: "Objetivo",
+              options: Object.entries(ROUTINE_OBJECTIVE_LABELS).map(([v, l]) => ({
+                value: v,
+                label: l,
+              })),
+              value: objective,
+              onChange: updateObjective,
+            },
+            {
+              label: "Días por semana",
+              options: dayOptions.map((v) => ({
+                value: String(v),
+                label: `${v} días`,
+              })),
+              value: dayCount,
+              onChange: updateDayCount,
+            },
+          ]}
+          onClear={handleClearFilters}
+        />
       </div>
 
       {visibleRoutines.length === 0 ? (
@@ -228,25 +200,6 @@ export function DashboardRoutinesClient({
   );
 }
 
-function DashboardSelect({
-  value,
-  onValueChange,
-  children,
-}: {
-  value: string;
-  onValueChange: (value: string) => void;
-  children: ReactNode;
-}) {
-  return (
-    <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger className="h-10 justify-center rounded-lg border-[#20283a] bg-[#080d17]/82 [&>span]:flex [&>span]:h-full [&>span]:flex-1 [&>span]:items-center [&>span]:overflow-visible">
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>{children}</SelectContent>
-    </Select>
-  );
-}
-
 function DashboardRoutineCard({
   routine,
   isActive,
@@ -259,60 +212,56 @@ function DashboardRoutineCard({
   const deleteFormRef = useRef<HTMLFormElement>(null);
 
   return (
-    <article className="grid overflow-hidden rounded-2xl border border-[#20283a] bg-[linear-gradient(145deg,#0d1322_0%,#080d17_100%)] shadow-[0_18px_42px_rgba(0,0,0,0.22)] sm:grid-cols-[10rem_minmax(0,1fr)] 2xl:grid-cols-[12.5rem_minmax(0,1fr)_11.5rem]">
-      <div className="relative min-h-24 overflow-hidden border-b border-[#20283a] bg-[#111827] sm:min-h-28 sm:border-b-0 sm:border-r">
+    <article className="overflow-hidden rounded-2xl border border-[#20283a] bg-[linear-gradient(145deg,#0d1322_0%,#080d17_100%)] shadow-[0_18px_42px_rgba(0,0,0,0.22)]">
+      <div className="relative min-h-40 overflow-hidden bg-[#111827]">
         {routine.coverImageUrl ? (
           <Image
             alt={routine.displayName}
             className="object-cover saturate-[0.82]"
             fill
-            sizes="(max-width: 768px) 100vw, 220px"
+            sizes="(max-width: 768px) 100vw, 50vw"
             src={routine.coverImageUrl}
           />
         ) : (
           <div className="thumb-fitness h-full w-full" />
         )}
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,7,11,0.28),rgba(5,7,11,0.06)),linear-gradient(180deg,transparent_45%,rgba(5,7,11,0.75))]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(5,7,11,0.85))]" />
+        {isActive ? (
+          <span className="absolute left-2 top-2 z-10 size-2.5 rounded-full bg-[#22c55e] shadow-[0_0_6px_rgba(34,197,94,0.6)]" />
+        ) : null}
+        <div className="absolute bottom-0 left-0 right-0 flex flex-wrap gap-1.5 p-3">
+          <span className="inline-flex items-center gap-1 rounded-md bg-black/50 px-2 py-0.5 text-[11px] font-medium text-white backdrop-blur-sm">
+            <CalendarDays className="size-3" />
+            {routine.dayCount} días
+          </span>
+          <span className="inline-flex items-center rounded-md bg-black/50 px-2 py-0.5 text-[11px] font-medium text-white backdrop-blur-sm">
+            {ROUTINE_DIFFICULTY_LABELS[routine.difficulty]}
+          </span>
+          <span className="inline-flex items-center rounded-md bg-black/50 px-2 py-0.5 text-[11px] font-medium text-white backdrop-blur-sm">
+            {ROUTINE_OBJECTIVE_LABELS[routine.objective]}
+          </span>
+        </div>
       </div>
 
-      <div className="min-w-0 p-3 sm:p-4">
-        <div className="flex flex-wrap items-center gap-2">
-          {isActive ? <Badge variant="accent">Activa</Badge> : null}
-          <h3 className="font-display min-w-0 truncate text-base font-semibold tracking-[-0.05em] text-white sm:text-xl">
+      <div className="px-4 pb-2 pt-3">
+        <div className="flex items-center gap-2">
+          <h3 className="font-display min-w-0 truncate text-base font-semibold tracking-[-0.05em] text-white">
             {routine.displayName}
           </h3>
         </div>
-        <p className="mt-1.5 line-clamp-2 text-xs leading-5 text-[var(--foreground-muted)] sm:mt-2 sm:text-sm sm:leading-6">
-          {routine.templateDescription || `Plantilla: ${routine.templateName}`}
-        </p>
-        <div className="mt-2 flex flex-wrap gap-1.5 sm:mt-3 sm:gap-2">
-          <MetaPill icon={CalendarDays}>{routine.dayCount} días</MetaPill>
-          <MetaPill icon={TrendingUp}>
-            {ROUTINE_DIFFICULTY_LABELS[routine.difficulty]}
-          </MetaPill>
-          <MetaPill icon={SlidersHorizontal}>
-            {ROUTINE_OBJECTIVE_LABELS[routine.objective]}
-          </MetaPill>
-        </div>
-        <p className="mt-2 text-xs text-[#8790a5] sm:mt-3 sm:text-sm">
-          Guardada el: {routine.savedAtLabel}
-        </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 border-t border-[#20283a] p-3 sm:col-span-2 sm:grid-cols-[1fr_1fr_auto] sm:p-4 2xl:col-span-1 2xl:border-l 2xl:border-t-0 2xl:grid-cols-1 2xl:px-6">
-        <Button asChild className="h-10 rounded-lg">
-          <Link href={`/catalogo/rutinas/${routine.routineTemplateId}`}>
-            {isActive ? <Star className="size-4" /> : null}
-            Abrir
-          </Link>
+      <div className="flex items-center gap-2 px-4 pb-4 pt-1">
+        <Button asChild className="h-9 flex-1 rounded-lg">
+          <Link href={`/catalogo/rutinas/${routine.routineTemplateId}`}>Abrir</Link>
         </Button>
 
-        <form action={toggleActiveSavedRoutineAction}>
+        <form action={toggleActiveSavedRoutineAction} className="flex-1">
           <input type="hidden" name="savedRoutineId" value={routine.id} />
           <Button
             type="submit"
             variant={isActive ? "secondary" : "outline"}
-            className="h-10 w-full rounded-lg"
+            className="h-9 w-full rounded-lg"
           >
             <Check className="size-4" />
             {isActive ? "Desactivar" : "Activar"}
@@ -327,7 +276,12 @@ function DashboardRoutineCard({
           }}
         >
           <DropdownMenuTrigger asChild>
-            <Button type="button" variant="outline" className="col-span-2 h-10 rounded-lg sm:col-span-1">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="size-9 shrink-0 border-0"
+            >
               <MoreHorizontal className="size-5" />
               <span className="sr-only">Mas acciones</span>
             </Button>
@@ -396,20 +350,5 @@ function DashboardRoutineCard({
         </DropdownMenu>
       </div>
     </article>
-  );
-}
-
-function MetaPill({
-  icon: Icon,
-  children,
-}: {
-  icon: ComponentType<{ className?: string }>;
-  children: ReactNode;
-}) {
-  return (
-    <span className="inline-flex items-center gap-2 rounded-lg border border-[#20283a] bg-[#0a101c] px-2.5 py-1 text-xs font-medium text-[#b7bfce]">
-      <Icon className="size-3.5 text-[#9a63ff]" />
-      {children}
-    </span>
   );
 }

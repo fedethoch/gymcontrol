@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   BookOpen,
@@ -6,19 +5,14 @@ import {
   Dumbbell,
   Flame,
   Target,
-  TrendingUp,
 } from "lucide-react";
 
-import { DashboardRoutinesClient } from "@/app/dashboard/DashboardRoutinesClient";
 import { StatusToast } from "@/app/components/shared/StatusToast";
 import { Button } from "@/app/components/ui/Button";
 import { Card, CardContent } from "@/app/components/ui/Card";
 import { fadeUp, MotionDiv, staggerContainer } from "@/app/components/ui/motion";
 import { requireUser } from "@/app/lib/auth";
-import {
-  ROUTINE_DIFFICULTY_LABELS,
-  ROUTINE_OBJECTIVE_LABELS,
-} from "@/app/lib/routine-metadata";
+import { ROUTINE_OBJECTIVE_LABELS } from "@/app/lib/routine-metadata";
 import { listSavedRoutinesForUser } from "@/app/lib/saved-routines";
 
 type DashboardPageProps = {
@@ -115,59 +109,8 @@ export default async function DashboardPage({
           variants={staggerContainer}
           initial="hidden"
           animate="visible"
-          className="grid gap-3 xl:grid-cols-[minmax(0,1.43fr)_minmax(22rem,1fr)]"
+          className="grid gap-3"
         >
-          <MotionDiv variants={fadeUp}>
-          <Card className="relative min-h-[13rem] overflow-hidden border-[#27304a] bg-[#080b14] transition-[transform,border-color] duration-200 hover:-translate-y-0.5 hover:border-[#6d40ef] lg:min-h-[17.55rem]">
-            {activeRoutine.coverImageUrl ? (
-              <Image
-                alt={activeRoutine.displayName}
-                className="object-cover saturate-[0.82]"
-                fill
-                priority
-                sizes="(max-width: 1280px) 100vw, 55vw"
-                src={activeRoutine.coverImageUrl}
-              />
-            ) : (
-              <div className="thumb-fitness absolute inset-0" />
-            )}
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,7,11,0.98)_0%,rgba(5,7,11,0.86)_32%,rgba(5,7,11,0.2)_100%),radial-gradient(circle_at_72%_78%,rgba(124,58,237,0.35),transparent_29%)]" />
-            <CardContent className="relative flex min-h-[13rem] max-w-[48rem] flex-col px-4 py-4 sm:px-6 lg:min-h-[17.55rem] lg:px-8 lg:py-6">
-              <div className="flex flex-1 items-end">
-                <div className="grid w-full gap-2.5 pb-1 sm:gap-3.5">
-                  <h2 className="font-display max-w-3xl text-2xl font-semibold tracking-[-0.06em] text-white sm:text-[2.65rem] sm:leading-none sm:tracking-[-0.07em]">
-                    {activeRoutine.displayName}
-                  </h2>
-                  <p className="max-w-3xl text-sm leading-5 text-[#d6dbe7] sm:text-base">
-                    {activeRoutine.templateDescription ||
-                      `Plantilla activa: ${activeRoutine.templateName}`}
-                  </p>
-                  <div className="flex flex-wrap gap-2 sm:gap-2.5">
-                    <span className="inline-flex items-center gap-2 rounded-lg border border-[#20283a] bg-[#070d18]/72 px-2.5 py-1.5 text-xs font-medium text-[#b7bfce] sm:px-3 sm:py-2 sm:text-sm">
-                      <CalendarDays className="size-4 text-[#9a63ff]" />
-                      {activeRoutine.dayCount} días
-                    </span>
-                    <span className="inline-flex items-center gap-2 rounded-lg border border-[#20283a] bg-[#070d18]/72 px-2.5 py-1.5 text-xs font-medium text-[#b7bfce] sm:px-3 sm:py-2 sm:text-sm">
-                      <TrendingUp className="size-4 text-[#9a63ff]" />
-                      {ROUTINE_DIFFICULTY_LABELS[activeRoutine.difficulty]}
-                    </span>
-                    <span className="inline-flex items-center gap-2 rounded-lg border border-[#20283a] bg-[#070d18]/72 px-2.5 py-1.5 text-xs font-medium text-[#b7bfce] sm:px-3 sm:py-2 sm:text-sm">
-                      <Target className="size-4 text-[#9a63ff]" />
-                      {ROUTINE_OBJECTIVE_LABELS[activeRoutine.objective]}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <Button asChild className="mt-4 h-10 w-full justify-between rounded-lg px-5 sm:w-48 sm:px-7">
-                <Link href={`/catalogo/rutinas/${activeRoutine.routineTemplateId}`}>
-                  Abrir rutina
-                  <TrendingUp className="size-4" />
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
-          </MotionDiv>
-
           <div className="grid grid-cols-2 auto-rows-fr gap-2.5 sm:gap-3">
             {metrics.map((metric) => {
               const Icon = metric.icon;
@@ -232,12 +175,6 @@ export default async function DashboardPage({
         </Card>
       )}
 
-      {routines.length > 0 ? (
-        <DashboardRoutinesClient
-          routines={routines}
-          activeRoutineId={activeRoutine?.id ?? null}
-        />
-      ) : null}
     </section>
   );
 }

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { FOOD_CATEGORIES } from "@/app/lib/nutrition-types";
+import { RECIPE_CATEGORIES } from "@/app/lib/nutrition-types";
 import type { ParsedRecipePayload, RecipeFormPayload, RecipeFormState } from "@/app/lib/recipes-form";
 
 const recipeTextSchema = z.object({
@@ -42,7 +42,7 @@ export function parseRecipePayload(
 
   if (!normalizedCategory) {
     fieldErrors.category = "Selecciona una categoria.";
-  } else if (!FOOD_CATEGORIES.includes(normalizedCategory as never)) {
+  } else if (!RECIPE_CATEGORIES.includes(normalizedCategory as never)) {
     fieldErrors.category = "Selecciona una categoria valida.";
   } else {
     category = normalizedCategory as ParsedRecipePayload["category"];

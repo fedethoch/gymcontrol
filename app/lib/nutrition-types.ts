@@ -9,6 +9,15 @@ export const FOOD_CATEGORY_LABELS: Record<FoodCategory, string> = {
   mixed: "Mixto",
 };
 
+export const RECIPE_CATEGORIES = ["desayuno", "comida", "snack"] as const;
+export type RecipeCategory = (typeof RECIPE_CATEGORIES)[number];
+
+export const RECIPE_CATEGORY_LABELS: Record<RecipeCategory, string> = {
+  desayuno: "Desayuno",
+  comida: "Comida",
+  snack: "Snack",
+};
+
 export const FOOD_MEASURES = ["g", "unit"] as const;
 export type FoodMeasure = (typeof FOOD_MEASURES)[number];
 
@@ -48,7 +57,7 @@ export type Recipe = {
   name: string;
   description: string;
   imageUrl: string;
-  category: FoodCategory;
+  category: RecipeCategory;
   servings: number;
   ingredients: RecipeIngredient[];
   calories: number;

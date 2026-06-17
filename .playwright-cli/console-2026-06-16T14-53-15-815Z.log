@@ -1,0 +1,13 @@
+[     353ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[     470ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[   59213ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[   59318ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[   59924ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://ignlzahslkkfucgnekkb.supabase.co/auth/v1/token?grant_type=password:0
+[   75765ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[   76740ms] [LOG] [Fast Refresh] done in 1081ms @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[   81838ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[   81866ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[  132565ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[  133577ms] [LOG] [Fast Refresh] done in 1124ms @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[  282263ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477
+[  282364ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/03xv_next_dist_0f4_07w._.js:2477

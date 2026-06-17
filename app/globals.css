@@ -93,6 +93,7 @@ a {
 }
 
 .shell-workspace {
+  position: relative;
   display: flex;
   min-height: 0;
   min-width: 0;
@@ -121,13 +122,14 @@ a {
   width: 100%;
   min-height: 100%;
   padding: 1rem;
+  padding-top: calc(4.75rem + env(safe-area-inset-top));
   padding-bottom: calc(5rem + env(safe-area-inset-bottom));
 }
 
 .dashboard-page-frame {
   align-content: start;
   grid-auto-rows: max-content;
-  padding-top: 1rem;
+  padding-top: calc(4.75rem + env(safe-area-inset-top));
 }
 
 .thumb-fitness {

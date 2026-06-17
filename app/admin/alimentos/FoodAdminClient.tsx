@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { ChevronDown, ChevronUp, LoaderCircle, PencilLine, Plus, Salad, Search, Trash2, TriangleAlert } from "lucide-react";
 import { toast } from "sonner";
 
+import { FilterPanel } from "@/app/components/shared/FilterPanel";
 import { MacroBar } from "@/app/components/shared/MacroBar";
 import { Button } from "@/app/components/ui/Button";
 import { Card, CardContent } from "@/app/components/ui/Card";
@@ -140,31 +141,18 @@ export function FoodAdminClient({ initialFoods }: FoodAdminClientProps) {
 
   return (
     <section className="page-frame dashboard-page-frame">
-      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <SectionEyebrow>Gestión / Alimentos</SectionEyebrow>
-          <h1 className="font-display mt-2 text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
-            Alimentos
-          </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--foreground-muted)]">
-            Gestiona el catálogo de alimentos con sus calorías y macronutrientes. (Vista de
-            ejemplo: los cambios no se guardan todavía.)
-          </p>
-        </div>
-        <Button
-          type="button"
-          onClick={() => {
-            setFormKey((value) => value + 1);
-            setDrawer({ mode: "create" });
-          }}
-        >
-          <Plus className="size-4" />
-          Nuevo alimento
-        </Button>
+      <header>
+        <SectionEyebrow>Gestión / Alimentos</SectionEyebrow>
+        <h1 className="font-display mt-2 text-2xl font-semibold tracking-[-0.05em] text-white sm:text-3xl">
+          Alimentos
+        </h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--foreground-muted)]">
+          Gestiona el catálogo de alimentos con sus calorías y macronutrientes.
+        </p>
       </header>
 
-      <div className="grid gap-3 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
-        <label className="relative block min-w-0">
+      <div className="flex items-center gap-2">
+        <label className="relative flex-1">
           <span className="sr-only">Buscar alimento</span>
           <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#7d8697]" />
           <Input
@@ -179,25 +167,38 @@ export function FoodAdminClient({ initialFoods }: FoodAdminClientProps) {
           />
         </label>
 
-        <Select
-          value={categoryFilter}
-          onValueChange={(value) => {
-            setCategoryFilter(value);
+        <FilterPanel
+          groups={[
+            {
+              label: "Categoría",
+              options: FOOD_CATEGORIES.map((v) => ({
+                value: v,
+                label: FOOD_CATEGORY_LABELS[v],
+              })),
+              value: categoryFilter,
+              onChange: (v) => {
+                setCategoryFilter(v);
+                setPage(0);
+              },
+            },
+          ]}
+          onClear={() => {
+            setCategoryFilter("all");
             setPage(0);
           }}
+        />
+
+        <Button
+          type="button"
+          className="shrink-0"
+          onClick={() => {
+            setFormKey((value) => value + 1);
+            setDrawer({ mode: "create" });
+          }}
         >
-          <SelectTrigger className="h-11 w-full min-w-0 rounded-xl border-[var(--border)] bg-[var(--card-alt)]">
-            <SelectValue placeholder="Categoría" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todas las categorías</SelectItem>
-            {FOOD_CATEGORIES.map((value) => (
-              <SelectItem key={value} value={value}>
-                {FOOD_CATEGORY_LABELS[value]}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <Plus className="size-4" />
+          <span className="hidden sm:inline">Nuevo alimento</span>
+        </Button>
       </div>
 
       <Card className="overflow-hidden">

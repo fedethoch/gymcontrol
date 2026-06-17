@@ -1,0 +1,87 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - main [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: Rutina activa
+          - heading "qa rutina 829015 editada" [level=2] [ref=e9]
+          - generic [ref=e10]:
+            - generic [ref=e11]: Mantenimiento
+            - generic [ref=e12]: Intermedio
+            - generic [ref=e13]: 2 días/sem
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - generic [ref=e16]:
+              - text: "0"
+              - generic [ref=e17]: /2
+            - paragraph [ref=e18]: días
+          - generic [ref=e19]:
+            - paragraph [ref=e20]: Resumen semanal
+            - paragraph [ref=e22]: 0% completado
+        - generic [ref=e23]:
+          - generic [ref=e24]:
+            - img [ref=e25]
+            - generic [ref=e27]:
+              - paragraph [ref=e28]: 0 días
+              - paragraph [ref=e29]: Racha
+          - generic [ref=e30]:
+            - img [ref=e31]
+            - generic [ref=e34]:
+              - paragraph [ref=e35]: 60 min
+              - paragraph [ref=e36]: Tiempo
+          - generic [ref=e37]:
+            - img [ref=e38]
+            - generic [ref=e40]:
+              - paragraph [ref=e41]: Hoy
+              - paragraph [ref=e42]: Próximo
+        - generic [ref=e43]:
+          - link "1 Dia QA 1 2 ejercicios 60 min Ver" [ref=e45] [cursor=pointer]:
+            - /url: /dashboard/rutinas/dia?savedRoutineId=4292766a-1eba-4ed0-8df2-d028a08905d1&day=1
+            - generic [ref=e46]:
+              - generic [ref=e47]: "1"
+              - generic [ref=e48]:
+                - heading "Dia QA 1" [level=3] [ref=e49]
+                - generic [ref=e50]:
+                  - generic [ref=e51]: 2 ejercicios
+                  - generic [ref=e52]:
+                    - img [ref=e53]
+                    - text: 60 min
+              - generic [ref=e57]:
+                - text: Ver
+                - img [ref=e58]
+          - link "2 Dia QA 2 1 ejercicios 60 min" [ref=e61] [cursor=pointer]:
+            - /url: /dashboard/rutinas/dia?savedRoutineId=4292766a-1eba-4ed0-8df2-d028a08905d1&day=2
+            - generic [ref=e62]:
+              - generic [ref=e63]: "2"
+              - generic [ref=e64]:
+                - heading "Dia QA 2" [level=3] [ref=e65]
+                - generic [ref=e66]:
+                  - generic [ref=e67]: 1 ejercicios
+                  - generic [ref=e68]:
+                    - img [ref=e69]
+                    - text: 60 min
+              - img [ref=e73]
+    - navigation "Navegación inferior" [ref=e75]:
+      - generic [ref=e76]:
+        - link "Admin" [ref=e77] [cursor=pointer]:
+          - /url: /admin
+          - img [ref=e78]
+          - text: Admin
+        - link "Ejercicios" [ref=e80] [cursor=pointer]:
+          - /url: /admin/ejercicios
+          - img [ref=e81]
+          - text: Ejercicios
+        - link "Rutinas" [ref=e86] [cursor=pointer]:
+          - /url: /admin/rutinas
+          - img [ref=e87]
+          - text: Rutinas
+        - link "Alimentos" [ref=e89] [cursor=pointer]:
+          - /url: /admin/alimentos
+          - img [ref=e90]
+          - text: Alimentos
+        - button "Más" [ref=e95]:
+          - img [ref=e96]
+          - text: Más
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e102] [cursor=pointer]:
+    - img [ref=e103]

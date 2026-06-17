@@ -5,6 +5,10 @@ import { Toaster } from "sonner";
 
 import { getOptionalAuthContext } from "@/app/lib/auth";
 
+import {
+  MobileHeader,
+  MobileHeaderStateProvider,
+} from "./components/shared/MobileHeader";
 import { MobileTabBar } from "./components/shared/MobileTabBar";
 import { PrimaryNavigation } from "./components/shared/PrimaryNavigation";
 import { AppShell } from "./components/ui/AppShell";
@@ -53,9 +57,16 @@ export default async function RootLayout({
             isAuthenticated={Boolean(auth)}
             role={auth?.profile.role ?? null}
           />
-          <div className="shell-workspace">
-            <main className="shell-main">{children}</main>
-          </div>
+          <MobileHeaderStateProvider>
+            <div className="shell-workspace">
+              <MobileHeader
+                isAuthenticated={Boolean(auth)}
+                role={auth?.profile.role ?? null}
+                displayName={auth?.profile.displayName ?? null}
+              />
+              <main className="shell-main">{children}</main>
+            </div>
+          </MobileHeaderStateProvider>
           <MobileTabBar
             isAuthenticated={Boolean(auth)}
             role={auth?.profile.role ?? null}

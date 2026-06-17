@@ -1,20 +1,19 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { ReactNode } from "react";
+import type { ComponentType } from "react";
 import {
   CalendarDays,
-  Check,
   Clock3,
   Dumbbell,
   Flame,
 } from "lucide-react";
 
+import { MobileHeaderBadgeSync } from "@/app/components/shared/MobileHeader";
 import { Button } from "@/app/components/ui/Button";
 import { Card, CardContent } from "@/app/components/ui/Card";
-import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
 import { requireUser } from "@/app/lib/auth";
+import { ROUTINE_OBJECTIVE_LABELS, ROUTINE_DIFFICULTY_LABELS } from "@/app/lib/routine-metadata";
 import { listSavedRoutinesForUser, getSavedRoutineByIdForUser } from "@/app/lib/saved-routines";
-import { cn } from "@/app/lib/utils";
 import { listWorkoutWeeklySummaries } from "@/app/lib/workout-tracking";
 import { WeekDaysList } from "@/app/dashboard/rutinas/WeekDaysList";
 
@@ -26,18 +25,11 @@ export default async function DashboardRoutinesPage() {
   if (!activeRoutineListItem) {
     return (
       <section className="page-frame dashboard-page-frame bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
-        <header className="flex flex-col gap-2">
-          <div>
-            <h1 className="font-display text-3xl font-semibold text-white sm:text-4xl">
-              Sin rutina activa
-            </h1>
-            <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)] sm:text-base">
-              Activa una rutina para ver tu semana y navegar sus entrenamientos.
-            </p>
-          </div>
+        <header>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#b985ff]">Rutinas</p>
         </header>
 
-        <Card className="overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,#0b101a_0%,#080c15_100%)]">
+        <Card className="overflow-hidden bg-[#0e131e]">
           <CardContent className="grid min-h-80 place-items-center p-8 text-center">
             <div className="max-w-md">
               <span className="mx-auto grid size-16 place-items-center rounded-full border border-[#5b2ab3] bg-[#241341] text-[#b995ff] shadow-[0_0_0_8px_rgba(91,42,179,0.08)]">
@@ -84,189 +76,145 @@ export default async function DashboardRoutinesPage() {
   }
 
   const totalDays = activeRoutine.days.length;
-  const totalExercises = activeRoutine.days.reduce((total, day) => total + day.items.length, 0);
-  const averageExercises =
-    totalDays > 0 ? Math.round((totalExercises / totalDays) * 10) / 10 : 0;
-  const averageExercisesLabel = Number.isInteger(averageExercises)
-    ? averageExercises.toFixed(0)
-    : averageExercises.toFixed(1);
   const weeklySummary = weeklySummaries[activeRoutine.id];
   const completedDayCount = weeklySummary?.completedDayCount ?? 0;
-  const weeklyProgressLabel = `${completedDayCount} / ${totalDays}`;
   const weeklyProgressPercent =
     totalDays > 0 ? Math.min(100, Math.round((completedDayCount / totalDays) * 100)) : 0;
   const completedDayIds = new Set(weeklySummary?.completedRoutineDayIds ?? []);
   const nextPendingDay = activeRoutine.days.find((day) => !completedDayIds.has(day.id)) ?? null;
 
+  const objectiveLabel = ROUTINE_OBJECTIVE_LABELS[activeRoutineListItem.objective];
+  const difficultyLabel = ROUTINE_DIFFICULTY_LABELS[activeRoutineListItem.difficulty];
+  const nextTrainingLabel = (() => {
+    if (!totalDays) return "—";
+    if (completedDayCount >= totalDays) return "Semana completa";
+    const dayOfWeek = (new Date().getDay() + 6) % 7; // Mon=0, Sun=6
+    if (dayOfWeek < totalDays && completedDayCount <= dayOfWeek) return "Hoy";
+    if (dayOfWeek + 1 < totalDays && completedDayCount <= dayOfWeek + 1) return "Mañana";
+    const remaining = totalDays - completedDayCount;
+    return remaining === 1 ? "En 1 día" : `En ${remaining} días`;
+  })();
+
   return (
     <section className="page-frame dashboard-page-frame bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
-      <div className="grid gap-1.5">
-        <header className="flex flex-col gap-2">
-          <div>
-            <h1 className="font-display text-3xl font-semibold text-white sm:text-4xl">
-              Semana activa
-            </h1>
-            <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)] sm:text-base">
-              Seguimiento de tu rutina activa
-            </p>
+      <MobileHeaderBadgeSync
+        badge={
+          weeklySummary?.hasRealData
+            ? {
+                label: String(weeklySummary.currentStreak),
+                ariaLabel: `${weeklySummary.currentStreak} días de racha de entrenamiento`,
+                tone: "warm",
+              }
+            : null
+        }
+      />
+
+      {/* Row 1: Routine header card with placeholder bg */}
+      <div className="relative overflow-hidden rounded-2xl bg-[#15102a] p-3.5">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,rgba(124,58,237,0.2),transparent_65%)]" />
+        <div className="relative">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#b985ff]">Rutina activa</p>
+          <h2 className="font-display mt-0.5 text-lg font-semibold leading-tight text-white sm:text-xl">
+            {activeRoutine.displayName}
+          </h2>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {[objectiveLabel, difficultyLabel, `${totalDays} días/sem`].map((chip) => (
+              <span
+                key={chip}
+                className="inline-flex items-center rounded-md border border-[rgba(139,92,246,0.35)] bg-[rgba(20,15,36,0.6)] px-2 py-0.5 text-[10px] font-semibold text-[#d4c6ff]"
+              >
+                {chip}
+              </span>
+            ))}
           </div>
-        </header>
-
-        <Card className="flex overflow-hidden rounded-[1.4rem] border-[#263044] bg-[linear-gradient(145deg,rgba(13,19,34,0.9),rgba(7,11,19,0.96))] shadow-[0_18px_55px_rgba(0,0,0,0.28)] lg:items-center">
-          <CardContent className="flex w-full !py-3 px-4 sm:!py-4 sm:px-5">
-            <div className="grid w-full gap-3 sm:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] sm:items-center sm:gap-5">
-              <div className="flex flex-col justify-center gap-2 sm:gap-3 sm:border-r sm:border-[#1d2434] sm:pr-5">
-                <div className="grid gap-1">
-                  <p className="text-xs font-medium text-[#b7bfce] sm:text-sm">Rutina activa</p>
-                  <h2 className="font-display text-lg font-semibold leading-tight text-white sm:text-[1.6rem] lg:text-3xl">
-                    {activeRoutine.displayName}
-                  </h2>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[#d2d8e4]">
-                  <SummaryPill icon={CalendarDays}>{totalDays} dias por semana</SummaryPill>
-                  <span className="hidden h-5 w-px bg-[#293247] sm:block" />
-                  <SummaryPill icon={Dumbbell}>
-                    {averageExercisesLabel} ejercicios por dia
-                  </SummaryPill>
-                </div>
-              </div>
-
-              <div className="flex flex-col justify-center gap-2 sm:gap-3">
-                <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#c25cff]">
-                  Resumen semanal
-                </p>
-
-                <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))] xl:items-center">
-                  <div className="col-span-2 flex items-center gap-3 sm:gap-4 xl:col-span-1">
-                    <AnimatedProgressRing
-                      value={weeklyProgressPercent}
-                      size={56}
-                      strokeWidth={6}
-                      progressColor="#7c3aed"
-                    >
-                      <div className="grid size-11 place-items-center rounded-full bg-[#0a0f19] text-xs font-semibold text-[#cbb6ff] sm:size-[3.25rem] sm:text-sm">
-                        {weeklyProgressPercent}%
-                      </div>
-                    </AnimatedProgressRing>
-                    <div>
-                      <p className="text-xs text-[#b7bfce] sm:text-sm">Progreso semanal</p>
-                      <p className="font-display mt-0.5 text-base font-semibold text-white sm:mt-1 sm:text-xl">
-                        {weeklyProgressLabel.replace("/", "de")} dias
-                      </p>
-                    </div>
-                  </div>
-
-                  <MetricItem
-                    icon={Check}
-                    label="Dias completados"
-                    value={
-                      weeklySummary?.hasRealData ? String(weeklySummary.completedDayCount) : "0"
-                    }
-                    accent="success"
-                  />
-                  <MetricItem
-                    icon={Clock3}
-                    label="Tiempo estimado"
-                    value={totalDays > 0 ? "60 min" : "Sin dias"}
-                  />
-                  <MetricItem
-                    icon={Flame}
-                    label="Racha actual"
-                    value={
-                      weeklySummary?.hasRealData
-                        ? `${weeklySummary.currentStreak} dias`
-                        : "0 dias"
-                    }
-                    accent="warm"
-                  />
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        </div>
       </div>
 
-      <section className="grid gap-1.5">
-        <div>
-          <h2 className="font-display text-2xl font-semibold text-white">
-            Tu semana
-          </h2>
+      {/* Row 2: Weekly summary */}
+      <div className="flex items-center gap-4 rounded-2xl bg-[#0e131e] px-4 py-3">
+        <div className="shrink-0 text-center">
+          <div className="font-display text-2xl font-bold leading-none">
+            <span className="text-white">{completedDayCount}</span>
+            <span className="text-[#9a63ff]">/{totalDays}</span>
+          </div>
+          <p className="mt-0.5 text-[9px] text-[#7887a6]">días</p>
         </div>
+        <div className="flex flex-1 flex-col gap-1">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#c25cff]">Resumen semanal</p>
+          <div className="h-2.5 overflow-hidden rounded-full bg-[#151c2d]">
+            <div
+              className="h-full rounded-full bg-[#7c3aed] transition-all duration-700"
+              style={{ width: `${weeklyProgressPercent}%` }}
+            />
+          </div>
+          <p className="text-[10px] text-[#7887a6]">{weeklyProgressPercent}% completado</p>
+        </div>
+      </div>
 
-        {activeRoutine.days.length > 0 ? (
-          <WeekDaysList
-            days={activeRoutine.days.map((day) => ({
-              id: day.id,
-              dayOrder: day.dayOrder,
-              dayName: day.dayName,
-              itemsCount: day.items.length,
-            }))}
-            completedDayIds={Array.from(completedDayIds)}
-            currentDayId={nextPendingDay?.id ?? activeRoutine.days[0]?.id ?? null}
-            activeRoutineId={activeRoutine.id}
-          />
-        ) : (
-          <Card className="border-dashed border-[#27304a] bg-[linear-gradient(145deg,#0b101a_0%,#080c15_100%)]">
-            <CardContent className="p-8 text-center">
-              <p className="font-display text-xl font-semibold text-white">
-                Esta rutina todavia no tiene dias cargados
-              </p>
-              <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)]">
-                El resumen semanal queda disponible, pero la semana se mostrara cuando existan dias
-                configurados en la plantilla.
-              </p>
-            </CardContent>
-          </Card>
-        )}
-      </section>
+      {/* Row 3: 3 mini stat cards */}
+      <div className="grid grid-cols-3 gap-2">
+        <MiniCard
+          icon={Flame}
+          label="Racha"
+          value={weeklySummary?.hasRealData ? `${weeklySummary.currentStreak} días` : "0 días"}
+          accent="warm"
+        />
+        <MiniCard icon={Clock3} label="Tiempo" value={totalDays > 0 ? "60 min" : "—"} />
+        <MiniCard icon={CalendarDays} label="Próximo" value={nextTrainingLabel} />
+      </div>
+
+      {/* Row 4: Days list */}
+      {activeRoutine.days.length > 0 ? (
+        <WeekDaysList
+          days={activeRoutine.days.map((day) => ({
+            id: day.id,
+            dayOrder: day.dayOrder,
+            dayName: day.dayName,
+            itemsCount: day.items.length,
+          }))}
+          completedDayIds={Array.from(completedDayIds)}
+          currentDayId={nextPendingDay?.id ?? activeRoutine.days[0]?.id ?? null}
+          activeRoutineId={activeRoutine.id}
+        />
+      ) : (
+        <Card className="bg-[#0e131e]">
+          <CardContent className="p-8 text-center">
+            <p className="font-display text-xl font-semibold text-white">
+              Esta rutina todavia no tiene dias cargados
+            </p>
+            <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)]">
+              El resumen semanal queda disponible, pero la semana se mostrara cuando existan dias
+              configurados en la plantilla.
+            </p>
+          </CardContent>
+        </Card>
+      )}
     </section>
   );
 }
 
-function SummaryPill({
-  icon: Icon,
-  children,
-}: {
-  icon: typeof CalendarDays;
-  children: ReactNode;
-}) {
-  return (
-    <span className="inline-flex items-center gap-2 text-sm text-[#d2d8e4]">
-      <Icon className="size-4 text-[#b9c9ef]" />
-      {children}
-    </span>
-  );
-}
-
-function MetricItem({
+function MiniCard({
   icon: Icon,
   label,
   value,
   accent = "default",
 }: {
-  icon: typeof CalendarDays;
+  icon: ComponentType<{ className?: string }>;
   label: string;
   value: string;
-  accent?: "default" | "success" | "warm";
+  accent?: "default" | "warm";
 }) {
-  const toneClass =
-    accent === "success"
-      ? "border-[#214433] bg-[#102117] text-[#87efac]"
-      : accent === "warm"
-        ? "border-[#5a3022] bg-[#21140f] text-[#ff9a75]"
-        : "border-[#253047] bg-[#0c111d] text-[#9db5ff]";
+  const iconClass =
+    accent === "warm"
+      ? "text-[#ff9a75]"
+      : "text-[#9db5ff]";
 
   return (
-    <div className="flex items-center gap-2 sm:gap-3">
-      <span className={cn("grid size-9 shrink-0 place-items-center rounded-full border-4 sm:size-11", toneClass)}>
-        <Icon className="size-4 sm:size-5" />
-      </span>
+    <div className="flex flex-col items-center gap-1.5 rounded-2xl bg-[#0e131e] px-2 py-3 text-center">
+      <Icon className={`size-4 shrink-0 ${iconClass}`} />
       <div>
-        <p className="text-xs text-[#b7bfce] sm:text-sm">{label}</p>
-        <p className="font-display mt-0.5 text-base font-semibold text-white sm:mt-1 sm:text-lg">
-          {value}
-        </p>
+        <p className="font-display text-sm font-semibold leading-tight text-white">{value}</p>
+        <p className="mt-0.5 text-[10px] text-[#7887a6]">{label}</p>
       </div>
     </div>
   );
