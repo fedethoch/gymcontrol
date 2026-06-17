@@ -111,6 +111,10 @@ a {
   scrollbar-gutter: stable;
 }
 
+.mobile-tab-bar {
+  padding-bottom: max(0.5rem, calc(env(safe-area-inset-bottom) - 1.5rem));
+}
+
 .font-display {
   font-family: var(--font-display), var(--font-body), sans-serif;
 }
