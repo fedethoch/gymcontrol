@@ -109,12 +109,10 @@ a {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
-  padding-bottom: calc(4.1rem + env(safe-area-inset-bottom));
-  scroll-padding-bottom: calc(4.1rem + env(safe-area-inset-bottom));
 }
 
 .mobile-tab-bar {
-  padding-bottom: 0.5rem;
+  padding-bottom: 0;
 }
 
 .pwa-standalone .mobile-tab-bar {
@@ -140,10 +138,6 @@ a {
 .pwa-standalone .mobile-tab-bar-icon {
   width: 1.5rem;
   height: 1.5rem;
-}
-
-.pwa-standalone .page-frame {
-  padding-bottom: 1rem;
 }
 
 @media (display-mode: standalone) {
@@ -172,9 +166,6 @@ a {
     height: 1.5rem;
   }
 
-  .page-frame {
-    padding-bottom: 1rem;
-  }
 }
 
 .font-display {
@@ -207,11 +198,6 @@ a {
 }
 
 @media (min-width: 1024px) {
-  .shell-main {
-    padding-bottom: 0;
-    scroll-padding-bottom: 0;
-  }
-
   .app-shell {
     flex-direction: row;
   }
