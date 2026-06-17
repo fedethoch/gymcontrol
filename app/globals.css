@@ -122,12 +122,12 @@ a {
 
 .pwa-standalone .mobile-tab-bar-grid {
   width: 100%;
-  min-height: 100%;
-  align-items: stretch;
+  height: 100%;
+  align-items: start;
 }
 
 .pwa-standalone .mobile-tab-bar-item {
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.125rem;
   min-height: 100%;
   padding-top: 0.5rem;
@@ -152,12 +152,12 @@ a {
 
   .mobile-tab-bar-grid {
     width: 100%;
-    min-height: 100%;
-    align-items: stretch;
+    height: 100%;
+    align-items: start;
   }
 
   .mobile-tab-bar-item {
-    justify-content: center;
+    justify-content: flex-start;
     gap: 0.125rem;
     min-height: 100%;
     padding-top: 0.5rem;
