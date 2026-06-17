@@ -1,4 +1,4 @@
-const CACHE_NAME = "gymcontrol-shell-v1";
+const CACHE_NAME = "gymcontrol-shell-v2";
 
 const STATIC_ASSETS = [
   "/favicon.ico",

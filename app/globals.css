@@ -117,6 +117,7 @@ a {
 
 .pwa-standalone .mobile-tab-bar {
   height: 2.5rem;
+  bottom: env(safe-area-inset-bottom);
   padding-bottom: 0;
 }
 
@@ -143,6 +144,7 @@ a {
 @media (display-mode: standalone) {
   .mobile-tab-bar {
     height: 2.5rem;
+    bottom: env(safe-area-inset-bottom);
     padding-bottom: 0;
   }
 
