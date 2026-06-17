@@ -1,19 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronsLeft, ChevronsRight, Menu } from "lucide-react";
+import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/app/components/ui/Button";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/app/components/ui/Sheet";
 import {
   Tooltip,
   TooltipContent,
@@ -147,8 +140,16 @@ export function NavigationPanel({
     >
       <div className={cn("flex items-center", collapsed ? "justify-center" : "gap-3")}>
         <Link href="/" onClick={onNavigate} className="flex min-w-0 items-center gap-3">
-          <span className="grid size-10 shrink-0 place-items-center rounded-2xl border border-[#6d40ef] bg-[#6335e8] font-display text-base font-bold tracking-normal text-white shadow-[0_12px_28px_rgba(72,39,158,0.28)]">
-            GC
+          <span className="grid size-10 shrink-0 place-items-center overflow-hidden rounded-2xl">
+            <Image
+              src="/logo/logo.png"
+              alt="GymControl"
+              width={40}
+              height={40}
+              className="size-full object-contain p-1"
+              priority
+              unoptimized
+            />
           </span>
           {collapsed ? null : (
             <span className="min-w-0">
@@ -231,9 +232,7 @@ export function PrimaryNavigation({
   role,
 }: PrimaryNavigationProps) {
   const pathname = usePathname();
-  const currentRoute = resolveShellRouteMeta(pathname);
   const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   if (pathname.startsWith("/auth")) {
     return null;

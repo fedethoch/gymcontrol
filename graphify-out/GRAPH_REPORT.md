@@ -1,16 +1,16 @@
 # Graph Report - gymcontrol  (2026-06-17)
 
 ## Corpus Check
-- 416 files · ~846,239 words
+- 416 files · ~940,330 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4012 nodes · 5684 edges · 376 communities (330 shown, 46 thin omitted)
+- 4012 nodes · 5684 edges · 375 communities (329 shown, 46 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 186 edges (avg confidence: 0.83)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `05d4844b`
+- Built from commit: `896a130d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -374,7 +374,6 @@
 - [[_COMMUNITY_Community 385|Community 385]]
 - [[_COMMUNITY_Community 386|Community 386]]
 - [[_COMMUNITY_Community 387|Community 387]]
-- [[_COMMUNITY_Community 389|Community 389]]
 - [[_COMMUNITY_Community 390|Community 390]]
 - [[_COMMUNITY_Community 391|Community 391]]
 - [[_COMMUNITY_Community 392|Community 392]]
@@ -454,7 +453,7 @@
 - **Flujo de guardado y personalizacion de rutinas en cuenta de usuario** — g9_user_dashboard_01_implementar_accion_guardar_rutina, g9_user_dashboard_02_permitir_multiples_rutinas_guardadas, g9_user_dashboard_03_definir_representacion_rutina_plantilla_guardada, g9_user_dashboard_04_permitir_nombre_propio_rutina_guardada, g9_user_dashboard_05_permitir_editar_nombre_dashboard [EXTRACTED 1.00]
 - **Flujo de dashboard, listado y detalle de rutina guardada con modal de ejercicio** — g9_user_dashboard_06_crear_dashboard_listado_rutinas_guardadas, g9_user_dashboard_07_permitir_ver_detalle_rutina_guardada, g9_user_dashboard_08_mantener_acceso_modal_detalle_ejercicio, concept_rutina_guardada_usuario [EXTRACTED 1.00]
 
-## Communities (376 total, 46 thin omitted)
+## Communities (375 total, 46 thin omitted)
 
 ### Community 0 - "Project Foundations & Tech Stack"
 Cohesion: 0.13
@@ -733,8 +732,8 @@ Cohesion: 0.11
 Nodes (24): AdminRecipeListItem, createRecipe(), deleteRecipe(), INITIAL_RECIPE_FORM_STATE, ParsedRecipePayload, RecipeFormField, RecipeFormPayload, RecipeFormState (+16 more)
 
 ### Community 82 - "RoutineDifficulty"
-Cohesion: 0.22
-Nodes (9): Archivos, Criterios de aceptacion, Definir patron visual del panel lateral y area de contenido: ordenar la composicion principal del producto, Estado, Estado final, Objetivo, Pasos, Resolucion (+1 more)
+Cohesion: 0.10
+Nodes (18): Archivos, Criterios de aceptacion, Definir patron visual del panel lateral y area de contenido: ordenar la composicion principal del producto, Estado, Estado final, Objetivo, Pasos, Resolucion (+10 more)
 
 ### Community 85 - "AdminRoutineListItem"
 Cohesion: 0.17
@@ -1707,10 +1706,6 @@ Nodes (4): Indices, Recetas (G26-27), `recipe_items`, `recipes`
 ### Community 387 - "Community 387"
 Cohesion: 0.08
 Nodes (33): DashboardPage(), DashboardPageProps, reasonCopy, ROUTINE_DIFFICULTY_LABELS, getSavedRoutineByIdForUser(), listSavedRoutinesForUser(), DashboardRoutinesPage(), DayMarker() (+25 more)
-
-### Community 389 - "Community 389"
-Cohesion: 0.22
-Nodes (9): Archivos, Criterios de aceptacion, Estado, Estado final, Objetivo, Pasos, Resolucion, Validacion (+1 more)
 
 ### Community 390 - "Community 390"
 Cohesion: 0.17

@@ -35,6 +35,14 @@ const monoFont = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "GymControl",
   description: "Shell base del MVP de GymControl para usuario y admin",
+  icons: {
+    icon: [
+      { url: "/logo/logo.png", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/logo/logo.png",
+  },
 };
 
 export const dynamic = "force-dynamic";

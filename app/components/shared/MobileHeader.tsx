@@ -126,7 +126,7 @@ export function MobileHeader({
     "grid size-10 shrink-0 place-items-center rounded-xl border border-[#2a3348] bg-[#101522]/90 text-[#b2bdd4] transition-colors hover:border-[#4b348d] hover:text-white";
 
   return (
-    <header className="pointer-events-none absolute inset-x-0 top-0 z-30 px-4 pb-2.5 pt-[calc(0.625rem+env(safe-area-inset-top))] lg:hidden">
+    <header className="pointer-events-none absolute inset-x-0 top-0 z-30 bg-[var(--workspace)] px-4 pb-2.5 pt-[calc(0.625rem+env(safe-area-inset-top))] lg:hidden">
       <div className="pointer-events-auto flex min-w-0 items-center gap-3">
         {isAuthenticated ? (
           <Link href="/configuracion" aria-label={profileLabel} className={profileClasses}>

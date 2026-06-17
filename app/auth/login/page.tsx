@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { redirect } from "next/navigation";
 
 import { OtpLoginFlow } from "@/app/auth/login/OtpLoginFlow";
@@ -61,8 +62,16 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         }}
       >
         <div className="flex items-center gap-3">
-          <span className="grid size-12 place-items-center rounded-2xl bg-[var(--accent)] font-display text-base font-bold text-[var(--accent-foreground)]">
-            GC
+          <span className="grid size-14 place-items-center overflow-hidden rounded-2xl">
+            <Image
+              src="/logo/logo.png"
+              alt="GymControl"
+              width={56}
+              height={56}
+              className="size-full object-contain p-1.5"
+              priority
+              unoptimized
+            />
           </span>
           <div>
             <p className="font-display text-2xl font-semibold tracking-[-0.06em] text-white">

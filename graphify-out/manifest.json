@@ -85,8 +85,8 @@
     "semantic_hash": ""
   },
   "app/auth/login/page.tsx": {
-    "mtime": 1781376912.559924,
-    "ast_hash": "c7f9c5e9a4c0aab72e09c920c1b8de3e",
+    "mtime": 1781721227.0271664,
+    "ast_hash": "ad614d8e72c08dc830da74aaf2dc4381",
     "semantic_hash": ""
   },
   "app/auth/signout/route.ts": {
@@ -135,8 +135,8 @@
     "semantic_hash": "bd52e8fa120dfb0d11f8786c2290c3d3"
   },
   "app/components/shared/PrimaryNavigation.tsx": {
-    "mtime": 1781566819.760003,
-    "ast_hash": "e8b1dba37bb91d9234d51a0ced6327c7",
+    "mtime": 1781721226.798608,
+    "ast_hash": "fd54e36159772e8cc90e241571651e60",
     "semantic_hash": ""
   },
   "app/components/shared/RouteCard.tsx": {
@@ -270,8 +270,8 @@
     "semantic_hash": ""
   },
   "app/layout.tsx": {
-    "mtime": 1781713122.6701572,
-    "ast_hash": "1c4723e37f050f347edac885f6506e81",
+    "mtime": 1781719982.549983,
+    "ast_hash": "77a988da8bec790bbeb9defefd6f4942",
     "semantic_hash": ""
   },
   "app/lib/auth-input.ts": {
@@ -1835,8 +1835,8 @@
     "semantic_hash": ""
   },
   "app/nutricion/registro/RegistroClient.tsx": {
-    "mtime": 1781713123.0497012,
-    "ast_hash": "0ec12b9eba91f59d208af19b0c833962",
+    "mtime": 1781719072.1353066,
+    "ast_hash": "3e41af04ad5b66bf2b13a7dfd44b850a",
     "semantic_hash": ""
   },
   "app/nutricion/registro/actions.ts": {
@@ -2517,6 +2517,21 @@
   "public/references/c6d1934e-0eb3-4315-8418-0f256e4e40e1.png": {
     "mtime": 1781706548.0511882,
     "ast_hash": "36f339f42c9e06778af5ae6c3c8a4622",
+    "semantic_hash": ""
+  },
+  "app/apple-icon.png": {
+    "mtime": 1781721170.929502,
+    "ast_hash": "414faf6fd9d230b3d00308814467813d",
+    "semantic_hash": ""
+  },
+  "app/icon.png": {
+    "mtime": 1781721170.929502,
+    "ast_hash": "414faf6fd9d230b3d00308814467813d",
+    "semantic_hash": ""
+  },
+  "public/logo/logo.png": {
+    "mtime": 1781721170.929502,
+    "ast_hash": "414faf6fd9d230b3d00308814467813d",
     "semantic_hash": ""
   }
 }
