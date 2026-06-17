@@ -123,7 +123,7 @@ a {
   min-height: 100%;
   padding: 1rem;
   padding-top: calc(4.75rem + env(safe-area-inset-top));
-  padding-bottom: calc(5.75rem + env(safe-area-inset-bottom));
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom));
 }
 
 .dashboard-page-frame {
