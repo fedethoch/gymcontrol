@@ -74,13 +74,14 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
             <Link
               key={tab.href}
               href={tab.href}
+              aria-label={tab.label}
               className={cn(
-                "mobile-tab-bar-item flex flex-col items-center justify-center gap-1 px-1 py-1 text-[10px] font-semibold leading-none transition-colors",
+                "mobile-tab-bar-item flex flex-col items-center justify-start gap-0 px-1 pt-2 pb-0 text-[10px] font-semibold leading-none transition-colors",
                 active ? "text-[var(--accent-bright)]" : "text-[#8a93ad] hover:text-white",
               )}
             >
-              <Icon className="mobile-tab-bar-icon size-5" />
-              {tab.label}
+              <Icon className="mobile-tab-bar-icon size-6" />
+              <span className="sr-only">{tab.label}</span>
             </Link>
           );
         })}
@@ -89,9 +90,10 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
           <SheetTrigger asChild>
             <button
               type="button"
-              className="mobile-tab-bar-item flex flex-col items-center justify-center gap-1 px-1 py-1 text-[10px] font-semibold leading-none text-[#8a93ad] transition-colors hover:text-white"
+              aria-label="Mas"
+              className="mobile-tab-bar-item flex flex-col items-center justify-start gap-0 px-1 pt-2 pb-0 text-[10px] font-semibold leading-none text-[#8a93ad] transition-colors hover:text-white"
             >
-              <Menu className="mobile-tab-bar-icon size-5" />
+              <Menu className="mobile-tab-bar-icon size-6" />
               Más
             </button>
           </SheetTrigger>
