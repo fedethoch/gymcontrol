@@ -63,7 +63,7 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
   return (
     <nav
       aria-label="Navegación inferior"
-      className="mobile-tab-bar fixed inset-x-0 bottom-0 z-40 overflow-hidden border-t border-transparent bg-transparent lg:hidden"
+      className="mobile-tab-bar fixed inset-x-0 bottom-0 z-40 overflow-hidden border-t border-transparent bg-[var(--background)] lg:hidden"
     >
       <div className="mobile-tab-bar-grid grid h-full grid-cols-5">
         {tabs.map((tab) => {
@@ -94,7 +94,7 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
               className="mobile-tab-bar-item flex flex-col items-center justify-start gap-0 px-1 pt-2 pb-0 text-[10px] font-semibold leading-none text-[#8a93ad] transition-colors hover:text-white"
             >
               <Menu className="mobile-tab-bar-icon size-6" />
-              Más
+              <span className="sr-only">Mas</span>
             </button>
           </SheetTrigger>
           <SheetContent
