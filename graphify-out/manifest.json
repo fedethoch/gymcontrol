@@ -2005,8 +2005,8 @@
     "semantic_hash": ""
   },
   "app/components/shared/MobileTabBar.tsx": {
-    "mtime": 1781753684.839661,
-    "ast_hash": "550dc82b0650e21cbd890ec20ce9abcf",
+    "mtime": 1781754803.1712217,
+    "ast_hash": "b9db77b93dd34d05fb1881c451fd4a58",
     "semantic_hash": ""
   },
   "app/components/ui/Accordion.tsx": {
