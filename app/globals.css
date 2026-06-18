@@ -298,7 +298,7 @@ a {
 }
 
 .mobile-tab-bar {
-  height: calc(2.65rem + env(safe-area-inset-bottom));
+  height: calc(2.25rem + env(safe-area-inset-bottom));
   overflow: hidden;
 }
 
@@ -318,8 +318,8 @@ a {
 }
 
 .mobile-tab-bar-icon {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
   color: #8a93ad;
 }
 
@@ -327,8 +327,8 @@ a {
   position: relative;
   z-index: 1;
   display: grid;
-  width: 2rem;
-  height: 1.875rem;
+  width: 1.75rem;
+  height: 1.35rem;
   place-items: center;
   will-change: transform;
 }
@@ -340,9 +340,9 @@ a {
   overflow: hidden;
   color: #8a93ad;
   font-family: var(--font-display), var(--font-body), sans-serif;
-  font-size: 0.625rem;
+  font-size: 0.5625rem;
   font-weight: 700;
-  line-height: 1;
+  line-height: 0.95;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -367,13 +367,13 @@ a {
 }
 
 .pwa-standalone .mobile-tab-bar {
-  height: calc(2.65rem + env(safe-area-inset-bottom));
+  height: calc(2.25rem + env(safe-area-inset-bottom));
   bottom: 0;
 }
 
 @media (display-mode: standalone) {
   .mobile-tab-bar {
-    height: calc(2.65rem + env(safe-area-inset-bottom));
+    height: calc(2.25rem + env(safe-area-inset-bottom));
     bottom: 0;
   }
 }
