@@ -2655,7 +2655,7 @@
       "label": "PrimaryNavigation()",
       "file_type": "code",
       "source_file": "app/components/shared/PrimaryNavigation.tsx",
-      "source_location": "L229",
+      "source_location": "L230",
       "_origin": "ast",
       "id": "shared_primarynavigation_primarynavigation",
       "community": 366,
@@ -16578,7 +16578,7 @@
       "source_location": "L288",
       "_origin": "ast",
       "id": "plan_grupo_g6_ejercicios_admin",
-      "community": 288,
+      "community": 215,
       "norm_label": "grupo \"g6\" - ejercicios admin"
     },
     {
@@ -16588,7 +16588,7 @@
       "source_location": "L292",
       "_origin": "ast",
       "id": "plan_subgrupo_g6_1_acceso_a_datos_y_validacion",
-      "community": 288,
+      "community": 215,
       "norm_label": "subgrupo \"g6.1\" - acceso a datos y validacion"
     },
     {
@@ -16598,7 +16598,7 @@
       "source_location": "L300",
       "_origin": "ast",
       "id": "plan_subgrupo_g6_2_admin_ui",
-      "community": 288,
+      "community": 215,
       "norm_label": "subgrupo \"g6.2\" - admin ui"
     },
     {
@@ -16608,7 +16608,7 @@
       "source_location": "L308",
       "_origin": "ast",
       "id": "plan_subgrupo_g6_3_integracion_y_permisos",
-      "community": 288,
+      "community": 215,
       "norm_label": "subgrupo \"g6.3\" - integracion y permisos"
     },
     {

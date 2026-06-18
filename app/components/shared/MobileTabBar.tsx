@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { BookOpen, Calendar, LayoutDashboard, Menu, Shield, UtensilsCrossed } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -53,17 +54,21 @@ type MobileTabBarProps = {
 export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
   const pathname = usePathname();
   const [moreOpen, setMoreOpen] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   if (pathname.startsWith("/auth")) {
     return null;
   }
 
   const tabs = role === "admin" ? ADMIN_TABS : isAuthenticated ? USER_TABS : GUEST_TABS;
+  const springTransition = shouldReduceMotion
+    ? { duration: 0 }
+    : { type: "spring" as const, stiffness: 420, damping: 34, mass: 0.8 };
 
   return (
     <nav
       aria-label="Navegación inferior"
-      className="mobile-tab-bar fixed inset-x-0 bottom-0 z-40 overflow-hidden border-t border-transparent bg-[var(--background)] lg:hidden"
+      className="mobile-tab-bar fixed inset-x-0 bottom-0 z-40 overflow-hidden border-t border-[#161d2b]/80 bg-[rgba(5,7,11,0.92)] shadow-[0_-18px_48px_rgba(0,0,0,0.36)] backdrop-blur-xl lg:hidden"
     >
       <div className="mobile-tab-bar-grid grid h-full grid-cols-5">
         {tabs.map((tab) => {
@@ -77,19 +82,49 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
               aria-label={tab.label}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "mobile-tab-bar-item group flex flex-col items-center justify-end px-1 pb-0 text-[10px] font-semibold leading-none transition-colors",
-                active ? "text-[var(--accent-bright)]" : "text-[#8a93ad] hover:text-white",
+                "mobile-tab-bar-item group flex flex-col items-center justify-center px-1 text-[10px] font-semibold leading-none transition-colors duration-200",
+                active ? "text-white" : "text-[#8a93ad] hover:text-white",
               )}
             >
-              <Icon
-                className={cn(
-                  "mobile-tab-bar-icon size-6 transition-transform duration-200 ease-out will-change-transform motion-reduce:transition-none",
-                  active
-                    ? "scale-110 -translate-y-px"
-                    : "group-active:scale-95 group-active:translate-y-0.5",
-                )}
-              />
-              <span className="sr-only">{tab.label}</span>
+              {active ? (
+                <motion.span
+                  layoutId="mobile-tab-active-pill"
+                  className="mobile-tab-active-pill"
+                  transition={springTransition}
+                />
+              ) : null}
+              <motion.span
+                className="mobile-tab-icon-shell"
+                animate={
+                  active && !shouldReduceMotion
+                    ? { y: -3, scale: 1.08 }
+                    : { y: 0, scale: 1 }
+                }
+                whileTap={shouldReduceMotion ? undefined : { scale: 0.92, y: 1 }}
+                transition={springTransition}
+              >
+                <Icon
+                  className={cn(
+                    "mobile-tab-bar-icon size-6 transition-colors duration-200 motion-reduce:transition-none",
+                    active ? "text-[var(--accent-bright)]" : "text-current",
+                  )}
+                />
+              </motion.span>
+              <AnimatePresence initial={false}>
+                {active ? (
+                  <motion.span
+                    key={tab.href}
+                    className="mobile-tab-label"
+                    initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 4 }}
+                    animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                    exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 3 }}
+                    transition={{ duration: shouldReduceMotion ? 0 : 0.16, ease: "easeOut" }}
+                  >
+                    {tab.label}
+                  </motion.span>
+                ) : null}
+              </AnimatePresence>
+              {!active ? <span className="sr-only">{tab.label}</span> : null}
             </Link>
           );
         })}
@@ -99,9 +134,15 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
             <button
               type="button"
               aria-label="Mas"
-              className="mobile-tab-bar-item group flex flex-col items-center justify-end px-1 pb-0 text-[10px] font-semibold leading-none text-[#8a93ad] transition-colors hover:text-white"
+              className="mobile-tab-bar-item group flex flex-col items-center justify-center px-1 text-[10px] font-semibold leading-none text-[#8a93ad] transition-colors duration-200 hover:text-white"
             >
-              <Menu className="mobile-tab-bar-icon size-6 transition-transform duration-200 ease-out will-change-transform group-active:scale-95 group-active:translate-y-0.5 motion-reduce:transition-none" />
+              <motion.span
+                className="mobile-tab-icon-shell"
+                whileTap={shouldReduceMotion ? undefined : { scale: 0.92, y: 1 }}
+                transition={springTransition}
+              >
+                <Menu className="mobile-tab-bar-icon size-6 transition-colors duration-200 motion-reduce:transition-none" />
+              </motion.span>
               <span className="sr-only">Mas</span>
             </button>
           </SheetTrigger>
