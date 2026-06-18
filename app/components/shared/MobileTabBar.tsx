@@ -82,7 +82,7 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
               aria-label={tab.label}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "mobile-tab-bar-item group flex flex-col items-center justify-center px-1 text-[10px] font-semibold leading-none transition-colors",
+                "mobile-tab-bar-item group flex flex-col items-center justify-end px-1 text-[10px] font-semibold leading-none transition-colors",
                 "duration-200 motion-reduce:duration-0",
                 active ? "text-[#b995ff]" : "text-[#8a93ad]",
               )}
@@ -118,7 +118,7 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
               aria-label="Mas"
               aria-expanded={moreOpen}
               className={cn(
-                "mobile-tab-bar-item group flex flex-col items-center justify-center px-1 text-[10px] font-semibold leading-none transition-colors",
+                "mobile-tab-bar-item group flex flex-col items-center justify-end px-1 text-[10px] font-semibold leading-none transition-colors",
                 "duration-200 motion-reduce:duration-0",
                 moreOpen ? "text-[#b995ff]" : "text-[#8a93ad]",
               )}
@@ -155,7 +155,7 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
           </SheetTrigger>
           <SheetContent
             side="left"
-            className="border-r-[#171d31] bg-[linear-gradient(180deg,#090c14_0%,#05070d_100%)] p-0"
+            className="w-[min(20rem,82vw)] border-r-[#171d31] bg-[linear-gradient(180deg,#090c14_0%,#05070d_100%)] p-0"
           >
             <SheetHeader className="sr-only">
               <SheetTitle>GymControl</SheetTitle>

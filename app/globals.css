@@ -65,6 +65,15 @@ body {
   overflow: hidden;
 }
 
+@media (max-width: 767px) {
+  input:not([type="hidden"]),
+  textarea,
+  select,
+  [data-slot="select-trigger"] {
+    font-size: 16px;
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -300,7 +309,7 @@ a {
 .mobile-tab-bar-item {
   position: relative;
   min-height: 100%;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 0.1875rem;
   padding-bottom: 0.25rem;
   padding-top: 0;

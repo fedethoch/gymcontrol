@@ -60,9 +60,9 @@ function SheetContent({
         className={cn(
           "motion-sheet-content fixed z-50 flex flex-col border-[var(--border)] bg-[#080b10] shadow-[0_24px_60px_rgba(0,0,0,0.5)] outline-none",
           side === "left" &&
-            "inset-y-0 left-0 h-full w-[min(22rem,88vw)] border-r",
+            "bottom-0 left-0 top-[env(safe-area-inset-top)] h-[calc(100dvh-env(safe-area-inset-top))] w-[min(22rem,88vw)] border-r",
           side === "right" &&
-            "inset-y-0 right-0 h-full w-[min(22rem,88vw)] border-l",
+            "bottom-0 right-0 top-[env(safe-area-inset-top)] h-[calc(100dvh-env(safe-area-inset-top))] w-[min(22rem,88vw)] border-l",
           side === "top" &&
             "inset-x-0 top-0 h-auto border-b",
           side === "bottom" &&
