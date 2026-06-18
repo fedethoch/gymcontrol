@@ -135,38 +135,16 @@ a {
 }
 
 .pwa-standalone .mobile-tab-bar {
-  height: calc(2rem + env(safe-area-inset-bottom));
+  height: 2rem;
   bottom: 0;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-.pwa-standalone .mobile-tab-bar::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: env(safe-area-inset-bottom);
-  height: 1px;
-  background: #ff5c7a;
-  pointer-events: none;
+  padding-bottom: 0;
 }
 
 @media (display-mode: standalone) {
   .mobile-tab-bar {
-    height: calc(2rem + env(safe-area-inset-bottom));
+    height: 2rem;
     bottom: 0;
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-
-  .mobile-tab-bar::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: env(safe-area-inset-bottom);
-    height: 1px;
-    background: #ff5c7a;
-    pointer-events: none;
+    padding-bottom: 0;
   }
 }
 
