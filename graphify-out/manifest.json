@@ -95,8 +95,8 @@
     "semantic_hash": "28f26cc26c7d3176739ca4d59ed05bb6"
   },
   "app/catalogo/RoutineCatalogClient.tsx": {
-    "mtime": 1781795713.9726033,
-    "ast_hash": "0f66572d236b4617ebb5e64bb98c4ad0",
+    "mtime": 1781799126.3957765,
+    "ast_hash": "9f7eaf6e6fb4b80faa3bc4f00050c43e",
     "semantic_hash": ""
   },
   "app/catalogo/page.tsx": {
@@ -115,8 +115,8 @@
     "semantic_hash": ""
   },
   "app/catalogo/rutinas/[id]/page.tsx": {
-    "mtime": 1781794946.9868097,
-    "ast_hash": "d17486635d1d152f6698e450ea1a72ff",
+    "mtime": 1781799132.6080544,
+    "ast_hash": "c12fd3e67d5f3a4f76c450a567cbe310",
     "semantic_hash": ""
   },
   "app/catalogo/rutinas/page.tsx": {
@@ -350,8 +350,8 @@
     "semantic_hash": ""
   },
   "app/page.tsx": {
-    "mtime": 1781794921.9401493,
-    "ast_hash": "21986f684a92e50ac47a068e074f5d16",
+    "mtime": 1781799001.0888166,
+    "ast_hash": "2116d842ea3605cc9074c1bb01dce8a5",
     "semantic_hash": ""
   },
   "components.json": {
@@ -1810,8 +1810,8 @@
     "semantic_hash": ""
   },
   "app/nutricion/registro/RegistroClient.tsx": {
-    "mtime": 1781795365.3655987,
-    "ast_hash": "e396c7566d94e0bcdbe1d219fdd1453e",
+    "mtime": 1781799152.9524648,
+    "ast_hash": "c713b5fb20508c5806c82b1905ec62b1",
     "semantic_hash": ""
   },
   "app/nutricion/registro/actions.ts": {

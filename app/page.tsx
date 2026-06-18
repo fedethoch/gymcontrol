@@ -16,7 +16,12 @@ import { Button } from "@/app/components/ui/Button";
 import { fadeUp, MotionDiv, MotionSection, staggerContainer } from "@/app/components/ui/motion";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
 import { requireUser } from "@/app/lib/auth";
-import { getLoggedDatesForUser, getMealLogForDate, getLocalTrainingDate } from "@/app/lib/meal-logs";
+import {
+  getLoggedDatesForUser,
+  getMealLogForDate,
+  getLocalTrainingDate,
+  type MealGroup,
+} from "@/app/lib/meal-logs";
 import { calculateNutritionPlan } from "@/app/lib/nutrition-calc";
 import { MOCK_PROFILE_DEFAULTS } from "@/app/lib/nutrition-mock";
 import { getNutritionProfile } from "@/app/lib/nutrition-profile";
@@ -321,10 +326,10 @@ function ComidasHoyCard({
   meals,
   totalKcal,
 }: {
-  meals: { id: string; name: string; imageUrl: string; kcal: number }[];
+  meals: MealGroup[];
   totalKcal: number;
 }) {
-  const preview = meals.slice(0, 3);
+  const preview = meals.slice(0, 2);
 
   return (
     <div className="flex h-full flex-col gap-2 rounded-2xl bg-[#0e131e] p-3">
@@ -338,28 +343,36 @@ function ComidasHoyCard({
         {preview.length === 0 ? (
           <p className="text-xs text-[#7887a6]">Sin comidas registradas hoy.</p>
         ) : (
-          <div className="flex flex-1 flex-col justify-center gap-1">
+          <div className="flex flex-1 flex-col justify-center gap-2">
             {preview.map((meal) => (
-              <div key={meal.id} className="flex items-center justify-between gap-1">
-                <span className="flex min-w-0 items-center gap-2">
-                  <span className="relative size-7 shrink-0 overflow-hidden rounded-lg bg-[#151d2c]">
-                    <Image
-                      alt=""
-                      className="object-cover"
-                      fill
-                      sizes="28px"
-                      src={meal.imageUrl}
-                    />
-                  </span>
-                  <span className="min-w-0 truncate text-xs font-medium text-[#c2cbe0]">
-                    {meal.name}
-                  </span>
+              <div key={meal.id} className="flex min-w-0 gap-2">
+                <span className="relative size-16 shrink-0 overflow-hidden rounded-xl bg-[#151d2c]">
+                  <Image
+                    alt=""
+                    className="object-cover"
+                    fill
+                    sizes="64px"
+                    src={meal.imageUrl}
+                  />
                 </span>
-                <span className="shrink-0 text-[10px] text-[#7887a6]">{meal.kcal}k</span>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold leading-tight text-white">
+                    {meal.name}
+                  </p>
+                  <p className="mt-1 line-clamp-1 text-[10px] leading-4 text-[#8d97ab]">
+                    {formatMealFoods(meal)}
+                  </p>
+                  <div className="mt-1.5 grid grid-cols-4 gap-1">
+                    <MealCounter label="kcal" value={meal.kcal} />
+                    <MealCounter label="P" value={meal.macros.proteinG} unit="g" />
+                    <MealCounter label="C" value={meal.macros.carbsG} unit="g" />
+                    <MealCounter label="G" value={meal.macros.fatG} unit="g" />
+                  </div>
+                </div>
               </div>
             ))}
-            {meals.length > 3 && (
-              <p className="text-[10px] text-[#7887a6]">+{meals.length - 3} más</p>
+            {meals.length > 2 && (
+              <p className="text-[10px] text-[#7887a6]">+{meals.length - 2} mas</p>
             )}
           </div>
         )}
@@ -371,5 +384,38 @@ function ComidasHoyCard({
           Ver registro →
         </Link>
     </div>
+  );
+}
+
+function formatMealFoods(meal: MealGroup) {
+  if (meal.items.length === 0) {
+    return "Sin alimentos";
+  }
+
+  const names = meal.items.slice(0, 3).map((item) => item.foodName);
+  const suffix = meal.items.length > 3 ? ` +${meal.items.length - 3}` : "";
+
+  return `${names.join(", ")}${suffix}`;
+}
+
+function MealCounter({
+  label,
+  value,
+  unit = "",
+}: {
+  label: string;
+  value: number;
+  unit?: string;
+}) {
+  return (
+    <span className="min-w-0 rounded-md bg-[#151d2c] px-1.5 py-1 text-center">
+      <span className="block text-[8px] font-bold uppercase leading-none text-[#77839a]">
+        {label}
+      </span>
+      <span className="mt-0.5 block truncate text-[10px] font-bold leading-none text-white">
+        {Math.round(value)}
+        {unit}
+      </span>
+    </span>
   );
 }

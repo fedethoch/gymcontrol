@@ -388,29 +388,29 @@ export function RegistroClient({
           <UtensilsCrossed className="size-4 text-[#7887a6]" />
           <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#7887a6]">Macros</span>
         </div>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-1">
           {(
             [
-              { Icon: Beef, label: MACRO_LABELS.protein, value: totalMacros.proteinG, target: targetMacros.proteinG, color: MACRO_COLORS.protein },
-              { Icon: Wheat, label: MACRO_LABELS.carbs, value: totalMacros.carbsG, target: targetMacros.carbsG, color: MACRO_COLORS.carbs },
-              { Icon: Droplet, label: MACRO_LABELS.fat, value: totalMacros.fatG, target: targetMacros.fatG, color: MACRO_COLORS.fat },
-            ] as { Icon: LucideIcon; label: string; value: number; target: number; color: string }[]
-          ).map(({ Icon: MacroIcon, label, value, target, color }) => {
+              { Icon: Beef, label: MACRO_LABELS.protein, value: totalMacros.proteinG, target: targetMacros.proteinG, color: MACRO_COLORS.protein, align: "justify-self-start" },
+              { Icon: Wheat, label: MACRO_LABELS.carbs, value: totalMacros.carbsG, target: targetMacros.carbsG, color: MACRO_COLORS.carbs, align: "justify-self-center" },
+              { Icon: Droplet, label: MACRO_LABELS.fat, value: totalMacros.fatG, target: targetMacros.fatG, color: MACRO_COLORS.fat, align: "justify-self-end" },
+            ] as { Icon: LucideIcon; label: string; value: number; target: number; color: string; align: string }[]
+          ).map(({ Icon: MacroIcon, label, value, target, color, align }) => {
             const pct = target > 0 ? Math.min(100, Math.round((value / target) * 100)) : 0;
             return (
-              <div key={label} className="flex items-start gap-2">
-                <div className="shrink-0">
-                  <AnimatedProgressRing value={pct} size={54} strokeWidth={6} progressColor={color}>
+              <div key={label} className={cn("flex w-24 flex-col items-center", align)}>
+                <div>
+                  <AnimatedProgressRing value={pct} size={50} strokeWidth={4} progressColor={color}>
                     <MacroIcon className="size-4" style={{ color }} />
                   </AnimatedProgressRing>
                 </div>
-                <div className="min-w-0 flex-1 pt-0.5 text-left">
+                <div className="mt-1.5 w-full min-w-0 text-center">
                   <p className="truncate text-[10px] font-bold text-white">{label}</p>
                   <p className="mt-0.5 text-[11px] font-bold text-white">{Math.round(value)}g/{Math.round(target)}g</p>
                   <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-[#1a2235]">
                     <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }} />
                   </div>
-                  <p className="mt-1 text-[10px] font-semibold text-[#7887a6]">{pct}%</p>
+                  <p className="mt-1 text-center text-[10px] font-semibold text-[#7887a6]">{pct}%</p>
                 </div>
               </div>
             );
@@ -713,110 +713,180 @@ function MealCard({
     </div>
   );
 
+  const actionButtons = (
+    <div className="flex shrink-0 items-center gap-1.5">
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        onClick={handleToggleEdit}
+        title={isEditing ? "Terminar edición" : "Editar comida"}
+      >
+        <Pencil className="size-4" />
+      </Button>
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        className="hover:text-red-400"
+        onClick={onDeleteMeal}
+        title="Eliminar comida"
+      >
+        <Trash2 className="size-4" />
+      </Button>
+    </div>
+  );
+
+  const macroChips = (
+    <div className="flex flex-1 flex-wrap gap-1.5">
+      <MacroChip label="P" value={meal.macros.proteinG} color={MACRO_COLORS.protein} />
+      <MacroChip label="C" value={meal.macros.carbsG} color={MACRO_COLORS.carbs} />
+      <MacroChip label="G" value={meal.macros.fatG} color={MACRO_COLORS.fat} />
+    </div>
+  );
+
   return (
     <div className="flex h-full flex-col gap-3 rounded-2xl bg-[#0e131e] p-4">
-      {/* Top: nombre + kcal */}
-      <div className="flex items-start justify-between gap-3">
-        <div className="relative size-12 shrink-0 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card-alt)]">
-          <Image
-            alt={MEAL_TYPE_LABELS[type]}
-            className="object-cover"
-            fill
-            sizes="48px"
-            src={MEAL_TYPE_IMAGES[type]}
-          />
-        </div>
-        {isEditing ? (
-          <div className="grid min-w-0 flex-1 gap-2">
-            <Select value={type} onValueChange={(value) => handleTypeChange(value as MealType)}>
-              <SelectTrigger className="h-9 text-sm">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {MEAL_TYPES.map((mealTypeOption) => (
-                  <SelectItem key={mealTypeOption} value={mealTypeOption}>
-                    {MEAL_TYPE_LABELS[mealTypeOption]}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Input
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              onBlur={() => {
-                if (!name.trim()) {
-                  setName(meal.name);
-                  toast.error("Ponele un nombre a la comida.");
-                }
-              }}
-              className="min-w-0"
-            />
-            {(isSavingName || isSavingType) && (
-              <span className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#9a63ff]">
-                <LoadingDots />
-                Guardando
-              </span>
-            )}
+      {isEditing ? (
+        <>
+          <div className="flex items-start justify-between gap-3">
+            <div className="relative size-12 shrink-0 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card-alt)]">
+              <Image
+                alt={MEAL_TYPE_LABELS[type]}
+                className="object-cover"
+                fill
+                sizes="48px"
+                src={MEAL_TYPE_IMAGES[type]}
+              />
+            </div>
+            <div className="grid min-w-0 flex-1 gap-2">
+              <Select value={type} onValueChange={(value) => handleTypeChange(value as MealType)}>
+                <SelectTrigger className="h-9 text-sm">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {MEAL_TYPES.map((mealTypeOption) => (
+                    <SelectItem key={mealTypeOption} value={mealTypeOption}>
+                      {MEAL_TYPE_LABELS[mealTypeOption]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Input
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                onBlur={() => {
+                  if (!name.trim()) {
+                    setName(meal.name);
+                    toast.error("Ponele un nombre a la comida.");
+                  }
+                }}
+                className="min-w-0"
+              />
+              {(isSavingName || isSavingType) && (
+                <span className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#9a63ff]">
+                  <LoadingDots />
+                  Guardando
+                </span>
+              )}
+            </div>
+            <p className="whitespace-nowrap text-sm font-semibold text-white">{meal.kcal} kcal</p>
           </div>
-        ) : (
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-xs font-bold uppercase tracking-[0.18em] text-[#b985ff]">
-              {MEAL_TYPE_LABELS[meal.type]}
-            </p>
-            <p className="mt-1 truncate text-sm font-semibold text-white">{meal.name}</p>
-          </div>
-        )}
-        <p className="whitespace-nowrap text-sm font-semibold text-white">{meal.kcal} kcal</p>
-      </div>
 
-      {/* Medio: alimentos con gramos */}
-      {meal.items.length === 0 ? (
-        <p className="text-sm text-[#7887a6]">Sin alimentos todavía.</p>
-      ) : isEditing ? (
-        itemsList
+          {meal.items.length === 0 ? (
+            <p className="text-sm text-[#7887a6]">Sin alimentos todavia.</p>
+          ) : (
+            itemsList
+          )}
+
+          <FoodPickerRow foods={foods} onAdd={handleAddItem} actionLabel="Agregar" />
+
+          <div className="mt-auto flex items-center justify-between gap-3 border-t border-[var(--border)] pt-3">
+            {macroChips}
+            {actionButtons}
+          </div>
+        </>
       ) : (
-        <Accordion type="single" collapsible className="-my-1">
-          <AccordionItem value="items" className="border-none">
-            <AccordionTrigger className="py-1.5 text-xs font-semibold text-[#9aa3b8] hover:text-white">
-              {meal.items.length} alimento{meal.items.length === 1 ? "" : "s"}
-            </AccordionTrigger>
-            <AccordionContent>{itemsList}</AccordionContent>
-          </AccordionItem>
-        </Accordion>
+        <>
+          <div className="flex min-w-0 gap-3">
+            <div className="relative size-24 shrink-0 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card-alt)]">
+              <Image
+                alt={MEAL_TYPE_LABELS[type]}
+                className="object-cover"
+                fill
+                sizes="96px"
+                src={MEAL_TYPE_IMAGES[type]}
+              />
+            </div>
+            <div className="min-w-0 flex-1 pt-0.5">
+              <p className="truncate text-[10px] font-bold uppercase tracking-[0.16em] text-[#b985ff]">
+                {MEAL_TYPE_LABELS[meal.type]}
+              </p>
+              <p className="mt-1 truncate font-display text-base font-semibold leading-tight text-white">
+                {meal.name}
+              </p>
+              <p className="mt-1 line-clamp-2 text-xs leading-4 text-[#8d97ab]">
+                {formatMealFoods(meal)}
+              </p>
+              <div className="mt-2 grid grid-cols-4 gap-1">
+                <MealCounter label="kcal" value={meal.kcal} />
+                <MealCounter label="P" value={meal.macros.proteinG} unit="g" />
+                <MealCounter label="C" value={meal.macros.carbsG} unit="g" />
+                <MealCounter label="G" value={meal.macros.fatG} unit="g" />
+              </div>
+            </div>
+          </div>
+
+          {meal.items.length > 0 && (
+            <Accordion type="single" collapsible className="-my-1">
+              <AccordionItem value="items" className="border-none">
+                <AccordionTrigger className="py-1.5 text-xs font-semibold text-[#9aa3b8] hover:text-white">
+                  {meal.items.length} alimento{meal.items.length === 1 ? "" : "s"}
+                </AccordionTrigger>
+                <AccordionContent>{itemsList}</AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          )}
+
+          <div className="mt-auto flex justify-end border-t border-[var(--border)] pt-3">
+            {actionButtons}
+          </div>
+        </>
       )}
-
-      {isEditing && <FoodPickerRow foods={foods} onAdd={handleAddItem} actionLabel="Agregar" />}
-
-      {/* Bottom: macros (izq) + acciones (der) */}
-      <div className="mt-auto flex items-center justify-between gap-3 border-t border-[var(--border)] pt-3">
-        <div className="flex flex-1 flex-wrap gap-1.5">
-          <MacroChip label="P" value={meal.macros.proteinG} color={MACRO_COLORS.protein} />
-          <MacroChip label="C" value={meal.macros.carbsG} color={MACRO_COLORS.carbs} />
-          <MacroChip label="G" value={meal.macros.fatG} color={MACRO_COLORS.fat} />
-        </div>
-        <div className="flex shrink-0 items-center gap-1.5">
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            onClick={handleToggleEdit}
-            title={isEditing ? "Terminar edición" : "Editar comida"}
-          >
-            <Pencil className="size-4" />
-          </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="hover:text-red-400"
-            onClick={onDeleteMeal}
-            title="Eliminar comida"
-          >
-            <Trash2 className="size-4" />
-          </Button>
-        </div>
-      </div>
     </div>
+  );
+}
+
+function formatMealFoods(meal: MealGroup) {
+  if (meal.items.length === 0) {
+    return "Sin alimentos";
+  }
+
+  const names = meal.items.slice(0, 3).map((item) => item.foodName);
+  const suffix = meal.items.length > 3 ? ` +${meal.items.length - 3}` : "";
+
+  return `${names.join(", ")}${suffix}`;
+}
+
+function MealCounter({
+  label,
+  value,
+  unit = "",
+}: {
+  label: string;
+  value: number;
+  unit?: string;
+}) {
+  return (
+    <span className="min-w-0 rounded-md bg-[#151d2c] px-1.5 py-1 text-center">
+      <span className="block text-[8px] font-bold uppercase leading-none text-[#77839a]">
+        {label}
+      </span>
+      <span className="mt-0.5 block truncate text-[10px] font-bold leading-none text-white">
+        {Math.round(value)}
+        {unit}
+      </span>
+    </span>
   );
 }
 
