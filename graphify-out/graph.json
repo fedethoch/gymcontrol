@@ -778,7 +778,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "alimentos_foodadminclient_foodadminclient",
-      "community": 12,
+      "community": 29,
       "norm_label": "foodadminclient()"
     },
     {
@@ -818,7 +818,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "alimentos_actions",
-      "community": 12,
+      "community": 29,
       "norm_label": "actions.ts"
     },
     {
@@ -828,7 +828,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "alimentos_actions_savefoodresult",
-      "community": 12,
+      "community": 29,
       "norm_label": "savefoodresult"
     },
     {
@@ -838,7 +838,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "alimentos_actions_savefoodaction",
-      "community": 12,
+      "community": 29,
       "norm_label": "savefoodaction()"
     },
     {
@@ -848,7 +848,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "alimentos_actions_deletefoodaction",
-      "community": 12,
+      "community": 29,
       "norm_label": "deletefoodaction()"
     },
     {
@@ -858,7 +858,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_alimentos_page_tsx_alimentos_page",
-      "community": 12,
+      "community": 29,
       "norm_label": "page.tsx"
     },
     {
@@ -868,7 +868,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "alimentos_page_adminfoodspage",
-      "community": 12,
+      "community": 29,
       "norm_label": "adminfoodspage()"
     },
     {
@@ -878,7 +878,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ejercicios_exerciseadminclient",
-      "community": 216,
+      "community": 314,
       "norm_label": "exerciseadminclient.tsx"
     },
     {
@@ -888,7 +888,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "ejercicios_exerciseadminclient_exerciseadminclientprops",
-      "community": 216,
+      "community": 314,
       "norm_label": "exerciseadminclientprops"
     },
     {
@@ -898,7 +898,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "ejercicios_exerciseadminclient_sortcolumn",
-      "community": 216,
+      "community": 314,
       "norm_label": "sortcolumn"
     },
     {
@@ -908,7 +908,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "ejercicios_exerciseadminclient_sortdirection",
-      "community": 216,
+      "community": 314,
       "norm_label": "sortdirection"
     },
     {
@@ -928,7 +928,7 @@
       "source_location": "L569",
       "_origin": "ast",
       "id": "ejercicios_exerciseadminclient_stattile",
-      "community": 216,
+      "community": 314,
       "norm_label": "stattile()"
     },
     {
@@ -938,7 +938,7 @@
       "source_location": "L593",
       "_origin": "ast",
       "id": "ejercicios_exerciseadminclient_sortheader",
-      "community": 216,
+      "community": 314,
       "norm_label": "sortheader()"
     },
     {
@@ -948,7 +948,7 @@
       "source_location": "L625",
       "_origin": "ast",
       "id": "ejercicios_exerciseadminclient_exerciseformsheetprops",
-      "community": 216,
+      "community": 314,
       "norm_label": "exerciseformsheetprops"
     },
     {
@@ -958,7 +958,7 @@
       "source_location": "L632",
       "_origin": "ast",
       "id": "ejercicios_exerciseadminclient_uploadstatus",
-      "community": 216,
+      "community": 314,
       "norm_label": "uploadstatus"
     },
     {
@@ -968,7 +968,7 @@
       "source_location": "L634",
       "_origin": "ast",
       "id": "ejercicios_exerciseadminclient_exerciseformsheet",
-      "community": 216,
+      "community": 314,
       "norm_label": "exerciseformsheet()"
     },
     {
@@ -978,7 +978,7 @@
       "source_location": "L1100",
       "_origin": "ast",
       "id": "ejercicios_exerciseadminclient_editabletextlist",
-      "community": 216,
+      "community": 314,
       "norm_label": "editabletextlist()"
     },
     {
@@ -988,7 +988,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ejercicios_actions",
-      "community": 215,
+      "community": 44,
       "norm_label": "actions.ts"
     },
     {
@@ -998,7 +998,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "ejercicios_actions_saveexerciseaction",
-      "community": 215,
+      "community": 44,
       "norm_label": "saveexerciseaction()"
     },
     {
@@ -1008,7 +1008,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "ejercicios_actions_deleteexerciseaction",
-      "community": 215,
+      "community": 44,
       "norm_label": "deleteexerciseaction()"
     },
     {
@@ -1038,7 +1038,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "admin_layout",
-      "community": 12,
+      "community": 29,
       "norm_label": "layout.tsx"
     },
     {
@@ -1048,7 +1048,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "admin_layout_adminlayout",
-      "community": 12,
+      "community": 29,
       "norm_label": "adminlayout()"
     },
     {
@@ -1118,7 +1118,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "recetas_recipeadminclient_recipeadminclient",
-      "community": 258,
+      "community": 328,
       "norm_label": "recipeadminclient()"
     },
     {
@@ -1188,7 +1188,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_recetas_page_tsx_recetas_page",
-      "community": 258,
+      "community": 328,
       "norm_label": "page.tsx"
     },
     {
@@ -1198,7 +1198,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "recetas_page_adminrecetaspage",
-      "community": 258,
+      "community": 328,
       "norm_label": "adminrecetaspage()"
     },
     {
@@ -1208,7 +1208,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "rutinas_routineadminclient",
-      "community": 29,
+      "community": 387,
       "norm_label": "routineadminclient.tsx"
     },
     {
@@ -1218,7 +1218,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_routineadminclientprops",
-      "community": 29,
+      "community": 387,
       "norm_label": "routineadminclientprops"
     },
     {
@@ -1228,7 +1228,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_sortcolumn",
-      "community": 29,
+      "community": 387,
       "norm_label": "sortcolumn"
     },
     {
@@ -1238,7 +1238,7 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_sortdirection",
-      "community": 29,
+      "community": 387,
       "norm_label": "sortdirection"
     },
     {
@@ -1248,7 +1248,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_difficulty_badge_styles",
-      "community": 29,
+      "community": 387,
       "norm_label": "difficulty_badge_styles"
     },
     {
@@ -1258,7 +1258,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_objective_badge_styles",
-      "community": 29,
+      "community": 387,
       "norm_label": "objective_badge_styles"
     },
     {
@@ -1268,7 +1268,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_objective_dot_styles",
-      "community": 29,
+      "community": 387,
       "norm_label": "objective_dot_styles"
     },
     {
@@ -1278,7 +1278,7 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_routineadminclient",
-      "community": 41,
+      "community": 215,
       "norm_label": "routineadminclient()"
     },
     {
@@ -1288,7 +1288,7 @@
       "source_location": "L578",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_stattile",
-      "community": 29,
+      "community": 387,
       "norm_label": "stattile()"
     },
     {
@@ -1298,7 +1298,7 @@
       "source_location": "L602",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_sortheader",
-      "community": 29,
+      "community": 387,
       "norm_label": "sortheader()"
     },
     {
@@ -1308,7 +1308,7 @@
       "source_location": "L634",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_routineformsheetprops",
-      "community": 29,
+      "community": 387,
       "norm_label": "routineformsheetprops"
     },
     {
@@ -1318,7 +1318,7 @@
       "source_location": "L643",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_routineformsheet",
-      "community": 29,
+      "community": 387,
       "norm_label": "routineformsheet()"
     },
     {
@@ -1328,7 +1328,7 @@
       "source_location": "L1146",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_createemptyday",
-      "community": 29,
+      "community": 387,
       "norm_label": "createemptyday()"
     },
     {
@@ -1338,7 +1338,7 @@
       "source_location": "L1154",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_createemptyitem",
-      "community": 29,
+      "community": 387,
       "norm_label": "createemptyitem()"
     },
     {
@@ -1348,7 +1348,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "rutinas_actions",
-      "community": 41,
+      "community": 67,
       "norm_label": "actions.ts"
     },
     {
@@ -1368,7 +1368,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "rutinas_actions_deleteroutineaction",
-      "community": 41,
+      "community": 67,
       "norm_label": "deleteroutineaction()"
     },
     {
@@ -1378,7 +1378,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_rutinas_page_tsx_rutinas_page",
-      "community": 41,
+      "community": 215,
       "norm_label": "page.tsx"
     },
     {
@@ -1388,7 +1388,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "rutinas_page_adminroutinespage",
-      "community": 41,
+      "community": 215,
       "norm_label": "adminroutinespage()"
     },
     {
@@ -1418,7 +1418,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "alimentos_nutritioncatalogclient_nutritioncatalogclient",
-      "community": 258,
+      "community": 328,
       "norm_label": "nutritioncatalogclient()"
     },
     {
@@ -1458,7 +1458,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_alimentos_page_tsx_alimentos_page",
-      "community": 258,
+      "community": 328,
       "norm_label": "page.tsx"
     },
     {
@@ -1468,7 +1468,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "alimentos_page_nutricionpage",
-      "community": 258,
+      "community": 328,
       "norm_label": "nutricionpage()"
     },
     {
@@ -1608,7 +1608,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "login_otploginflow",
-      "community": 32,
+      "community": 387,
       "norm_label": "otploginflow.tsx"
     },
     {
@@ -1618,7 +1618,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "login_otploginflow_requesterrorcopy",
-      "community": 32,
+      "community": 387,
       "norm_label": "requesterrorcopy"
     },
     {
@@ -1628,7 +1628,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "login_otploginflow_verifyerrorcopy",
-      "community": 32,
+      "community": 387,
       "norm_label": "verifyerrorcopy"
     },
     {
@@ -1638,7 +1638,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "login_otploginflow_otploginflowprops",
-      "community": 32,
+      "community": 387,
       "norm_label": "otploginflowprops"
     },
     {
@@ -1648,7 +1648,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "login_otploginflow_busystate",
-      "community": 32,
+      "community": 387,
       "norm_label": "busystate"
     },
     {
@@ -1658,7 +1658,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "login_otploginflow_otploginflow",
-      "community": 32,
+      "community": 387,
       "norm_label": "otploginflow()"
     },
     {
@@ -1668,7 +1668,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "login_page",
-      "community": 314,
+      "community": 387,
       "norm_label": "page.tsx"
     },
     {
@@ -1678,7 +1678,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "login_page_statuscopy",
-      "community": 314,
+      "community": 387,
       "norm_label": "statuscopy"
     },
     {
@@ -1688,7 +1688,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "login_page_reasoncopy",
-      "community": 314,
+      "community": 387,
       "norm_label": "reasoncopy"
     },
     {
@@ -1698,7 +1698,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "login_page_errorcopy",
-      "community": 314,
+      "community": 387,
       "norm_label": "errorcopy"
     },
     {
@@ -1708,7 +1708,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "login_page_loginpageprops",
-      "community": 314,
+      "community": 387,
       "norm_label": "loginpageprops"
     },
     {
@@ -1718,7 +1718,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "login_page_loginpage",
-      "community": 366,
+      "community": 207,
       "norm_label": "loginpage()"
     },
     {
@@ -1748,7 +1748,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "catalogo_routinecatalogclient",
-      "community": 275,
+      "community": 32,
       "norm_label": "routinecatalogclient.tsx"
     },
     {
@@ -1758,7 +1758,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "catalogo_routinecatalogclient_routinecatalogclientprops",
-      "community": 275,
+      "community": 32,
       "norm_label": "routinecatalogclientprops"
     },
     {
@@ -1768,7 +1768,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "catalogo_routinecatalogclient_sortoption",
-      "community": 275,
+      "community": 32,
       "norm_label": "sortoption"
     },
     {
@@ -1778,7 +1778,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "catalogo_routinecatalogclient_routinecatalogclient",
-      "community": 275,
+      "community": 32,
       "norm_label": "routinecatalogclient()"
     },
     {
@@ -1788,7 +1788,7 @@
       "source_location": "L254",
       "_origin": "ast",
       "id": "catalogo_routinecatalogclient_routinecatalogcard",
-      "community": 275,
+      "community": 32,
       "norm_label": "routinecatalogcard()"
     },
     {
@@ -1798,7 +1798,7 @@
       "source_location": "L323",
       "_origin": "ast",
       "id": "catalogo_routinecatalogclient_getroutineitemcount",
-      "community": 275,
+      "community": 32,
       "norm_label": "getroutineitemcount()"
     },
     {
@@ -1808,7 +1808,7 @@
       "source_location": "L327",
       "_origin": "ast",
       "id": "catalogo_routinecatalogclient_getroutinecoverimage",
-      "community": 275,
+      "community": 32,
       "norm_label": "getroutinecoverimage()"
     },
     {
@@ -1818,7 +1818,7 @@
       "source_location": "L331",
       "_origin": "ast",
       "id": "catalogo_routinecatalogclient_getvisiblepages",
-      "community": 275,
+      "community": 32,
       "norm_label": "getvisiblepages()"
     },
     {
@@ -1828,7 +1828,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "catalogo_page",
-      "community": 29,
+      "community": 32,
       "norm_label": "page.tsx"
     },
     {
@@ -1848,7 +1848,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "id_routinedetailclient",
-      "community": 32,
+      "community": 105,
       "norm_label": "routinedetailclient.tsx"
     },
     {
@@ -1858,7 +1858,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "id_routinedetailclient_faderow",
-      "community": 32,
+      "community": 105,
       "norm_label": "faderow"
     },
     {
@@ -1868,7 +1868,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "id_routinedetailclient_routinedetailclientprops",
-      "community": 32,
+      "community": 105,
       "norm_label": "routinedetailclientprops"
     },
     {
@@ -1918,7 +1918,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "id_page",
-      "community": 29,
+      "community": 32,
       "norm_label": "page.tsx"
     },
     {
@@ -1928,7 +1928,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "id_page_catalogroutinedetailpageprops",
-      "community": 29,
+      "community": 32,
       "norm_label": "catalogroutinedetailpageprops"
     },
     {
@@ -1938,37 +1938,37 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "id_page_catalogroutinedetailpage",
-      "community": 41,
+      "community": 30,
       "norm_label": "catalogroutinedetailpage()"
     },
     {
       "label": "StatPillProps",
       "file_type": "code",
       "source_file": "app/catalogo/rutinas/[id]/page.tsx",
-      "source_location": "L346",
+      "source_location": "L343",
       "_origin": "ast",
       "id": "id_page_statpillprops",
-      "community": 29,
+      "community": 32,
       "norm_label": "statpillprops"
     },
     {
       "label": "StatPill()",
       "file_type": "code",
       "source_file": "app/catalogo/rutinas/[id]/page.tsx",
-      "source_location": "L351",
+      "source_location": "L348",
       "_origin": "ast",
       "id": "id_page_statpill",
-      "community": 29,
+      "community": 32,
       "norm_label": "statpill()"
     },
     {
       "label": "InfoTile()",
       "file_type": "code",
       "source_file": "app/catalogo/rutinas/[id]/page.tsx",
-      "source_location": "L360",
+      "source_location": "L357",
       "_origin": "ast",
       "id": "id_page_infotile",
-      "community": 29,
+      "community": 32,
       "norm_label": "infotile()"
     },
     {
@@ -1998,7 +1998,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "pwa_pwaruntime",
-      "community": 366,
+      "community": 207,
       "norm_label": "pwaruntime.tsx"
     },
     {
@@ -2008,7 +2008,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "pwa_pwaruntime_isstandalonedisplay",
-      "community": 366,
+      "community": 207,
       "norm_label": "isstandalonedisplay()"
     },
     {
@@ -2018,7 +2018,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "pwa_pwaruntime_pwaruntime",
-      "community": 366,
+      "community": 207,
       "norm_label": "pwaruntime()"
     },
     {
@@ -2028,7 +2028,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_bodyfatfigure",
-      "community": 105,
+      "community": 33,
       "norm_label": "bodyfatfigure.tsx"
     },
     {
@@ -2038,7 +2038,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "shared_bodyfatfigure_body_fat_values",
-      "community": 105,
+      "community": 33,
       "norm_label": "body_fat_values"
     },
     {
@@ -2048,7 +2048,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "shared_bodyfatfigure_bodyfatfigure",
-      "community": 105,
+      "community": 33,
       "norm_label": "bodyfatfigure()"
     },
     {
@@ -2208,7 +2208,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_exercisedetailmodal",
-      "community": 216,
+      "community": 314,
       "norm_label": "exercisedetailmodal.tsx"
     },
     {
@@ -2218,7 +2218,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "shared_exercisedetailmodal_exercisehistoryentry",
-      "community": 216,
+      "community": 314,
       "norm_label": "exercisehistoryentry"
     },
     {
@@ -2228,7 +2228,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "shared_exercisedetailmodal_exercisedetail",
-      "community": 390,
+      "community": 314,
       "norm_label": "exercisedetail"
     },
     {
@@ -2238,7 +2238,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "shared_exercisedetailmodal_exercisedetailmodalprops",
-      "community": 216,
+      "community": 314,
       "norm_label": "exercisedetailmodalprops"
     },
     {
@@ -2248,7 +2248,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "shared_exercisedetailmodal_tabs",
-      "community": 216,
+      "community": 314,
       "norm_label": "tabs"
     },
     {
@@ -2258,7 +2258,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "shared_exercisedetailmodal_tabkey",
-      "community": 216,
+      "community": 314,
       "norm_label": "tabkey"
     },
     {
@@ -2268,7 +2268,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "shared_exercisedetailmodal_exercisedetailmodal",
-      "community": 216,
+      "community": 314,
       "norm_label": "exercisedetailmodal()"
     },
     {
@@ -2278,7 +2278,7 @@
       "source_location": "L327",
       "_origin": "ast",
       "id": "shared_exercisedetailmodal_specchip",
-      "community": 216,
+      "community": 314,
       "norm_label": "specchip()"
     },
     {
@@ -2288,7 +2288,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_filterpanel",
-      "community": 275,
+      "community": 366,
       "norm_label": "filterpanel.tsx"
     },
     {
@@ -2298,7 +2298,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "shared_filterpanel_filtergroup",
-      "community": 275,
+      "community": 366,
       "norm_label": "filtergroup"
     },
     {
@@ -2308,7 +2308,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "shared_filterpanel_filterpanelprops",
-      "community": 275,
+      "community": 366,
       "norm_label": "filterpanelprops"
     },
     {
@@ -2328,7 +2328,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_filtersheet",
-      "community": 275,
+      "community": 366,
       "norm_label": "filtersheet.tsx"
     },
     {
@@ -2338,7 +2338,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "shared_filtersheet_filtersheetprops",
-      "community": 275,
+      "community": 366,
       "norm_label": "filtersheetprops"
     },
     {
@@ -2348,7 +2348,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "shared_filtersheet_filtersheet",
-      "community": 275,
+      "community": 387,
       "norm_label": "filtersheet()"
     },
     {
@@ -2358,7 +2358,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_macrobar",
-      "community": 105,
+      "community": 275,
       "norm_label": "macrobar.tsx"
     },
     {
@@ -2368,7 +2368,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "shared_macrobar_macrobar",
-      "community": 105,
+      "community": 275,
       "norm_label": "macrobar()"
     },
     {
@@ -2378,7 +2378,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_mobileheader",
-      "community": 366,
+      "community": 207,
       "norm_label": "mobileheader.tsx"
     },
     {
@@ -2388,7 +2388,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "shared_mobileheader_mobileheaderbadge",
-      "community": 366,
+      "community": 207,
       "norm_label": "mobileheaderbadge"
     },
     {
@@ -2398,7 +2398,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "shared_mobileheader_mobileheaderstate",
-      "community": 366,
+      "community": 207,
       "norm_label": "mobileheaderstate"
     },
     {
@@ -2408,7 +2408,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "shared_mobileheader_mobileheadercontext",
-      "community": 366,
+      "community": 207,
       "norm_label": "mobileheadercontext"
     },
     {
@@ -2418,7 +2418,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "shared_mobileheader_usemobileheaderstate",
-      "community": 366,
+      "community": 207,
       "norm_label": "usemobileheaderstate()"
     },
     {
@@ -2428,7 +2428,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "shared_mobileheader_mobileheaderstateprovider",
-      "community": 366,
+      "community": 207,
       "norm_label": "mobileheaderstateprovider()"
     },
     {
@@ -2438,7 +2438,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "shared_mobileheader_mobileheaderbadgesync",
-      "community": 29,
+      "community": 207,
       "norm_label": "mobileheaderbadgesync()"
     },
     {
@@ -2448,7 +2448,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "shared_mobileheader_mobileheaderprops",
-      "community": 366,
+      "community": 207,
       "norm_label": "mobileheaderprops"
     },
     {
@@ -2458,7 +2458,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "shared_mobileheader_resolvemobilearea",
-      "community": 366,
+      "community": 207,
       "norm_label": "resolvemobilearea()"
     },
     {
@@ -2468,7 +2468,7 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "shared_mobileheader_mobileheader",
-      "community": 366,
+      "community": 207,
       "norm_label": "mobileheader()"
     },
     {
@@ -2538,7 +2538,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "shared_mobiletabbar_mobiletabbar",
-      "community": 366,
+      "community": 207,
       "norm_label": "mobiletabbar()"
     },
     {
@@ -2548,7 +2548,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_nutritioncalendarcard",
-      "community": 387,
+      "community": 32,
       "norm_label": "nutritioncalendarcard.tsx"
     },
     {
@@ -2558,7 +2558,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "shared_nutritioncalendarcard_nutritioncalendarcard",
-      "community": 387,
+      "community": 32,
       "norm_label": "nutritioncalendarcard()"
     },
     {
@@ -2568,7 +2568,7 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "shared_nutritioncalendarcard_formatdateonly",
-      "community": 387,
+      "community": 32,
       "norm_label": "formatdateonly()"
     },
     {
@@ -2578,7 +2578,7 @@
       "source_location": "L123",
       "_origin": "ast",
       "id": "shared_nutritioncalendarcard_formatdatelabel",
-      "community": 387,
+      "community": 32,
       "norm_label": "formatdatelabel()"
     },
     {
@@ -2688,7 +2688,7 @@
       "source_location": "L230",
       "_origin": "ast",
       "id": "shared_primarynavigation_primarynavigation",
-      "community": 366,
+      "community": 207,
       "norm_label": "primarynavigation()"
     },
     {
@@ -2798,7 +2798,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_trainingcalendarcard",
-      "community": 387,
+      "community": 32,
       "norm_label": "trainingcalendarcard.tsx"
     },
     {
@@ -2808,7 +2808,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "shared_trainingcalendarcard_trainingcalendarcardprops",
-      "community": 387,
+      "community": 32,
       "norm_label": "trainingcalendarcardprops"
     },
     {
@@ -2818,7 +2818,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "shared_trainingcalendarcard_trainingcalendarcard",
-      "community": 387,
+      "community": 32,
       "norm_label": "trainingcalendarcard()"
     },
     {
@@ -2828,7 +2828,7 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "shared_trainingcalendarcard_formatdateonly",
-      "community": 387,
+      "community": 32,
       "norm_label": "formatdateonly()"
     },
     {
@@ -2838,7 +2838,7 @@
       "source_location": "L126",
       "_origin": "ast",
       "id": "shared_trainingcalendarcard_formatdatelabel",
-      "community": 387,
+      "community": 32,
       "norm_label": "formatdatelabel()"
     },
     {
@@ -2848,7 +2848,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_weekschedulepreview",
-      "community": 314,
+      "community": 387,
       "norm_label": "weekschedulepreview.tsx"
     },
     {
@@ -2858,7 +2858,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "shared_weekschedulepreview_weekday",
-      "community": 314,
+      "community": 387,
       "norm_label": "weekday"
     },
     {
@@ -2868,7 +2868,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "shared_weekschedulepreview_weekschedulepreviewprops",
-      "community": 314,
+      "community": 387,
       "norm_label": "weekschedulepreviewprops"
     },
     {
@@ -2878,7 +2878,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "shared_weekschedulepreview_weekschedulepreview",
-      "community": 314,
+      "community": 387,
       "norm_label": "weekschedulepreview()"
     },
     {
@@ -2888,7 +2888,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_weeklyattendancecard",
-      "community": 387,
+      "community": 32,
       "norm_label": "weeklyattendancecard.tsx"
     },
     {
@@ -2898,7 +2898,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "shared_weeklyattendancecard_weeklyattendancecardprops",
-      "community": 387,
+      "community": 32,
       "norm_label": "weeklyattendancecardprops"
     },
     {
@@ -2908,7 +2908,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "shared_weeklyattendancecard_weeklyattendancecard",
-      "community": 387,
+      "community": 32,
       "norm_label": "weeklyattendancecard()"
     },
     {
@@ -2918,7 +2918,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "shared_weeklyattendancecard_getmotivationalmessage",
-      "community": 387,
+      "community": 32,
       "norm_label": "getmotivationalmessage()"
     },
     {
@@ -3008,7 +3008,7 @@
       "source_location": "L168",
       "_origin": "ast",
       "id": "shared_navigation_config_resolveshellroutemeta",
-      "community": 366,
+      "community": 207,
       "norm_label": "resolveshellroutemeta()"
     },
     {
@@ -3068,7 +3068,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_appshell",
-      "community": 366,
+      "community": 207,
       "norm_label": "appshell.tsx"
     },
     {
@@ -3078,7 +3078,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "ui_appshell_appshellprops",
-      "community": 366,
+      "community": 207,
       "norm_label": "appshellprops"
     },
     {
@@ -3088,7 +3088,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "ui_appshell_appshell",
-      "community": 366,
+      "community": 207,
       "norm_label": "appshell()"
     },
     {
@@ -3098,7 +3098,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_badge",
-      "community": 314,
+      "community": 387,
       "norm_label": "badge.tsx"
     },
     {
@@ -3108,7 +3108,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "ui_badge_badgevariants",
-      "community": 314,
+      "community": 387,
       "norm_label": "badgevariants"
     },
     {
@@ -3118,7 +3118,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "ui_badge_badgeprops",
-      "community": 314,
+      "community": 387,
       "norm_label": "badgeprops"
     },
     {
@@ -3128,7 +3128,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "ui_badge_badge",
-      "community": 314,
+      "community": 387,
       "norm_label": "badge()"
     },
     {
@@ -3138,7 +3138,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_button",
-      "community": 29,
+      "community": 32,
       "norm_label": "button.tsx"
     },
     {
@@ -3148,7 +3148,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "ui_button_buttonvariants",
-      "community": 29,
+      "community": 32,
       "norm_label": "buttonvariants"
     },
     {
@@ -3158,7 +3158,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "ui_button_buttonprops",
-      "community": 29,
+      "community": 32,
       "norm_label": "buttonprops"
     },
     {
@@ -3168,7 +3168,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "ui_button_button",
-      "community": 29,
+      "community": 32,
       "norm_label": "button()"
     },
     {
@@ -3178,7 +3178,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_card",
-      "community": 314,
+      "community": 387,
       "norm_label": "card.tsx"
     },
     {
@@ -3188,7 +3188,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "ui_card_card",
-      "community": 314,
+      "community": 32,
       "norm_label": "card()"
     },
     {
@@ -3198,7 +3198,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "ui_card_cardheader",
-      "community": 314,
+      "community": 387,
       "norm_label": "cardheader()"
     },
     {
@@ -3208,7 +3208,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "ui_card_cardtitle",
-      "community": 314,
+      "community": 387,
       "norm_label": "cardtitle()"
     },
     {
@@ -3218,7 +3218,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "ui_card_carddescription",
-      "community": 314,
+      "community": 387,
       "norm_label": "carddescription()"
     },
     {
@@ -3228,7 +3228,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "ui_card_cardcontent",
-      "community": 314,
+      "community": 32,
       "norm_label": "cardcontent()"
     },
     {
@@ -3238,7 +3238,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "ui_card_cardfooter",
-      "community": 105,
+      "community": 387,
       "norm_label": "cardfooter()"
     },
     {
@@ -3248,7 +3248,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_dialog",
-      "community": 216,
+      "community": 275,
       "norm_label": "dialog.tsx"
     },
     {
@@ -3258,7 +3258,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "ui_dialog_dialog",
-      "community": 216,
+      "community": 275,
       "norm_label": "dialog()"
     },
     {
@@ -3268,7 +3268,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "ui_dialog_dialogtrigger",
-      "community": 216,
+      "community": 275,
       "norm_label": "dialogtrigger()"
     },
     {
@@ -3278,7 +3278,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "ui_dialog_dialogclose",
-      "community": 216,
+      "community": 275,
       "norm_label": "dialogclose()"
     },
     {
@@ -3288,7 +3288,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "ui_dialog_dialogportal",
-      "community": 216,
+      "community": 275,
       "norm_label": "dialogportal()"
     },
     {
@@ -3298,7 +3298,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "ui_dialog_dialogcontent",
-      "community": 216,
+      "community": 275,
       "norm_label": "dialogcontent()"
     },
     {
@@ -3308,7 +3308,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "ui_dialog_dialogheader",
-      "community": 216,
+      "community": 275,
       "norm_label": "dialogheader()"
     },
     {
@@ -3318,7 +3318,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "ui_dialog_dialogtitle",
-      "community": 216,
+      "community": 275,
       "norm_label": "dialogtitle()"
     },
     {
@@ -3328,7 +3328,7 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "ui_dialog_dialogdescription",
-      "community": 216,
+      "community": 275,
       "norm_label": "dialogdescription()"
     },
     {
@@ -3508,7 +3508,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_input",
-      "community": 275,
+      "community": 105,
       "norm_label": "input.tsx"
     },
     {
@@ -3518,7 +3518,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "ui_input_input",
-      "community": 275,
+      "community": 105,
       "norm_label": "input()"
     },
     {
@@ -3528,7 +3528,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_loadingdots",
-      "community": 105,
+      "community": 387,
       "norm_label": "loadingdots.tsx"
     },
     {
@@ -3538,7 +3538,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "ui_loadingdots_loadingdotsprops",
-      "community": 105,
+      "community": 387,
       "norm_label": "loadingdotsprops"
     },
     {
@@ -3548,7 +3548,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "ui_loadingdots_loadingdots",
-      "community": 105,
+      "community": 387,
       "norm_label": "loadingdots()"
     },
     {
@@ -3578,7 +3578,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_sectioneyebrow",
-      "community": 314,
+      "community": 387,
       "norm_label": "sectioneyebrow.tsx"
     },
     {
@@ -3588,7 +3588,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "ui_sectioneyebrow_sectioneyebrowprops",
-      "community": 314,
+      "community": 387,
       "norm_label": "sectioneyebrowprops"
     },
     {
@@ -3598,7 +3598,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "ui_sectioneyebrow_sectioneyebrow",
-      "community": 314,
+      "community": 387,
       "norm_label": "sectioneyebrow()"
     },
     {
@@ -3668,7 +3668,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "ui_select_selectlabel",
-      "community": 275,
+      "community": 105,
       "norm_label": "selectlabel()"
     },
     {
@@ -3688,7 +3688,7 @@
       "source_location": "L122",
       "_origin": "ast",
       "id": "ui_select_selectseparator",
-      "community": 275,
+      "community": 105,
       "norm_label": "selectseparator()"
     },
     {
@@ -3718,7 +3718,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_sheet",
-      "community": 275,
+      "community": 366,
       "norm_label": "sheet.tsx"
     },
     {
@@ -3728,7 +3728,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "ui_sheet_sheet",
-      "community": 275,
+      "community": 366,
       "norm_label": "sheet()"
     },
     {
@@ -3748,7 +3748,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "ui_sheet_sheetclose",
-      "community": 275,
+      "community": 366,
       "norm_label": "sheetclose()"
     },
     {
@@ -3758,7 +3758,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "ui_sheet_sheetportal",
-      "community": 275,
+      "community": 366,
       "norm_label": "sheetportal()"
     },
     {
@@ -3768,7 +3768,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "ui_sheet_sheetoverlay",
-      "community": 275,
+      "community": 366,
       "norm_label": "sheetoverlay()"
     },
     {
@@ -3778,7 +3778,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "ui_sheet_sheetcontent",
-      "community": 275,
+      "community": 366,
       "norm_label": "sheetcontent()"
     },
     {
@@ -3788,7 +3788,7 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "ui_sheet_sheetheader",
-      "community": 275,
+      "community": 366,
       "norm_label": "sheetheader()"
     },
     {
@@ -3798,7 +3798,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "ui_sheet_sheetfooter",
-      "community": 275,
+      "community": 366,
       "norm_label": "sheetfooter()"
     },
     {
@@ -3808,7 +3808,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "ui_sheet_sheettitle",
-      "community": 275,
+      "community": 366,
       "norm_label": "sheettitle()"
     },
     {
@@ -3938,7 +3938,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_tabs",
-      "community": 32,
+      "community": 105,
       "norm_label": "tabs.tsx"
     },
     {
@@ -3948,7 +3948,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "ui_tabs_tabs",
-      "community": 32,
+      "community": 105,
       "norm_label": "tabs()"
     },
     {
@@ -3958,7 +3958,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "ui_tabs_tabslistvariants",
-      "community": 32,
+      "community": 105,
       "norm_label": "tabslistvariants"
     },
     {
@@ -3968,7 +3968,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "ui_tabs_tabslist",
-      "community": 32,
+      "community": 105,
       "norm_label": "tabslist()"
     },
     {
@@ -3978,7 +3978,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "ui_tabs_tabstrigger",
-      "community": 32,
+      "community": 105,
       "norm_label": "tabstrigger()"
     },
     {
@@ -3988,7 +3988,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "ui_tabs_tabscontent",
-      "community": 32,
+      "community": 105,
       "norm_label": "tabscontent()"
     },
     {
@@ -3998,7 +3998,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_textarea",
-      "community": 216,
+      "community": 105,
       "norm_label": "textarea.tsx"
     },
     {
@@ -4008,7 +4008,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "ui_textarea_textarea",
-      "community": 216,
+      "community": 105,
       "norm_label": "textarea()"
     },
     {
@@ -4138,7 +4138,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "ui_motion_tapfeedback",
-      "community": 275,
+      "community": 32,
       "norm_label": "tapfeedback"
     },
     {
@@ -4168,7 +4168,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "configuracion_configuracionclient",
-      "community": 105,
+      "community": 33,
       "norm_label": "configuracionclient.tsx"
     },
     {
@@ -4188,7 +4188,7 @@
       "source_location": "L451",
       "_origin": "ast",
       "id": "configuracion_configuracionclient_toggleoption",
-      "community": 105,
+      "community": 33,
       "norm_label": "toggleoption()"
     },
     {
@@ -4218,7 +4218,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "configuracion_actions_saveprofilenameaction",
-      "community": 360,
+      "community": 33,
       "norm_label": "saveprofilenameaction()"
     },
     {
@@ -4328,7 +4328,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_dashboard_rutinas_page_tsx_rutinas_page",
-      "community": 29,
+      "community": 32,
       "norm_label": "page.tsx"
     },
     {
@@ -4338,7 +4338,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "rutinas_page_legacydashboardroutinespage",
-      "community": 29,
+      "community": 32,
       "norm_label": "legacydashboardroutinespage()"
     },
     {
@@ -4348,7 +4348,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_layout",
-      "community": 366,
+      "community": 207,
       "norm_label": "layout.tsx"
     },
     {
@@ -4358,7 +4358,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "app_layout_displayfont",
-      "community": 366,
+      "community": 207,
       "norm_label": "displayfont"
     },
     {
@@ -4368,7 +4368,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "app_layout_bodyfont",
-      "community": 366,
+      "community": 207,
       "norm_label": "bodyfont"
     },
     {
@@ -4378,7 +4378,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "app_layout_monofont",
-      "community": 366,
+      "community": 207,
       "norm_label": "monofont"
     },
     {
@@ -4388,7 +4388,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "app_layout_metadata",
-      "community": 366,
+      "community": 207,
       "norm_label": "metadata"
     },
     {
@@ -4398,7 +4398,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "app_layout_viewport",
-      "community": 366,
+      "community": 207,
       "norm_label": "viewport"
     },
     {
@@ -4408,7 +4408,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "app_layout_rootlayout",
-      "community": 366,
+      "community": 207,
       "norm_label": "rootlayout()"
     },
     {
@@ -4678,7 +4678,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "lib_auth_getoptionalauthcontext",
-      "community": 366,
+      "community": 207,
       "norm_label": "getoptionalauthcontext"
     },
     {
@@ -4698,7 +4698,7 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "lib_auth_requireadmin",
-      "community": 12,
+      "community": 29,
       "norm_label": "requireadmin()"
     },
     {
@@ -4808,7 +4808,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "lib_exercise_form_exerciseformstate",
-      "community": 215,
+      "community": 44,
       "norm_label": "exerciseformstate"
     },
     {
@@ -4848,7 +4848,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "lib_exercise_form_muscle_badge_styles",
-      "community": 216,
+      "community": 314,
       "norm_label": "muscle_badge_styles"
     },
     {
@@ -4858,7 +4858,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "lib_exercise_form_muscle_gradients",
-      "community": 216,
+      "community": 314,
       "norm_label": "muscle_gradients"
     },
     {
@@ -4868,7 +4868,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "lib_exercise_form_musclelabel",
-      "community": 216,
+      "community": 314,
       "norm_label": "musclelabel()"
     },
     {
@@ -4878,7 +4878,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "lib_exercise_form_equipmentlabel",
-      "community": 216,
+      "community": 314,
       "norm_label": "equipmentlabel()"
     },
     {
@@ -5038,7 +5038,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "lib_exercises_listexercisecatalogitems",
-      "community": 41,
+      "community": 215,
       "norm_label": "listexercisecatalogitems()"
     },
     {
@@ -5068,7 +5068,7 @@
       "source_location": "L114",
       "_origin": "ast",
       "id": "lib_exercises_createexercise",
-      "community": 215,
+      "community": 44,
       "norm_label": "createexercise()"
     },
     {
@@ -5088,7 +5088,7 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "lib_exercises_updateexercise",
-      "community": 215,
+      "community": 44,
       "norm_label": "updateexercise()"
     },
     {
@@ -5098,7 +5098,7 @@
       "source_location": "L172",
       "_origin": "ast",
       "id": "lib_exercises_deleteexercise",
-      "community": 215,
+      "community": 44,
       "norm_label": "deleteexercise()"
     },
     {
@@ -5128,7 +5128,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_foods_form",
-      "community": 12,
+      "community": 29,
       "norm_label": "foods-form.ts"
     },
     {
@@ -5138,7 +5138,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_foods_form_foodformfield",
-      "community": 12,
+      "community": 29,
       "norm_label": "foodformfield"
     },
     {
@@ -5148,7 +5148,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "lib_foods_form_foodformpayload",
-      "community": 12,
+      "community": 29,
       "norm_label": "foodformpayload"
     },
     {
@@ -5158,7 +5158,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "lib_foods_form_foodformstate",
-      "community": 12,
+      "community": 29,
       "norm_label": "foodformstate"
     },
     {
@@ -5168,7 +5168,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "lib_foods_form_initial_food_form_state",
-      "community": 12,
+      "community": 29,
       "norm_label": "initial_food_form_state"
     },
     {
@@ -5178,7 +5178,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "lib_foods_form_parsedfoodpayload",
-      "community": 12,
+      "community": 29,
       "norm_label": "parsedfoodpayload"
     },
     {
@@ -5188,7 +5188,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_foods_validation",
-      "community": 12,
+      "community": 29,
       "norm_label": "foods-validation.ts"
     },
     {
@@ -5198,7 +5198,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "lib_foods_validation_foodtextschema",
-      "community": 12,
+      "community": 29,
       "norm_label": "foodtextschema"
     },
     {
@@ -5208,7 +5208,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "lib_foods_validation_numeric_fields",
-      "community": 12,
+      "community": 29,
       "norm_label": "numeric_fields"
     },
     {
@@ -5218,7 +5218,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "lib_foods_validation_parsefoodpayload",
-      "community": 12,
+      "community": 29,
       "norm_label": "parsefoodpayload()"
     },
     {
@@ -5228,7 +5228,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_foods",
-      "community": 12,
+      "community": 29,
       "norm_label": "foods.ts"
     },
     {
@@ -5238,7 +5238,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "lib_foods_adminfoodlistitem",
-      "community": 12,
+      "community": 29,
       "norm_label": "adminfoodlistitem"
     },
     {
@@ -5248,7 +5248,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_foods_foodrow",
-      "community": 12,
+      "community": 29,
       "norm_label": "foodrow"
     },
     {
@@ -5258,7 +5258,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "lib_foods_listfoodcatalogitems",
-      "community": 258,
+      "community": 328,
       "norm_label": "listfoodcatalogitems()"
     },
     {
@@ -5268,7 +5268,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "lib_foods_listadminfoods",
-      "community": 12,
+      "community": 29,
       "norm_label": "listadminfoods()"
     },
     {
@@ -5278,7 +5278,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "lib_foods_getfoodbyid",
-      "community": 12,
+      "community": 29,
       "norm_label": "getfoodbyid()"
     },
     {
@@ -5288,7 +5288,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "lib_foods_foodinput",
-      "community": 12,
+      "community": 29,
       "norm_label": "foodinput"
     },
     {
@@ -5298,7 +5298,7 @@
       "source_location": "L88",
       "_origin": "ast",
       "id": "lib_foods_createfood",
-      "community": 12,
+      "community": 29,
       "norm_label": "createfood()"
     },
     {
@@ -5308,7 +5308,7 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "lib_foods_updatefood",
-      "community": 12,
+      "community": 29,
       "norm_label": "updatefood()"
     },
     {
@@ -5318,7 +5318,7 @@
       "source_location": "L137",
       "_origin": "ast",
       "id": "lib_foods_deletefood",
-      "community": 12,
+      "community": 29,
       "norm_label": "deletefood()"
     },
     {
@@ -5328,7 +5328,7 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "lib_foods_mapfood",
-      "community": 12,
+      "community": 29,
       "norm_label": "mapfood()"
     },
     {
@@ -5338,7 +5338,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "lib_foods_formatdatelabel",
-      "community": 12,
+      "community": 29,
       "norm_label": "formatdatelabel()"
     },
     {
@@ -5355,7 +5355,7 @@
       "label": "MealLogItem",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L7",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "lib_meal_logs_meallogitem",
       "community": 360,
@@ -5365,7 +5365,7 @@
       "label": "MealGroup",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L21",
+      "source_location": "L27",
       "_origin": "ast",
       "id": "lib_meal_logs_mealgroup",
       "community": 360,
@@ -5375,7 +5375,7 @@
       "label": "MealLog",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L30",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "lib_meal_logs_meallog",
       "community": 360,
@@ -5385,7 +5385,7 @@
       "label": "FoodRow",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L38",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "lib_meal_logs_foodrow",
       "community": 360,
@@ -5395,7 +5395,7 @@
       "label": "MealLogItemRow",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L51",
+      "source_location": "L59",
       "_origin": "ast",
       "id": "lib_meal_logs_meallogitemrow",
       "community": 360,
@@ -5405,7 +5405,7 @@
       "label": "MealLogMealRow",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L61",
+      "source_location": "L69",
       "_origin": "ast",
       "id": "lib_meal_logs_meallogmealrow",
       "community": 360,
@@ -5415,7 +5415,7 @@
       "label": "MealLogRow",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L68",
+      "source_location": "L77",
       "_origin": "ast",
       "id": "lib_meal_logs_meallogrow",
       "community": 360,
@@ -5425,7 +5425,7 @@
       "label": "getMealLogForDate()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L106",
+      "source_location": "L116",
       "_origin": "ast",
       "id": "lib_meal_logs_getmeallogfordate",
       "community": 360,
@@ -5435,7 +5435,7 @@
       "label": "ensureMealLogId()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L126",
+      "source_location": "L136",
       "_origin": "ast",
       "id": "lib_meal_logs_ensuremeallogid",
       "community": 360,
@@ -5445,7 +5445,7 @@
       "label": "createMeal()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L157",
+      "source_location": "L167",
       "_origin": "ast",
       "id": "lib_meal_logs_createmeal",
       "community": 360,
@@ -5455,7 +5455,7 @@
       "label": "updateMeal()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L189",
+      "source_location": "L200",
       "_origin": "ast",
       "id": "lib_meal_logs_updatemeal",
       "community": 360,
@@ -5465,7 +5465,7 @@
       "label": "deleteMeal()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L198",
+      "source_location": "L219",
       "_origin": "ast",
       "id": "lib_meal_logs_deletemeal",
       "community": 360,
@@ -5475,7 +5475,7 @@
       "label": "addMealLogItem()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L207",
+      "source_location": "L228",
       "_origin": "ast",
       "id": "lib_meal_logs_addmeallogitem",
       "community": 360,
@@ -5485,7 +5485,7 @@
       "label": "updateMealLogItem()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L253",
+      "source_location": "L274",
       "_origin": "ast",
       "id": "lib_meal_logs_updatemeallogitem",
       "community": 360,
@@ -5495,7 +5495,7 @@
       "label": "deleteMealLogItem()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L299",
+      "source_location": "L320",
       "_origin": "ast",
       "id": "lib_meal_logs_deletemeallogitem",
       "community": 360,
@@ -5505,7 +5505,7 @@
       "label": "getLoggedDatesForUser()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L308",
+      "source_location": "L329",
       "_origin": "ast",
       "id": "lib_meal_logs_getloggeddatesforuser",
       "community": 360,
@@ -5515,7 +5515,7 @@
       "label": "getDailyKcalAverage()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L335",
+      "source_location": "L356",
       "_origin": "ast",
       "id": "lib_meal_logs_getdailykcalaverage",
       "community": 360,
@@ -5525,7 +5525,7 @@
       "label": "mapMealLog()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L385",
+      "source_location": "L406",
       "_origin": "ast",
       "id": "lib_meal_logs_mapmeallog",
       "community": 360,
@@ -5535,17 +5535,27 @@
       "label": "mapMealGroup()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L408",
+      "source_location": "L429",
       "_origin": "ast",
       "id": "lib_meal_logs_mapmealgroup",
       "community": 360,
       "norm_label": "mapmealgroup()"
     },
     {
+      "label": "normalizeMealType()",
+      "file_type": "code",
+      "source_file": "app/lib/meal-logs.ts",
+      "source_location": "L454",
+      "_origin": "ast",
+      "id": "lib_meal_logs_normalizemealtype",
+      "community": 360,
+      "norm_label": "normalizemealtype()"
+    },
+    {
       "label": "mapMealLogItem()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L430",
+      "source_location": "L458",
       "_origin": "ast",
       "id": "lib_meal_logs_mapmeallogitem",
       "community": 360,
@@ -5555,7 +5565,7 @@
       "label": "addDays()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L454",
+      "source_location": "L482",
       "_origin": "ast",
       "id": "lib_meal_logs_adddays",
       "community": 360,
@@ -5565,7 +5575,7 @@
       "label": "formatDateOnly()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L461",
+      "source_location": "L489",
       "_origin": "ast",
       "id": "lib_meal_logs_formatdateonly",
       "community": 360,
@@ -5618,7 +5628,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_nutrition_mock",
-      "community": 387,
+      "community": 33,
       "norm_label": "nutrition-mock.ts"
     },
     {
@@ -5628,7 +5638,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_nutrition_mock_mock_foods_base",
-      "community": 387,
+      "community": 33,
       "norm_label": "mock_foods_base"
     },
     {
@@ -5638,7 +5648,7 @@
       "source_location": "L197",
       "_origin": "ast",
       "id": "lib_nutrition_mock_mock_foods",
-      "community": 387,
+      "community": 33,
       "norm_label": "mock_foods"
     },
     {
@@ -5648,7 +5658,7 @@
       "source_location": "L199",
       "_origin": "ast",
       "id": "lib_nutrition_mock_mock_profile_defaults",
-      "community": 387,
+      "community": 33,
       "norm_label": "mock_profile_defaults"
     },
     {
@@ -5728,7 +5738,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "lib_nutrition_style_macro_colors",
-      "community": 105,
+      "community": 275,
       "norm_label": "macro_colors"
     },
     {
@@ -5738,7 +5748,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "lib_nutrition_style_macro_labels",
-      "community": 105,
+      "community": 275,
       "norm_label": "macro_labels"
     },
     {
@@ -5808,7 +5818,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_nutrition_types",
-      "community": 105,
+      "community": 33,
       "norm_label": "nutrition-types.ts"
     },
     {
@@ -5878,7 +5888,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "lib_nutrition_types_food_measures",
-      "community": 275,
+      "community": 29,
       "norm_label": "food_measures"
     },
     {
@@ -5888,7 +5898,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "lib_nutrition_types_foodmeasure",
-      "community": 275,
+      "community": 105,
       "norm_label": "foodmeasure"
     },
     {
@@ -5898,24 +5908,64 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "lib_nutrition_types_food_measure_labels",
-      "community": 275,
+      "community": 33,
       "norm_label": "food_measure_labels"
+    },
+    {
+      "label": "MEAL_TYPES",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "lib_nutrition_types_meal_types",
+      "community": 360,
+      "norm_label": "meal_types"
+    },
+    {
+      "label": "MealType",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L30",
+      "_origin": "ast",
+      "id": "lib_nutrition_types_mealtype",
+      "community": 360,
+      "norm_label": "mealtype"
+    },
+    {
+      "label": "MEAL_TYPE_LABELS",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "lib_nutrition_types_meal_type_labels",
+      "community": 33,
+      "norm_label": "meal_type_labels"
+    },
+    {
+      "label": "MEAL_TYPE_IMAGES",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "lib_nutrition_types_meal_type_images",
+      "community": 360,
+      "norm_label": "meal_type_images"
     },
     {
       "label": "Macros",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L29",
+      "source_location": "L48",
       "_origin": "ast",
       "id": "lib_nutrition_types_macros",
-      "community": 105,
+      "community": 33,
       "norm_label": "macros"
     },
     {
       "label": "Food",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L35",
+      "source_location": "L54",
       "_origin": "ast",
       "id": "lib_nutrition_types_food",
       "community": 275,
@@ -5925,17 +5975,17 @@
       "label": "RecipeIngredient",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L49",
+      "source_location": "L68",
       "_origin": "ast",
       "id": "lib_nutrition_types_recipeingredient",
-      "community": 105,
+      "community": 81,
       "norm_label": "recipeingredient"
     },
     {
       "label": "Recipe",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L55",
+      "source_location": "L74",
       "_origin": "ast",
       "id": "lib_nutrition_types_recipe",
       "community": 275,
@@ -5945,97 +5995,97 @@
       "label": "GENDERS",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L69",
+      "source_location": "L88",
       "_origin": "ast",
       "id": "lib_nutrition_types_genders",
-      "community": 105,
+      "community": 33,
       "norm_label": "genders"
     },
     {
       "label": "Gender",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L70",
+      "source_location": "L89",
       "_origin": "ast",
       "id": "lib_nutrition_types_gender",
-      "community": 105,
+      "community": 33,
       "norm_label": "gender"
     },
     {
       "label": "ACTIVITY_LEVELS",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L72",
+      "source_location": "L91",
       "_origin": "ast",
       "id": "lib_nutrition_types_activity_levels",
-      "community": 105,
+      "community": 33,
       "norm_label": "activity_levels"
     },
     {
       "label": "ActivityLevel",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L73",
+      "source_location": "L92",
       "_origin": "ast",
       "id": "lib_nutrition_types_activitylevel",
-      "community": 105,
+      "community": 33,
       "norm_label": "activitylevel"
     },
     {
       "label": "ACTIVITY_LEVEL_INFO",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L75",
+      "source_location": "L94",
       "_origin": "ast",
       "id": "lib_nutrition_types_activity_level_info",
-      "community": 105,
+      "community": 33,
       "norm_label": "activity_level_info"
     },
     {
       "label": "GOALS",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L103",
+      "source_location": "L122",
       "_origin": "ast",
       "id": "lib_nutrition_types_goals",
-      "community": 105,
+      "community": 33,
       "norm_label": "goals"
     },
     {
       "label": "Goal",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L104",
+      "source_location": "L123",
       "_origin": "ast",
       "id": "lib_nutrition_types_goal",
-      "community": 105,
+      "community": 33,
       "norm_label": "goal"
     },
     {
       "label": "GOAL_INFO",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L106",
+      "source_location": "L125",
       "_origin": "ast",
       "id": "lib_nutrition_types_goal_info",
-      "community": 105,
+      "community": 33,
       "norm_label": "goal_info"
     },
     {
       "label": "BODY_FAT_REFERENCES",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L124",
+      "source_location": "L143",
       "_origin": "ast",
       "id": "lib_nutrition_types_body_fat_references",
-      "community": 105,
+      "community": 33,
       "norm_label": "body_fat_references"
     },
     {
       "label": "NutritionProfileInput",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L132",
+      "source_location": "L151",
       "_origin": "ast",
       "id": "lib_nutrition_types_nutritionprofileinput",
       "community": 33,
@@ -6045,7 +6095,7 @@
       "label": "NutritionPlan",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L142",
+      "source_location": "L161",
       "_origin": "ast",
       "id": "lib_nutrition_types_nutritionplan",
       "community": 33,
@@ -6288,7 +6338,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "lib_recipes_listadminrecipes",
-      "community": 258,
+      "community": 328,
       "norm_label": "listadminrecipes()"
     },
     {
@@ -6518,7 +6568,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_routine_metadata",
-      "community": 29,
+      "community": 32,
       "norm_label": "routine-metadata.ts"
     },
     {
@@ -6528,7 +6578,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_routine_metadata_routine_difficulties",
-      "community": 29,
+      "community": 67,
       "norm_label": "routine_difficulties"
     },
     {
@@ -6538,7 +6588,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "lib_routine_metadata_routine_objectives",
-      "community": 29,
+      "community": 67,
       "norm_label": "routine_objectives"
     },
     {
@@ -6548,7 +6598,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "lib_routine_metadata_routinedifficulty",
-      "community": 29,
+      "community": 67,
       "norm_label": "routinedifficulty"
     },
     {
@@ -6558,7 +6608,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "lib_routine_metadata_routineobjective",
-      "community": 29,
+      "community": 67,
       "norm_label": "routineobjective"
     },
     {
@@ -6568,7 +6618,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "lib_routine_metadata_routine_difficulty_labels",
-      "community": 29,
+      "community": 32,
       "norm_label": "routine_difficulty_labels"
     },
     {
@@ -6578,7 +6628,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "lib_routine_metadata_routine_objective_labels",
-      "community": 29,
+      "community": 32,
       "norm_label": "routine_objective_labels"
     },
     {
@@ -6658,7 +6708,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "lib_routine_validation_parseroutinepayload",
-      "community": 41,
+      "community": 67,
       "norm_label": "parseroutinepayload()"
     },
     {
@@ -6708,7 +6758,7 @@
       "source_location": "L316",
       "_origin": "ast",
       "id": "lib_routine_validation_hasstructureerrors",
-      "community": 41,
+      "community": 67,
       "norm_label": "hasstructureerrors()"
     },
     {
@@ -6728,7 +6778,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "lib_routines_routineexerciseref",
-      "community": 41,
+      "community": 30,
       "norm_label": "routineexerciseref"
     },
     {
@@ -6748,7 +6798,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "lib_routines_routineday",
-      "community": 32,
+      "community": 30,
       "norm_label": "routineday"
     },
     {
@@ -6848,7 +6898,7 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "lib_routines_listadminroutines",
-      "community": 41,
+      "community": 215,
       "norm_label": "listadminroutines()"
     },
     {
@@ -6898,7 +6948,7 @@
       "source_location": "L276",
       "_origin": "ast",
       "id": "lib_routines_deleteroutine",
-      "community": 41,
+      "community": 67,
       "norm_label": "deleteroutine()"
     },
     {
@@ -7068,7 +7118,7 @@
       "source_location": "L198",
       "_origin": "ast",
       "id": "lib_saved_routines_listsavedroutinesforuser",
-      "community": 29,
+      "community": 32,
       "norm_label": "listsavedroutinesforuser()"
     },
     {
@@ -7078,7 +7128,7 @@
       "source_location": "L214",
       "_origin": "ast",
       "id": "lib_saved_routines_getsavedroutinebyidforuser",
-      "community": 38,
+      "community": 32,
       "norm_label": "getsavedroutinebyidforuser()"
     },
     {
@@ -7138,7 +7188,7 @@
       "source_location": "L431",
       "_origin": "ast",
       "id": "lib_saved_routines_deletesavedroutineforuser",
-      "community": 211,
+      "community": 30,
       "norm_label": "deletesavedroutineforuser()"
     },
     {
@@ -7158,7 +7208,7 @@
       "source_location": "L475",
       "_origin": "ast",
       "id": "lib_saved_routines_activatefirstsavedroutineforuser",
-      "community": 211,
+      "community": 30,
       "norm_label": "activatefirstsavedroutineforuser()"
     },
     {
@@ -7248,7 +7298,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "supabase_admin",
-      "community": 33,
+      "community": 241,
       "norm_label": "admin.ts"
     },
     {
@@ -7258,7 +7308,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "supabase_admin_createsupabaseadminclient",
-      "community": 33,
+      "community": 241,
       "norm_label": "createsupabaseadminclient()"
     },
     {
@@ -7348,7 +7398,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "supabase_server",
-      "community": 33,
+      "community": 241,
       "norm_label": "server.ts"
     },
     {
@@ -7368,7 +7418,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_utils",
-      "community": 366,
+      "community": 105,
       "norm_label": "utils.ts"
     },
     {
@@ -7498,7 +7548,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "lib_workout_tracking_getlocaltrainingdate",
-      "community": 360,
+      "community": 38,
       "norm_label": "getlocaltrainingdate()"
     },
     {
@@ -7715,7 +7765,7 @@
       "label": "DraftItem",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L60",
+      "source_location": "L68",
       "_origin": "ast",
       "id": "registro_registroclient_draftitem",
       "community": 105,
@@ -7725,7 +7775,7 @@
       "label": "RegistroClient()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L67",
+      "source_location": "L75",
       "_origin": "ast",
       "id": "registro_registroclient_registroclient",
       "community": 105,
@@ -7735,7 +7785,7 @@
       "label": "MealCard()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L440",
+      "source_location": "L490",
       "_origin": "ast",
       "id": "registro_registroclient_mealcard",
       "community": 105,
@@ -7745,7 +7795,7 @@
       "label": "MacroChip()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L698",
+      "source_location": "L823",
       "_origin": "ast",
       "id": "registro_registroclient_macrochip",
       "community": 105,
@@ -7755,7 +7805,7 @@
       "label": "FoodPickerRow()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L709",
+      "source_location": "L834",
       "_origin": "ast",
       "id": "registro_registroclient_foodpickerrow",
       "community": 105,
@@ -7765,7 +7815,7 @@
       "label": "previewItem()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L859",
+      "source_location": "L984",
       "_origin": "ast",
       "id": "registro_registroclient_previewitem",
       "community": 105,
@@ -7775,7 +7825,7 @@
       "label": "roundQuantity()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L873",
+      "source_location": "L998",
       "_origin": "ast",
       "id": "registro_registroclient_roundquantity",
       "community": 105,
@@ -7785,7 +7835,7 @@
       "label": "calculateStreak()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L877",
+      "source_location": "L1002",
       "_origin": "ast",
       "id": "registro_registroclient_calculatestreak",
       "community": 105,
@@ -7795,7 +7845,7 @@
       "label": "formatDateOnly()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L891",
+      "source_location": "L1016",
       "_origin": "ast",
       "id": "registro_registroclient_formatdateonly",
       "community": 105,
@@ -7805,7 +7855,7 @@
       "label": "NutritionTipCard()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L899",
+      "source_location": "L1024",
       "_origin": "ast",
       "id": "registro_registroclient_nutritiontipcard",
       "community": 105,
@@ -7815,7 +7865,7 @@
       "label": "getNutritionTip()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L928",
+      "source_location": "L1053",
       "_origin": "ast",
       "id": "registro_registroclient_getnutritiontip",
       "community": 105,
@@ -7825,7 +7875,7 @@
       "label": "SummaryStat()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L956",
+      "source_location": "L1081",
       "_origin": "ast",
       "id": "registro_registroclient_summarystat",
       "community": 105,
@@ -7835,7 +7885,7 @@
       "label": "TargetBar()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L965",
+      "source_location": "L1090",
       "_origin": "ast",
       "id": "registro_registroclient_targetbar",
       "community": 105,
@@ -7865,7 +7915,7 @@
       "label": "updateMealAction()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/actions.ts",
-      "source_location": "L31",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "registro_actions_updatemealaction",
       "community": 360,
@@ -7875,7 +7925,7 @@
       "label": "deleteMealAction()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/actions.ts",
-      "source_location": "L45",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "registro_actions_deletemealaction",
       "community": 360,
@@ -7885,7 +7935,7 @@
       "label": "addMealLogItemAction()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/actions.ts",
-      "source_location": "L51",
+      "source_location": "L52",
       "_origin": "ast",
       "id": "registro_actions_addmeallogitemaction",
       "community": 360,
@@ -7895,7 +7945,7 @@
       "label": "updateMealLogItemAction()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/actions.ts",
-      "source_location": "L73",
+      "source_location": "L74",
       "_origin": "ast",
       "id": "registro_actions_updatemeallogitemaction",
       "community": 360,
@@ -7905,7 +7955,7 @@
       "label": "deleteMealLogItemAction()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/actions.ts",
-      "source_location": "L93",
+      "source_location": "L94",
       "_origin": "ast",
       "id": "registro_actions_deletemeallogitemaction",
       "community": 360,
@@ -7938,14 +7988,14 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_page",
-      "community": 387,
+      "community": 32,
       "norm_label": "page.tsx"
     },
     {
       "label": "Home()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L32",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "app_page_home",
       "community": 38,
@@ -7955,40 +8005,40 @@
       "label": "CardLabel()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L204",
+      "source_location": "L205",
       "_origin": "ast",
       "id": "app_page_cardlabel",
-      "community": 387,
+      "community": 32,
       "norm_label": "cardlabel()"
     },
     {
       "label": "NutricionCard()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L221",
+      "source_location": "L222",
       "_origin": "ast",
       "id": "app_page_nutricioncard",
-      "community": 387,
+      "community": 32,
       "norm_label": "nutricioncard()"
     },
     {
       "label": "CargaMuscularCard()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L293",
+      "source_location": "L294",
       "_origin": "ast",
       "id": "app_page_cargamuscularcard",
-      "community": 387,
+      "community": 32,
       "norm_label": "cargamuscularcard()"
     },
     {
       "label": "ComidasHoyCard()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L319",
+      "source_location": "L320",
       "_origin": "ast",
       "id": "app_page_comidashoycard",
-      "community": 387,
+      "community": 32,
       "norm_label": "comidashoycard()"
     },
     {
@@ -8078,7 +8128,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "rutinas_weekdayslist",
-      "community": 29,
+      "community": 105,
       "norm_label": "weekdayslist.tsx"
     },
     {
@@ -8088,7 +8138,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "rutinas_weekdayslist_weekday",
-      "community": 29,
+      "community": 105,
       "norm_label": "weekday"
     },
     {
@@ -8098,7 +8148,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "rutinas_weekdayslist_weekdayslistprops",
-      "community": 29,
+      "community": 105,
       "norm_label": "weekdayslistprops"
     },
     {
@@ -8108,7 +8158,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "rutinas_weekdayslist_weekdayslist",
-      "community": 29,
+      "community": 32,
       "norm_label": "weekdayslist()"
     },
     {
@@ -8118,7 +8168,7 @@
       "source_location": "L102",
       "_origin": "ast",
       "id": "rutinas_weekdayslist_daymarker",
-      "community": 29,
+      "community": 105,
       "norm_label": "daymarker()"
     },
     {
@@ -8128,7 +8178,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "dia_dayworkoutclient",
-      "community": 390,
+      "community": 105,
       "norm_label": "dayworkoutclient.tsx"
     },
     {
@@ -8138,7 +8188,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "dia_dayworkoutclient_splitseriesvalues",
-      "community": 390,
+      "community": 105,
       "norm_label": "splitseriesvalues()"
     },
     {
@@ -8148,7 +8198,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "dia_dayworkoutclient_joinseriesvalues",
-      "community": 390,
+      "community": 105,
       "norm_label": "joinseriesvalues()"
     },
     {
@@ -8158,7 +8208,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "dia_dayworkoutclient_isatorabovemaxreps",
-      "community": 390,
+      "community": 105,
       "norm_label": "isatorabovemaxreps()"
     },
     {
@@ -8168,7 +8218,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "dia_dayworkoutclient_dayworkoutrow",
-      "community": 390,
+      "community": 105,
       "norm_label": "dayworkoutrow"
     },
     {
@@ -8178,7 +8228,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "dia_dayworkoutclient_dayworkoutclientprops",
-      "community": 390,
+      "community": 105,
       "norm_label": "dayworkoutclientprops"
     },
     {
@@ -8188,7 +8238,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "dia_dayworkoutclient_draftstate",
-      "community": 390,
+      "community": 105,
       "norm_label": "draftstate"
     },
     {
@@ -8198,7 +8248,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "dia_dayworkoutclient_rowsavestate",
-      "community": 390,
+      "community": 105,
       "norm_label": "rowsavestate"
     },
     {
@@ -8208,7 +8258,7 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "dia_dayworkoutclient_dayworkoutclient",
-      "community": 390,
+      "community": 38,
       "norm_label": "dayworkoutclient()"
     },
     {
@@ -8218,7 +8268,7 @@
       "source_location": "L507",
       "_origin": "ast",
       "id": "dia_dayworkoutclient_summarymetric",
-      "community": 390,
+      "community": 105,
       "norm_label": "summarymetric()"
     },
     {
@@ -8228,7 +8278,7 @@
       "source_location": "L540",
       "_origin": "ast",
       "id": "dia_dayworkoutclient_workoutstatustoggle",
-      "community": 390,
+      "community": 105,
       "norm_label": "workoutstatustoggle()"
     },
     {
@@ -8238,7 +8288,7 @@
       "source_location": "L574",
       "_origin": "ast",
       "id": "dia_dayworkoutclient_rowsaveindicator",
-      "community": 390,
+      "community": 105,
       "norm_label": "rowsaveindicator()"
     },
     {
@@ -8248,7 +8298,7 @@
       "source_location": "L601",
       "_origin": "ast",
       "id": "dia_dayworkoutclient_seriesinputsgroup",
-      "community": 390,
+      "community": 105,
       "norm_label": "seriesinputsgroup()"
     },
     {
@@ -8258,7 +8308,7 @@
       "source_location": "L654",
       "_origin": "ast",
       "id": "dia_dayworkoutclient_seriescell",
-      "community": 390,
+      "community": 105,
       "norm_label": "seriescell()"
     },
     {
@@ -8348,7 +8398,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_rutinas_page_tsx_rutinas_page",
-      "community": 29,
+      "community": 32,
       "norm_label": "page.tsx"
     },
     {
@@ -8358,7 +8408,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "rutinas_page_rutinaspage",
-      "community": 29,
+      "community": 32,
       "norm_label": "rutinaspage()"
     },
     {
@@ -8368,7 +8418,7 @@
       "source_location": "L196",
       "_origin": "ast",
       "id": "rutinas_page_minicard",
-      "community": 29,
+      "community": 32,
       "norm_label": "minicard()"
     },
     {
@@ -8552,26 +8602,6 @@
       "norm_label": "eslintconfig"
     },
     {
-      "label": "get-magic-link.js",
-      "file_type": "code",
-      "source_file": "get-magic-link.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "get_magic_link",
-      "community": 324,
-      "norm_label": "get-magic-link.js"
-    },
-    {
-      "label": "inject-session.js",
-      "file_type": "code",
-      "source_file": "inject-session.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "inject_session",
-      "community": 328,
-      "norm_label": "inject-session.js"
-    },
-    {
       "label": "next.config.ts",
       "file_type": "code",
       "source_file": "next.config.ts",
@@ -8682,10 +8712,40 @@
       "norm_label": "lint"
     },
     {
-      "label": "dependencies",
+      "label": "check",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "package_scripts_check",
+      "community": 35,
+      "norm_label": "check"
+    },
+    {
+      "label": "validate:mobile",
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L11",
+      "_origin": "ast",
+      "id": "package_scripts_validate_mobile",
+      "community": 35,
+      "norm_label": "validate:mobile"
+    },
+    {
+      "label": "check:ui",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "package_scripts_check_ui",
+      "community": 35,
+      "norm_label": "check:ui"
+    },
+    {
+      "label": "dependencies",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "package_dependencies",
       "community": 35,
@@ -8695,7 +8755,7 @@
       "label": "@radix-ui/react-dialog",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L12",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "package_dependencies_radix_ui_react_dialog",
       "community": 35,
@@ -8705,7 +8765,7 @@
       "label": "@radix-ui/react-dropdown-menu",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L13",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "package_dependencies_radix_ui_react_dropdown_menu",
       "community": 35,
@@ -8715,7 +8775,7 @@
       "label": "@radix-ui/react-select",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L14",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "package_dependencies_radix_ui_react_select",
       "community": 35,
@@ -8725,7 +8785,7 @@
       "label": "@radix-ui/react-separator",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L15",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "package_dependencies_radix_ui_react_separator",
       "community": 35,
@@ -8735,7 +8795,7 @@
       "label": "@radix-ui/react-slot",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L16",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "package_dependencies_radix_ui_react_slot",
       "community": 35,
@@ -8745,7 +8805,7 @@
       "label": "@radix-ui/react-tooltip",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L17",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "package_dependencies_radix_ui_react_tooltip",
       "community": 35,
@@ -8755,7 +8815,7 @@
       "label": "@supabase/ssr",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L18",
+      "source_location": "L21",
       "_origin": "ast",
       "id": "package_dependencies_supabase_ssr",
       "community": 35,
@@ -8765,7 +8825,7 @@
       "label": "@supabase/supabase-js",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L19",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "package_dependencies_supabase_supabase_js",
       "community": 35,
@@ -8775,7 +8835,7 @@
       "label": "class-variance-authority",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L20",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "package_dependencies_class_variance_authority",
       "community": 35,
@@ -8785,7 +8845,7 @@
       "label": "clsx",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L21",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "package_dependencies_clsx",
       "community": 35,
@@ -8795,7 +8855,7 @@
       "label": "framer-motion",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L22",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "package_dependencies_framer_motion",
       "community": 35,
@@ -8805,7 +8865,7 @@
       "label": "lucide-react",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L23",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "package_dependencies_lucide_react",
       "community": 35,
@@ -8815,7 +8875,7 @@
       "label": "next",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L24",
+      "source_location": "L27",
       "_origin": "ast",
       "id": "package_dependencies_next",
       "community": 35,
@@ -8825,7 +8885,7 @@
       "label": "radix-ui",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L25",
+      "source_location": "L28",
       "_origin": "ast",
       "id": "package_dependencies_radix_ui",
       "community": 35,
@@ -8835,7 +8895,7 @@
       "label": "react",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L26",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "package_dependencies_react",
       "community": 35,
@@ -8845,7 +8905,7 @@
       "label": "react-dom",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L27",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "package_dependencies_react_dom",
       "community": 35,
@@ -8855,7 +8915,7 @@
       "label": "sonner",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L28",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "package_dependencies_sonner",
       "community": 35,
@@ -8865,7 +8925,7 @@
       "label": "tailwind-merge",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L29",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "package_dependencies_tailwind_merge",
       "community": 35,
@@ -8875,7 +8935,7 @@
       "label": "vaul",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L30",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "package_dependencies_vaul",
       "community": 35,
@@ -8885,7 +8945,7 @@
       "label": "zod",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L31",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "package_dependencies_zod",
       "community": 35,
@@ -8895,7 +8955,7 @@
       "label": "devDependencies",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L33",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "package_devdependencies",
       "community": 35,
@@ -8905,7 +8965,7 @@
       "label": "@tailwindcss/postcss",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L34",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "package_devdependencies_tailwindcss_postcss",
       "community": 35,
@@ -8915,7 +8975,7 @@
       "label": "@types/node",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L35",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "package_devdependencies_types_node",
       "community": 35,
@@ -8925,7 +8985,7 @@
       "label": "@types/react",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L36",
+      "source_location": "L39",
       "_origin": "ast",
       "id": "package_devdependencies_types_react",
       "community": 35,
@@ -8935,7 +8995,7 @@
       "label": "@types/react-dom",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L37",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "package_devdependencies_types_react_dom",
       "community": 35,
@@ -8945,7 +9005,7 @@
       "label": "eslint",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L38",
+      "source_location": "L41",
       "_origin": "ast",
       "id": "package_devdependencies_eslint",
       "community": 35,
@@ -8955,7 +9015,7 @@
       "label": "eslint-config-next",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L39",
+      "source_location": "L42",
       "_origin": "ast",
       "id": "package_devdependencies_eslint_config_next",
       "community": 35,
@@ -8965,7 +9025,7 @@
       "label": "playwright",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L40",
+      "source_location": "L43",
       "_origin": "ast",
       "id": "package_devdependencies_playwright",
       "community": 35,
@@ -8975,7 +9035,7 @@
       "label": "tailwindcss",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L41",
+      "source_location": "L44",
       "_origin": "ast",
       "id": "package_devdependencies_tailwindcss",
       "community": 35,
@@ -8985,7 +9045,7 @@
       "label": "typescript",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L42",
+      "source_location": "L45",
       "_origin": "ast",
       "id": "package_devdependencies_typescript",
       "community": 35,
@@ -9062,84 +9122,104 @@
       "norm_label": "static_assets"
     },
     {
-      "label": "take-screenshots.js",
+      "label": "validate-mobile.mjs",
       "file_type": "code",
-      "source_file": "scripts/take-screenshots.js",
+      "source_file": "scripts/validate-mobile.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "scripts_take_screenshots",
-      "community": 287,
-      "norm_label": "take-screenshots.js"
+      "id": "scripts_validate_mobile",
+      "community": 216,
+      "norm_label": "validate-mobile.mjs"
     },
     {
-      "label": "{ chromium }",
+      "label": "DEFAULT_VIEWPORT",
       "file_type": "code",
-      "source_file": "scripts/take-screenshots.js",
-      "source_location": "L1",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L5",
       "_origin": "ast",
-      "id": "scripts_take_screenshots_chromium",
-      "community": 287,
-      "norm_label": "{ chromium }"
+      "id": "scripts_validate_mobile_default_viewport",
+      "community": 216,
+      "norm_label": "default_viewport"
     },
     {
-      "label": "path",
+      "label": "ROUTES",
       "file_type": "code",
-      "source_file": "scripts/take-screenshots.js",
-      "source_location": "L2",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L6",
       "_origin": "ast",
-      "id": "scripts_take_screenshots_path",
-      "community": 287,
-      "norm_label": "path"
-    },
-    {
-      "label": "fs",
-      "file_type": "code",
-      "source_file": "scripts/take-screenshots.js",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "scripts_take_screenshots_fs",
-      "community": 287,
-      "norm_label": "fs"
-    },
-    {
-      "label": "OUT_DIR",
-      "file_type": "code",
-      "source_file": "scripts/take-screenshots.js",
-      "source_location": "L8",
-      "_origin": "ast",
-      "id": "scripts_take_screenshots_out_dir",
-      "community": 287,
-      "norm_label": "out_dir"
+      "id": "scripts_validate_mobile_routes",
+      "community": 216,
+      "norm_label": "routes"
     },
     {
       "label": "main()",
       "file_type": "code",
-      "source_file": "scripts/take-screenshots.js",
-      "source_location": "L10",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L8",
       "_origin": "ast",
-      "id": "scripts_take_screenshots_main",
-      "community": 287,
+      "id": "scripts_validate_mobile_main",
+      "community": 216,
       "norm_label": "main()"
     },
     {
-      "label": "test_auth.mjs",
+      "label": "readLocalEnv()",
       "file_type": "code",
-      "source_file": "test_auth.mjs",
-      "source_location": "L1",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L43",
       "_origin": "ast",
-      "id": "test_auth",
-      "community": 295,
-      "norm_label": "test_auth.mjs"
+      "id": "scripts_validate_mobile_readlocalenv",
+      "community": 216,
+      "norm_label": "readlocalenv()"
     },
     {
-      "label": "{ chromium }",
+      "label": "ensureServer()",
       "file_type": "code",
-      "source_file": "test_auth.mjs",
-      "source_location": "L1",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L68",
       "_origin": "ast",
-      "id": "test_auth_chromium",
-      "community": 295,
-      "norm_label": "{ chromium }"
+      "id": "scripts_validate_mobile_ensureserver",
+      "community": 216,
+      "norm_label": "ensureserver()"
+    },
+    {
+      "label": "authenticate()",
+      "file_type": "code",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L79",
+      "_origin": "ast",
+      "id": "scripts_validate_mobile_authenticate",
+      "community": 216,
+      "norm_label": "authenticate()"
+    },
+    {
+      "label": "generateOtp()",
+      "file_type": "code",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L102",
+      "_origin": "ast",
+      "id": "scripts_validate_mobile_generateotp",
+      "community": 216,
+      "norm_label": "generateotp()"
+    },
+    {
+      "label": "validateRoutes()",
+      "file_type": "code",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L122",
+      "_origin": "ast",
+      "id": "scripts_validate_mobile_validateroutes",
+      "community": 216,
+      "norm_label": "validateroutes()"
+    },
+    {
+      "label": "validateRoute()",
+      "file_type": "code",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L145",
+      "_origin": "ast",
+      "id": "scripts_validate_mobile_validateroute",
+      "community": 216,
+      "norm_label": "validateroute()"
     },
     {
       "label": "check-batch.py",
@@ -16205,7 +16285,7 @@
       "label": "Admin account",
       "file_type": "document",
       "source_file": "AGENTS.md",
-      "source_location": "L111",
+      "source_location": "L113",
       "_origin": "ast",
       "id": "agents_admin_account",
       "community": 8,
@@ -16688,7 +16768,7 @@
       "source_location": "L288",
       "_origin": "ast",
       "id": "plan_grupo_g6_ejercicios_admin",
-      "community": 288,
+      "community": 258,
       "norm_label": "grupo \"g6\" - ejercicios admin"
     },
     {
@@ -16698,7 +16778,7 @@
       "source_location": "L292",
       "_origin": "ast",
       "id": "plan_subgrupo_g6_1_acceso_a_datos_y_validacion",
-      "community": 288,
+      "community": 258,
       "norm_label": "subgrupo \"g6.1\" - acceso a datos y validacion"
     },
     {
@@ -16708,7 +16788,7 @@
       "source_location": "L300",
       "_origin": "ast",
       "id": "plan_subgrupo_g6_2_admin_ui",
-      "community": 288,
+      "community": 258,
       "norm_label": "subgrupo \"g6.2\" - admin ui"
     },
     {
@@ -16718,7 +16798,7 @@
       "source_location": "L308",
       "_origin": "ast",
       "id": "plan_subgrupo_g6_3_integracion_y_permisos",
-      "community": 288,
+      "community": 258,
       "norm_label": "subgrupo \"g6.3\" - integracion y permisos"
     },
     {
@@ -17685,7 +17765,7 @@
       "label": "`meal_log_items`",
       "file_type": "document",
       "source_file": "docs/DATABASE.md",
-      "source_location": "L677",
+      "source_location": "L678",
       "_origin": "ast",
       "id": "docs_database_meal_log_items",
       "community": 377,
@@ -17695,9 +17775,9 @@
       "label": "Indices",
       "file_type": "document",
       "source_file": "docs/DATABASE.md",
-      "source_location": "L688",
+      "source_location": "L689",
       "_origin": "ast",
-      "id": "docs_database_indices_688",
+      "id": "docs_database_indices_689",
       "community": 377,
       "norm_label": "indices"
     },
@@ -17705,7 +17785,7 @@
       "label": "Recetas (G26-27)",
       "file_type": "document",
       "source_file": "docs/DATABASE.md",
-      "source_location": "L693",
+      "source_location": "L694",
       "_origin": "ast",
       "id": "docs_database_recetas_g26_27",
       "community": 386,
@@ -17715,7 +17795,7 @@
       "label": "`recipes`",
       "file_type": "document",
       "source_file": "docs/DATABASE.md",
-      "source_location": "L695",
+      "source_location": "L696",
       "_origin": "ast",
       "id": "docs_database_recipes",
       "community": 386,
@@ -17725,7 +17805,7 @@
       "label": "`recipe_items`",
       "file_type": "document",
       "source_file": "docs/DATABASE.md",
-      "source_location": "L707",
+      "source_location": "L708",
       "_origin": "ast",
       "id": "docs_database_recipe_items",
       "community": 386,
@@ -17735,9 +17815,9 @@
       "label": "Indices",
       "file_type": "document",
       "source_file": "docs/DATABASE.md",
-      "source_location": "L716",
+      "source_location": "L717",
       "_origin": "ast",
-      "id": "docs_database_indices_716",
+      "id": "docs_database_indices_717",
       "community": 386,
       "norm_label": "indices"
     },
@@ -20225,7 +20305,7 @@
       "label": "Skill/subagent validation",
       "file_type": "document",
       "source_file": "docs/codex/TEST_MATRIX.md",
-      "source_location": "L15",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "codex_test_matrix_skill_subagent_validation",
       "community": 86,
@@ -30038,7 +30118,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_definir_patron_visual_del_panel_lateral_y_area_de_contenido_ordenar_la_composicion_principal_del_producto",
-      "community": 201,
+      "community": 12,
       "norm_label": "definir patron visual del panel lateral y area de contenido: ordenar la composicion principal del producto"
     },
     {
@@ -30048,7 +30128,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_objetivo",
-      "community": 201,
+      "community": 12,
       "norm_label": "objetivo"
     },
     {
@@ -30058,7 +30138,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_estado",
-      "community": 201,
+      "community": 12,
       "norm_label": "estado"
     },
     {
@@ -30068,7 +30148,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_archivos",
-      "community": 201,
+      "community": 12,
       "norm_label": "archivos"
     },
     {
@@ -30078,7 +30158,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_pasos",
-      "community": 201,
+      "community": 12,
       "norm_label": "pasos"
     },
     {
@@ -30088,7 +30168,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_criterios_de_aceptacion",
-      "community": 201,
+      "community": 12,
       "norm_label": "criterios de aceptacion"
     },
     {
@@ -30098,7 +30178,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_resolucion",
-      "community": 201,
+      "community": 12,
       "norm_label": "resolucion"
     },
     {
@@ -30108,7 +30188,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_validacion",
-      "community": 201,
+      "community": 12,
       "norm_label": "validacion"
     },
     {
@@ -30118,7 +30198,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_estado_final",
-      "community": 201,
+      "community": 12,
       "norm_label": "estado final"
     },
     {
@@ -30138,7 +30218,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_08_definir_estilo_base_de_tabla_de_rutina_y_modal_de_ejercicio_definir_estilo_base_de_tabla_de_rutina_y_modal_de_ejercicio_fijar_dos_patrones_centrales_de_lectura",
-      "community": 207,
+      "community": 3,
       "norm_label": "definir estilo base de tabla de rutina y modal de ejercicio: fijar dos patrones centrales de lectura"
     },
     {
@@ -30148,7 +30228,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_08_definir_estilo_base_de_tabla_de_rutina_y_modal_de_ejercicio_objetivo",
-      "community": 207,
+      "community": 3,
       "norm_label": "objetivo"
     },
     {
@@ -30158,7 +30238,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_08_definir_estilo_base_de_tabla_de_rutina_y_modal_de_ejercicio_estado",
-      "community": 207,
+      "community": 3,
       "norm_label": "estado"
     },
     {
@@ -30168,7 +30248,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_08_definir_estilo_base_de_tabla_de_rutina_y_modal_de_ejercicio_archivos",
-      "community": 207,
+      "community": 3,
       "norm_label": "archivos"
     },
     {
@@ -30178,7 +30258,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_08_definir_estilo_base_de_tabla_de_rutina_y_modal_de_ejercicio_pasos",
-      "community": 207,
+      "community": 3,
       "norm_label": "pasos"
     },
     {
@@ -30188,7 +30268,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_08_definir_estilo_base_de_tabla_de_rutina_y_modal_de_ejercicio_criterios_de_aceptacion",
-      "community": 207,
+      "community": 3,
       "norm_label": "criterios de aceptacion"
     },
     {
@@ -30198,7 +30278,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_08_definir_estilo_base_de_tabla_de_rutina_y_modal_de_ejercicio_resolucion",
-      "community": 207,
+      "community": 3,
       "norm_label": "resolucion"
     },
     {
@@ -30208,7 +30288,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_08_definir_estilo_base_de_tabla_de_rutina_y_modal_de_ejercicio_validacion",
-      "community": 207,
+      "community": 3,
       "norm_label": "validacion"
     },
     {
@@ -30218,7 +30298,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_08_definir_estilo_base_de_tabla_de_rutina_y_modal_de_ejercicio_estado_final",
-      "community": 207,
+      "community": 3,
       "norm_label": "estado final"
     },
     {
@@ -31038,7 +31118,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_17_implementar_shell_navegable_definitivo_del_frontend_base_implementar_shell_navegable_definitivo_del_frontend_base_llevar_la_nueva_experiencia_al_layout_real",
-      "community": 248,
+      "community": 201,
       "norm_label": "implementar shell navegable definitivo del frontend base: llevar la nueva experiencia al layout real"
     },
     {
@@ -31048,7 +31128,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_17_implementar_shell_navegable_definitivo_del_frontend_base_objetivo",
-      "community": 248,
+      "community": 201,
       "norm_label": "objetivo"
     },
     {
@@ -31058,7 +31138,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_17_implementar_shell_navegable_definitivo_del_frontend_base_estado",
-      "community": 248,
+      "community": 201,
       "norm_label": "estado"
     },
     {
@@ -31068,7 +31148,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_17_implementar_shell_navegable_definitivo_del_frontend_base_archivos",
-      "community": 248,
+      "community": 201,
       "norm_label": "archivos"
     },
     {
@@ -31078,7 +31158,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_17_implementar_shell_navegable_definitivo_del_frontend_base_pasos",
-      "community": 248,
+      "community": 201,
       "norm_label": "pasos"
     },
     {
@@ -31088,7 +31168,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_17_implementar_shell_navegable_definitivo_del_frontend_base_criterios_de_aceptacion",
-      "community": 248,
+      "community": 201,
       "norm_label": "criterios de aceptacion"
     },
     {
@@ -31098,7 +31178,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_17_implementar_shell_navegable_definitivo_del_frontend_base_resolucion",
-      "community": 248,
+      "community": 201,
       "norm_label": "resolucion"
     },
     {
@@ -31108,7 +31188,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_17_implementar_shell_navegable_definitivo_del_frontend_base_validacion",
-      "community": 248,
+      "community": 201,
       "norm_label": "validacion"
     },
     {
@@ -31118,7 +31198,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_17_implementar_shell_navegable_definitivo_del_frontend_base_estado_final",
-      "community": 248,
+      "community": 201,
       "norm_label": "estado final"
     },
     {
@@ -31238,7 +31318,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_validar_navegacion_responsive_y_smoke_tecnico_del_frontend_base_asegurar_que_la_nueva_base_frontend_funcione_en_uso_real",
-      "community": 201,
+      "community": 248,
       "norm_label": "validar navegacion, responsive y smoke tecnico del frontend base: asegurar que la nueva base frontend funcione en uso real"
     },
     {
@@ -31248,7 +31328,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_objetivo",
-      "community": 201,
+      "community": 248,
       "norm_label": "objetivo"
     },
     {
@@ -31258,7 +31338,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_estado",
-      "community": 201,
+      "community": 248,
       "norm_label": "estado"
     },
     {
@@ -31268,7 +31348,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_archivos",
-      "community": 201,
+      "community": 248,
       "norm_label": "archivos"
     },
     {
@@ -31278,7 +31358,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_pasos",
-      "community": 201,
+      "community": 248,
       "norm_label": "pasos"
     },
     {
@@ -31288,7 +31368,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_criterios_de_aceptacion",
-      "community": 201,
+      "community": 248,
       "norm_label": "criterios de aceptacion"
     },
     {
@@ -31298,7 +31378,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_resolucion",
-      "community": 201,
+      "community": 248,
       "norm_label": "resolucion"
     },
     {
@@ -31308,7 +31388,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_validacion",
-      "community": 201,
+      "community": 248,
       "norm_label": "validacion"
     },
     {
@@ -31318,7 +31398,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_estado_final",
-      "community": 201,
+      "community": 248,
       "norm_label": "estado final"
     },
     {
@@ -31378,7 +31458,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g5_auth_and_roles_01_implementar_autenticacion_base_de_usuario",
-      "community": 209,
+      "community": 232,
       "norm_label": "01-implementar-autenticacion-base-de-usuario.md"
     },
     {
@@ -31388,7 +31468,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g5_auth_and_roles_01_implementar_autenticacion_base_de_usuario_implementar_autenticacion_base_de_usuario_habilitar_supabase_auth_server_side_para_el_mvp",
-      "community": 209,
+      "community": 287,
       "norm_label": "implementar autenticacion base de usuario: habilitar supabase auth server-side para el mvp"
     },
     {
@@ -31398,7 +31478,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "g5_auth_and_roles_01_implementar_autenticacion_base_de_usuario_objetivo",
-      "community": 209,
+      "community": 287,
       "norm_label": "objetivo"
     },
     {
@@ -31408,7 +31488,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "g5_auth_and_roles_01_implementar_autenticacion_base_de_usuario_estado",
-      "community": 209,
+      "community": 287,
       "norm_label": "estado"
     },
     {
@@ -31418,7 +31498,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "g5_auth_and_roles_01_implementar_autenticacion_base_de_usuario_archivos",
-      "community": 209,
+      "community": 287,
       "norm_label": "archivos"
     },
     {
@@ -31428,7 +31508,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "g5_auth_and_roles_01_implementar_autenticacion_base_de_usuario_pasos",
-      "community": 209,
+      "community": 287,
       "norm_label": "pasos"
     },
     {
@@ -31438,7 +31518,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "g5_auth_and_roles_01_implementar_autenticacion_base_de_usuario_criterios_de_aceptacion",
-      "community": 209,
+      "community": 287,
       "norm_label": "criterios de aceptacion"
     },
     {
@@ -31448,7 +31528,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "g5_auth_and_roles_01_implementar_autenticacion_base_de_usuario_resolucion",
-      "community": 209,
+      "community": 287,
       "norm_label": "resolucion"
     },
     {
@@ -31458,7 +31538,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "g5_auth_and_roles_01_implementar_autenticacion_base_de_usuario_validacion",
-      "community": 209,
+      "community": 287,
       "norm_label": "validacion"
     },
     {
@@ -31468,7 +31548,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "g5_auth_and_roles_01_implementar_autenticacion_base_de_usuario_estado_final",
-      "community": 209,
+      "community": 287,
       "norm_label": "estado final"
     },
     {
@@ -31478,7 +31558,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g5_auth_and_roles_02_integrar_type_rol_al_flujo_de_acceso_y_sesion",
-      "community": 209,
+      "community": 232,
       "norm_label": "02-integrar-type-rol-al-flujo-de-acceso-y-sesion.md"
     },
     {
@@ -31688,7 +31768,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_proteger_admin_dashboard_para_rol_admin_restringir_la_entrada_a_la_zona_administrativa",
-      "community": 76,
+      "community": 295,
       "norm_label": "proteger admin dashboard para rol admin: restringir la entrada a la zona administrativa"
     },
     {
@@ -31698,7 +31778,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_objetivo",
-      "community": 76,
+      "community": 295,
       "norm_label": "objetivo"
     },
     {
@@ -31708,7 +31788,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_estado",
-      "community": 76,
+      "community": 295,
       "norm_label": "estado"
     },
     {
@@ -31718,7 +31798,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_archivos",
-      "community": 76,
+      "community": 295,
       "norm_label": "archivos"
     },
     {
@@ -31728,7 +31808,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_pasos",
-      "community": 76,
+      "community": 295,
       "norm_label": "pasos"
     },
     {
@@ -31738,7 +31818,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_criterios_de_aceptacion",
-      "community": 76,
+      "community": 295,
       "norm_label": "criterios de aceptacion"
     },
     {
@@ -31748,7 +31828,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_resolucion",
-      "community": 76,
+      "community": 295,
       "norm_label": "resolucion"
     },
     {
@@ -31758,7 +31838,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_validacion",
-      "community": 76,
+      "community": 295,
       "norm_label": "validacion"
     },
     {
@@ -31768,7 +31848,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_estado_final",
-      "community": 76,
+      "community": 295,
       "norm_label": "estado final"
     },
     {
@@ -31778,7 +31858,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g5_auth_and_roles_05_proteger_acciones_de_creacion_y_edicion_administrativas",
-      "community": 235,
+      "community": 76,
       "norm_label": "05-proteger-acciones-de-creacion-y-edicion-administrativas.md"
     },
     {
@@ -33428,7 +33508,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion",
-      "community": 235,
+      "community": 76,
       "norm_label": "02-implementar-validaciones-de-alta-y-edicion.md"
     },
     {
@@ -33438,7 +33518,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_implementar_validaciones_de_alta_y_edicion_asegurar_consistencia_minima_de_los_ejercicios",
-      "community": 235,
+      "community": 324,
       "norm_label": "implementar validaciones de alta y edicion: asegurar consistencia minima de los ejercicios"
     },
     {
@@ -33448,7 +33528,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_objetivo",
-      "community": 235,
+      "community": 324,
       "norm_label": "objetivo"
     },
     {
@@ -33458,7 +33538,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_estado",
-      "community": 235,
+      "community": 324,
       "norm_label": "estado"
     },
     {
@@ -33468,7 +33548,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_archivos",
-      "community": 235,
+      "community": 324,
       "norm_label": "archivos"
     },
     {
@@ -33478,7 +33558,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_pasos",
-      "community": 235,
+      "community": 324,
       "norm_label": "pasos"
     },
     {
@@ -33488,7 +33568,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_criterios_de_aceptacion",
-      "community": 235,
+      "community": 324,
       "norm_label": "criterios de aceptacion"
     },
     {
@@ -33498,7 +33578,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_resolucion",
-      "community": 235,
+      "community": 324,
       "norm_label": "resolucion"
     },
     {
@@ -33508,7 +33588,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_validacion",
-      "community": 235,
+      "community": 324,
       "norm_label": "validacion"
     },
     {
@@ -33518,7 +33598,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_estado_final",
-      "community": 235,
+      "community": 324,
       "norm_label": "estado final"
     },
     {
@@ -41045,7 +41125,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 209,
       "norm_label": "acceso admin integrado en shell general",
       "id": "frontend_experience_acceso_admin_shell"
     },
@@ -41084,7 +41164,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 209,
+      "community": 232,
       "norm_label": "app/layout.tsx",
       "id": "app_layout_tsx"
     },
@@ -41110,7 +41190,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 209,
+      "community": 232,
       "norm_label": "supabase auth con @supabase/ssr (login, logout, middleware, magic link)",
       "id": "supabase_auth_ssr_implementation"
     },
@@ -41123,7 +41203,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 209,
+      "community": 232,
       "norm_label": "profiles.type_rol",
       "id": "profiles_type_rol"
     },
@@ -41136,7 +41216,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 209,
+      "community": 232,
       "norm_label": "contexto de auth con rol expuesto a layout, navegacion y guards",
       "id": "auth_context_rol"
     },
@@ -41178,7 +41258,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Base reutilizable de guards server-side para sostener proteccion de escritura administrativa en G6 y G7, sin depender de ocultar botones en la UI.",
-      "community": 235,
+      "community": 76,
       "norm_label": "requireuser / requireadmin server guards",
       "id": "g5_auth_and_roles_requireuser_requireadmin"
     },
@@ -42875,9 +42955,9 @@
       "source_file": "app/admin/alimentos/FoodAdminClient.tsx",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "alimentos_foodadminclient",
-      "target": "ui_loadingdots",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots"
     },
     {
       "relation": "imports",
@@ -42886,9 +42966,9 @@
       "source_file": "app/admin/alimentos/FoodAdminClient.tsx",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "alimentos_foodadminclient",
-      "target": "ui_loadingdots_loadingdots",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots_loadingdots"
     },
     {
       "relation": "imports_from",
@@ -44049,9 +44129,9 @@
       "source_file": "app/admin/ejercicios/ExerciseAdminClient.tsx",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ejercicios_exerciseadminclient",
-      "target": "ui_loadingdots",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots"
     },
     {
       "relation": "imports",
@@ -44060,9 +44140,9 @@
       "source_file": "app/admin/ejercicios/ExerciseAdminClient.tsx",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ejercicios_exerciseadminclient",
-      "target": "ui_loadingdots_loadingdots",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots_loadingdots"
     },
     {
       "relation": "imports_from",
@@ -44988,9 +45068,9 @@
       "source_file": "app/admin/page.tsx",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_page",
-      "target": "ui_motion",
-      "confidence_score": 1.0
+      "target": "ui_motion"
     },
     {
       "relation": "imports",
@@ -44999,9 +45079,9 @@
       "source_file": "app/admin/page.tsx",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_page",
-      "target": "ui_motion_fadeup",
-      "confidence_score": 1.0
+      "target": "ui_motion_fadeup"
     },
     {
       "relation": "imports",
@@ -45010,9 +45090,9 @@
       "source_file": "app/admin/page.tsx",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_page",
-      "target": "ui_motion_motiondiv",
-      "confidence_score": 1.0
+      "target": "ui_motion_motiondiv"
     },
     {
       "relation": "imports",
@@ -45021,9 +45101,9 @@
       "source_file": "app/admin/page.tsx",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_page",
-      "target": "ui_motion_motionsection",
-      "confidence_score": 1.0
+      "target": "ui_motion_motionsection"
     },
     {
       "relation": "imports",
@@ -45032,9 +45112,9 @@
       "source_file": "app/admin/page.tsx",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_page",
-      "target": "ui_motion_staggercontainer",
-      "confidence_score": 1.0
+      "target": "ui_motion_staggercontainer"
     },
     {
       "relation": "imports_from",
@@ -45655,9 +45735,9 @@
       "source_file": "app/admin/recetas/RecipeAdminClient.tsx",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "recetas_recipeadminclient",
-      "target": "ui_loadingdots",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots"
     },
     {
       "relation": "imports",
@@ -45666,9 +45746,9 @@
       "source_file": "app/admin/recetas/RecipeAdminClient.tsx",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "recetas_recipeadminclient",
-      "target": "ui_loadingdots_loadingdots",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots_loadingdots"
     },
     {
       "relation": "imports_from",
@@ -46848,9 +46928,9 @@
       "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "rutinas_routineadminclient",
-      "target": "ui_loadingdots",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots"
     },
     {
       "relation": "imports",
@@ -46859,9 +46939,9 @@
       "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "rutinas_routineadminclient",
-      "target": "ui_loadingdots_loadingdots",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots_loadingdots"
     },
     {
       "relation": "imports_from",
@@ -47632,9 +47712,9 @@
       "source_file": "app/alimentos/NutritionCatalogClient.tsx",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "alimentos_nutritioncatalogclient",
-      "target": "ui_motion_listitemhover",
-      "confidence_score": 1.0
+      "target": "ui_motion_listitemhover"
     },
     {
       "relation": "imports",
@@ -47654,9 +47734,9 @@
       "source_file": "app/alimentos/NutritionCatalogClient.tsx",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "alimentos_nutritioncatalogclient",
-      "target": "ui_motion_tapfeedback",
-      "confidence_score": 1.0
+      "target": "ui_motion_tapfeedback"
     },
     {
       "relation": "imports_from",
@@ -48596,9 +48676,9 @@
       "source_file": "app/auth/login/OtpLoginFlow.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "login_otploginflow",
-      "target": "ui_loadingdots",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots"
     },
     {
       "relation": "imports",
@@ -48607,9 +48687,9 @@
       "source_file": "app/auth/login/OtpLoginFlow.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "login_otploginflow",
-      "target": "ui_loadingdots_loadingdots",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots_loadingdots"
     },
     {
       "relation": "imports_from",
@@ -48618,9 +48698,9 @@
       "source_file": "app/auth/login/OtpLoginFlow.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "login_otploginflow",
-      "target": "ui_motion",
-      "confidence_score": 1.0
+      "target": "ui_motion"
     },
     {
       "relation": "imports",
@@ -48629,9 +48709,9 @@
       "source_file": "app/auth/login/OtpLoginFlow.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "login_otploginflow",
-      "target": "ui_motion_fadeup",
-      "confidence_score": 1.0
+      "target": "ui_motion_fadeup"
     },
     {
       "relation": "imports_from",
@@ -49199,9 +49279,9 @@
       "source_file": "app/catalogo/RoutineCatalogClient.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "catalogo_routinecatalogclient",
-      "target": "ui_motion_listitemhover",
-      "confidence_score": 1.0
+      "target": "ui_motion_listitemhover"
     },
     {
       "relation": "imports",
@@ -49221,9 +49301,9 @@
       "source_file": "app/catalogo/RoutineCatalogClient.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "catalogo_routinecatalogclient",
-      "target": "ui_motion_tapfeedback",
-      "confidence_score": 1.0
+      "target": "ui_motion_tapfeedback"
     },
     {
       "relation": "imports_from",
@@ -54848,9 +54928,9 @@
       "source_file": "app/configuracion/ConfiguracionClient.tsx",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "configuracion_configuracionclient",
-      "target": "ui_loadingdots",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots"
     },
     {
       "relation": "imports_from",
@@ -54859,9 +54939,9 @@
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "registro_registroclient",
-      "target": "ui_loadingdots",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots"
     },
     {
       "relation": "imports_from",
@@ -54870,9 +54950,9 @@
       "source_file": "app/components/ui/LoadingDots.tsx",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ui_loadingdots",
-      "target": "lib_utils",
-      "confidence_score": 1.0
+      "target": "lib_utils"
     },
     {
       "relation": "imports",
@@ -54881,9 +54961,9 @@
       "source_file": "app/components/ui/LoadingDots.tsx",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ui_loadingdots",
-      "target": "lib_utils_cn",
-      "confidence_score": 1.0
+      "target": "lib_utils_cn"
     },
     {
       "relation": "contains",
@@ -54891,9 +54971,9 @@
       "source_file": "app/components/ui/LoadingDots.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ui_loadingdots",
-      "target": "ui_loadingdots_loadingdots",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots_loadingdots"
     },
     {
       "relation": "contains",
@@ -54901,9 +54981,9 @@
       "source_file": "app/components/ui/LoadingDots.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ui_loadingdots",
-      "target": "ui_loadingdots_loadingdotsprops",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots_loadingdotsprops"
     },
     {
       "relation": "imports",
@@ -54912,9 +54992,9 @@
       "source_file": "app/configuracion/ConfiguracionClient.tsx",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "configuracion_configuracionclient",
-      "target": "ui_loadingdots_loadingdots",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots_loadingdots"
     },
     {
       "relation": "imports",
@@ -54923,9 +55003,9 @@
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "registro_registroclient",
-      "target": "ui_loadingdots_loadingdots",
-      "confidence_score": 1.0
+      "target": "ui_loadingdots_loadingdots"
     },
     {
       "relation": "calls",
@@ -56157,9 +56237,9 @@
       "source_file": "app/components/ui/motion.tsx",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ui_motion",
-      "target": "ui_motion_fadescale",
-      "confidence_score": 1.0
+      "target": "ui_motion_fadescale"
     },
     {
       "relation": "contains",
@@ -56177,9 +56257,9 @@
       "source_file": "app/components/ui/motion.tsx",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ui_motion",
-      "target": "ui_motion_listitemhover",
-      "confidence_score": 1.0
+      "target": "ui_motion_listitemhover"
     },
     {
       "relation": "contains",
@@ -56187,9 +56267,9 @@
       "source_file": "app/components/ui/motion.tsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ui_motion",
-      "target": "ui_motion_microtransition",
-      "confidence_score": 1.0
+      "target": "ui_motion_microtransition"
     },
     {
       "relation": "contains",
@@ -56217,9 +56297,9 @@
       "source_file": "app/components/ui/motion.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ui_motion",
-      "target": "ui_motion_premiumease",
-      "confidence_score": 1.0
+      "target": "ui_motion_premiumease"
     },
     {
       "relation": "contains",
@@ -56237,9 +56317,9 @@
       "source_file": "app/components/ui/motion.tsx",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ui_motion",
-      "target": "ui_motion_tapfeedback",
-      "confidence_score": 1.0
+      "target": "ui_motion_tapfeedback"
     },
     {
       "relation": "imports",
@@ -56314,9 +56394,9 @@
       "source_file": "app/recetas/RecipeCatalogClient.tsx",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "recetas_recipecatalogclient",
-      "target": "ui_motion_listitemhover",
-      "confidence_score": 1.0
+      "target": "ui_motion_listitemhover"
     },
     {
       "relation": "imports",
@@ -56325,9 +56405,9 @@
       "source_file": "app/recetas/RecipeCatalogClient.tsx",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "recetas_recipecatalogclient",
-      "target": "ui_motion_tapfeedback",
-      "confidence_score": 1.0
+      "target": "ui_motion_tapfeedback"
     },
     {
       "relation": "imports",
@@ -59468,6 +59548,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/meal-logs.ts",
+      "source_location": "L454",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_meal_logs",
+      "target": "lib_meal_logs_normalizemealtype"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/meal-logs.ts",
       "source_location": "L189",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -59516,6 +59606,39 @@
       "confidence_score": 1.0,
       "source": "lib_meal_logs",
       "target": "lib_nutrition_types_macros"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/meal-logs.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_meal_logs",
+      "target": "lib_nutrition_types_meal_type_images"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/meal-logs.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_meal_logs",
+      "target": "lib_nutrition_types_meal_types"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/meal-logs.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_meal_logs",
+      "target": "lib_nutrition_types_mealtype"
     },
     {
       "relation": "re_exports",
@@ -60132,6 +60255,17 @@
       "weight": 1.0,
       "source": "registro_page_registronutricionpage",
       "target": "lib_meal_logs_getdailykcalaverage"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/meal-logs.ts",
+      "source_location": "L431",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_meal_logs_mapmealgroup",
+      "target": "lib_meal_logs_normalizemealtype"
     },
     {
       "relation": "imports_from",
@@ -61058,6 +61192,46 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_nutrition_types",
+      "target": "lib_nutrition_types_meal_type_images"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_nutrition_types",
+      "target": "lib_nutrition_types_meal_type_labels"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_nutrition_types",
+      "target": "lib_nutrition_types_meal_types"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_nutrition_types",
+      "target": "lib_nutrition_types_mealtype"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/nutrition-types.ts",
       "source_location": "L103",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -61321,6 +61495,61 @@
       "confidence_score": 1.0,
       "source": "registro_registroclient",
       "target": "lib_nutrition_types_foodmeasure"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/nutricion/registro/RegistroClient.tsx",
+      "source_location": "L57",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "registro_registroclient",
+      "target": "lib_nutrition_types_meal_types"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/nutricion/registro/actions.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "registro_actions",
+      "target": "lib_nutrition_types_mealtype"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/nutricion/registro/RegistroClient.tsx",
+      "source_location": "L57",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "registro_registroclient",
+      "target": "lib_nutrition_types_mealtype"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/nutricion/registro/RegistroClient.tsx",
+      "source_location": "L57",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "registro_registroclient",
+      "target": "lib_nutrition_types_meal_type_labels"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/nutricion/registro/RegistroClient.tsx",
+      "source_location": "L57",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "registro_registroclient",
+      "target": "lib_nutrition_types_meal_type_images"
     },
     {
       "relation": "imports",
@@ -66203,6 +66432,26 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "package.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "package_scripts",
+      "target": "package_scripts_check",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "package_scripts",
+      "target": "package_scripts_check_ui",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
       "source_location": "L6",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -66228,6 +66477,16 @@
       "confidence_score": 1.0,
       "source": "package_scripts",
       "target": "package_scripts_start"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "package_scripts",
+      "target": "package_scripts_validate_mobile",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -66562,62 +66821,158 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "scripts/take-screenshots.js",
-      "source_location": "L1",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L79",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "scripts_take_screenshots",
-      "target": "scripts_take_screenshots_chromium"
+      "source": "scripts_validate_mobile",
+      "target": "scripts_validate_mobile_authenticate",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "scripts/take-screenshots.js",
-      "source_location": "L3",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "scripts_take_screenshots",
-      "target": "scripts_take_screenshots_fs"
+      "source": "scripts_validate_mobile",
+      "target": "scripts_validate_mobile_default_viewport",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "scripts/take-screenshots.js",
-      "source_location": "L10",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L68",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "scripts_take_screenshots",
-      "target": "scripts_take_screenshots_main"
+      "source": "scripts_validate_mobile",
+      "target": "scripts_validate_mobile_ensureserver",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "scripts/take-screenshots.js",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L102",
+      "weight": 1.0,
+      "source": "scripts_validate_mobile",
+      "target": "scripts_validate_mobile_generateotp",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/validate-mobile.mjs",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "scripts_take_screenshots",
-      "target": "scripts_take_screenshots_out_dir"
+      "source": "scripts_validate_mobile",
+      "target": "scripts_validate_mobile_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "scripts/take-screenshots.js",
-      "source_location": "L2",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L43",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "scripts_take_screenshots",
-      "target": "scripts_take_screenshots_path"
+      "source": "scripts_validate_mobile",
+      "target": "scripts_validate_mobile_readlocalenv",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "test_auth.mjs",
-      "source_location": "L1",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "test_auth",
-      "target": "test_auth_chromium"
+      "source": "scripts_validate_mobile",
+      "target": "scripts_validate_mobile_routes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L145",
+      "weight": 1.0,
+      "source": "scripts_validate_mobile",
+      "target": "scripts_validate_mobile_validateroute",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L122",
+      "weight": 1.0,
+      "source": "scripts_validate_mobile",
+      "target": "scripts_validate_mobile_validateroutes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "scripts_validate_mobile_main",
+      "target": "scripts_validate_mobile_authenticate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "scripts_validate_mobile_main",
+      "target": "scripts_validate_mobile_ensureserver",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "scripts_validate_mobile_main",
+      "target": "scripts_validate_mobile_readlocalenv",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "scripts_validate_mobile_main",
+      "target": "scripts_validate_mobile_validateroutes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "scripts_validate_mobile_authenticate",
+      "target": "scripts_validate_mobile_generateotp",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/validate-mobile.mjs",
+      "source_location": "L126",
+      "weight": 1.0,
+      "source": "scripts_validate_mobile_validateroutes",
+      "target": "scripts_validate_mobile_validateroute",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -74543,11 +74898,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/DATABASE.md",
-      "source_location": "L688",
+      "source_location": "L689",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "docs_database_apartado_de_nutricion_extras_g21",
-      "target": "docs_database_indices_688"
+      "target": "docs_database_indices_689"
     },
     {
       "relation": "contains",
@@ -74583,11 +74938,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/DATABASE.md",
-      "source_location": "L716",
+      "source_location": "L717",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "docs_database_recetas_g26_27",
-      "target": "docs_database_indices_716"
+      "target": "docs_database_indices_717"
     },
     {
       "relation": "contains",
@@ -101251,5 +101606,5 @@
       "source_file": "specs/G9-user-dashboard/README.md"
     }
   ],
-  "built_at_commit": "e37d35b0ed877a8bc5f42383ea87664639bda67a"
+  "built_at_commit": "b7333befd31b22293f227e9cc9c473d848aa9171"
 }

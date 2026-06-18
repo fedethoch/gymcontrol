@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   CalendarRange,
   Dumbbell,
@@ -320,7 +321,7 @@ function ComidasHoyCard({
   meals,
   totalKcal,
 }: {
-  meals: { id: string; name: string; kcal: number }[];
+  meals: { id: string; name: string; imageUrl: string; kcal: number }[];
   totalKcal: number;
 }) {
   const preview = meals.slice(0, 3);
@@ -340,8 +341,19 @@ function ComidasHoyCard({
           <div className="flex flex-1 flex-col justify-center gap-1">
             {preview.map((meal) => (
               <div key={meal.id} className="flex items-center justify-between gap-1">
-                <span className="min-w-0 truncate text-xs font-medium text-[#c2cbe0]">
-                  {meal.name}
+                <span className="flex min-w-0 items-center gap-2">
+                  <span className="relative size-7 shrink-0 overflow-hidden rounded-lg bg-[#151d2c]">
+                    <Image
+                      alt=""
+                      className="object-cover"
+                      fill
+                      sizes="28px"
+                      src={meal.imageUrl}
+                    />
+                  </span>
+                  <span className="min-w-0 truncate text-xs font-medium text-[#c2cbe0]">
+                    {meal.name}
+                  </span>
                 </span>
                 <span className="shrink-0 text-[10px] text-[#7887a6]">{meal.kcal}k</span>
               </div>

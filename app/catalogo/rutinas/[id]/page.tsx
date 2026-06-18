@@ -90,7 +90,7 @@ export default async function CatalogRoutineDetailPage({
       <StatusToast message={toastMessage} clearParams={["status", "savedRoutineId"]} />
       <StatusToast message={toastError} isError clearParams={["status", "savedRoutineId"]} />
 
-      <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+      <header className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
         <div>
           {/* Breadcrumb row — tiny back btn visible on mobile only */}
           <div className="flex items-center gap-2">
@@ -111,9 +111,6 @@ export default async function CatalogRoutineDetailPage({
           <h1 className="font-display mt-2 text-3xl font-semibold tracking-[-0.06em] text-white">
             Detalle de rutina
           </h1>
-          <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)]">
-            Revisa la estructura completa antes de guardar la rutina.
-          </p>
         </div>
         {/* Full back button — hidden on mobile, visible on sm+ */}
         <Button
@@ -128,7 +125,7 @@ export default async function CatalogRoutineDetailPage({
         </Button>
       </header>
 
-      <div className="grid gap-5 xl:grid-cols-[1.02fr_0.98fr]">
+      <div className="-mt-1 grid gap-3 xl:grid-cols-[1.02fr_0.98fr]">
         <div className="relative min-h-[8rem] overflow-hidden rounded-2xl border border-[rgba(148,163,184,0.22)] bg-[#080b13] shadow-[0_22px_70px_rgba(0,0,0,0.42)] sm:min-h-[23rem] xl:min-h-[23.5rem]">
           {coverImageUrl ? (
             <>

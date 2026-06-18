@@ -95,8 +95,8 @@
     "semantic_hash": "28f26cc26c7d3176739ca4d59ed05bb6"
   },
   "app/catalogo/RoutineCatalogClient.tsx": {
-    "mtime": 1781749525.0955558,
-    "ast_hash": "859f301bfd3733c2c8c4fa0be94c651a",
+    "mtime": 1781795713.9726033,
+    "ast_hash": "0f66572d236b4617ebb5e64bb98c4ad0",
     "semantic_hash": ""
   },
   "app/catalogo/page.tsx": {
@@ -115,8 +115,8 @@
     "semantic_hash": ""
   },
   "app/catalogo/rutinas/[id]/page.tsx": {
-    "mtime": 1781724583.4428408,
-    "ast_hash": "7676cf2399950de654931e9ec1367714",
+    "mtime": 1781794946.9868097,
+    "ast_hash": "d17486635d1d152f6698e450ea1a72ff",
     "semantic_hash": ""
   },
   "app/catalogo/rutinas/page.tsx": {
@@ -350,8 +350,8 @@
     "semantic_hash": ""
   },
   "app/page.tsx": {
-    "mtime": 1781724582.7972412,
-    "ast_hash": "fbebf9b31d96b6a3459aea1596b370a1",
+    "mtime": 1781794921.9401493,
+    "ast_hash": "21986f684a92e50ac47a068e074f5d16",
     "semantic_hash": ""
   },
   "components.json": {
@@ -365,13 +365,13 @@
     "semantic_hash": "dfa1f5f6a7037bf39dc510f30b180002"
   },
   "next.config.ts": {
-    "mtime": 1780971729.4414358,
-    "ast_hash": "0ff3e296c64ea051d609391ab3b2aea3",
-    "semantic_hash": "0ff3e296c64ea051d609391ab3b2aea3"
+    "mtime": 1781796862.8078942,
+    "ast_hash": "a4579bd4990e76b783e261b7559c655e",
+    "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1781539910.6089857,
-    "ast_hash": "628ec077758d1be7d7e358b36efe9f9f",
+    "mtime": 1781796862.80484,
+    "ast_hash": "9a41ecb31bca7592118104939672b2a5",
     "semantic_hash": ""
   },
   "postcss.config.mjs": {
@@ -480,8 +480,8 @@
     "semantic_hash": "0dad167a95bdb389f02fecffb60b1bc8"
   },
   "AGENTS.md": {
-    "mtime": 1781711281.628716,
-    "ast_hash": "c029129fe2c54bcce99e758012b47686",
+    "mtime": 1781793767.156617,
+    "ast_hash": "b1d131e9a812cee8a733414a944789ac",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -505,8 +505,8 @@
     "semantic_hash": "0092992cf9d418966e69f88c24090e53"
   },
   "docs/DATABASE.md": {
-    "mtime": 1781454350.0622027,
-    "ast_hash": "bec47adf4820419264d3dffc9a553b46",
+    "mtime": 1781794954.967293,
+    "ast_hash": "52808affced9e00c42a1299bd48c4e73",
     "semantic_hash": ""
   },
   "docs/DOCUMENTATION_ROADMAP.md": {
@@ -575,9 +575,9 @@
     "semantic_hash": "67b3c5330398d9beb1354ea0a5ac944d"
   },
   "docs/codex/COMMANDS.md": {
-    "mtime": 1780943175.9398732,
-    "ast_hash": "4c6a1a4feaf2d647df5511879922dd52",
-    "semantic_hash": "4c6a1a4feaf2d647df5511879922dd52"
+    "mtime": 1781797293.1671095,
+    "ast_hash": "c9a157001bdcfddb5b6e70bdd37af2f9",
+    "semantic_hash": ""
   },
   "docs/codex/ENV_INDEX.md": {
     "mtime": 1781019180.904739,
@@ -610,9 +610,9 @@
     "semantic_hash": "709abfc38d66edca4c4ee0b4e7f8f2a6"
   },
   "docs/codex/TEST_MATRIX.md": {
-    "mtime": 1781007473.3474517,
-    "ast_hash": "8fddd63c39842c3d3ab4df5bf5b753fb",
-    "semantic_hash": "8fddd63c39842c3d3ab4df5bf5b753fb"
+    "mtime": 1781796862.8090308,
+    "ast_hash": "7bef9d4ef8a39ac86034bcd150e19246",
+    "semantic_hash": ""
   },
   "pnpm-workspace.yaml": {
     "mtime": 1780325729.226515,
@@ -1780,8 +1780,8 @@
     "semantic_hash": ""
   },
   "app/lib/meal-logs.ts": {
-    "mtime": 1781479376.52321,
-    "ast_hash": "d34e203bc36621f0d2c84e8dd95712a3",
+    "mtime": 1781794674.652103,
+    "ast_hash": "ebdd0583a9a8d25b1befc1be7b1d40ba",
     "semantic_hash": ""
   },
   "app/lib/nutrition-calc.ts": {
@@ -1805,18 +1805,18 @@
     "semantic_hash": ""
   },
   "app/lib/nutrition-types.ts": {
-    "mtime": 1781566848.1511898,
-    "ast_hash": "401a14afa9ca24a8fec5b7ae396c7429",
+    "mtime": 1781794654.2211244,
+    "ast_hash": "963565a0763a1b48affb7ca92e286a22",
     "semantic_hash": ""
   },
   "app/nutricion/registro/RegistroClient.tsx": {
-    "mtime": 1781749772.9801605,
-    "ast_hash": "26a17b14e6592558d8bfec04e9c0f7a2",
+    "mtime": 1781795365.3655987,
+    "ast_hash": "e396c7566d94e0bcdbe1d219fdd1453e",
     "semantic_hash": ""
   },
   "app/nutricion/registro/actions.ts": {
-    "mtime": 1781453343.817125,
-    "ast_hash": "dfba6b014ec25763a050f3c28eb2ed0a",
+    "mtime": 1781794686.2451289,
+    "ast_hash": "eedffbbe734565a54d044f47d0c4332f",
     "semantic_hash": ""
   },
   "app/nutricion/registro/page.tsx": {
@@ -2079,11 +2079,6 @@
     "ast_hash": "a17f63b1c544a185b0fd95a6ded773fc",
     "semantic_hash": ""
   },
-  "scripts/take-screenshots.js": {
-    "mtime": 1781618470.9413967,
-    "ast_hash": "e1e534f0e9e959979c8cc10c90691e13",
-    "semantic_hash": ""
-  },
   ".claude/plans/generaras-un-plan-para-rosy-sun.md": {
     "mtime": 1781583486.2151191,
     "ast_hash": "125513e06e24645645ce83e66b03b343",
@@ -2137,21 +2132,6 @@
   "app/components/shared/MobileHeader.tsx": {
     "mtime": 1781749485.6659584,
     "ast_hash": "8599327bded35b90e20a6f54e18df603",
-    "semantic_hash": ""
-  },
-  "get-magic-link.js": {
-    "mtime": 1781621728.2631843,
-    "ast_hash": "c69919820f0124b2a267fc7d94bc67f0",
-    "semantic_hash": ""
-  },
-  "inject-session.js": {
-    "mtime": 1781621871.5419862,
-    "ast_hash": "6eaf5d3a6ec18aaaf4f10e7d64233732",
-    "semantic_hash": ""
-  },
-  "test_auth.mjs": {
-    "mtime": 1781669026.012518,
-    "ast_hash": "e732849d8d6b87eae0df1dd5e903971a",
     "semantic_hash": ""
   },
   ".claude/plans/genera-un-plan-para-dazzling-dahl.md": {
@@ -2572,6 +2552,21 @@
   "app/components/ui/LoadingDots.tsx": {
     "mtime": 1781749439.9307683,
     "ast_hash": "7e22b0297afde9bf108f866ea4671160",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/20260618_meal_log_meals_type.sql": {
+    "mtime": 1781794654.2237167,
+    "ast_hash": "8f90f47928832103df46ccde80d79da1",
+    "semantic_hash": ""
+  },
+  "public/images/meals/placeholder.svg": {
+    "mtime": 1781794654.2237167,
+    "ast_hash": "54695c081bab691166fc3610736682df",
+    "semantic_hash": ""
+  },
+  "scripts/validate-mobile.mjs": {
+    "mtime": 1781797322.8321228,
+    "ast_hash": "d67fc837215ee9c947452125f9fc0cc5",
     "semantic_hash": ""
   }
 }

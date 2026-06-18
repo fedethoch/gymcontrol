@@ -26,6 +26,25 @@ export const FOOD_MEASURE_LABELS: Record<FoodMeasure, string> = {
   unit: "Unidades",
 };
 
+export const MEAL_TYPES = ["desayuno", "almuerzo", "merienda", "cena", "snack"] as const;
+export type MealType = (typeof MEAL_TYPES)[number];
+
+export const MEAL_TYPE_LABELS: Record<MealType, string> = {
+  desayuno: "Desayuno",
+  almuerzo: "Almuerzo",
+  merienda: "Merienda",
+  cena: "Cena",
+  snack: "Snack",
+};
+
+export const MEAL_TYPE_IMAGES: Record<MealType, string> = {
+  desayuno: "/images/meals/placeholder.svg",
+  almuerzo: "/images/meals/placeholder.svg",
+  merienda: "/images/meals/placeholder.svg",
+  cena: "/images/meals/placeholder.svg",
+  snack: "/images/meals/placeholder.svg",
+};
+
 export type Macros = {
   proteinG: number;
   carbsG: number;
@@ -145,4 +164,3 @@ export type NutritionPlan = {
   targetKcal: number;
   macros: Macros;
 };
-

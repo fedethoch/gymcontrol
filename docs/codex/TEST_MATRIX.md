@@ -3,14 +3,15 @@
 | Cambio | Validacion minima |
 | --- | --- |
 | UI / componentes | `pnpm lint` |
-| Rutas / paginas | `pnpm lint` + `pnpm build` |
-| Auth con Supabase Auth | `pnpm lint` + `pnpm build` + validacion manual minima de OTP, Google OAuth, logout, redirecciones y rol |
+| Rutas / paginas | `pnpm check` |
+| Mobile/PWA visual | `pnpm check:ui` con `pnpm dev` activo |
+| Auth con Supabase Auth | `pnpm check` + `pnpm validate:mobile` + validacion manual minima de Google OAuth, logout, redirecciones y rol si aplica |
 | Supabase / migraciones | revisar SQL afectado y contrastar con `docs/DATABASE.md`; usar MCP si aplica |
 | RLS / policies | revisar SQL y policies contra `docs/DATABASE.md`; validar escenarios `anon`, `authenticated`, `admin` y propietario si aplica |
 | Env / deploy | `pnpm build` y revisar `docs/codex/ENV_INDEX.md` |
 | Docs | no correr tests |
 
-Fallback actual: `pnpm lint`, `pnpm build` o validacion manual minima.
+Fallback actual: `pnpm lint`, `pnpm build`, `pnpm validate:mobile` o validacion manual minima.
 
 ## Skill/subagent validation
 

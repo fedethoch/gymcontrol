@@ -672,6 +672,7 @@ Migracion: `20260613_g21_nutrition_fase3.sql`. Nota: las dietas predefinidas (`d
 - `id uuid primary key`
 - `meal_log_id uuid not null references meal_logs(id) on delete cascade`
 - `name text not null`, `position integer not null`
+- `type text not null default 'snack' check in ('desayuno','almuerzo','merienda','cena','snack')`
 - agrupa los items de una comida del dia (ej. "Desayuno")
 
 ### `meal_log_items`

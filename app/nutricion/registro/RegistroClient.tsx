@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   Beef,
-  Check,
   Droplet,
   Flame,
   type LucideIcon,
@@ -54,7 +54,15 @@ import {
 } from "@/app/nutricion/registro/actions";
 import { MACRO_COLORS, MACRO_LABELS } from "@/app/lib/nutrition-style";
 import type { MealGroup } from "@/app/lib/meal-logs";
-import type { Food, FoodMeasure, Macros } from "@/app/lib/nutrition-types";
+import {
+  MEAL_TYPE_IMAGES,
+  MEAL_TYPE_LABELS,
+  MEAL_TYPES,
+  type Food,
+  type FoodMeasure,
+  type Macros,
+  type MealType,
+} from "@/app/lib/nutrition-types";
 import { cn } from "@/app/lib/utils";
 
 type DraftItem = {
@@ -82,7 +90,9 @@ export function RegistroClient({
   avgDailyKcal: number;
 }) {
   const [meals, setMeals] = useState(initialMeals);
-  const [mealName, setMealName] = useState("");
+  const [mealType, setMealType] = useState<MealType>("desayuno");
+  const [mealName, setMealName] = useState(MEAL_TYPE_LABELS.desayuno);
+  const [mealNameTouched, setMealNameTouched] = useState(false);
   const [draftItems, setDraftItems] = useState<DraftItem[]>([]);
   const [isSavingMeal, setIsSavingMeal] = useState(false);
   const [editingMealId, setEditingMealId] = useState<string | null>(null);
@@ -108,6 +118,14 @@ export function RegistroClient({
     setDraftItems((current) => current.filter((item) => item.localId !== localId));
   }
 
+  function handleNewMealTypeChange(value: MealType) {
+    setMealType(value);
+
+    if (!mealNameTouched) {
+      setMealName(MEAL_TYPE_LABELS[value]);
+    }
+  }
+
   async function handleSaveMeal() {
     const trimmed = mealName.trim();
 
@@ -124,7 +142,7 @@ export function RegistroClient({
     setIsSavingMeal(true);
 
     try {
-      let log = await createMealAction({ logDate, name: trimmed });
+      let log = await createMealAction({ logDate, name: trimmed, type: mealType });
       const newMeal = log.meals.find((meal) => !meals.some((existing) => existing.id === meal.id));
 
       if (!newMeal) {
@@ -142,7 +160,9 @@ export function RegistroClient({
       }
 
       setMeals(log.meals);
-      setMealName("");
+      setMealType("desayuno");
+      setMealName(MEAL_TYPE_LABELS.desayuno);
+      setMealNameTouched(false);
       setDraftItems([]);
       setNewMealOpen(false);
       toast.success("Comida creada.");
@@ -166,8 +186,8 @@ export function RegistroClient({
     }
   }
 
-  async function handleRenameMeal(mealId: string, name: string) {
-    const log = await updateMealAction({ logDate, mealId, name });
+  async function handleUpdateMeal(mealId: string, input: { name?: string; type?: MealType }) {
+    const log = await updateMealAction({ logDate, mealId, ...input });
     setMeals(log.meals);
   }
 
@@ -193,12 +213,42 @@ export function RegistroClient({
 
   const newMealBody = (
     <div className="flex flex-1 flex-col gap-4">
+      <div className="grid grid-cols-[76px_1fr] items-end gap-3">
+        <div className="relative aspect-square overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card-alt)]">
+          <Image
+            alt={MEAL_TYPE_LABELS[mealType]}
+            className="object-cover"
+            fill
+            sizes="76px"
+            src={MEAL_TYPE_IMAGES[mealType]}
+          />
+        </div>
+        <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+          Tipo de comida
+          <Select value={mealType} onValueChange={(value) => handleNewMealTypeChange(value as MealType)}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {MEAL_TYPES.map((type) => (
+                <SelectItem key={type} value={type}>
+                  {MEAL_TYPE_LABELS[type]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </label>
+      </div>
+
       <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
         Nombre de la comida
         <Input
           placeholder="Ej. Desayuno"
           value={mealName}
-          onChange={(event) => setMealName(event.target.value)}
+          onChange={(event) => {
+            setMealName(event.target.value);
+            setMealNameTouched(true);
+          }}
         />
       </label>
 
@@ -333,12 +383,12 @@ export function RegistroClient({
       </div>
 
       {/* Row 2: Macros card */}
-      <div className="rounded-2xl bg-[#0e131e] px-3 py-3">
-        <div className="mb-2 flex items-center gap-1.5">
-          <UtensilsCrossed className="size-3.5 text-[#7887a6]" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#7887a6]">Macros</span>
+      <div className="rounded-2xl bg-[#0e131e] px-4 py-4">
+        <div className="mb-3 flex items-center gap-1.5">
+          <UtensilsCrossed className="size-4 text-[#7887a6]" />
+          <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#7887a6]">Macros</span>
         </div>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-3">
           {(
             [
               { Icon: Beef, label: MACRO_LABELS.protein, value: totalMacros.proteinG, target: targetMacros.proteinG, color: MACRO_COLORS.protein },
@@ -348,19 +398,19 @@ export function RegistroClient({
           ).map(({ Icon: MacroIcon, label, value, target, color }) => {
             const pct = target > 0 ? Math.min(100, Math.round((value / target) * 100)) : 0;
             return (
-              <div key={label} className="flex items-start gap-1.5">
+              <div key={label} className="flex items-start gap-2">
                 <div className="shrink-0">
-                  <AnimatedProgressRing value={pct} size={46} strokeWidth={5} progressColor={color}>
-                    <MacroIcon className="size-3.5" style={{ color }} />
+                  <AnimatedProgressRing value={pct} size={54} strokeWidth={6} progressColor={color}>
+                    <MacroIcon className="size-4" style={{ color }} />
                   </AnimatedProgressRing>
                 </div>
-                <div className="min-w-0 flex-1 pt-0.5 text-center">
-                  <p className="truncate text-[8px] font-bold text-white">{label}</p>
-                  <p className="mt-0.5 pl-1 text-left text-[9px] font-bold text-white">{Math.round(value)}g/{Math.round(target)}g</p>
-                  <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-[#1a2235]">
+                <div className="min-w-0 flex-1 pt-0.5 text-left">
+                  <p className="truncate text-[10px] font-bold text-white">{label}</p>
+                  <p className="mt-0.5 text-[11px] font-bold text-white">{Math.round(value)}g/{Math.round(target)}g</p>
+                  <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-[#1a2235]">
                     <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }} />
                   </div>
-                  <p className="mt-1 text-[8px] text-[#7887a6]">{pct}%</p>
+                  <p className="mt-1 text-[10px] font-semibold text-[#7887a6]">{pct}%</p>
                 </div>
               </div>
             );
@@ -391,7 +441,7 @@ export function RegistroClient({
                 isEditing={editingMealId === meal.id}
                 onToggleEdit={() => setEditingMealId((current) => (current === meal.id ? null : meal.id))}
                 onDeleteMeal={() => handleDeleteMeal(meal.id)}
-                onRenameMeal={(name) => handleRenameMeal(meal.id, name)}
+                onUpdateMeal={(input) => handleUpdateMeal(meal.id, input)}
                 onAddItem={(foodId, measure, quantity) => handleAddItem(meal.id, foodId, measure, quantity)}
                 onDeleteItem={handleDeleteItem}
                 onUpdateItem={handleUpdateItem}
@@ -443,7 +493,7 @@ function MealCard({
   isEditing,
   onToggleEdit,
   onDeleteMeal,
-  onRenameMeal,
+  onUpdateMeal,
   onAddItem,
   onDeleteItem,
   onUpdateItem,
@@ -453,13 +503,15 @@ function MealCard({
   isEditing: boolean;
   onToggleEdit: () => void;
   onDeleteMeal: () => void;
-  onRenameMeal: (name: string) => Promise<void>;
+  onUpdateMeal: (input: { name?: string; type?: MealType }) => Promise<void>;
   onAddItem: (foodId: string, measure: FoodMeasure, quantity: number) => Promise<void>;
   onDeleteItem: (itemId: string) => Promise<void>;
   onUpdateItem: (itemId: string, measure: FoodMeasure, quantity: number) => Promise<void>;
 }) {
   const [name, setName] = useState(meal.name);
+  const [type, setType] = useState<MealType>(meal.type);
   const [isSavingName, setIsSavingName] = useState(false);
+  const [isSavingType, setIsSavingType] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [editQuantity, setEditQuantity] = useState("");
@@ -468,27 +520,50 @@ function MealCard({
 
   useEffect(() => {
     if (!isEditing) {
-      setEditingItemId(null);
-    }
-  }, [isEditing]);
-
-  async function handleSaveName() {
-    const trimmed = name.trim();
-
-    if (!trimmed) {
-      toast.error("Ponele un nombre a la comida.");
       return;
     }
 
-    setIsSavingName(true);
+    const trimmed = name.trim();
+
+    if (!trimmed || trimmed === meal.name) {
+      return;
+    }
+
+    const timeout = window.setTimeout(async () => {
+      setIsSavingName(true);
+
+      try {
+        await onUpdateMeal({ name: trimmed });
+      } catch {
+        toast.error("No se pudo actualizar la comida.");
+      } finally {
+        setIsSavingName(false);
+      }
+    }, 650);
+
+    return () => window.clearTimeout(timeout);
+  }, [isEditing, meal.name, name, onUpdateMeal]);
+
+  async function handleTypeChange(nextType: MealType) {
+    const shouldSyncName = name.trim() === MEAL_TYPE_LABELS[type];
+    const nextName = shouldSyncName ? MEAL_TYPE_LABELS[nextType] : undefined;
+
+    setType(nextType);
+
+    if (nextName) {
+      setName(nextName);
+    }
+
+    setIsSavingType(true);
 
     try {
-      await onRenameMeal(trimmed);
-      toast.success("Comida actualizada.");
+      await onUpdateMeal({ type: nextType, name: nextName });
     } catch {
-      toast.error("No se pudo actualizar la comida.");
+      toast.error("No se pudo actualizar el tipo de comida.");
+      setType(meal.type);
+      setName(meal.name);
     } finally {
-      setIsSavingName(false);
+      setIsSavingType(false);
     }
   }
 
@@ -511,8 +586,8 @@ function MealCard({
     setEditQuantity(String(roundQuantity(quantity)));
   }
 
-  async function handleSaveItem(itemId: string) {
-    const parsedQuantity = Number(editQuantity);
+  async function handleSaveItem(itemId: string, nextMeasure = editMeasure, nextQuantity = editQuantity) {
+    const parsedQuantity = Number(nextQuantity);
 
     if (!Number.isFinite(parsedQuantity) || parsedQuantity <= 0) {
       toast.error("Ingresá una cantidad válida.");
@@ -522,7 +597,7 @@ function MealCard({
     setIsSavingItem(true);
 
     try {
-      await onUpdateItem(itemId, editMeasure, parsedQuantity);
+      await onUpdateItem(itemId, nextMeasure, parsedQuantity);
       setEditingItemId(null);
       toast.success("Alimento actualizado.");
     } catch (error) {
@@ -539,6 +614,14 @@ function MealCard({
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "No se pudo agregar el alimento.");
     }
+  }
+
+  function handleToggleEdit() {
+    if (isEditing) {
+      setEditingItemId(null);
+    }
+
+    onToggleEdit();
   }
 
   const itemsList = (
@@ -566,7 +649,22 @@ function MealCard({
             {isEditing && isEditingItem && (
               <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
                 {canChooseUnit && (
-                  <Select value={editMeasure} onValueChange={(value) => setEditMeasure(value as FoodMeasure)}>
+                  <Select
+                    value={editMeasure}
+                    onValueChange={(value) => {
+                      const nextMeasure = value as FoodMeasure;
+                      const parsedQuantity = Number(editQuantity);
+                      const nextQuantity =
+                        Number.isFinite(parsedQuantity) && parsedQuantity > 0 && itemGramsPerUnit
+                          ? nextMeasure === "unit"
+                            ? String(roundQuantity(parsedQuantity / itemGramsPerUnit))
+                            : String(roundQuantity(parsedQuantity * itemGramsPerUnit))
+                          : editQuantity;
+                      setEditMeasure(nextMeasure);
+                      setEditQuantity(nextQuantity);
+                      void handleSaveItem(item.id, nextMeasure, nextQuantity);
+                    }}
+                  >
                     <SelectTrigger className="w-24 sm:w-28">
                       <SelectValue />
                     </SelectTrigger>
@@ -582,11 +680,10 @@ function MealCard({
                   step={editMeasure === "unit" ? 0.5 : 1}
                   value={editQuantity}
                   onChange={(event) => setEditQuantity(event.target.value)}
+                  onBlur={() => handleSaveItem(item.id)}
                   className="w-16 sm:w-20"
                 />
-                <Button type="button" variant="outline" size="icon" onClick={() => handleSaveItem(item.id)} disabled={isSavingItem}>
-                    {isSavingItem ? <LoadingDots /> : <Check className="size-4" />}
-                </Button>
+                {isSavingItem && <LoadingDots className="text-[#9a63ff]" />}
               </div>
             )}
             {isEditing && !isEditingItem && (
@@ -619,27 +716,55 @@ function MealCard({
   return (
     <div className="flex h-full flex-col gap-3 rounded-2xl bg-[#0e131e] p-4">
       {/* Top: nombre + kcal */}
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex items-start justify-between gap-3">
+        <div className="relative size-12 shrink-0 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card-alt)]">
+          <Image
+            alt={MEAL_TYPE_LABELS[type]}
+            className="object-cover"
+            fill
+            sizes="48px"
+            src={MEAL_TYPE_IMAGES[type]}
+          />
+        </div>
         {isEditing ? (
-          <div className="flex min-w-0 flex-1 items-center gap-1.5">
+          <div className="grid min-w-0 flex-1 gap-2">
+            <Select value={type} onValueChange={(value) => handleTypeChange(value as MealType)}>
+              <SelectTrigger className="h-9 text-sm">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {MEAL_TYPES.map((mealTypeOption) => (
+                  <SelectItem key={mealTypeOption} value={mealTypeOption}>
+                    {MEAL_TYPE_LABELS[mealTypeOption]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <Input
               value={name}
               onChange={(event) => setName(event.target.value)}
-              className="min-w-0 flex-1"
+              onBlur={() => {
+                if (!name.trim()) {
+                  setName(meal.name);
+                  toast.error("Ponele un nombre a la comida.");
+                }
+              }}
+              className="min-w-0"
             />
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={handleSaveName}
-              disabled={isSavingName}
-              title="Guardar nombre"
-            >
-                    {isSavingName ? <LoadingDots /> : <Check className="size-4" />}
-            </Button>
+            {(isSavingName || isSavingType) && (
+              <span className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#9a63ff]">
+                <LoadingDots />
+                Guardando
+              </span>
+            )}
           </div>
         ) : (
-          <p className="truncate text-xs font-bold uppercase tracking-[0.18em] text-[#b985ff]">{meal.name}</p>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-xs font-bold uppercase tracking-[0.18em] text-[#b985ff]">
+              {MEAL_TYPE_LABELS[meal.type]}
+            </p>
+            <p className="mt-1 truncate text-sm font-semibold text-white">{meal.name}</p>
+          </div>
         )}
         <p className="whitespace-nowrap text-sm font-semibold text-white">{meal.kcal} kcal</p>
       </div>
@@ -674,7 +799,7 @@ function MealCard({
             type="button"
             variant="ghost"
             size="icon"
-            onClick={onToggleEdit}
+            onClick={handleToggleEdit}
             title={isEditing ? "Terminar edición" : "Editar comida"}
           >
             <Pencil className="size-4" />

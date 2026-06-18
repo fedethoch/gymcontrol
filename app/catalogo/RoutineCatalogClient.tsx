@@ -264,7 +264,7 @@ function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
       whileTap={tapFeedback}
       className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#111723_0%,#0b1017_100%)] shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-[border-color,box-shadow] duration-200 hover:border-[rgba(185,149,255,0.24)]"
     >
-      <div className="relative h-36 overflow-hidden border-b border-[rgba(255,255,255,0.08)] bg-[#141a24] sm:h-44">
+      <div className="relative h-28 overflow-hidden border-b border-[rgba(255,255,255,0.08)] bg-[#141a24] sm:h-40">
         {imageUrl ? (
           <Image
             alt={routine.name}
@@ -279,8 +279,8 @@ function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
         <div className="absolute inset-x-0 bottom-0 h-12 bg-[linear-gradient(180deg,transparent,rgba(5,7,11,0.86))]" />
       </div>
 
-      <div className="flex flex-1 flex-col gap-2 p-3 sm:gap-3 sm:p-4">
-        <div className="flex flex-wrap items-start gap-x-2 gap-y-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#9ea7b9] sm:text-[11px] sm:tracking-[0.12em]">
+      <div className="flex flex-1 flex-col gap-1.5 p-2.5 sm:gap-3 sm:p-4">
+        <div className="flex flex-wrap items-start gap-x-2 gap-y-1 text-[9px] font-semibold uppercase tracking-[0.08em] text-[#9ea7b9] sm:text-[11px] sm:tracking-[0.12em]">
           <span>{dayCount} dias</span>
           <span aria-hidden="true" className="text-[#556074]">
             /
@@ -297,10 +297,10 @@ function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
         </div>
 
         <div>
-          <h3 className="font-display text-sm font-semibold tracking-[-0.04em] text-white sm:text-lg">
+          <h3 className="font-display text-[13px] font-semibold tracking-[-0.04em] text-white sm:text-lg">
             {routine.name}
           </h3>
-          <p className="mt-1 line-clamp-1 text-xs leading-5 text-[var(--foreground-muted)] sm:mt-2 sm:text-sm sm:leading-6">
+          <p className="mt-0.5 line-clamp-1 text-[10px] leading-4 text-[var(--foreground-muted)] sm:mt-2 sm:text-sm sm:leading-6">
             {routine.description || "Rutina semanal disponible para explorar."}
           </p>
         </div>
@@ -308,10 +308,10 @@ function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
         <Button
           asChild
           size="sm"
-          className="mt-auto w-full justify-between rounded-xl border border-[rgba(185,149,255,0.2)] bg-[rgba(124,58,237,0.12)] text-white hover:bg-[rgba(124,58,237,0.18)]"
+          className="-mx-2.5 mt-auto h-8 w-[calc(100%+1.25rem)] justify-between rounded-lg border border-[rgba(185,149,255,0.2)] bg-[rgba(124,58,237,0.12)] px-2.5 text-white hover:bg-[rgba(124,58,237,0.18)] sm:mx-0 sm:h-9 sm:w-full sm:px-3"
         >
           <Link href={`/catalogo/rutinas/${routine.id}`}>
-            <span className="text-[11px] sm:text-sm">Ver rutina</span>
+            <span className="text-[10px] sm:text-sm">Ver rutina</span>
             <ChevronRight className="size-3.5 sm:size-4" />
           </Link>
         </Button>

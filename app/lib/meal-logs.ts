@@ -2,7 +2,13 @@ import "server-only";
 
 import { getLocalTrainingDate } from "@/app/lib/workout-tracking";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
-import type { FoodMeasure, Macros } from "@/app/lib/nutrition-types";
+import {
+  MEAL_TYPE_IMAGES,
+  MEAL_TYPES,
+  type FoodMeasure,
+  type Macros,
+  type MealType,
+} from "@/app/lib/nutrition-types";
 
 export type MealLogItem = {
   id: string;
@@ -21,6 +27,8 @@ export type MealLogItem = {
 export type MealGroup = {
   id: string;
   name: string;
+  type: MealType;
+  imageUrl: string;
   position: number;
   items: MealLogItem[];
   kcal: number;
@@ -61,6 +69,7 @@ type MealLogItemRow = {
 type MealLogMealRow = {
   id: string;
   name: string;
+  type: MealType | null;
   position: number;
   meal_log_items: MealLogItemRow[] | null;
 };
@@ -77,6 +86,7 @@ const MEAL_LOG_SELECT = `
   meal_log_meals (
     id,
     name,
+    type,
     position,
     meal_log_items (
       id,
@@ -154,7 +164,7 @@ async function ensureMealLogId(args: { userId: string; logDate: string }): Promi
   return insertedLog.id;
 }
 
-export async function createMeal(args: { userId: string; logDate: string; name: string }): Promise<MealLog> {
+export async function createMeal(args: { userId: string; logDate: string; name: string; type: MealType }): Promise<MealLog> {
   const supabase = await createSupabaseServerClient();
   const mealLogId = await ensureMealLogId(args);
 
@@ -170,6 +180,7 @@ export async function createMeal(args: { userId: string; logDate: string; name: 
   const { error: insertMealError } = await supabase.from("meal_log_meals").insert({
     meal_log_id: mealLogId,
     name: args.name,
+    type: args.type,
     position: (count ?? 0) + 1,
   });
 
@@ -186,12 +197,22 @@ export async function createMeal(args: { userId: string; logDate: string; name: 
   return log;
 }
 
-export async function updateMeal(args: { mealId: string; name: string }): Promise<void> {
+export async function updateMeal(args: { mealId: string; name?: string; type?: MealType }): Promise<void> {
   const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.from("meal_log_meals").update({ name: args.name }).eq("id", args.mealId);
+  const values: { name?: string; type?: MealType } = {};
+
+  if (args.name !== undefined) {
+    values.name = args.name;
+  }
+
+  if (args.type !== undefined) {
+    values.type = args.type;
+  }
+
+  const { error } = await supabase.from("meal_log_meals").update(values).eq("id", args.mealId);
 
   if (error) {
-    throw new Error(`No se pudo renombrar la comida: ${error.message}`);
+    throw new Error(`No se pudo actualizar la comida: ${error.message}`);
   }
 }
 
@@ -407,6 +428,7 @@ function mapMealLog(row: MealLogRow): MealLog {
 
 function mapMealGroup(row: MealLogMealRow): MealGroup {
   const items = (row.meal_log_items ?? []).map(mapMealLogItem);
+  const type = normalizeMealType(row.type);
 
   const macros = items.reduce<Macros>(
     (totals, item) => ({
@@ -420,11 +442,17 @@ function mapMealGroup(row: MealLogMealRow): MealGroup {
   return {
     id: row.id,
     name: row.name,
+    type,
+    imageUrl: MEAL_TYPE_IMAGES[type],
     position: row.position,
     items,
     kcal: items.reduce((total, item) => total + item.kcal, 0),
     macros,
   };
+}
+
+function normalizeMealType(value: string | null | undefined): MealType {
+  return MEAL_TYPES.includes(value as MealType) ? (value as MealType) : "snack";
 }
 
 function mapMealLogItem(row: MealLogItemRow): MealLogItem {

@@ -102,11 +102,13 @@ Rules:
 - After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
 
 ## Frontend
+- For all frontend/UI work: use ui-ux-pro-max for UX/layout guidance, context7 for current docs, shadcn for components/patterns, magic only for premium refinement, and $playwright-cli after meaningful changes to check desktop/mobile, overflow, navigation and visual regressions. Keep changes surgical.
 - Framework: React + Tailwind 
 - Componentes base: shadcn/ui — no crear componentes desde cero si ya existe uno
 - Íconos: lucide-react únicamente
 - No usar estilos inline salvo excepciones justificadas
 - Siempre mobile-first
+- No modificar tamaños del navbar inferior mobile/PWA sin pedido explícito del usuario
 
 ## Admin account
 - You can find the credentials in .env.local at the name of "EMAIL" and "EMAIL_PASSWORD"

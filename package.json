@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check": "pnpm lint && pnpm build",
+    "validate:mobile": "node scripts/validate-mobile.mjs",
+    "check:ui": "pnpm build && pnpm validate:mobile"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.16",

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-labelledby="title desc">
+  <title id="title">Comida</title>
+  <desc id="desc">Placeholder para imagen de tipo de comida.</desc>
+  <rect width="240" height="160" rx="28" fill="#121826"/>
+  <circle cx="120" cy="82" r="48" fill="#1f2937"/>
+  <circle cx="120" cy="82" r="34" fill="#f97316"/>
+  <path d="M82 45v71M94 45v71M82 78h12M158 45v71" stroke="#f8fafc" stroke-width="8" stroke-linecap="round"/>
+  <path d="M146 47c18 11 18 34 0 45" fill="none" stroke="#f8fafc" stroke-width="8" stroke-linecap="round"/>
+</svg>

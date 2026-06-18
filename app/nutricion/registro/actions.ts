@@ -13,14 +13,15 @@ import {
   updateMealLogItem,
   type MealLog,
 } from "@/app/lib/meal-logs";
-import type { FoodMeasure } from "@/app/lib/nutrition-types";
+import type { FoodMeasure, MealType } from "@/app/lib/nutrition-types";
 
-export async function createMealAction(input: { logDate: string; name: string }): Promise<MealLog> {
+export async function createMealAction(input: { logDate: string; name: string; type: MealType }): Promise<MealLog> {
   const auth = await requireUser();
   const log = await createMeal({
     userId: auth.user.id,
     logDate: input.logDate,
     name: input.name,
+    type: input.type,
   });
 
   revalidatePath("/nutricion/registro");
@@ -28,9 +29,9 @@ export async function createMealAction(input: { logDate: string; name: string })
   return log;
 }
 
-export async function updateMealAction(input: { logDate: string; mealId: string; name: string }): Promise<MealLog> {
+export async function updateMealAction(input: { logDate: string; mealId: string; name?: string; type?: MealType }): Promise<MealLog> {
   const auth = await requireUser();
-  await updateMeal({ mealId: input.mealId, name: input.name });
+  await updateMeal({ mealId: input.mealId, name: input.name, type: input.type });
   revalidatePath("/nutricion/registro");
 
   const log = await getMealLogForDate({ userId: auth.user.id, logDate: input.logDate });
