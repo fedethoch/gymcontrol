@@ -123,7 +123,7 @@ export function MobileHeader({
   };
 
   const profileClasses =
-    "grid size-10 shrink-0 place-items-center rounded-xl border border-[#2a3348] bg-[#101522]/90 text-[#b2bdd4] transition-colors hover:border-[#4b348d] hover:text-white";
+    "grid size-10 shrink-0 place-items-center rounded-xl border border-[#2a3348] bg-[#101522]/90 text-[#b2bdd4] transition-[background-color,border-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[#4b348d] hover:text-white active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100";
 
   return (
     <header className="pointer-events-none absolute inset-x-0 top-0 z-30 bg-[var(--workspace)] px-4 pb-2.5 pt-[calc(0.625rem+env(safe-area-inset-top))] lg:hidden">
@@ -152,7 +152,7 @@ export function MobileHeader({
           <button
             type="button"
             aria-label="Notificaciones"
-            className="grid size-[2.125rem] place-items-center rounded-xl bg-[#131827]/90 text-[#b2bdd4] transition-colors hover:bg-[#171d2f] hover:text-white"
+            className="grid size-[2.125rem] place-items-center rounded-xl bg-[#131827]/90 text-[#b2bdd4] transition-[background-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[#171d2f] hover:text-white active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100"
           >
             <Bell className="size-3.5" />
           </button>
@@ -160,6 +160,7 @@ export function MobileHeader({
             aria-label={streakBadge.ariaLabel ?? streakBadge.label}
             className={cn(
               "inline-flex h-[2.125rem] items-center gap-1 rounded-xl bg-[#131827]/90 px-2 font-display text-xs font-semibold text-[#d8deeb] transition-colors hover:bg-[#171d2f]",
+              "duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
             )}
           >
             <Flame

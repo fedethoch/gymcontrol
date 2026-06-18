@@ -47,11 +47,11 @@ export function FilterPanel({ groups, onClear }: FilterPanelProps) {
         type="button"
         onClick={() => setOpen(true)}
         aria-label={`Filtros${activeCount > 0 ? ` (${activeCount} activos)` : ""}`}
-        className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-[#9aa3b8] transition-colors hover:bg-[rgba(255,255,255,0.05)] hover:text-white"
+        className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-[#9aa3b8] transition-[background-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[rgba(255,255,255,0.05)] hover:text-white active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100"
       >
         <SlidersHorizontal className="size-4" />
         {activeCount > 0 && (
-          <span className="absolute right-1.5 top-1.5 grid size-3.5 place-items-center rounded-full bg-[var(--accent)] text-[8px] font-bold leading-none text-white">
+          <span className="motion-empty-state absolute right-1.5 top-1.5 grid size-3.5 place-items-center rounded-full bg-[var(--accent)] text-[8px] font-bold leading-none text-white">
             {activeCount}
           </span>
         )}
@@ -78,8 +78,8 @@ export function FilterPanel({ groups, onClear }: FilterPanelProps) {
                     onClick={() => group.onChange("all")}
                     className={
                       group.value === "all"
-                        ? "rounded-full border border-[var(--accent)] bg-[var(--accent)]/15 px-3 py-1.5 text-xs font-semibold text-white"
-                        : "rounded-full border border-[var(--border)] bg-[var(--card-alt)] px-3 py-1.5 text-xs font-semibold text-[#9aa3b8] transition-colors hover:text-white"
+                        ? "rounded-full border border-[var(--accent)] bg-[var(--accent)]/15 px-3 py-1.5 text-xs font-semibold text-white transition-[background-color,border-color,color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100"
+                        : "rounded-full border border-[var(--border)] bg-[var(--card-alt)] px-3 py-1.5 text-xs font-semibold text-[#9aa3b8] transition-[background-color,border-color,color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-white active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100"
                     }
                   >
                     Todos
@@ -91,8 +91,8 @@ export function FilterPanel({ groups, onClear }: FilterPanelProps) {
                       onClick={() => group.onChange(opt.value)}
                       className={
                         group.value === opt.value
-                          ? "rounded-full border border-[var(--accent)] bg-[var(--accent)]/15 px-3 py-1.5 text-xs font-semibold text-white"
-                          : "rounded-full border border-[var(--border)] bg-[var(--card-alt)] px-3 py-1.5 text-xs font-semibold text-[#9aa3b8] transition-colors hover:text-white"
+                          ? "rounded-full border border-[var(--accent)] bg-[var(--accent)]/15 px-3 py-1.5 text-xs font-semibold text-white transition-[background-color,border-color,color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100"
+                          : "rounded-full border border-[var(--border)] bg-[var(--card-alt)] px-3 py-1.5 text-xs font-semibold text-[#9aa3b8] transition-[background-color,border-color,color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-white active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100"
                       }
                     >
                       {opt.label}

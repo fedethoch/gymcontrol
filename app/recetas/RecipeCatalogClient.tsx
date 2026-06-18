@@ -18,7 +18,13 @@ import {
   RECIPE_CATEGORY_ICONS,
 } from "@/app/lib/nutrition-style";
 import { RECIPE_CATEGORIES, RECIPE_CATEGORY_LABELS, type Recipe } from "@/app/lib/nutrition-types";
-import { fadeUp, motion, staggerContainer } from "@/app/components/ui/motion";
+import {
+  fadeUp,
+  listItemHover,
+  motion,
+  staggerContainer,
+  tapFeedback,
+} from "@/app/components/ui/motion";
 
 type RecipeCatalogClientProps = {
   recipes: Recipe[];
@@ -73,7 +79,7 @@ export function RecipeCatalogClient({ recipes }: RecipeCatalogClientProps) {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="grid min-h-[20rem] place-items-center rounded-2xl border border-dashed border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] px-6 py-10 text-center">
+        <div className="motion-empty-state grid min-h-[20rem] place-items-center rounded-2xl border border-dashed border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] px-6 py-10 text-center">
           <div className="max-w-md">
             <p className="font-display text-lg font-semibold text-white">
               No hay recetas para mostrar
@@ -109,9 +115,11 @@ export function RecipeCatalogClient({ recipes }: RecipeCatalogClientProps) {
 
 function RecipeCard({ recipe, onSelect }: { recipe: Recipe; onSelect: () => void }) {
   return (
-    <button
+    <motion.button
       type="button"
       onClick={onSelect}
+      whileHover={listItemHover}
+      whileTap={tapFeedback}
       className="group flex h-full w-full flex-col gap-3 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] text-left transition-colors duration-200 hover:bg-[rgba(255,255,255,0.03)]"
     >
       <div className="relative aspect-[16/9] w-full shrink-0 bg-[var(--card)]">
@@ -152,7 +160,7 @@ function RecipeCard({ recipe, onSelect }: { recipe: Recipe; onSelect: () => void
           showLegend={false}
         />
       </div>
-    </button>
+    </motion.button>
   );
 }
 

@@ -7,7 +7,6 @@ import {
   Check,
   Droplet,
   Flame,
-  LoaderCircle,
   type LucideIcon,
   Pencil,
   Plus,
@@ -36,6 +35,7 @@ import {
   DrawerDescription,
 } from "@/app/components/ui/Drawer";
 import { Input } from "@/app/components/ui/Input";
+import { LoadingDots } from "@/app/components/ui/LoadingDots";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
 import {
   Select,
@@ -252,7 +252,7 @@ export function RegistroClient({
       </div>
 
       <Button type="button" onClick={handleSaveMeal} disabled={isSavingMeal}>
-        {isSavingMeal ? <LoaderCircle className="size-4 animate-spin" /> : <Plus className="size-4" />}
+                    {isSavingMeal ? <LoadingDots /> : <Plus className="size-4" />}
         Guardar comida
       </Button>
     </div>
@@ -585,7 +585,7 @@ function MealCard({
                   className="w-16 sm:w-20"
                 />
                 <Button type="button" variant="outline" size="icon" onClick={() => handleSaveItem(item.id)} disabled={isSavingItem}>
-                  {isSavingItem ? <LoaderCircle className="size-4 animate-spin" /> : <Check className="size-4" />}
+                    {isSavingItem ? <LoadingDots /> : <Check className="size-4" />}
                 </Button>
               </div>
             )}
@@ -606,7 +606,7 @@ function MealCard({
                   onClick={() => handleDelete(item.id)}
                   disabled={deletingId === item.id}
                 >
-                  {deletingId === item.id ? <LoaderCircle className="size-4 animate-spin" /> : <Trash2 className="size-4" />}
+                            {deletingId === item.id ? <LoadingDots /> : <Trash2 className="size-4" />}
                 </Button>
               </div>
             )}
@@ -635,7 +635,7 @@ function MealCard({
               disabled={isSavingName}
               title="Guardar nombre"
             >
-              {isSavingName ? <LoaderCircle className="size-4 animate-spin" /> : <Check className="size-4" />}
+                    {isSavingName ? <LoadingDots /> : <Check className="size-4" />}
             </Button>
           </div>
         ) : (
@@ -849,7 +849,7 @@ function FoodPickerRow({
         disabled={isAdding || !foodId}
         className="sm:col-span-2 lg:col-span-1"
       >
-        {isAdding ? <LoaderCircle className="size-4 animate-spin" /> : <Plus className="size-4" />}
+              {isAdding ? <LoadingDots /> : <Plus className="size-4" />}
         {actionLabel}
       </Button>
     </div>

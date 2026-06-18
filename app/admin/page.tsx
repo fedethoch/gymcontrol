@@ -32,6 +32,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/app/components/ui/Table";
+import { fadeUp, MotionDiv, MotionSection, staggerContainer } from "@/app/components/ui/motion";
 const DIFFICULTY_BADGE_VARIANT: Record<RoutineDifficulty, "accent" | "neutral" | "success"> = {
   intermedio: "accent",
   avanzado: "neutral",
@@ -72,12 +73,16 @@ export default async function AdminPage() {
         </h1>
       </header>
 
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <MotionSection
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        className="grid grid-cols-2 gap-3 lg:grid-cols-4"
+      >
         {statTiles.map((tile) => (
-          <Card
-            key={tile.label}
-            className="flex flex-col gap-2 p-3 transition-colors hover:border-[#6d40ef] sm:p-4"
-          >
+          <MotionDiv key={tile.label} variants={fadeUp} className="h-full">
+          <Card className="flex h-full flex-col gap-2 p-3 transition-[border-color,box-shadow,transform] hover:-translate-y-0.5 hover:border-[#6d40ef] hover:shadow-[0_18px_42px_rgba(0,0,0,0.24)] sm:p-4 motion-reduce:hover:translate-y-0">
             <div className="flex items-center gap-3">
               <span className="grid size-9 shrink-0 place-items-center rounded-xl border border-[#5b2ab3] bg-[#281a45] text-[var(--accent-bright)] sm:size-11">
                 <tile.icon className="size-4 sm:size-5" />
@@ -88,8 +93,9 @@ export default async function AdminPage() {
             </div>
             <p className="truncate text-xs text-[var(--foreground-muted)] sm:text-sm">{tile.label}</p>
           </Card>
+          </MotionDiv>
         ))}
-      </div>
+      </MotionSection>
 
       <Card className="overflow-hidden">
         <CardHeader className="border-b border-[var(--border)] py-3">
@@ -97,7 +103,7 @@ export default async function AdminPage() {
         </CardHeader>
         <CardContent className="p-0 sm:p-0">
           {recentActivity.length === 0 ? (
-            <div className="grid min-h-32 place-items-center px-6 py-6 text-center">
+            <div className="motion-empty-state grid min-h-32 place-items-center px-6 py-6 text-center">
               <div className="max-w-sm">
                 <p className="font-display text-base font-semibold text-white">
                   Todavia no hay actividad
@@ -123,7 +129,7 @@ export default async function AdminPage() {
               <Link
                 key={action.label}
                 href={action.href}
-                className="flex flex-1 items-center gap-3 border-b border-[rgba(37,43,54,0.55)] px-4 py-3 text-sm font-medium text-[var(--foreground)] transition-colors last:border-b-0 hover:bg-[var(--card-alt)] sm:px-5"
+                className="flex flex-1 items-center gap-3 border-b border-[rgba(37,43,54,0.55)] px-4 py-3 text-sm font-medium text-[var(--foreground)] transition-[background-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] last:border-b-0 hover:bg-[var(--card-alt)] active:scale-[0.99] sm:px-5 motion-reduce:transition-none motion-reduce:active:scale-100"
               >
                 <span className="grid size-8 shrink-0 place-items-center rounded-[9px] border border-[#5b2ab3] bg-[#281a45] text-[var(--accent-bright)]">
                   <action.icon className="size-4" />
@@ -173,7 +179,7 @@ export default async function AdminPage() {
           </CardHeader>
           <CardContent className="p-0 sm:p-0">
             {exercises.length === 0 ? (
-              <div className="grid min-h-32 place-items-center px-6 py-6 text-center">
+              <div className="motion-empty-state grid min-h-32 place-items-center px-6 py-6 text-center">
                 <div className="max-w-sm">
                   <p className="font-display text-base font-semibold text-white">
                     Todavia no hay ejercicios
@@ -211,7 +217,7 @@ export default async function AdminPage() {
           </CardHeader>
           <CardContent className="p-0 sm:p-0">
           {routines.length === 0 ? (
-            <div className="grid min-h-32 place-items-center px-6 py-6 text-center">
+            <div className="motion-empty-state grid min-h-32 place-items-center px-6 py-6 text-center">
               <div className="max-w-sm">
                 <p className="font-display text-base font-semibold text-white">
                   Todavia no hay rutinas
@@ -226,7 +232,7 @@ export default async function AdminPage() {
               <Link
                 key={routine.id}
                 href="/admin/rutinas"
-                className="flex items-center gap-3 border-b border-[rgba(37,43,54,0.55)] px-4 py-2.5 transition-colors last:border-b-0 hover:bg-white/[0.025] sm:px-5"
+                className="flex items-center gap-3 border-b border-[rgba(37,43,54,0.55)] px-4 py-2.5 transition-[background-color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] last:border-b-0 hover:bg-white/[0.025] active:scale-[0.99] sm:px-5 motion-reduce:transition-none motion-reduce:active:scale-100"
               >
                 <span className="fitness-photo size-10 shrink-0 rounded-[10px] border border-white/[0.08]" />
                 <div className="flex-1">

@@ -53,10 +53,10 @@ function NavigationLink({
       href={item.href}
       onClick={onNavigate}
       className={cn(
-        "group relative flex items-center gap-3 rounded-xl border px-3 py-2 transition-colors duration-200",
+        "group relative flex items-center gap-3 rounded-xl border px-3 py-2 transition-[background-color,border-color,color,box-shadow,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.985] motion-reduce:transition-none motion-reduce:active:scale-100",
         active
           ? "border-[#4b348d] bg-[#231846] text-white shadow-[0_8px_24px_rgba(58,31,119,0.18)]"
-          : "border-transparent bg-transparent text-[#b6bfd2] hover:border-[#25203f] hover:bg-[#121423] hover:text-white",
+          : "border-transparent bg-transparent text-[#b6bfd2] hover:border-[#25203f] hover:bg-[#121423] hover:text-white lg:hover:translate-x-0.5",
         collapsed &&
           "justify-center rounded-xl px-0 py-2 hover:border-[#25203f]",
       )}
@@ -66,7 +66,7 @@ function NavigationLink({
       ) : null}
       <span
         className={cn(
-          "relative z-10 grid size-8 shrink-0 place-items-center rounded-lg border transition-colors",
+          "relative z-10 grid size-8 shrink-0 place-items-center rounded-lg border transition-[border-color,color,background-color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100",
           active
             ? "border-[#5430a9] bg-[#171026] text-[#9b73ff]"
             : "border-[#20263a] bg-[#101320] text-[#aeb8cf] group-hover:border-[#2b3250] group-hover:text-white",

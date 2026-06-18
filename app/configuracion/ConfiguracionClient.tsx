@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Beef, Droplet, Flame, LoaderCircle, LogOut, TriangleAlert, Wheat } from "lucide-react";
+import { Beef, Droplet, Flame, LogOut, TriangleAlert, Wheat } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -22,6 +22,7 @@ import {
   DialogTitle,
 } from "@/app/components/ui/Dialog";
 import { Input } from "@/app/components/ui/Input";
+import { LoadingDots } from "@/app/components/ui/LoadingDots";
 import { deleteAccountAction, saveNutritionProfileAction, saveProfileNameAction } from "@/app/configuracion/actions";
 import { calculateNutritionPlan } from "@/app/lib/nutrition-calc";
 import { MACRO_COLORS, MACRO_LABELS } from "@/app/lib/nutrition-style";
@@ -139,7 +140,7 @@ export function ConfiguracionClient({
         />
       </label>
       <Button type="button" onClick={handleSaveName} disabled={isSavingName}>
-        {isSavingName ? <LoaderCircle className="size-4 animate-spin" /> : null}
+                  {isSavingName ? <LoadingDots /> : null}
         Guardar nombre
       </Button>
     </div>
@@ -238,7 +239,7 @@ export function ConfiguracionClient({
 
   const saveButton = (
     <Button type="button" size="lg" className="justify-center" onClick={handleSaveProfile} disabled={isPending}>
-      {isPending ? <LoaderCircle className="size-4 animate-spin" /> : null}
+              {isPending ? <LoadingDots /> : null}
       Guardar perfil
     </Button>
   );
@@ -436,7 +437,7 @@ export function ConfiguracionClient({
                 disabled={deleteConfirm !== DELETE_CONFIRM_TEXT || isDeleting}
                 onClick={handleDeleteAccount}
               >
-                {isDeleting ? <LoaderCircle className="size-4 animate-spin" /> : <TriangleAlert className="size-4" />}
+              {isDeleting ? <LoadingDots /> : <TriangleAlert className="size-4" />}
                 Sí, borrar mi cuenta
               </Button>
             </div>

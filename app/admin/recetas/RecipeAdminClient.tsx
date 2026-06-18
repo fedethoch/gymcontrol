@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { LoaderCircle, PencilLine, Plus, Search, Trash2, TriangleAlert, X } from "lucide-react";
+import { PencilLine, Plus, Search, Trash2, TriangleAlert, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { MacroBar } from "@/app/components/shared/MacroBar";
@@ -16,6 +16,7 @@ import {
 } from "@/app/components/ui/Dialog";
 import { FilterPanel } from "@/app/components/shared/FilterPanel";
 import { Input } from "@/app/components/ui/Input";
+import { LoadingDots } from "@/app/components/ui/LoadingDots";
 import {
   Sheet,
   SheetContent,
@@ -167,7 +168,7 @@ export function RecipeAdminClient({ initialRecipes, foods }: RecipeAdminClientPr
       <Card className="overflow-hidden">
         <CardContent className="p-0 sm:p-0">
           {pageData.length === 0 ? (
-            <div className="grid min-h-72 place-items-center px-6 py-10 text-center">
+            <div className="motion-empty-state grid min-h-72 place-items-center px-6 py-10 text-center">
               <div className="max-w-sm">
                 <p className="font-display text-lg font-semibold text-white">
                   {hasFilters ? "Sin resultados" : "Todavía no hay recetas"}
@@ -260,7 +261,7 @@ export function RecipeAdminClient({ initialRecipes, foods }: RecipeAdminClientPr
                 return (
                   <div
                     key={recipe.id}
-                    className="min-w-0 rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-4"
+                    className="min-w-0 rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-4 transition-[border-color,box-shadow,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.99] motion-reduce:transition-none motion-reduce:active:scale-100"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex min-w-0 items-center gap-3">
@@ -608,7 +609,7 @@ function RecipeFormSheet({ open, recipe, foods, onClose, onSave }: RecipeFormShe
               Cancelar
             </Button>
             <Button disabled={!canSubmit || isPending} type="submit">
-              {isPending ? <LoaderCircle className="size-4 animate-spin" /> : null}
+              {isPending ? <LoadingDots /> : null}
               {isEditing ? "Guardar cambios" : "Crear receta"}
             </Button>
           </SheetFooter>

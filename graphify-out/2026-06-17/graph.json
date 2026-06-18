@@ -1208,7 +1208,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "rutinas_routineadminclient",
-      "community": 275,
+      "community": 29,
       "norm_label": "routineadminclient.tsx"
     },
     {
@@ -1218,7 +1218,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_routineadminclientprops",
-      "community": 275,
+      "community": 29,
       "norm_label": "routineadminclientprops"
     },
     {
@@ -1228,7 +1228,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_sortcolumn",
-      "community": 275,
+      "community": 29,
       "norm_label": "sortcolumn"
     },
     {
@@ -1238,7 +1238,7 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_sortdirection",
-      "community": 275,
+      "community": 29,
       "norm_label": "sortdirection"
     },
     {
@@ -1248,7 +1248,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_difficulty_badge_styles",
-      "community": 275,
+      "community": 29,
       "norm_label": "difficulty_badge_styles"
     },
     {
@@ -1258,7 +1258,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_objective_badge_styles",
-      "community": 275,
+      "community": 29,
       "norm_label": "objective_badge_styles"
     },
     {
@@ -1268,7 +1268,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_objective_dot_styles",
-      "community": 275,
+      "community": 29,
       "norm_label": "objective_dot_styles"
     },
     {
@@ -1288,7 +1288,7 @@
       "source_location": "L578",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_stattile",
-      "community": 275,
+      "community": 29,
       "norm_label": "stattile()"
     },
     {
@@ -1298,7 +1298,7 @@
       "source_location": "L602",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_sortheader",
-      "community": 275,
+      "community": 29,
       "norm_label": "sortheader()"
     },
     {
@@ -1308,7 +1308,7 @@
       "source_location": "L634",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_routineformsheetprops",
-      "community": 275,
+      "community": 29,
       "norm_label": "routineformsheetprops"
     },
     {
@@ -1318,7 +1318,7 @@
       "source_location": "L643",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_routineformsheet",
-      "community": 275,
+      "community": 29,
       "norm_label": "routineformsheet()"
     },
     {
@@ -1328,7 +1328,7 @@
       "source_location": "L1146",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_createemptyday",
-      "community": 275,
+      "community": 29,
       "norm_label": "createemptyday()"
     },
     {
@@ -1338,7 +1338,7 @@
       "source_location": "L1154",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_createemptyitem",
-      "community": 275,
+      "community": 29,
       "norm_label": "createemptyitem()"
     },
     {
@@ -1668,7 +1668,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "login_page",
-      "community": 387,
+      "community": 314,
       "norm_label": "page.tsx"
     },
     {
@@ -1678,7 +1678,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "login_page_statuscopy",
-      "community": 387,
+      "community": 314,
       "norm_label": "statuscopy"
     },
     {
@@ -1688,7 +1688,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "login_page_reasoncopy",
-      "community": 387,
+      "community": 314,
       "norm_label": "reasoncopy"
     },
     {
@@ -1698,7 +1698,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "login_page_errorcopy",
-      "community": 387,
+      "community": 314,
       "norm_label": "errorcopy"
     },
     {
@@ -1708,7 +1708,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "login_page_loginpageprops",
-      "community": 387,
+      "community": 314,
       "norm_label": "loginpageprops"
     },
     {
@@ -2208,7 +2208,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_exercisedetailmodal",
-      "community": 314,
+      "community": 216,
       "norm_label": "exercisedetailmodal.tsx"
     },
     {
@@ -2218,7 +2218,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "shared_exercisedetailmodal_exercisehistoryentry",
-      "community": 314,
+      "community": 216,
       "norm_label": "exercisehistoryentry"
     },
     {
@@ -2238,7 +2238,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "shared_exercisedetailmodal_exercisedetailmodalprops",
-      "community": 314,
+      "community": 216,
       "norm_label": "exercisedetailmodalprops"
     },
     {
@@ -2248,7 +2248,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "shared_exercisedetailmodal_tabs",
-      "community": 314,
+      "community": 216,
       "norm_label": "tabs"
     },
     {
@@ -2258,7 +2258,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "shared_exercisedetailmodal_tabkey",
-      "community": 314,
+      "community": 216,
       "norm_label": "tabkey"
     },
     {
@@ -2278,7 +2278,7 @@
       "source_location": "L327",
       "_origin": "ast",
       "id": "shared_exercisedetailmodal_specchip",
-      "community": 314,
+      "community": 216,
       "norm_label": "specchip()"
     },
     {
@@ -3068,7 +3068,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_appshell",
-      "community": 105,
+      "community": 366,
       "norm_label": "appshell.tsx"
     },
     {
@@ -3078,7 +3078,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "ui_appshell_appshellprops",
-      "community": 105,
+      "community": 366,
       "norm_label": "appshellprops"
     },
     {
@@ -3088,7 +3088,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "ui_appshell_appshell",
-      "community": 105,
+      "community": 366,
       "norm_label": "appshell()"
     },
     {
@@ -3098,7 +3098,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_badge",
-      "community": 387,
+      "community": 314,
       "norm_label": "badge.tsx"
     },
     {
@@ -3108,7 +3108,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "ui_badge_badgevariants",
-      "community": 387,
+      "community": 314,
       "norm_label": "badgevariants"
     },
     {
@@ -3118,7 +3118,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "ui_badge_badgeprops",
-      "community": 387,
+      "community": 314,
       "norm_label": "badgeprops"
     },
     {
@@ -3128,7 +3128,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "ui_badge_badge",
-      "community": 387,
+      "community": 314,
       "norm_label": "badge()"
     },
     {
@@ -3198,7 +3198,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "ui_card_cardheader",
-      "community": 387,
+      "community": 314,
       "norm_label": "cardheader()"
     },
     {
@@ -3218,7 +3218,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "ui_card_carddescription",
-      "community": 387,
+      "community": 314,
       "norm_label": "carddescription()"
     },
     {
@@ -3228,7 +3228,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "ui_card_cardcontent",
-      "community": 387,
+      "community": 29,
       "norm_label": "cardcontent()"
     },
     {
@@ -3248,7 +3248,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_dialog",
-      "community": 314,
+      "community": 216,
       "norm_label": "dialog.tsx"
     },
     {
@@ -3258,7 +3258,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "ui_dialog_dialog",
-      "community": 314,
+      "community": 216,
       "norm_label": "dialog()"
     },
     {
@@ -3268,7 +3268,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "ui_dialog_dialogtrigger",
-      "community": 314,
+      "community": 216,
       "norm_label": "dialogtrigger()"
     },
     {
@@ -3278,7 +3278,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "ui_dialog_dialogclose",
-      "community": 314,
+      "community": 216,
       "norm_label": "dialogclose()"
     },
     {
@@ -3288,7 +3288,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "ui_dialog_dialogportal",
-      "community": 314,
+      "community": 216,
       "norm_label": "dialogportal()"
     },
     {
@@ -3298,7 +3298,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "ui_dialog_dialogcontent",
-      "community": 314,
+      "community": 216,
       "norm_label": "dialogcontent()"
     },
     {
@@ -3308,7 +3308,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "ui_dialog_dialogheader",
-      "community": 314,
+      "community": 216,
       "norm_label": "dialogheader()"
     },
     {
@@ -3318,7 +3318,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "ui_dialog_dialogtitle",
-      "community": 314,
+      "community": 216,
       "norm_label": "dialogtitle()"
     },
     {
@@ -3328,7 +3328,7 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "ui_dialog_dialogdescription",
-      "community": 314,
+      "community": 216,
       "norm_label": "dialogdescription()"
     },
     {
@@ -4038,7 +4038,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_motion",
-      "community": 29,
+      "community": 387,
       "norm_label": "motion.tsx"
     },
     {
@@ -4048,7 +4048,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "ui_motion_fadeup",
-      "community": 29,
+      "community": 387,
       "norm_label": "fadeup"
     },
     {
@@ -4058,7 +4058,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "ui_motion_staggercontainer",
-      "community": 29,
+      "community": 387,
       "norm_label": "staggercontainer"
     },
     {
@@ -4068,7 +4068,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "ui_motion_motionsection",
-      "community": 29,
+      "community": 387,
       "norm_label": "motionsection()"
     },
     {
@@ -4078,7 +4078,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "ui_motion_motiondiv",
-      "community": 29,
+      "community": 387,
       "norm_label": "motiondiv()"
     },
     {
@@ -4198,7 +4198,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "dashboard_page",
-      "community": 29,
+      "community": 387,
       "norm_label": "page.tsx"
     },
     {
@@ -4208,7 +4208,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "dashboard_page_legacydashboardpage",
-      "community": 29,
+      "community": 387,
       "norm_label": "legacydashboardpage()"
     },
     {
@@ -4768,7 +4768,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "lib_exercise_form_muscle_badge_styles",
-      "community": 314,
+      "community": 216,
       "norm_label": "muscle_badge_styles"
     },
     {
@@ -4778,7 +4778,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "lib_exercise_form_muscle_gradients",
-      "community": 314,
+      "community": 216,
       "norm_label": "muscle_gradients"
     },
     {
@@ -29958,7 +29958,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_definir_patron_visual_del_panel_lateral_y_area_de_contenido_ordenar_la_composicion_principal_del_producto",
-      "community": 82,
+      "community": 241,
       "norm_label": "definir patron visual del panel lateral y area de contenido: ordenar la composicion principal del producto"
     },
     {
@@ -29968,7 +29968,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_objetivo",
-      "community": 82,
+      "community": 241,
       "norm_label": "objetivo"
     },
     {
@@ -29978,7 +29978,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_estado",
-      "community": 82,
+      "community": 241,
       "norm_label": "estado"
     },
     {
@@ -29988,7 +29988,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_archivos",
-      "community": 82,
+      "community": 241,
       "norm_label": "archivos"
     },
     {
@@ -29998,7 +29998,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_pasos",
-      "community": 82,
+      "community": 241,
       "norm_label": "pasos"
     },
     {
@@ -30008,7 +30008,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_criterios_de_aceptacion",
-      "community": 82,
+      "community": 241,
       "norm_label": "criterios de aceptacion"
     },
     {
@@ -30018,7 +30018,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_resolucion",
-      "community": 82,
+      "community": 241,
       "norm_label": "resolucion"
     },
     {
@@ -30028,7 +30028,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_validacion",
-      "community": 82,
+      "community": 241,
       "norm_label": "validacion"
     },
     {
@@ -30038,7 +30038,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido_estado_final",
-      "community": 82,
+      "community": 241,
       "norm_label": "estado final"
     },
     {
@@ -30648,7 +30648,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general",
-      "community": 3,
+      "community": 209,
       "norm_label": "14-integrar-acceso-admin-en-el-shell-general.md"
     },
     {
@@ -30658,7 +30658,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_integrar_acceso_admin_en_el_shell_general_unificar_la_entrada_administrativa_sin_duplicar_la_experiencia_base",
-      "community": 391,
+      "community": 209,
       "norm_label": "integrar acceso admin en el shell general: unificar la entrada administrativa sin duplicar la experiencia base"
     },
     {
@@ -30668,7 +30668,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_objetivo",
-      "community": 391,
+      "community": 209,
       "norm_label": "objetivo"
     },
     {
@@ -30678,7 +30678,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_estado",
-      "community": 391,
+      "community": 209,
       "norm_label": "estado"
     },
     {
@@ -30688,7 +30688,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_archivos",
-      "community": 391,
+      "community": 209,
       "norm_label": "archivos"
     },
     {
@@ -30698,7 +30698,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_pasos",
-      "community": 391,
+      "community": 209,
       "norm_label": "pasos"
     },
     {
@@ -30708,7 +30708,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_criterios_de_aceptacion",
-      "community": 391,
+      "community": 209,
       "norm_label": "criterios de aceptacion"
     },
     {
@@ -30718,7 +30718,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_resolucion",
-      "community": 391,
+      "community": 209,
       "norm_label": "resolucion"
     },
     {
@@ -30728,7 +30728,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_validacion",
-      "community": 391,
+      "community": 209,
       "norm_label": "validacion"
     },
     {
@@ -30738,7 +30738,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_estado_final",
-      "community": 391,
+      "community": 209,
       "norm_label": "estado final"
     },
     {
@@ -31258,7 +31258,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_readme_g4_5_frontend_base_and_experience",
-      "community": 3,
+      "community": 338,
       "norm_label": "g4.5 - frontend base and experience"
     },
     {
@@ -31268,7 +31268,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_readme_objetivo_del_grupo",
-      "community": 3,
+      "community": 338,
       "norm_label": "objetivo del grupo"
     },
     {
@@ -31278,7 +31278,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_readme_orden_recomendado",
-      "community": 3,
+      "community": 338,
       "norm_label": "orden recomendado"
     },
     {
@@ -31288,7 +31288,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_readme_resultado_esperado",
-      "community": 3,
+      "community": 338,
       "norm_label": "resultado esperado"
     },
     {
@@ -31298,7 +31298,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g5_auth_and_roles_01_implementar_autenticacion_base_de_usuario",
-      "community": 232,
+      "community": 209,
       "norm_label": "01-implementar-autenticacion-base-de-usuario.md"
     },
     {
@@ -31398,7 +31398,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g5_auth_and_roles_02_integrar_type_rol_al_flujo_de_acceso_y_sesion",
-      "community": 232,
+      "community": 209,
       "norm_label": "02-integrar-type-rol-al-flujo-de-acceso-y-sesion.md"
     },
     {
@@ -31608,7 +31608,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_proteger_admin_dashboard_para_rol_admin_restringir_la_entrada_a_la_zona_administrativa",
-      "community": 216,
+      "community": 76,
       "norm_label": "proteger admin dashboard para rol admin: restringir la entrada a la zona administrativa"
     },
     {
@@ -31618,7 +31618,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_objetivo",
-      "community": 216,
+      "community": 76,
       "norm_label": "objetivo"
     },
     {
@@ -31628,7 +31628,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_estado",
-      "community": 216,
+      "community": 76,
       "norm_label": "estado"
     },
     {
@@ -31638,7 +31638,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_archivos",
-      "community": 216,
+      "community": 76,
       "norm_label": "archivos"
     },
     {
@@ -31648,7 +31648,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_pasos",
-      "community": 216,
+      "community": 76,
       "norm_label": "pasos"
     },
     {
@@ -31658,7 +31658,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_criterios_de_aceptacion",
-      "community": 216,
+      "community": 76,
       "norm_label": "criterios de aceptacion"
     },
     {
@@ -31668,7 +31668,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_resolucion",
-      "community": 216,
+      "community": 76,
       "norm_label": "resolucion"
     },
     {
@@ -31678,7 +31678,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_validacion",
-      "community": 216,
+      "community": 76,
       "norm_label": "validacion"
     },
     {
@@ -31688,7 +31688,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "g5_auth_and_roles_04_proteger_admin_dashboard_para_rol_admin_estado_final",
-      "community": 216,
+      "community": 76,
       "norm_label": "estado final"
     },
     {
@@ -31698,7 +31698,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g5_auth_and_roles_05_proteger_acciones_de_creacion_y_edicion_administrativas",
-      "community": 76,
+      "community": 235,
       "norm_label": "05-proteger-acciones-de-creacion-y-edicion-administrativas.md"
     },
     {
@@ -33348,7 +33348,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion",
-      "community": 76,
+      "community": 235,
       "norm_label": "02-implementar-validaciones-de-alta-y-edicion.md"
     },
     {
@@ -33358,7 +33358,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_implementar_validaciones_de_alta_y_edicion_asegurar_consistencia_minima_de_los_ejercicios",
-      "community": 241,
+      "community": 235,
       "norm_label": "implementar validaciones de alta y edicion: asegurar consistencia minima de los ejercicios"
     },
     {
@@ -33368,7 +33368,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_objetivo",
-      "community": 241,
+      "community": 235,
       "norm_label": "objetivo"
     },
     {
@@ -33378,7 +33378,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_estado",
-      "community": 241,
+      "community": 235,
       "norm_label": "estado"
     },
     {
@@ -33388,7 +33388,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_archivos",
-      "community": 241,
+      "community": 235,
       "norm_label": "archivos"
     },
     {
@@ -33398,7 +33398,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_pasos",
-      "community": 241,
+      "community": 235,
       "norm_label": "pasos"
     },
     {
@@ -33408,7 +33408,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_criterios_de_aceptacion",
-      "community": 241,
+      "community": 235,
       "norm_label": "criterios de aceptacion"
     },
     {
@@ -33418,7 +33418,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_resolucion",
-      "community": 241,
+      "community": 235,
       "norm_label": "resolucion"
     },
     {
@@ -33428,7 +33428,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_validacion",
-      "community": 241,
+      "community": 235,
       "norm_label": "validacion"
     },
     {
@@ -33438,7 +33438,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "g6_admin_exercises_02_implementar_validaciones_de_alta_y_edicion_estado_final",
-      "community": 241,
+      "community": 235,
       "norm_label": "estado final"
     },
     {
@@ -41004,7 +41004,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 232,
+      "community": 209,
       "norm_label": "app/layout.tsx",
       "id": "app_layout_tsx"
     },
@@ -41030,7 +41030,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 232,
+      "community": 209,
       "norm_label": "supabase auth con @supabase/ssr (login, logout, middleware, magic link)",
       "id": "supabase_auth_ssr_implementation"
     },
@@ -41043,7 +41043,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 232,
+      "community": 209,
       "norm_label": "profiles.type_rol",
       "id": "profiles_type_rol"
     },
@@ -41056,7 +41056,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 232,
+      "community": 209,
       "norm_label": "contexto de auth con rol expuesto a layout, navegacion y guards",
       "id": "auth_context_rol"
     },
@@ -41098,7 +41098,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Base reutilizable de guards server-side para sostener proteccion de escritura administrativa en G6 y G7, sin depender de ocultar botones en la UI.",
-      "community": 76,
+      "community": 235,
       "norm_label": "requireuser / requireadmin server guards",
       "id": "g5_auth_and_roles_requireuser_requireadmin"
     },
@@ -49844,9 +49844,9 @@
       "source_file": "app/layout.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_layout",
-      "target": "pwa_pwaruntime",
-      "confidence_score": 1.0
+      "target": "pwa_pwaruntime"
     },
     {
       "relation": "contains",
@@ -49854,9 +49854,9 @@
       "source_file": "app/components/pwa/PwaRuntime.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "pwa_pwaruntime",
-      "target": "pwa_pwaruntime_isstandalonedisplay",
-      "confidence_score": 1.0
+      "target": "pwa_pwaruntime_isstandalonedisplay"
     },
     {
       "relation": "contains",
@@ -49864,9 +49864,9 @@
       "source_file": "app/components/pwa/PwaRuntime.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "pwa_pwaruntime",
-      "target": "pwa_pwaruntime_pwaruntime",
-      "confidence_score": 1.0
+      "target": "pwa_pwaruntime_pwaruntime"
     },
     {
       "relation": "imports",
@@ -49875,9 +49875,9 @@
       "source_file": "app/layout.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_layout",
-      "target": "pwa_pwaruntime_pwaruntime",
-      "confidence_score": 1.0
+      "target": "pwa_pwaruntime_pwaruntime"
     },
     {
       "relation": "imports_from",
@@ -51012,9 +51012,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "shared_mobileheader",
-      "confidence_score": 1.0
+      "target": "shared_mobileheader"
     },
     {
       "relation": "imports_from",
@@ -51212,9 +51212,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "shared_mobileheader_mobileheaderbadgesync",
-      "confidence_score": 1.0
+      "target": "shared_mobileheader_mobileheaderbadgesync"
     },
     {
       "relation": "imports",
@@ -51495,6 +51495,17 @@
       "confidence_score": 1.0,
       "source": "app_layout",
       "target": "shared_mobiletabbar_mobiletabbar"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app/components/shared/MobileTabBar.tsx",
+      "source_location": "L120",
+      "weight": 1.0,
+      "source": "shared_mobiletabbar_mobiletabbar",
+      "target": "lib_utils_cn"
     },
     {
       "relation": "imports_from",
@@ -53206,9 +53217,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "ui_button",
-      "confidence_score": 1.0
+      "target": "ui_button"
     },
     {
       "relation": "imports_from",
@@ -53346,9 +53357,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "ui_button_button",
-      "confidence_score": 1.0
+      "target": "ui_button_button"
     },
     {
       "relation": "imports",
@@ -53434,9 +53445,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "ui_card",
-      "confidence_score": 1.0
+      "target": "ui_card"
     },
     {
       "relation": "imports_from",
@@ -53593,9 +53604,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "ui_card_card",
-      "confidence_score": 1.0
+      "target": "ui_card_card"
     },
     {
       "relation": "imports",
@@ -53758,9 +53769,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "ui_card_cardcontent",
-      "confidence_score": 1.0
+      "target": "ui_card_cardcontent"
     },
     {
       "relation": "imports",
@@ -56563,9 +56574,9 @@
       "source_file": "app/dashboard/page.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "dashboard_page",
-      "target": "dashboard_page_legacydashboardpage",
-      "confidence_score": 1.0
+      "target": "dashboard_page_legacydashboardpage"
     },
     {
       "relation": "imports_from",
@@ -56650,9 +56661,9 @@
       "source_file": "app/dashboard/rutinas/dia/page.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_dashboard_rutinas_dia_page_tsx_dia_page",
-      "target": "dia_page_legacydashboardroutinedaypage",
-      "confidence_score": 1.0
+      "target": "dia_page_legacydashboardroutinedaypage"
     },
     {
       "relation": "contains",
@@ -56660,9 +56671,9 @@
       "source_file": "app/dashboard/rutinas/dia/page.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_dashboard_rutinas_dia_page_tsx_dia_page",
-      "target": "dia_page_legacydashboardroutinedaypageprops",
-      "confidence_score": 1.0
+      "target": "dia_page_legacydashboardroutinedaypageprops"
     },
     {
       "relation": "imports_from",
@@ -56802,9 +56813,9 @@
       "source_file": "app/dashboard/rutinas/page.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_dashboard_rutinas_page_tsx_rutinas_page",
-      "target": "rutinas_page_legacydashboardroutinespage",
-      "confidence_score": 1.0
+      "target": "rutinas_page_legacydashboardroutinespage"
     },
     {
       "relation": "contains",
@@ -56894,9 +56905,9 @@
       "source_file": "app/layout.tsx",
       "source_location": "L60",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_layout",
-      "target": "app_layout_viewport",
-      "confidence_score": 1.0
+      "target": "app_layout_viewport"
     },
     {
       "relation": "imports_from",
@@ -57156,9 +57167,9 @@
       "source_file": "app/rutinas/dia/page.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_dia_page_tsx_dia_page",
-      "target": "lib_auth",
-      "confidence_score": 1.0
+      "target": "lib_auth"
     },
     {
       "relation": "imports_from",
@@ -57167,9 +57178,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "lib_auth",
-      "confidence_score": 1.0
+      "target": "lib_auth"
     },
     {
       "relation": "imports_from",
@@ -57484,9 +57495,9 @@
       "source_file": "app/rutinas/dia/page.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_dia_page_tsx_dia_page",
-      "target": "lib_auth_requireuser",
-      "confidence_score": 1.0
+      "target": "lib_auth_requireuser"
     },
     {
       "relation": "imports",
@@ -57495,9 +57506,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "lib_auth_requireuser",
-      "confidence_score": 1.0
+      "target": "lib_auth_requireuser"
     },
     {
       "relation": "imports",
@@ -61711,9 +61722,9 @@
       "source_file": "app/rutinas/dia/page.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_dia_page_tsx_dia_page",
-      "target": "lib_routine_metadata",
-      "confidence_score": 1.0
+      "target": "lib_routine_metadata"
     },
     {
       "relation": "imports_from",
@@ -61722,9 +61733,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "lib_routine_metadata",
-      "confidence_score": 1.0
+      "target": "lib_routine_metadata"
     },
     {
       "relation": "contains",
@@ -61903,9 +61914,9 @@
       "source_file": "app/rutinas/dia/page.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_dia_page_tsx_dia_page",
-      "target": "lib_routine_metadata_routine_difficulty_labels",
-      "confidence_score": 1.0
+      "target": "lib_routine_metadata_routine_difficulty_labels"
     },
     {
       "relation": "imports",
@@ -61914,9 +61925,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "lib_routine_metadata_routine_difficulty_labels",
-      "confidence_score": 1.0
+      "target": "lib_routine_metadata_routine_difficulty_labels"
     },
     {
       "relation": "imports",
@@ -61925,9 +61936,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "lib_routine_metadata_routine_objective_labels",
-      "confidence_score": 1.0
+      "target": "lib_routine_metadata_routine_objective_labels"
     },
     {
       "relation": "contains",
@@ -62538,9 +62549,9 @@
       "source_file": "app/rutinas/dia/page.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_dia_page_tsx_dia_page",
-      "target": "lib_saved_routines",
-      "confidence_score": 1.0
+      "target": "lib_saved_routines"
     },
     {
       "relation": "imports_from",
@@ -62549,9 +62560,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "lib_saved_routines",
-      "confidence_score": 1.0
+      "target": "lib_saved_routines"
     },
     {
       "relation": "contains",
@@ -62874,9 +62885,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "lib_saved_routines_listsavedroutinesforuser",
-      "confidence_score": 1.0
+      "target": "lib_saved_routines_listsavedroutinesforuser"
     },
     {
       "relation": "calls",
@@ -62929,9 +62940,9 @@
       "source_file": "app/rutinas/dia/page.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_dia_page_tsx_dia_page",
-      "target": "lib_saved_routines_getsavedroutinebyidforuser",
-      "confidence_score": 1.0
+      "target": "lib_saved_routines_getsavedroutinebyidforuser"
     },
     {
       "relation": "imports",
@@ -62940,9 +62951,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "lib_saved_routines_getsavedroutinebyidforuser",
-      "confidence_score": 1.0
+      "target": "lib_saved_routines_getsavedroutinebyidforuser"
     },
     {
       "relation": "calls",
@@ -63801,9 +63812,9 @@
       "source_file": "app/rutinas/dia/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_dia_page_tsx_dia_page",
-      "target": "lib_workout_tracking",
-      "confidence_score": 1.0
+      "target": "lib_workout_tracking"
     },
     {
       "relation": "imports_from",
@@ -63812,9 +63823,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "lib_workout_tracking",
-      "confidence_score": 1.0
+      "target": "lib_workout_tracking"
     },
     {
       "relation": "imports_from",
@@ -64322,9 +64333,9 @@
       "source_file": "app/rutinas/dia/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_dia_page_tsx_dia_page",
-      "target": "lib_workout_tracking_getworkoutsessionforweek",
-      "confidence_score": 1.0
+      "target": "lib_workout_tracking_getworkoutsessionforweek"
     },
     {
       "relation": "calls",
@@ -64476,9 +64487,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "lib_workout_tracking_listworkoutweeklysummaries",
-      "confidence_score": 1.0
+      "target": "lib_workout_tracking_listworkoutweeklysummaries"
     },
     {
       "relation": "calls",
@@ -64531,9 +64542,9 @@
       "source_file": "app/rutinas/dia/page.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_dia_page_tsx_dia_page",
-      "target": "lib_workout_tracking_getexercisehistorybyroutineitem",
-      "confidence_score": 1.0
+      "target": "lib_workout_tracking_getexercisehistorybyroutineitem"
     },
     {
       "relation": "calls",
@@ -64640,9 +64651,9 @@
       "source_file": "app/manifest.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_manifest",
-      "target": "app_manifest_manifest",
-      "confidence_score": 1.0
+      "target": "app_manifest_manifest"
     },
     {
       "relation": "imports_from",
@@ -65115,9 +65126,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "rutinas_weekdayslist",
-      "confidence_score": 1.0
+      "target": "rutinas_weekdayslist"
     },
     {
       "relation": "contains",
@@ -65166,9 +65177,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "rutinas_weekdayslist_weekdayslist",
-      "confidence_score": 1.0
+      "target": "rutinas_weekdayslist_weekdayslist"
     },
     {
       "relation": "imports_from",
@@ -65177,9 +65188,9 @@
       "source_file": "app/rutinas/dia/page.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_dia_page_tsx_dia_page",
-      "target": "dia_dayworkoutclient",
-      "confidence_score": 1.0
+      "target": "dia_dayworkoutclient"
     },
     {
       "relation": "imports_from",
@@ -65351,9 +65362,9 @@
       "source_file": "app/rutinas/dia/page.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_dia_page_tsx_dia_page",
-      "target": "dia_dayworkoutclient_dayworkoutclient",
-      "confidence_score": 1.0
+      "target": "dia_dayworkoutclient_dayworkoutclient"
     },
     {
       "relation": "contains",
@@ -65434,9 +65445,9 @@
       "source_file": "app/rutinas/dia/page.tsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_dia_page_tsx_dia_page",
-      "target": "dia_page_daypageprops",
-      "confidence_score": 1.0
+      "target": "dia_page_daypageprops"
     },
     {
       "relation": "contains",
@@ -65444,9 +65455,9 @@
       "source_file": "app/rutinas/dia/page.tsx",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_dia_page_tsx_dia_page",
-      "target": "dia_page_rutinadiapage",
-      "confidence_score": 1.0
+      "target": "dia_page_rutinadiapage"
     },
     {
       "relation": "contains",
@@ -65454,9 +65465,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L196",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "rutinas_page_minicard",
-      "confidence_score": 1.0
+      "target": "rutinas_page_minicard"
     },
     {
       "relation": "contains",
@@ -65464,9 +65475,9 @@
       "source_file": "app/rutinas/page.tsx",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_rutinas_page_tsx_rutinas_page",
-      "target": "rutinas_page_rutinaspage",
-      "confidence_score": 1.0
+      "target": "rutinas_page_rutinaspage"
     },
     {
       "relation": "contains",
@@ -66064,9 +66075,9 @@
       "source_file": "public/sw.js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "public_sw",
-      "target": "public_sw_static_assets",
-      "confidence_score": 1.0
+      "target": "public_sw_static_assets"
     },
     {
       "relation": "contains",
@@ -100760,5 +100771,5 @@
       "source_file": "specs/G9-user-dashboard/README.md"
     }
   ],
-  "built_at_commit": "58939dd7492b7a15bcfd39cefbc64efd7018ba61"
+  "built_at_commit": "f0f9351522e8371d82ff6061edc29669f29d67d4"
 }

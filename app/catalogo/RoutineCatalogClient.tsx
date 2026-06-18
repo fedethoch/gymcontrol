@@ -8,7 +8,13 @@ import { useState } from "react";
 import { FilterPanel } from "@/app/components/shared/FilterPanel";
 import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
-import { fadeUp, motion, staggerContainer } from "@/app/components/ui/motion";
+import {
+  fadeUp,
+  listItemHover,
+  motion,
+  staggerContainer,
+  tapFeedback,
+} from "@/app/components/ui/motion";
 import {
   ROUTINE_DIFFICULTY_LABELS,
   ROUTINE_OBJECTIVE_LABELS,
@@ -168,7 +174,7 @@ export function RoutineCatalogClient({ routines }: RoutineCatalogClientProps) {
       </div>
 
       {paginatedRoutines.length === 0 ? (
-        <div className="grid min-h-[32rem] place-items-center rounded-2xl border border-dashed border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] px-6 py-10 text-center">
+        <div className="motion-empty-state grid min-h-[32rem] place-items-center rounded-2xl border border-dashed border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] px-6 py-10 text-center">
           <div className="max-w-md">
             <p className="font-display text-lg font-semibold text-white">
               No hay rutinas para mostrar
@@ -253,7 +259,11 @@ function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
   const objective = ROUTINE_OBJECTIVE_LABELS[routine.objective];
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#111723_0%,#0b1017_100%)] shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-transform duration-200 hover:-translate-y-0.5 hover:border-[rgba(185,149,255,0.24)]">
+    <motion.article
+      whileHover={listItemHover}
+      whileTap={tapFeedback}
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#111723_0%,#0b1017_100%)] shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-[border-color,box-shadow] duration-200 hover:border-[rgba(185,149,255,0.24)]"
+    >
       <div className="relative h-36 overflow-hidden border-b border-[rgba(255,255,255,0.08)] bg-[#141a24] sm:h-44">
         {imageUrl ? (
           <Image
@@ -306,7 +316,7 @@ function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
           </Link>
         </Button>
       </div>
-    </article>
+    </motion.article>
   );
 }
 

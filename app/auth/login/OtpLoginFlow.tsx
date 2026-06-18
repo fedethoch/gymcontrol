@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { ArrowRight, KeyRound, Mail } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
+import { LoadingDots } from "@/app/components/ui/LoadingDots";
+import { fadeUp, motion } from "@/app/components/ui/motion";
 import { isValidEmail, normalizeEmail, normalizeOtpToken } from "@/app/lib/auth-input";
 
 const INPUT_WITH_ICON_CLASS = "pl-10 focus:ring-4 focus:ring-[rgba(124,58,237,0.18)]";
@@ -141,14 +144,20 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
 
   return (
     <div className="grid gap-5">
-      {step === "email" ? (
-        <form
-          className="grid gap-4"
-          onSubmit={(event) => {
-            event.preventDefault();
-            void requestOtp("request");
-          }}
-        >
+      <AnimatePresence mode="wait" initial={false}>
+        {step === "email" ? (
+          <motion.form
+            key="email"
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            exit={{ opacity: 0, y: -6, transition: { duration: 0.12 } }}
+            className="grid gap-4"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void requestOtp("request");
+            }}
+          >
           <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
             Email
             <span className="relative flex items-center">
@@ -166,18 +175,24 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
           </label>
 
           <Button type="submit" className="w-full" disabled={busyState !== null}>
-            {busyState === "request" ? "Enviando codigo..." : "Enviar codigo"}
+            {busyState === "request" ? <LoadingDots /> : null}
+            {busyState === "request" ? "Enviando codigo" : "Enviar codigo"}
             <ArrowRight className="size-4" />
           </Button>
-        </form>
-      ) : (
-        <form
-          className="grid gap-4"
-          onSubmit={(event) => {
-            event.preventDefault();
-            void verifyOtp();
-          }}
-        >
+          </motion.form>
+        ) : (
+          <motion.form
+            key="token"
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            exit={{ opacity: 0, y: -6, transition: { duration: 0.12 } }}
+            className="grid gap-4"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void verifyOtp();
+            }}
+          >
           <div className="rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] px-4 py-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8b94a8]">
               Email actual
@@ -204,7 +219,8 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
           </label>
 
           <Button type="submit" className="w-full" disabled={busyState !== null}>
-            {busyState === "verify" ? "Verificando codigo..." : "Verificar codigo"}
+            {busyState === "verify" ? <LoadingDots /> : null}
+            {busyState === "verify" ? "Verificando codigo" : "Verificar codigo"}
             <ArrowRight className="size-4" />
           </Button>
 
@@ -218,7 +234,8 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
                 void requestOtp("resend");
               }}
             >
-              {busyState === "resend" ? "Reenviando..." : "Reenviar codigo"}
+              {busyState === "resend" ? <LoadingDots /> : null}
+              {busyState === "resend" ? "Reenviando" : "Reenviar codigo"}
             </Button>
             <Button
               type="button"
@@ -233,8 +250,9 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
               Cambiar email
             </Button>
           </div>
-        </form>
-      )}
+          </motion.form>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

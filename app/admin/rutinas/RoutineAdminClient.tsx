@@ -11,7 +11,6 @@ import {
   ClipboardList,
   Dumbbell,
   Info,
-  LoaderCircle,
   PencilLine,
   Plus,
   Search,
@@ -34,6 +33,7 @@ import {
   DialogTitle,
 } from "@/app/components/ui/Dialog";
 import { Input } from "@/app/components/ui/Input";
+import { LoadingDots } from "@/app/components/ui/LoadingDots";
 import {
   Select,
   SelectContent,
@@ -290,7 +290,7 @@ export function RoutineAdminClient({
       <Card className="overflow-hidden">
         <CardContent className="p-0 sm:p-0">
           {pageData.length === 0 ? (
-            <div className="grid min-h-72 place-items-center px-6 py-10 text-center">
+            <div className="motion-empty-state grid min-h-72 place-items-center px-6 py-10 text-center">
               <div className="max-w-sm">
                 <p className="font-display text-lg font-semibold text-white">
                   {hasFilters ? "Sin resultados" : "Todavia no hay rutinas"}
@@ -338,7 +338,7 @@ export function RoutineAdminClient({
                     routine.dayCount === 0 ? 0 : Math.round(routine.itemCount / routine.dayCount);
 
                   return (
-                    <tr key={routine.id} className="transition-colors hover:bg-[var(--card-alt)]">
+                    <tr key={routine.id} className="transition-[background-color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[var(--card-alt)] motion-reduce:transition-none">
                       <td className="px-5 py-4 text-center sm:px-6">
                         <div className="mx-auto min-w-0 max-w-xs text-left">
                           <p className="truncate font-medium text-white">{routine.name}</p>
@@ -418,7 +418,7 @@ export function RoutineAdminClient({
                 return (
                   <div
                     key={routine.id}
-                    className="min-w-0 rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-3"
+                    className="min-w-0 rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-3 transition-[border-color,box-shadow,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.99] motion-reduce:transition-none motion-reduce:active:scale-100"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
@@ -565,7 +565,7 @@ export function RoutineAdminClient({
               disabled={isDeleting}
               onClick={confirmDelete}
             >
-              {isDeleting ? <LoaderCircle className="size-4 animate-spin" /> : <Trash2 className="size-4" />}
+              {isDeleting ? <LoadingDots /> : <Trash2 className="size-4" />}
               Si, eliminar
             </Button>
           </div>
@@ -894,7 +894,7 @@ function RoutineFormSheet({
 
             <div className="grid gap-4">
               {days.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-[var(--border)] bg-[var(--card-alt)] px-5 py-8 text-center">
+                <div className="motion-empty-state rounded-2xl border border-dashed border-[var(--border)] bg-[var(--card-alt)] px-5 py-8 text-center">
                   <p className="font-display text-lg font-semibold text-white">Sin dias cargados</p>
                   <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)]">
                     Agrega el primer dia para empezar a construir la rutina.
@@ -1127,7 +1127,7 @@ function RoutineFormSheet({
             <Button disabled={submitDisabled} type="submit">
               {isPending ? (
                 <>
-                  <LoaderCircle className="size-4 animate-spin" />
+                  <LoadingDots />
                   Guardando...
                 </>
               ) : isEditing ? (

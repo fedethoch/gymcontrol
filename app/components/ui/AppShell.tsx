@@ -1,4 +1,7 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { MotionConfig } from "framer-motion";
 
 import { cn } from "@/app/lib/utils";
 
@@ -8,5 +11,9 @@ type AppShellProps = {
 };
 
 export function AppShell({ children, className }: AppShellProps) {
-  return <div className={cn("app-shell", className)}>{children}</div>;
+  return (
+    <MotionConfig reducedMotion="user">
+      <div className={cn("app-shell", className)}>{children}</div>
+    </MotionConfig>
+  );
 }

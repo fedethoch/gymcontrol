@@ -18,7 +18,13 @@ import {
   CATEGORY_ICONS,
 } from "@/app/lib/nutrition-style";
 import { FOOD_CATEGORIES, FOOD_CATEGORY_LABELS, type Food } from "@/app/lib/nutrition-types";
-import { fadeUp, motion, staggerContainer } from "@/app/components/ui/motion";
+import {
+  fadeUp,
+  listItemHover,
+  motion,
+  staggerContainer,
+  tapFeedback,
+} from "@/app/components/ui/motion";
 
 type NutritionCatalogClientProps = {
   foods: Food[];
@@ -73,7 +79,7 @@ export function NutritionCatalogClient({ foods }: NutritionCatalogClientProps) {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="grid min-h-[20rem] place-items-center rounded-2xl border border-dashed border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] px-6 py-10 text-center">
+        <div className="motion-empty-state grid min-h-[20rem] place-items-center rounded-2xl border border-dashed border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] px-6 py-10 text-center">
           <div className="max-w-md">
             <p className="font-display text-lg font-semibold text-white">
               No hay alimentos para mostrar
@@ -111,9 +117,11 @@ function FoodRow({ food, onSelect }: { food: Food; onSelect: () => void }) {
   const Icon = CATEGORY_ICONS[food.category];
 
   return (
-    <button
+    <motion.button
       type="button"
       onClick={onSelect}
+      whileHover={listItemHover}
+      whileTap={tapFeedback}
       className="group flex w-full flex-col gap-3 px-4 py-3.5 text-left transition-colors duration-200 hover:bg-[rgba(255,255,255,0.03)] sm:flex-row sm:items-center sm:gap-4"
     >
       <span
@@ -140,7 +148,7 @@ function FoodRow({ food, onSelect }: { food: Food; onSelect: () => void }) {
           showLegend={false}
         />
       </div>
-    </button>
+    </motion.button>
   );
 }
 

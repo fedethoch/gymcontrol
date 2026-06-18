@@ -37,7 +37,7 @@ function SheetOverlay({
   return (
     <DialogPrimitive.Overlay
       data-slot="sheet-overlay"
-      className={cn("fixed inset-0 z-50 bg-[#02040a]/80", className)}
+      className={cn("motion-sheet-overlay fixed inset-0 z-50 bg-[#02040a]/80", className)}
       {...props}
     />
   );
@@ -56,8 +56,9 @@ function SheetContent({
       <SheetOverlay />
       <DialogPrimitive.Content
         data-slot="sheet-content"
+        data-side={side}
         className={cn(
-          "fixed z-50 flex flex-col border-[var(--border)] bg-[#080b10] shadow-[0_24px_60px_rgba(0,0,0,0.5)] outline-none",
+          "motion-sheet-content fixed z-50 flex flex-col border-[var(--border)] bg-[#080b10] shadow-[0_24px_60px_rgba(0,0,0,0.5)] outline-none",
           side === "left" &&
             "inset-y-0 left-0 h-full w-[min(22rem,88vw)] border-r",
           side === "right" &&
@@ -71,7 +72,7 @@ function SheetContent({
         {...props}
       >
         {children}
-        <DialogPrimitive.Close className="absolute right-4 top-4 rounded-lg p-1 text-[#8f98a9] transition-colors hover:bg-[var(--card-alt)] hover:text-white">
+        <DialogPrimitive.Close className="absolute right-4 top-4 rounded-lg p-1 text-[#8f98a9] transition-[background-color,color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[var(--card-alt)] hover:text-white active:scale-95 motion-reduce:transition-none motion-reduce:active:scale-100">
           <X className="size-4" />
           <span className="sr-only">Cerrar</span>
         </DialogPrimitive.Close>
