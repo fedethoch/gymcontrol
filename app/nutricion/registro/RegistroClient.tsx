@@ -383,34 +383,38 @@ export function RegistroClient({
       </div>
 
       {/* Row 2: Macros card */}
-      <div className="rounded-2xl bg-[#0e131e] px-4 py-4">
-        <div className="mb-3 flex items-center gap-1.5">
-          <UtensilsCrossed className="size-4 text-[#7887a6]" />
-          <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#7887a6]">Macros</span>
+      <div className="rounded-2xl bg-[#0e131e] px-3.5 py-3.5">
+        <div className="mb-2.5 flex items-center gap-2">
+          <span className="grid size-6 place-items-center rounded-full bg-[rgba(124,58,237,0.14)] text-[var(--accent-bright)]">
+            <UtensilsCrossed className="size-3.5" />
+          </span>
+          <span className="font-display text-base font-semibold text-white">Macros</span>
         </div>
-        <div className="grid grid-cols-3 gap-1">
+        <div className="grid grid-cols-3 divide-x divide-[rgba(255,255,255,0.07)]">
           {(
             [
-              { Icon: Beef, label: MACRO_LABELS.protein, value: totalMacros.proteinG, target: targetMacros.proteinG, color: MACRO_COLORS.protein, align: "justify-self-start" },
-              { Icon: Wheat, label: MACRO_LABELS.carbs, value: totalMacros.carbsG, target: targetMacros.carbsG, color: MACRO_COLORS.carbs, align: "justify-self-center" },
-              { Icon: Droplet, label: MACRO_LABELS.fat, value: totalMacros.fatG, target: targetMacros.fatG, color: MACRO_COLORS.fat, align: "justify-self-end" },
-            ] as { Icon: LucideIcon; label: string; value: number; target: number; color: string; align: string }[]
-          ).map(({ Icon: MacroIcon, label, value, target, color, align }) => {
+              { Icon: Beef, label: MACRO_LABELS.protein, value: totalMacros.proteinG, target: targetMacros.proteinG, color: MACRO_COLORS.protein },
+              { Icon: Wheat, label: MACRO_LABELS.carbs, value: totalMacros.carbsG, target: targetMacros.carbsG, color: MACRO_COLORS.carbs },
+              { Icon: Droplet, label: MACRO_LABELS.fat, value: totalMacros.fatG, target: targetMacros.fatG, color: MACRO_COLORS.fat },
+            ] as { Icon: LucideIcon; label: string; value: number; target: number; color: string }[]
+          ).map(({ Icon: MacroIcon, label, value, target, color }) => {
             const pct = target > 0 ? Math.min(100, Math.round((value / target) * 100)) : 0;
             return (
-              <div key={label} className={cn("flex w-24 flex-col items-center", align)}>
-                <div>
-                  <AnimatedProgressRing value={pct} size={50} strokeWidth={4} progressColor={color}>
-                    <MacroIcon className="size-4" style={{ color }} />
-                  </AnimatedProgressRing>
-                </div>
+              <div key={label} className="flex min-w-0 flex-col items-center px-2 first:pl-0 last:pr-0">
+                <AnimatedProgressRing value={pct} size={46} strokeWidth={4} progressColor={color}>
+                  <MacroIcon className="size-3.5" style={{ color }} />
+                </AnimatedProgressRing>
                 <div className="mt-1.5 w-full min-w-0 text-center">
-                  <p className="truncate text-[10px] font-bold text-white">{label}</p>
-                  <p className="mt-0.5 text-[11px] font-bold text-white">{Math.round(value)}g/{Math.round(target)}g</p>
-                  <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-[#1a2235]">
+                  <p className="truncate text-[10px] font-bold leading-none text-white">{label}</p>
+                  <p className="mt-1 whitespace-nowrap text-[11px] font-bold leading-none text-white">
+                    {Math.round(value)} / {Math.round(target)}g
+                  </p>
+                  <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-[#1a2235]">
                     <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }} />
                   </div>
-                  <p className="mt-1 text-center text-[10px] font-semibold text-[#7887a6]">{pct}%</p>
+                  <p className="mt-1 text-center text-[10px] font-semibold leading-none" style={{ color }}>
+                    {pct}%
+                  </p>
                 </div>
               </div>
             );
@@ -421,8 +425,11 @@ export function RegistroClient({
       {/* Row 3: Comidas de hoy */}
       <div className="rounded-2xl bg-[#0e131e] p-3">
         <div className="mb-3 flex items-center justify-between gap-2">
-          <h2 className="font-display text-base font-semibold text-white">Comidas de hoy</h2>
-          <Button type="button" size="sm" className="shrink-0" onClick={() => setNewMealOpen(true)}>
+          <div className="min-w-0">
+            <h2 className="font-display text-base font-semibold text-white">Comidas de hoy</h2>
+            <p className="mt-0.5 truncate text-xs text-[#7887a6]">Cada comida suma a tu registro diario</p>
+          </div>
+          <Button type="button" size="sm" className="h-8 shrink-0 px-2.5 text-[10px]" onClick={() => setNewMealOpen(true)}>
             <Plus className="size-4" />
             Nueva
           </Button>
@@ -432,7 +439,7 @@ export function RegistroClient({
             Todavía no creaste comidas hoy. Usá &quot;Nueva&quot; para empezar.
           </p>
         ) : (
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid overflow-hidden rounded-xl border border-[rgba(255,255,255,0.06)] bg-[#111722] sm:grid-cols-2 sm:gap-3 sm:border-0 sm:bg-transparent">
             {meals.map((meal) => (
               <MealCard
                 key={meal.id}
@@ -745,8 +752,40 @@ function MealCard({
     </div>
   );
 
+  const compactActionButtons = (
+    <div className="flex shrink-0 items-center gap-1">
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        className="size-9 rounded-lg"
+        onClick={handleToggleEdit}
+        title={isEditing ? "Terminar ediciÃ³n" : "Editar comida"}
+      >
+        <Pencil className="size-3.5" />
+      </Button>
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        className="size-9 rounded-lg hover:text-red-400"
+        onClick={onDeleteMeal}
+        title="Eliminar comida"
+      >
+        <Trash2 className="size-3.5" />
+      </Button>
+    </div>
+  );
+
   return (
-    <div className="flex h-full flex-col gap-3 rounded-2xl bg-[#0e131e] p-4">
+    <div
+      className={cn(
+        "flex h-full flex-col",
+        isEditing
+          ? "gap-3 rounded-2xl bg-[#0e131e] p-4"
+          : "gap-2 border-b border-[rgba(255,255,255,0.06)] bg-[#111722] p-2.5 last:border-b-0 sm:gap-3 sm:rounded-2xl sm:border sm:border-[rgba(255,255,255,0.06)] sm:bg-[#0e131e] sm:p-4",
+      )}
+    >
       {isEditing ? (
         <>
           <div className="flex items-start justify-between gap-3">
@@ -808,49 +847,50 @@ function MealCard({
         </>
       ) : (
         <>
-          <div className="flex min-w-0 gap-3">
-            <div className="relative size-24 shrink-0 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card-alt)]">
+          <div className="flex min-w-0 items-center gap-2.5 sm:items-start sm:gap-3">
+            <div className="relative size-[68px] shrink-0 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card-alt)] sm:size-24 sm:rounded-2xl">
               <Image
                 alt={MEAL_TYPE_LABELS[type]}
                 className="object-cover"
                 fill
-                sizes="96px"
+                sizes="(max-width: 640px) 68px, 96px"
                 src={MEAL_TYPE_IMAGES[type]}
               />
             </div>
-            <div className="min-w-0 flex-1 pt-0.5">
-              <p className="truncate text-[10px] font-bold uppercase tracking-[0.16em] text-[#b985ff]">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-[10px] font-bold uppercase tracking-[0.14em] text-[#b985ff]">
                 {MEAL_TYPE_LABELS[meal.type]}
               </p>
-              <p className="mt-1 truncate font-display text-base font-semibold leading-tight text-white">
+              <p className="mt-0.5 truncate font-display text-[15px] font-semibold leading-tight text-white sm:mt-1 sm:text-base">
                 {meal.name}
               </p>
-              <p className="mt-1 line-clamp-2 text-xs leading-4 text-[#8d97ab]">
+              <p className="mt-0.5 line-clamp-1 text-xs leading-4 text-[#8d97ab] sm:mt-1 sm:line-clamp-2">
                 {formatMealFoods(meal)}
               </p>
-              <div className="mt-2 grid grid-cols-4 gap-1">
-                <MealCounter label="kcal" value={meal.kcal} />
-                <MealCounter label="P" value={meal.macros.proteinG} unit="g" />
-                <MealCounter label="C" value={meal.macros.carbsG} unit="g" />
-                <MealCounter label="G" value={meal.macros.fatG} unit="g" />
+              <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] font-semibold text-[#7887a6] sm:hidden">
+                <span style={{ color: MACRO_COLORS.protein }}>P {Math.round(meal.macros.proteinG)}g</span>
+                <span style={{ color: MACRO_COLORS.carbs }}>C {Math.round(meal.macros.carbsG)}g</span>
+                <span style={{ color: MACRO_COLORS.fat }}>G {Math.round(meal.macros.fatG)}g</span>
               </div>
+            </div>
+            <div className="flex shrink-0 flex-col items-end gap-1 self-start">
+              <span className="whitespace-nowrap rounded-full bg-[rgba(255,255,255,0.05)] px-2 py-1 text-[11px] font-bold text-white">
+                {meal.kcal} kcal
+              </span>
+              {compactActionButtons}
             </div>
           </div>
 
           {meal.items.length > 0 && (
             <Accordion type="single" collapsible className="-my-1">
               <AccordionItem value="items" className="border-none">
-                <AccordionTrigger className="py-1.5 text-xs font-semibold text-[#9aa3b8] hover:text-white">
+                <AccordionTrigger className="py-1 text-xs font-semibold text-[#9aa3b8] hover:text-white">
                   {meal.items.length} alimento{meal.items.length === 1 ? "" : "s"}
                 </AccordionTrigger>
                 <AccordionContent>{itemsList}</AccordionContent>
               </AccordionItem>
             </Accordion>
           )}
-
-          <div className="mt-auto flex justify-end border-t border-[var(--border)] pt-3">
-            {actionButtons}
-          </div>
         </>
       )}
     </div>
@@ -866,28 +906,6 @@ function formatMealFoods(meal: MealGroup) {
   const suffix = meal.items.length > 3 ? ` +${meal.items.length - 3}` : "";
 
   return `${names.join(", ")}${suffix}`;
-}
-
-function MealCounter({
-  label,
-  value,
-  unit = "",
-}: {
-  label: string;
-  value: number;
-  unit?: string;
-}) {
-  return (
-    <span className="min-w-0 rounded-md bg-[#151d2c] px-1.5 py-1 text-center">
-      <span className="block text-[8px] font-bold uppercase leading-none text-[#77839a]">
-        {label}
-      </span>
-      <span className="mt-0.5 block truncate text-[10px] font-bold leading-none text-white">
-        {Math.round(value)}
-        {unit}
-      </span>
-    </span>
-  );
 }
 
 function MacroChip({ label, value, color }: { label: string; value: number; color: string }) {

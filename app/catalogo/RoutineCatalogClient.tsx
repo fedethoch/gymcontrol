@@ -279,7 +279,7 @@ function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
         <div className="absolute inset-x-0 bottom-0 h-12 bg-[linear-gradient(180deg,transparent,rgba(5,7,11,0.86))]" />
       </div>
 
-      <div className="flex flex-1 flex-col gap-1.5 p-2.5 pb-0 sm:gap-3 sm:p-4 sm:pb-0">
+      <div className="flex min-h-0 flex-1 flex-col gap-1.5 p-2.5 pb-0 sm:gap-3 sm:p-4 sm:pb-0">
         <div className="flex flex-wrap items-start gap-x-2 gap-y-1 text-[9px] font-semibold uppercase tracking-[0.08em] text-[#9ea7b9] sm:text-[11px] sm:tracking-[0.12em]">
           <span>{dayCount} dias</span>
           <span aria-hidden="true" className="text-[#556074]">
@@ -308,7 +308,7 @@ function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
         <Button
           asChild
           size="sm"
-          className="-mx-2.5 mt-auto h-10 w-[calc(100%+1.25rem)] justify-between rounded-b-none rounded-t-lg border border-[rgba(185,149,255,0.2)] bg-[rgba(124,58,237,0.12)] px-2.5 text-white hover:bg-[rgba(124,58,237,0.18)] sm:-mx-4 sm:h-10 sm:w-[calc(100%+2rem)] sm:px-4"
+          className="-mx-2.5 -mb-px mt-auto h-9 w-[calc(100%+1.25rem)] justify-between rounded-none border-x-0 border-b-0 border-t border-[rgba(185,149,255,0.2)] bg-[rgba(124,58,237,0.12)] px-2.5 text-white hover:bg-[rgba(124,58,237,0.18)] sm:-mx-4 sm:h-10 sm:w-[calc(100%+2rem)] sm:px-4"
         >
           <Link href={`/catalogo/rutinas/${routine.id}`}>
             <span className="text-[10px] sm:text-sm">Ver rutina</span>
