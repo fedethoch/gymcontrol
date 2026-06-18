@@ -155,7 +155,7 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
           </SheetTrigger>
           <SheetContent
             side="left"
-            className="w-[min(18rem,76vw)] border-r-[#171d31] bg-[linear-gradient(180deg,#090c14_0%,#05070d_100%)] p-0"
+            className="mobile-more-sheet w-[min(17rem,72vw)] border-r-[#171d31] bg-[linear-gradient(180deg,#090c14_0%,#05070d_100%)] p-0"
           >
             <SheetHeader className="sr-only">
               <SheetTitle>GymControl</SheetTitle>
