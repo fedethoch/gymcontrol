@@ -298,7 +298,7 @@ a {
 }
 
 .mobile-tab-bar {
-  height: calc(1.75rem + env(safe-area-inset-bottom));
+  height: calc(1.3125rem + env(safe-area-inset-bottom));
   overflow: hidden;
 }
 
@@ -367,13 +367,13 @@ a {
 }
 
 .pwa-standalone .mobile-tab-bar {
-  height: calc(1.75rem + env(safe-area-inset-bottom));
+  height: calc(1.3125rem + env(safe-area-inset-bottom));
   bottom: 0;
 }
 
 @media (display-mode: standalone) {
   .mobile-tab-bar {
-    height: calc(1.75rem + env(safe-area-inset-bottom));
+    height: calc(1.3125rem + env(safe-area-inset-bottom));
     bottom: 0;
   }
 }
