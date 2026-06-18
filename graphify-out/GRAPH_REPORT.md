@@ -1,16 +1,16 @@
 # Graph Report - gymcontrol  (2026-06-17)
 
 ## Corpus Check
-- 419 files · ~845,767 words
+- 419 files · ~853,401 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4015 nodes · 5657 edges · 376 communities (328 shown, 48 thin omitted)
+- 4015 nodes · 5658 edges · 376 communities (328 shown, 48 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 190 edges (avg confidence: 0.83)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `58939dd7`
+- Built from commit: `f0f93515`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -348,6 +348,7 @@
 - [[_COMMUNITY_Community 335|Community 335]]
 - [[_COMMUNITY_Community 336|Community 336]]
 - [[_COMMUNITY_Community 337|Community 337]]
+- [[_COMMUNITY_Community 338|Community 338]]
 - [[_COMMUNITY_Community 360|Community 360]]
 - [[_COMMUNITY_Community 361|Community 361]]
 - [[_COMMUNITY_Community 362|Community 362]]
@@ -375,7 +376,6 @@
 - [[_COMMUNITY_Community 386|Community 386]]
 - [[_COMMUNITY_Community 387|Community 387]]
 - [[_COMMUNITY_Community 390|Community 390]]
-- [[_COMMUNITY_Community 391|Community 391]]
 - [[_COMMUNITY_Community 392|Community 392]]
 - [[_COMMUNITY_Community 393|Community 393]]
 - [[_COMMUNITY_Community 394|Community 394]]
@@ -384,7 +384,7 @@
 - [[_COMMUNITY_Community 399|Community 399]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `cn()` - 98 edges
+1. `cn()` - 99 edges
 2. `createSupabaseServerClient()` - 83 edges
 3. `requireUser()` - 33 edges
 4. `Button()` - 25 edges
@@ -468,8 +468,8 @@ Cohesion: 0.16
 Nodes (16): Architecture - MVP Scope, Architecture - Modules, Architecture - Flows, Architecture - Layers and Boundaries, ARCHITECTURE.md (gateway), Flujo admin: crear ejercicios, Flujo modal de detalle de ejercicio, Flujo usuario: explorar, elegir, guardar y renombrar rutinas (+8 more)
 
 ### Community 3 - "Frontend Experience & Auth Roles"
-Cohesion: 0.10
-Nodes (22): app/globals.css, docs/architecture/07-frontend-experience.md, Acceso admin integrado en shell general, Base visual de Admin dashboard (Rutinas y Ejercicios), Direccion visual general del producto (premium minimalista), Entradas administrativas Gestion de rutinas / Gestion de ejercicios, Fronteras funcionales entre modulos (Agregar rutinas, Mis rutinas, Ejercicio, Admin), Mapa de vistas y transiciones del MVP (+14 more)
+Cohesion: 0.12
+Nodes (18): app/globals.css, docs/architecture/07-frontend-experience.md, Acceso admin integrado en shell general, Base visual de Admin dashboard (Rutinas y Ejercicios), Direccion visual general del producto (premium minimalista), Entradas administrativas Gestion de rutinas / Gestion de ejercicios, Fronteras funcionales entre modulos (Agregar rutinas, Mis rutinas, Ejercicio, Admin), Mapa de vistas y transiciones del MVP (+10 more)
 
 ### Community 4 - "Auth Dual Transition (OTP + Google)"
 Cohesion: 0.07
@@ -556,8 +556,8 @@ Cohesion: 0.15
 Nodes (14): Acciones y logica de aplicacion, Base visual compartida, Cierre de arquitectura, Componentes compartidos, Criterio de simplicidad, Estrategia de implementacion, Nota, Regla de implementacion recomendada (+6 more)
 
 ### Community 29 - "AdminLayout"
-Cohesion: 0.09
-Nodes (27): CatalogRoutineDetailPageProps, StatPillProps, RoutineDetailClient(), ROUTINE_DIFFICULTIES, ROUTINE_DIFFICULTY_LABELS, ROUTINE_OBJECTIVE_LABELS, ROUTINE_OBJECTIVES, RoutineDifficulty (+19 more)
+Cohesion: 0.07
+Nodes (33): CatalogRoutineDetailPageProps, StatPillProps, RoutineDetailClient(), ROUTINE_DIFFICULTIES, ROUTINE_DIFFICULTY_LABELS, ROUTINE_OBJECTIVE_LABELS, ROUTINE_OBJECTIVES, RoutineDifficulty (+25 more)
 
 ### Community 30 - "RootLayout"
 Cohesion: 0.12
@@ -712,8 +712,8 @@ Cohesion: 0.10
 Nodes (19): Archivos, Confirmar bootstrap admin y criterio de QA manual: cerrar la operativa minima para validar permisos, Criterios de aceptacion, Estado, Estado final, Objetivo, Pasos, Resolucion (+11 more)
 
 ### Community 76 - "RoutineFormPayload"
-Cohesion: 0.15
-Nodes (10): app/admin layout server-side guard (type_rol=admin), app/dashboard layout server-side guard (auth required, no admin), Decision cerrada, Estado del grupo, G5 - Auth And Roles, Objetivo del grupo, Orden recomendado, Resultado esperado (+2 more)
+Cohesion: 0.10
+Nodes (18): Archivos, Criterios de aceptacion, Estado, Estado final, Objetivo, Pasos, Proteger admin dashboard para rol admin: restringir la entrada a la zona administrativa, Resolucion (+10 more)
 
 ### Community 77 - "RoutineFormState"
 Cohesion: 0.22
@@ -732,8 +732,8 @@ Cohesion: 0.07
 Nodes (40): AdminLayout(), requireAdmin(), ACTIVITY_LEVEL_INFO, ACTIVITY_LEVELS, ActivityLevel, BODY_FAT_REFERENCES, FOOD_MEASURE_LABELS, FoodCategory (+32 more)
 
 ### Community 82 - "RoutineDifficulty"
-Cohesion: 0.10
-Nodes (18): Archivos, Criterios de aceptacion, Definir navegacion base para usuario y admin: ordenar el acceso principal del producto, Estado, Estado final, Objetivo, Pasos, Resolucion (+10 more)
+Cohesion: 0.22
+Nodes (9): Archivos, Criterios de aceptacion, Definir navegacion base para usuario y admin: ordenar el acceso principal del producto, Estado, Estado final, Objetivo, Pasos, Resolucion (+1 more)
 
 ### Community 85 - "AdminRoutineListItem"
 Cohesion: 0.17
@@ -816,8 +816,8 @@ Cohesion: 0.20
 Nodes (9): Archivos, Criterios de aceptacion, Estado, Estado final, Objetivo, Pasos, Resolucion, Resolver bugs detectados en pruebas finales: cerrar problemas funcionales antes del cierre del MVP (+1 more)
 
 ### Community 105 - "cn"
-Cohesion: 0.06
-Nodes (43): ToggleOption(), fadeRow, RoutineDetailClientProps, Gender, cn(), calculateStreak(), DraftItem, formatDateOnly() (+35 more)
+Cohesion: 0.07
+Nodes (41): ToggleOption(), fadeRow, RoutineDetailClientProps, Gender, cn(), calculateStreak(), DraftItem, formatDateOnly() (+33 more)
 
 ### Community 106 - "getCurrentWeekRange"
 Cohesion: 0.20
@@ -1204,8 +1204,8 @@ Cohesion: 0.22
 Nodes (9): Archivos, Criterios de aceptacion, Disenar pantalla agregar rutinas: preparar la vista de exploracion y seleccion del usuario, Estado, Estado final, Objetivo, Pasos, Resolucion (+1 more)
 
 ### Community 209 - "Community 209"
-Cohesion: 0.22
-Nodes (9): Archivos, Criterios de aceptacion, Estado, Estado final, Implementar autenticacion base de usuario: habilitar Supabase Auth server-side para el MVP, Objetivo, Pasos, Resolucion (+1 more)
+Cohesion: 0.08
+Nodes (22): app/layout.tsx, Contexto de auth con rol expuesto a layout, navegacion y guards, Archivos, Criterios de aceptacion, Estado, Estado final, Integrar acceso admin en el shell general: unificar la entrada administrativa sin duplicar la experiencia base, Objetivo (+14 more)
 
 ### Community 210 - "Community 210"
 Cohesion: 0.20
@@ -1232,8 +1232,8 @@ Cohesion: 0.50
 Nodes (4): Grupo "G6" - Ejercicios admin, Subgrupo "G6.1" - Acceso a datos y validacion, Subgrupo "G6.2" - Admin UI, Subgrupo "G6.3" - Integracion y permisos
 
 ### Community 216 - "Community 216"
-Cohesion: 0.22
-Nodes (9): Archivos, Criterios de aceptacion, Estado, Estado final, Objetivo, Pasos, Proteger admin dashboard para rol admin: restringir la entrada a la zona administrativa, Resolucion (+1 more)
+Cohesion: 0.15
+Nodes (11): MUSCLE_BADGE_STYLES, MUSCLE_GRADIENTS, ExerciseDetailModalProps, ExerciseHistoryEntry, TabKey, TABS, Dialog(), DialogContent() (+3 more)
 
 ### Community 217 - "Community 217"
 Cohesion: 0.22
@@ -1296,8 +1296,8 @@ Cohesion: 0.22
 Nodes (9): Archivos, Criterios de aceptacion, Estado, Estado final, Objetivo, Pasos, Resolucion, Validacion (+1 more)
 
 ### Community 232 - "Community 232"
-Cohesion: 0.14
-Nodes (13): app/layout.tsx, Contexto de auth con rol expuesto a layout, navegacion y guards, Archivos, Criterios de aceptacion, Estado, Estado final, Integrar type_rol al flujo de acceso y sesion: distinguir admin de usuario normal, Objetivo (+5 more)
+Cohesion: 0.22
+Nodes (9): Archivos, Criterios de aceptacion, Estado, Estado final, Integrar type_rol al flujo de acceso y sesion: distinguir admin de usuario normal, Objetivo, Pasos, Resolucion (+1 more)
 
 ### Community 233 - "Community 233"
 Cohesion: 0.22
@@ -1308,8 +1308,8 @@ Cohesion: 0.14
 Nodes (13): 1. Configuracion — `app/configuracion/ConfiguracionClient.tsx:263-289`, 2. Nutricion registro — `app/nutricion/registro/RegistroClient.tsx`, 3. Admin alimentos — `app/admin/alimentos/FoodAdminClient.tsx` + `app/components/ui/Table.tsx`, Approach, Archivos a modificar, Context, Diagnóstico técnico (ya investigado), Fix 1 — Configuracion: compactar card de mantenimiento (+5 more)
 
 ### Community 235 - "Community 235"
-Cohesion: 0.22
-Nodes (9): Archivos, Criterios de aceptacion, Estado, Estado final, Objetivo, Pasos, Proteger acciones de creacion y edicion administrativas: cerrar la escritura sensible al rol admin, Resolucion (+1 more)
+Cohesion: 0.10
+Nodes (19): Archivos, Criterios de aceptacion, Estado, Estado final, Objetivo, Pasos, Proteger acciones de creacion y edicion administrativas: cerrar la escritura sensible al rol admin, Resolucion (+11 more)
 
 ### Community 236 - "Community 236"
 Cohesion: 0.22
@@ -1333,7 +1333,7 @@ Nodes (18): Archivos, Criterios de aceptacion, Estado, Estado final, Implementar
 
 ### Community 241 - "Community 241"
 Cohesion: 0.22
-Nodes (9): Archivos, Criterios de aceptacion, Estado, Estado final, Implementar validaciones de alta y edicion: asegurar consistencia minima de los ejercicios, Objetivo, Pasos, Resolucion (+1 more)
+Nodes (9): Archivos, Criterios de aceptacion, Definir patron visual del panel lateral y area de contenido: ordenar la composicion principal del producto, Estado, Estado final, Objetivo, Pasos, Resolucion (+1 more)
 
 ### Community 242 - "Community 242"
 Cohesion: 0.12
@@ -1456,8 +1456,8 @@ Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ### Community 275 - "Community 275"
-Cohesion: 0.07
-Nodes (54): FoodAdminClientProps, FoodFormSheetProps, SortColumn, SortDirection, NutritionCatalogClientProps, getRoutineCoverImage(), getRoutineItemCount(), getVisiblePages() (+46 more)
+Cohesion: 0.08
+Nodes (45): FoodAdminClientProps, FoodFormSheetProps, SortColumn, SortDirection, NutritionCatalogClientProps, getRoutineCoverImage(), getRoutineItemCount(), getVisiblePages() (+37 more)
 
 ### Community 278 - "Community 278"
 Cohesion: 0.29
@@ -1560,8 +1560,8 @@ Cohesion: 0.50
 Nodes (4): G3 - Skills And Agents, Objetivo del grupo, Orden recomendado, Resultado esperado
 
 ### Community 314 - "Community 314"
-Cohesion: 0.07
-Nodes (41): DIFFICULTY_BADGE_VARIANT, quickActions, ACTIVITY_ICONS, formatActivityDate(), RecentActivityEntry, RecentActivityTable(), startOfDay(), RecentExercisesTable() (+33 more)
+Cohesion: 0.08
+Nodes (39): DIFFICULTY_BADGE_VARIANT, quickActions, ACTIVITY_ICONS, formatActivityDate(), RecentActivityEntry, RecentActivityTable(), startOfDay(), RecentExercisesTable() (+31 more)
 
 ### Community 315 - "Community 315"
 Cohesion: 0.50
@@ -1595,6 +1595,10 @@ Nodes (4): Grupo "G7" - Rutinas admin, Subgrupo "G7.1" - Acceso a datos e integr
 Cohesion: 0.50
 Nodes (4): Grupo "G9" - Dashboard de usuario, Subgrupo "G9.1" - Guardado de rutinas, Subgrupo "G9.2" - Personalizacion, Subgrupo "G9.3" - Visualizacion
 
+### Community 338 - "Community 338"
+Cohesion: 0.50
+Nodes (4): G4.5 - Frontend Base And Experience, Objetivo del grupo, Orden recomendado, Resultado esperado
+
 ### Community 360 - "Community 360"
 Cohesion: 0.13
 Nodes (22): addMealLogItem(), createMeal(), deleteMeal(), deleteMealLogItem(), ensureMealLogId(), FoodRow, mapMealLog(), MealGroup (+14 more)
@@ -1621,7 +1625,7 @@ Nodes (8): Archivos, Crear tabla `routine_items`, Criterios de aceptacion, Estad
 
 ### Community 366 - "Community 366"
 Cohesion: 0.06
-Nodes (42): bodyFont, displayFont, metadata, monoFont, RootLayout(), viewport, getOptionalAuthContext, LoginPage() (+34 more)
+Nodes (44): bodyFont, displayFont, metadata, monoFont, RootLayout(), viewport, getOptionalAuthContext, LoginPage() (+36 more)
 
 ### Community 367 - "Community 367"
 Cohesion: 0.18
@@ -1696,16 +1700,12 @@ Cohesion: 0.50
 Nodes (4): Indices, Recetas (G26-27), `recipe_items`, `recipes`
 
 ### Community 387 - "Community 387"
-Cohesion: 0.07
-Nodes (31): MOCK_FOODS, MOCK_FOODS_BASE, MOCK_PROFILE_DEFAULTS, Macros, errorCopy, LoginPageProps, reasonCopy, statusCopy (+23 more)
+Cohesion: 0.08
+Nodes (25): MOCK_FOODS, MOCK_FOODS_BASE, MOCK_PROFILE_DEFAULTS, Macros, formatDateLabel(), formatDateOnly(), NutritionCalendarCard(), PlaceholderPanelProps (+17 more)
 
 ### Community 390 - "Community 390"
 Cohesion: 0.15
 Nodes (10): DayWorkoutClientProps, DayWorkoutRow, DraftState, RowSaveIndicator(), RowSaveState, SeriesInputsGroup(), splitSeriesValues(), SummaryMetric() (+2 more)
-
-### Community 391 - "Community 391"
-Cohesion: 0.22
-Nodes (9): Archivos, Criterios de aceptacion, Estado, Estado final, Integrar acceso admin en el shell general: unificar la entrada administrativa sin duplicar la experiencia base, Objetivo, Pasos, Resolucion (+1 more)
 
 ### Community 392 - "Community 392"
 Cohesion: 0.11
