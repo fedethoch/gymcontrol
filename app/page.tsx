@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   CalendarRange,
+  ChevronRight,
   Dumbbell,
   Flame,
   Image as ImageIcon,
@@ -33,7 +34,9 @@ import {
 } from "@/app/lib/saved-routines";
 import {
   getCompletedTrainingDates,
+  listMuscleStrengthSummariesForSavedRoutine,
   listWorkoutWeeklySummaries,
+  type MuscleStrengthSummary,
 } from "@/app/lib/workout-tracking";
 
 export default async function Home() {
@@ -50,7 +53,7 @@ export default async function Home() {
   const activeRoutineListItem =
     savedRoutines.find((routine) => routine.isActive) ?? savedRoutines[0] ?? null;
 
-  const [activeRoutine, weeklySummaries, completedTrainingDates] = activeRoutineListItem
+  const [activeRoutine, weeklySummaries, completedTrainingDates, muscleStrengthSummaries] = activeRoutineListItem
     ? await Promise.all([
         getSavedRoutineByIdForUser({
           savedRoutineId: activeRoutineListItem.id,
@@ -66,8 +69,12 @@ export default async function Home() {
           savedRoutineId: activeRoutineListItem.id,
           days: 70,
         }),
+        listMuscleStrengthSummariesForSavedRoutine({
+          userId: auth.user.id,
+          savedRoutineId: activeRoutineListItem.id,
+        }),
       ])
-    : [null, {}, new Set<string>()];
+    : [null, {}, new Set<string>(), []];
 
   const plan = nutritionProfile?.plan ?? calculateNutritionPlan(MOCK_PROFILE_DEFAULTS);
 
@@ -176,7 +183,11 @@ export default async function Home() {
 
         {/* Carga muscular */}
         <MotionDiv variants={fadeUp} className="col-span-1 h-full">
-          <CargaMuscularCard muscleLoad={muscleLoad} maxCount={maxMuscleCount} />
+          <CargaMuscularCard
+            muscleLoad={muscleLoad}
+            maxCount={maxMuscleCount}
+            strengthSummaries={muscleStrengthSummaries}
+          />
         </MotionDiv>
 
         {/* Comidas hoy — full ancho en mobile */}
@@ -224,6 +235,21 @@ function CardLabel({
     </div>
   );
 }
+
+const STRENGTH_LEGEND = [
+  { label: "Base", color: "#22c55e" },
+  { label: "Fuerte", color: "#eab308" },
+  { label: "Avanz.", color: "#f97316" },
+  { label: "Elite", color: "#ef4444" },
+];
+
+const STRENGTH_RANGE_LABELS: Record<MuscleStrengthSummary["range"], string> = {
+  sin_datos: "sin datos",
+  base: "base",
+  fuerte: "fuerte",
+  avanzado: "avanzado",
+  elite: "elite",
+};
 
 function NutricionCard({
   totalKcal,
@@ -300,11 +326,21 @@ function NutricionCard({
 function CargaMuscularCard({
   muscleLoad,
   maxCount,
+  strengthSummaries,
 }: {
   muscleLoad: Record<string, number>;
   maxCount: number;
+  strengthSummaries: MuscleStrengthSummary[];
 }) {
   const isEmpty = Object.keys(muscleLoad).length === 0;
+  const hasStrengthData = strengthSummaries.some((summary) => summary.bestWeight != null);
+  const muscleColors = Object.fromEntries(
+    strengthSummaries.map((summary) => [summary.muscleGroup, summary.color]),
+  );
+  const visibleSummaries = [
+    ...strengthSummaries.filter((summary) => summary.bestWeight != null),
+    ...strengthSummaries.filter((summary) => summary.bestWeight == null),
+  ].slice(0, 3);
 
   return (
     <div className="flex h-full flex-col gap-2 rounded-2xl bg-[#0e131e] p-3">
@@ -315,8 +351,34 @@ function CargaMuscularCard({
             <p className="text-center text-[10px] text-[#7887a6]">Sin rutina activa</p>
           </div>
         ) : (
-          <div className="flex flex-1 flex-col">
-            <BodyMuscleFigure muscleLoad={muscleLoad} maxCount={maxCount} />
+          <div className="flex flex-1 flex-col gap-2">
+            <BodyMuscleFigure
+              muscleLoad={hasStrengthData ? {} : muscleLoad}
+              maxCount={maxCount}
+              muscleColors={muscleColors}
+            />
+            <div className="grid grid-cols-4 gap-1">
+              {STRENGTH_LEGEND.map((item) => (
+                <div key={item.label} className="grid gap-0.5">
+                  <div className="h-1.5 rounded-full" style={{ backgroundColor: item.color }} />
+                  <span className="truncate text-center text-[7px] font-semibold text-[#6e7788]">
+                    {item.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="grid gap-1">
+              {visibleSummaries.map((summary) => (
+                <div key={summary.muscleGroup} className="flex items-center justify-between gap-2 text-[9px]">
+                  <span className="min-w-0 truncate font-semibold text-[#c5cad8]">{summary.muscleGroup}</span>
+                  <span className="shrink-0 font-bold" style={{ color: summary.color }}>
+                    {summary.bestWeight == null
+                      ? STRENGTH_RANGE_LABELS[summary.range]
+                      : `${summary.bestWeight}kg · ${STRENGTH_RANGE_LABELS[summary.range]}`}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         )}
     </div>
@@ -334,60 +396,64 @@ function ComidasHoyCard({
 
   return (
     <div className="flex h-full flex-col rounded-2xl bg-[#0e131e] p-3">
-        <div className="mb-3 flex items-center justify-between gap-2">
+        <div className="mb-2.5 flex items-center justify-between gap-2">
           <div className="min-w-0">
-            <h2 className="font-display text-base font-semibold text-white">Comidas de hoy</h2>
+            <h2 className="font-display text-sm font-semibold text-white">Comidas de hoy</h2>
 
-            <p className="mt-0.5 truncate text-xs text-[#7887a6]">
+            <p className="mt-0.5 truncate text-[10px] text-[#7887a6]">
               {meals.length} comidas - {totalKcal} kcal
             </p>
           </div>
-          <Button asChild type="button" size="sm" className="h-8 shrink-0 px-2.5 text-[10px]">
-            <Link href="/nutricion/registro">Ver</Link>
-          </Button>
+          <Link
+            href="/nutricion/registro"
+            aria-label="Ver registro de nutricion"
+            className="grid size-7 shrink-0 place-items-center text-[#8f98ad] transition-colors hover:text-white"
+          >
+            <ChevronRight className="size-4" />
+          </Link>
         </div>
 
         {preview.length === 0 ? (
-          <p className="text-sm text-[#7887a6]">Sin comidas registradas hoy.</p>
+          <p className="text-xs text-[#7887a6]">Sin comidas registradas hoy.</p>
         ) : (
           <div className="grid overflow-hidden rounded-xl border border-[rgba(255,255,255,0.06)] bg-[#111722]">
             {preview.map((meal) => (
               <div
                 key={meal.id}
-                className="flex min-w-0 items-center gap-2.5 border-b border-[rgba(255,255,255,0.06)] p-2.5 last:border-b-0"
+                className="flex min-w-0 items-center gap-2 border-b border-[rgba(255,255,255,0.06)] p-2 last:border-b-0"
               >
-                <span className="relative size-[68px] shrink-0 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card-alt)]">
+                <span className="relative size-14 shrink-0 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card-alt)]">
                   <Image
                     alt={MEAL_TYPE_LABELS[meal.type]}
                     className="object-cover"
                     fill
-                    sizes="68px"
+                    sizes="56px"
                     src={meal.imageUrl}
                   />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-[10px] font-bold uppercase tracking-[0.14em] text-[#b985ff]">
+                  <p className="truncate text-[9px] font-bold uppercase tracking-[0.12em] text-[#b985ff]">
                     {MEAL_TYPE_LABELS[meal.type]}
                   </p>
-                  <p className="mt-0.5 truncate font-display text-[15px] font-semibold leading-tight text-white">
+                  <p className="mt-0.5 truncate font-display text-[13px] font-semibold leading-tight text-white">
                     {meal.name}
                   </p>
-                  <p className="mt-0.5 line-clamp-1 text-xs leading-4 text-[#8d97ab]">
+                  <p className="mt-0.5 line-clamp-1 text-[10px] leading-4 text-[#8d97ab]">
                     {formatMealFoods(meal)}
                   </p>
-                  <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] font-semibold text-[#7887a6]">
+                  <div className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[9px] font-semibold text-[#7887a6]">
                     <MealMacro label="P" value={meal.macros.proteinG} color={MACRO_COLORS.protein} />
                     <MealMacro label="C" value={meal.macros.carbsG} color={MACRO_COLORS.carbs} />
                     <MealMacro label="G" value={meal.macros.fatG} color={MACRO_COLORS.fat} />
                   </div>
                 </div>
-                <span className="self-start whitespace-nowrap rounded-full bg-[rgba(255,255,255,0.05)] px-2 py-1 text-[11px] font-bold text-white">
+                <span className="self-start whitespace-nowrap rounded-full bg-[rgba(255,255,255,0.05)] px-1.5 py-0.5 text-[10px] font-bold text-white">
                   {meal.kcal} kcal
                 </span>
               </div>
             ))}
             {meals.length > 2 && (
-              <p className="px-2.5 py-2 text-[10px] font-semibold text-[#7887a6]">
+              <p className="px-2 py-1.5 text-[9px] font-semibold text-[#7887a6]">
                 +{meals.length - 2} mas
               </p>
             )}

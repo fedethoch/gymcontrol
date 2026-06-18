@@ -32,6 +32,17 @@ export type WorkoutWeeklySummary = {
   hasRealData: boolean;
 };
 
+export type MuscleStrengthRange = "sin_datos" | "base" | "fuerte" | "avanzado" | "elite";
+
+export type MuscleStrengthSummary = {
+  muscleGroup: string;
+  principalExercise: string;
+  matchedExerciseName: string | null;
+  bestWeight: number | null;
+  range: MuscleStrengthRange;
+  color: string;
+};
+
 type WorkoutSessionRow = {
   id: string;
   saved_routine_id: string;
@@ -76,6 +87,36 @@ const WORKOUT_SESSION_SELECT = `
     is_completed
   )
 `;
+
+const STRENGTH_GROUPS = ["Pecho", "Espalda", "Piernas", "Hombros", "Biceps", "Triceps", "Core"] as const;
+
+const PRIMARY_STRENGTH_EXERCISES: Record<(typeof STRENGTH_GROUPS)[number], string[]> = {
+  Pecho: ["press banca", "bench press"],
+  Espalda: ["remo con barra", "barbell row"],
+  Piernas: ["sentadilla", "squat"],
+  Hombros: ["press militar", "overhead press", "shoulder press"],
+  Biceps: ["curl con barra", "barbell curl"],
+  Triceps: ["press cerrado", "close grip press"],
+  Core: ["crunch en polea", "cable crunch"],
+};
+
+const STRENGTH_RANGE_COLORS: Record<MuscleStrengthRange, string> = {
+  sin_datos: "#263347",
+  base: "#22c55e",
+  fuerte: "#eab308",
+  avanzado: "#f97316",
+  elite: "#ef4444",
+};
+
+const STRENGTH_THRESHOLDS: Record<(typeof STRENGTH_GROUPS)[number], [number, number, number, number]> = {
+  Pecho: [20, 50, 80, 110],
+  Espalda: [20, 45, 75, 100],
+  Piernas: [30, 70, 110, 150],
+  Hombros: [15, 35, 55, 75],
+  Biceps: [10, 25, 40, 55],
+  Triceps: [10, 25, 40, 60],
+  Core: [10, 25, 40, 60],
+};
 
 export function getLocalTrainingDate() {
   const now = new Date();
@@ -519,11 +560,154 @@ export async function getExerciseHistoryByRoutineItem(args: {
   return result;
 }
 
+export async function listMuscleStrengthSummariesForSavedRoutine(args: {
+  userId: string;
+  savedRoutineId: string;
+}): Promise<MuscleStrengthSummary[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("workout_session_items")
+    .select(
+      `
+        used_weight,
+        workout_sessions!inner(user_id, saved_routine_id),
+        routine_item:routine_items!inner(
+          exercise:exercises!routine_items_exercise_id_fkey(name, muscle_group)
+        )
+      `,
+    )
+    .eq("workout_sessions.user_id", args.userId)
+    .eq("workout_sessions.saved_routine_id", args.savedRoutineId);
+
+  if (error) {
+    throw new Error(`No se pudo leer la fuerza por grupo muscular: ${error.message}`);
+  }
+
+  const bestByGroup = new Map<
+    string,
+    {
+      principal: { exerciseName: string; weight: number } | null;
+      fallback: { exerciseName: string; weight: number } | null;
+    }
+  >();
+
+  for (const row of (data ?? []) as Array<{
+    used_weight: string | null;
+    routine_item:
+      | {
+          exercise:
+            | { name: string; muscle_group: string | null }
+            | Array<{ name: string; muscle_group: string | null }>
+            | null;
+        }
+      | Array<{
+          exercise:
+            | { name: string; muscle_group: string | null }
+            | Array<{ name: string; muscle_group: string | null }>
+            | null;
+        }>
+      | null;
+  }>) {
+    const routineItem = Array.isArray(row.routine_item) ? row.routine_item[0] : row.routine_item;
+    const exercise = Array.isArray(routineItem?.exercise)
+      ? routineItem.exercise[0]
+      : routineItem?.exercise;
+    const muscleGroup = normalizeStrengthGroup(exercise?.muscle_group);
+    const bestWeight = parseBestWeight(row.used_weight);
+
+    if (!exercise || !muscleGroup || bestWeight == null) {
+      continue;
+    }
+
+    const current = bestByGroup.get(muscleGroup) ?? { principal: null, fallback: null };
+    const entry = { exerciseName: exercise.name, weight: bestWeight };
+
+    if (!current.fallback || bestWeight > current.fallback.weight) {
+      current.fallback = entry;
+    }
+
+    if (isPrincipalStrengthExercise(muscleGroup, exercise.name)) {
+      if (!current.principal || bestWeight > current.principal.weight) {
+        current.principal = entry;
+      }
+    }
+
+    bestByGroup.set(muscleGroup, current);
+  }
+
+  return STRENGTH_GROUPS.map((muscleGroup) => {
+    const best = bestByGroup.get(muscleGroup);
+    const selected = best?.principal ?? best?.fallback ?? null;
+    const range = resolveStrengthRange(muscleGroup, selected?.weight ?? null);
+
+    return {
+      muscleGroup,
+      principalExercise: PRIMARY_STRENGTH_EXERCISES[muscleGroup][0],
+      matchedExerciseName: selected?.exerciseName ?? null,
+      bestWeight: selected?.weight ?? null,
+      range,
+      color: STRENGTH_RANGE_COLORS[range],
+    };
+  });
+}
+
 function formatHistoryDate(value: string) {
   return new Intl.DateTimeFormat("es-AR", {
     day: "2-digit",
     month: "2-digit",
   }).format(new Date(`${value}T00:00:00`));
+}
+
+function parseBestWeight(value: string | null) {
+  if (!value) {
+    return null;
+  }
+
+  const weights = value
+    .split("/")
+    .map((token) => Number.parseFloat(token.trim().replace(/,/g, ".")))
+    .filter((weight) => Number.isFinite(weight) && weight > 0);
+
+  if (weights.length === 0) {
+    return null;
+  }
+
+  return Math.max(...weights);
+}
+
+function normalizeStrengthGroup(value: string | null | undefined) {
+  if (!value) {
+    return null;
+  }
+
+  const normalized = value.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+
+  return STRENGTH_GROUPS.find((group) => group.toLowerCase() === normalized) ?? null;
+}
+
+function isPrincipalStrengthExercise(muscleGroup: (typeof STRENGTH_GROUPS)[number], exerciseName: string) {
+  const normalizedName = exerciseName.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+
+  return PRIMARY_STRENGTH_EXERCISES[muscleGroup].some((candidate) =>
+    normalizedName.includes(candidate.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()),
+  );
+}
+
+function resolveStrengthRange(
+  muscleGroup: (typeof STRENGTH_GROUPS)[number],
+  weight: number | null,
+): MuscleStrengthRange {
+  if (weight == null) {
+    return "sin_datos";
+  }
+
+  const [base, fuerte, avanzado, elite] = STRENGTH_THRESHOLDS[muscleGroup];
+
+  if (weight >= elite) return "elite";
+  if (weight >= avanzado) return "avanzado";
+  if (weight >= fuerte) return "fuerte";
+  if (weight >= base) return "base";
+  return "sin_datos";
 }
 
 export async function getCompletedTrainingDates(args: {

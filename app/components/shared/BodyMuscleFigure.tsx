@@ -302,6 +302,16 @@ function fillIntensityColor(
   return highlightedColors[Math.min(highlightedColors.length - 1, frequency - 1)];
 }
 
+function buildLibraryMuscleColors(muscleColors: Record<string, string>) {
+  return Object.entries(muscleColors).reduce<Partial<Record<Muscle, string>>>((acc, [key, color]) => {
+    for (const muscle of toLibraryMuscles(key)) {
+      acc[muscle] = color;
+    }
+
+    return acc;
+  }, {});
+}
+
 // ── Muscle-name → library slug mapping ───────────────────────────────────────
 // Keys in muscleLoad come from exercise.muscleGroup in DB (Spanish + English).
 
@@ -354,9 +364,11 @@ const BODY_COLOR = "#263347";
 function BodySVG({
   modelData,
   muscleMap,
+  muscleColors,
 }: {
   modelData: ISVGModelData[];
   muscleMap: Record<Muscle, IMuscleData>;
+  muscleColors: Partial<Record<Muscle, string>>;
 }) {
   return (
     // width/height attrs required — CSS-only sizing collapses SVG to 0×0
@@ -366,7 +378,11 @@ function BodySVG({
           <polygon
             key={`${muscle}-${i}`}
             points={points}
-            fill={fillIntensityColor(muscleMap, HIGHLIGHTED_COLORS, muscle) ?? BODY_COLOR}
+            fill={
+              muscleColors[muscle] ??
+              fillIntensityColor(muscleMap, HIGHLIGHTED_COLORS, muscle) ??
+              BODY_COLOR
+            }
           />
         )),
       )}
@@ -378,9 +394,11 @@ function BodySVG({
 export function BodyMuscleFigure({
   muscleLoad = {},
   maxCount = 1,
+  muscleColors = {},
 }: {
   muscleLoad?: Record<string, number>;
   maxCount?: number;
+  muscleColors?: Record<string, string>;
 }) {
   // Build exercise data for the muscle map
   const exerciseData: IExerciseData[] = Object.entries(muscleLoad).flatMap(([key, count]) => {
@@ -390,29 +408,32 @@ export function BodyMuscleFigure({
   });
 
   const muscleMap = fillMuscleData(exerciseData);
+  const libraryMuscleColors = buildLibraryMuscleColors(muscleColors);
+  const hasCustomColors = Object.keys(muscleColors).length > 0;
 
-  const isEmpty = Object.keys(muscleLoad).length === 0;
+  const isEmpty = Object.keys(muscleLoad).length === 0 && !hasCustomColors;
 
   return (
     <div className="flex h-full w-full flex-col items-center">
       <div className={`flex flex-1 w-full justify-center gap-3 items-end${isEmpty ? " opacity-30" : ""}`}>
         {/* Anterior (front) */}
-        <BodySVG modelData={anteriorData} muscleMap={muscleMap} />
+        <BodySVG modelData={anteriorData} muscleMap={muscleMap} muscleColors={libraryMuscleColors} />
         {/* Posterior (back) */}
-        <BodySVG modelData={posteriorData} muscleMap={muscleMap} />
+        <BodySVG modelData={posteriorData} muscleMap={muscleMap} muscleColors={libraryMuscleColors} />
       </div>
 
-      {/* Scale bar */}
-      <div className="flex w-full items-center gap-1.5 px-2 mt-1.5">
-        <span className="shrink-0 text-[8px] text-[#6e7788]">Baja</span>
-        <div className="flex h-1.5 flex-1 overflow-hidden rounded-full">
-          <div className="flex-1 bg-[#16a34a]" />
-          <div className="flex-1 bg-[#ca8a04]" />
-          <div className="flex-1 bg-[#ea580c]" />
-          <div className="flex-1 bg-[#dc2626]" />
+      {!hasCustomColors && (
+        <div className="flex w-full items-center gap-1.5 px-2 mt-1.5">
+          <span className="shrink-0 text-[8px] text-[#6e7788]">Baja</span>
+          <div className="flex h-1.5 flex-1 overflow-hidden rounded-full">
+            <div className="flex-1 bg-[#16a34a]" />
+            <div className="flex-1 bg-[#ca8a04]" />
+            <div className="flex-1 bg-[#ea580c]" />
+            <div className="flex-1 bg-[#dc2626]" />
+          </div>
+          <span className="shrink-0 text-[8px] text-[#6e7788]">Alta</span>
         </div>
-        <span className="shrink-0 text-[8px] text-[#6e7788]">Alta</span>
-      </div>
+      )}
     </div>
   );
 }
