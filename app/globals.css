@@ -50,7 +50,7 @@
 html {
   height: 100%;
   min-height: 100%;
-  background: var(--background);
+  background: rgba(5, 7, 11, 0.92);
 }
 
 body {
@@ -58,7 +58,7 @@ body {
   min-height: 100vh;
   min-height: 100svh;
   margin: 0;
-  background: var(--background);
+  background: rgba(5, 7, 11, 0.92);
   color: var(--foreground);
   font-family: var(--font-body), Arial, Helvetica, sans-serif;
   text-rendering: optimizeLegibility;
@@ -298,7 +298,7 @@ a {
 }
 
 .mobile-tab-bar {
-  height: calc(3.25rem + env(safe-area-inset-bottom));
+  height: calc(2.65rem + env(safe-area-inset-bottom));
   overflow: hidden;
 }
 
@@ -367,13 +367,13 @@ a {
 }
 
 .pwa-standalone .mobile-tab-bar {
-  height: calc(3.25rem + env(safe-area-inset-bottom));
+  height: calc(2.65rem + env(safe-area-inset-bottom));
   bottom: 0;
 }
 
 @media (display-mode: standalone) {
   .mobile-tab-bar {
-    height: calc(3.25rem + env(safe-area-inset-bottom));
+    height: calc(2.65rem + env(safe-area-inset-bottom));
     bottom: 0;
   }
 }
