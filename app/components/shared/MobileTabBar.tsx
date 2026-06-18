@@ -75,12 +75,20 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
               key={tab.href}
               href={tab.href}
               aria-label={tab.label}
+              aria-current={active ? "page" : undefined}
               className={cn(
-                "mobile-tab-bar-item flex flex-col items-center justify-start gap-0 px-1 pt-2 pb-0 text-[10px] font-semibold leading-none transition-colors",
+                "mobile-tab-bar-item group flex flex-col items-center justify-end px-1 pb-0 text-[10px] font-semibold leading-none transition-colors",
                 active ? "text-[var(--accent-bright)]" : "text-[#8a93ad] hover:text-white",
               )}
             >
-              <Icon className="mobile-tab-bar-icon size-6" />
+              <Icon
+                className={cn(
+                  "mobile-tab-bar-icon size-6 transition-transform duration-200 ease-out will-change-transform motion-reduce:transition-none",
+                  active
+                    ? "scale-110 -translate-y-px"
+                    : "group-active:scale-95 group-active:translate-y-0.5",
+                )}
+              />
               <span className="sr-only">{tab.label}</span>
             </Link>
           );
@@ -91,9 +99,9 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
             <button
               type="button"
               aria-label="Mas"
-              className="mobile-tab-bar-item flex flex-col items-center justify-start gap-0 px-1 pt-2 pb-0 text-[10px] font-semibold leading-none text-[#8a93ad] transition-colors hover:text-white"
+              className="mobile-tab-bar-item group flex flex-col items-center justify-end px-1 pb-0 text-[10px] font-semibold leading-none text-[#8a93ad] transition-colors hover:text-white"
             >
-              <Menu className="mobile-tab-bar-icon size-6" />
+              <Menu className="mobile-tab-bar-icon size-6 transition-transform duration-200 ease-out will-change-transform group-active:scale-95 group-active:translate-y-0.5 motion-reduce:transition-none" />
               <span className="sr-only">Mas</span>
             </button>
           </SheetTrigger>
