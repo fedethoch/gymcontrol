@@ -359,19 +359,20 @@ export function RegistroClient({
         </div>
         <div className="grid grid-cols-3 items-center">
           <div className="flex flex-col items-center">
-            <span className="font-display text-xl font-bold text-white">{totalKcal}</span>
-            <span className="text-[9px] text-[#7887a6]">consumidas</span>
+            <span className="font-display text-xl font-bold text-white">{targetKcal}</span>
+            <span className="text-[9px] text-[#7887a6]">objetivo</span>
           </div>
           <div className="flex justify-center">
             <AnimatedProgressRing
               value={targetKcal > 0 ? Math.min(100, Math.round((totalKcal / targetKcal) * 100)) : 0}
               size={72}
-              strokeWidth={8}
+              strokeWidth={5}
               progressColor="var(--accent-bright)"
             >
               <div className="flex flex-col items-center">
-                <span className="font-display text-xs font-bold text-white">{targetKcal}</span>
-                <span className="text-[7px] text-[#7887a6]">objetivo</span>
+                <span className="font-display text-sm font-bold text-white">
+                  {targetKcal > 0 ? Math.min(100, Math.round((totalKcal / targetKcal) * 100)) : 0}%
+                </span>
               </div>
             </AnimatedProgressRing>
           </div>

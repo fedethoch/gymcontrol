@@ -778,7 +778,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "alimentos_foodadminclient_foodadminclient",
-      "community": 29,
+      "community": 340,
       "norm_label": "foodadminclient()"
     },
     {
@@ -858,7 +858,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_alimentos_page_tsx_alimentos_page",
-      "community": 29,
+      "community": 340,
       "norm_label": "page.tsx"
     },
     {
@@ -868,7 +868,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "alimentos_page_adminfoodspage",
-      "community": 29,
+      "community": 340,
       "norm_label": "adminfoodspage()"
     },
     {
@@ -1038,7 +1038,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "admin_layout",
-      "community": 29,
+      "community": 324,
       "norm_label": "layout.tsx"
     },
     {
@@ -1048,7 +1048,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "admin_layout_adminlayout",
-      "community": 29,
+      "community": 324,
       "norm_label": "adminlayout()"
     },
     {
@@ -1148,7 +1148,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "recetas_actions",
-      "community": 81,
+      "community": 295,
       "norm_label": "actions.ts"
     },
     {
@@ -1158,7 +1158,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "recetas_actions_savereciperesult",
-      "community": 81,
+      "community": 295,
       "norm_label": "savereciperesult"
     },
     {
@@ -1178,7 +1178,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "recetas_actions_deleterecipeaction",
-      "community": 81,
+      "community": 295,
       "norm_label": "deleterecipeaction()"
     },
     {
@@ -1278,7 +1278,7 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_routineadminclient",
-      "community": 295,
+      "community": 211,
       "norm_label": "routineadminclient()"
     },
     {
@@ -1348,7 +1348,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "rutinas_actions",
-      "community": 67,
+      "community": 324,
       "norm_label": "actions.ts"
     },
     {
@@ -1358,7 +1358,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "rutinas_actions_saveroutineaction",
-      "community": 215,
+      "community": 324,
       "norm_label": "saveroutineaction()"
     },
     {
@@ -1368,7 +1368,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "rutinas_actions_deleteroutineaction",
-      "community": 67,
+      "community": 324,
       "norm_label": "deleteroutineaction()"
     },
     {
@@ -1378,7 +1378,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_rutinas_page_tsx_rutinas_page",
-      "community": 295,
+      "community": 211,
       "norm_label": "page.tsx"
     },
     {
@@ -1388,7 +1388,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "rutinas_page_adminroutinespage",
-      "community": 295,
+      "community": 211,
       "norm_label": "adminroutinespage()"
     },
     {
@@ -1888,7 +1888,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "id_actions",
-      "community": 30,
+      "community": 33,
       "norm_label": "actions.ts"
     },
     {
@@ -1898,7 +1898,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "id_actions_saveroutinefromcatalogaction",
-      "community": 30,
+      "community": 33,
       "norm_label": "saveroutinefromcatalogaction()"
     },
     {
@@ -1908,7 +1908,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "id_actions_activateroutinefromcatalogaction",
-      "community": 30,
+      "community": 33,
       "norm_label": "activateroutinefromcatalogaction()"
     },
     {
@@ -4198,7 +4198,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "configuracion_actions",
-      "community": 211,
+      "community": 33,
       "norm_label": "actions.ts"
     },
     {
@@ -4208,7 +4208,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "configuracion_actions_savenutritionprofileaction",
-      "community": 211,
+      "community": 33,
       "norm_label": "savenutritionprofileaction()"
     },
     {
@@ -4218,7 +4218,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "configuracion_actions_saveprofilenameaction",
-      "community": 211,
+      "community": 33,
       "norm_label": "saveprofilenameaction()"
     },
     {
@@ -4228,7 +4228,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "configuracion_actions_deleteaccountaction",
-      "community": 211,
+      "community": 33,
       "norm_label": "deleteaccountaction()"
     },
     {
@@ -4258,7 +4258,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "dashboard_layout",
-      "community": 360,
+      "community": 33,
       "norm_label": "layout.tsx"
     },
     {
@@ -4268,7 +4268,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "dashboard_layout_dashboardlayout",
-      "community": 360,
+      "community": 33,
       "norm_label": "dashboardlayout()"
     },
     {
@@ -4688,7 +4688,7 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "lib_auth_requireuser",
-      "community": 360,
+      "community": 33,
       "norm_label": "requireuser()"
     },
     {
@@ -4698,7 +4698,7 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "lib_auth_requireadmin",
-      "community": 29,
+      "community": 324,
       "norm_label": "requireadmin()"
     },
     {
@@ -5038,7 +5038,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "lib_exercises_listexercisecatalogitems",
-      "community": 295,
+      "community": 211,
       "norm_label": "listexercisecatalogitems()"
     },
     {
@@ -5128,7 +5128,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_foods_form",
-      "community": 29,
+      "community": 339,
       "norm_label": "foods-form.ts"
     },
     {
@@ -5138,7 +5138,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_foods_form_foodformfield",
-      "community": 29,
+      "community": 339,
       "norm_label": "foodformfield"
     },
     {
@@ -5148,7 +5148,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "lib_foods_form_foodformpayload",
-      "community": 29,
+      "community": 339,
       "norm_label": "foodformpayload"
     },
     {
@@ -5158,7 +5158,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "lib_foods_form_foodformstate",
-      "community": 29,
+      "community": 339,
       "norm_label": "foodformstate"
     },
     {
@@ -5168,7 +5168,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "lib_foods_form_initial_food_form_state",
-      "community": 29,
+      "community": 339,
       "norm_label": "initial_food_form_state"
     },
     {
@@ -5178,7 +5178,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "lib_foods_form_parsedfoodpayload",
-      "community": 29,
+      "community": 339,
       "norm_label": "parsedfoodpayload"
     },
     {
@@ -5188,7 +5188,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_foods_validation",
-      "community": 29,
+      "community": 339,
       "norm_label": "foods-validation.ts"
     },
     {
@@ -5198,7 +5198,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "lib_foods_validation_foodtextschema",
-      "community": 29,
+      "community": 339,
       "norm_label": "foodtextschema"
     },
     {
@@ -5208,7 +5208,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "lib_foods_validation_numeric_fields",
-      "community": 29,
+      "community": 339,
       "norm_label": "numeric_fields"
     },
     {
@@ -5268,7 +5268,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "lib_foods_listadminfoods",
-      "community": 29,
+      "community": 340,
       "norm_label": "listadminfoods()"
     },
     {
@@ -5508,7 +5508,7 @@
       "source_location": "L329",
       "_origin": "ast",
       "id": "lib_meal_logs_getloggeddatesforuser",
-      "community": 33,
+      "community": 360,
       "norm_label": "getloggeddatesforuser()"
     },
     {
@@ -5518,7 +5518,7 @@
       "source_location": "L356",
       "_origin": "ast",
       "id": "lib_meal_logs_getdailykcalaverage",
-      "community": 33,
+      "community": 360,
       "norm_label": "getdailykcalaverage()"
     },
     {
@@ -5568,7 +5568,7 @@
       "source_location": "L482",
       "_origin": "ast",
       "id": "lib_meal_logs_adddays",
-      "community": 33,
+      "community": 360,
       "norm_label": "adddays()"
     },
     {
@@ -5578,7 +5578,7 @@
       "source_location": "L489",
       "_origin": "ast",
       "id": "lib_meal_logs_formatdateonly",
-      "community": 33,
+      "community": 360,
       "norm_label": "formatdateonly()"
     },
     {
@@ -5708,7 +5708,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "lib_nutrition_profile_savenutritionprofile",
-      "community": 211,
+      "community": 33,
       "norm_label": "savenutritionprofile()"
     },
     {
@@ -5888,7 +5888,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "lib_nutrition_types_food_measures",
-      "community": 29,
+      "community": 339,
       "norm_label": "food_measures"
     },
     {
@@ -5898,7 +5898,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "lib_nutrition_types_foodmeasure",
-      "community": 29,
+      "community": 339,
       "norm_label": "foodmeasure"
     },
     {
@@ -5938,7 +5938,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "lib_nutrition_types_meal_type_labels",
-      "community": 275,
+      "community": 387,
       "norm_label": "meal_type_labels"
     },
     {
@@ -6098,7 +6098,7 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "lib_nutrition_types_nutritionplan",
-      "community": 211,
+      "community": 33,
       "norm_label": "nutritionplan"
     },
     {
@@ -6188,7 +6188,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_recipes_form",
-      "community": 81,
+      "community": 295,
       "norm_label": "recipes-form.ts"
     },
     {
@@ -6198,7 +6198,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_recipes_form_recipeformfield",
-      "community": 81,
+      "community": 295,
       "norm_label": "recipeformfield"
     },
     {
@@ -6208,7 +6208,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "lib_recipes_form_recipeingredientpayload",
-      "community": 81,
+      "community": 295,
       "norm_label": "recipeingredientpayload"
     },
     {
@@ -6218,7 +6218,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "lib_recipes_form_recipeformpayload",
-      "community": 81,
+      "community": 295,
       "norm_label": "recipeformpayload"
     },
     {
@@ -6228,7 +6228,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_recipes_form_recipeformstate",
-      "community": 81,
+      "community": 295,
       "norm_label": "recipeformstate"
     },
     {
@@ -6238,7 +6238,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "lib_recipes_form_initial_recipe_form_state",
-      "community": 81,
+      "community": 295,
       "norm_label": "initial_recipe_form_state"
     },
     {
@@ -6248,7 +6248,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "lib_recipes_form_parsedrecipepayload",
-      "community": 81,
+      "community": 295,
       "norm_label": "parsedrecipepayload"
     },
     {
@@ -6258,7 +6258,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_recipes_validation",
-      "community": 81,
+      "community": 295,
       "norm_label": "recipes-validation.ts"
     },
     {
@@ -6268,7 +6268,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "lib_recipes_validation_recipetextschema",
-      "community": 81,
+      "community": 295,
       "norm_label": "recipetextschema"
     },
     {
@@ -6278,7 +6278,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "lib_recipes_validation_parserecipepayload",
-      "community": 81,
+      "community": 295,
       "norm_label": "parserecipepayload()"
     },
     {
@@ -6388,7 +6388,7 @@
       "source_location": "L137",
       "_origin": "ast",
       "id": "lib_recipes_deleterecipe",
-      "community": 81,
+      "community": 295,
       "norm_label": "deleterecipe()"
     },
     {
@@ -6498,7 +6498,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "lib_routine_form_routineformpayload",
-      "community": 67,
+      "community": 324,
       "norm_label": "routineformpayload"
     },
     {
@@ -6548,7 +6548,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "lib_routine_form_routineformstate",
-      "community": 67,
+      "community": 324,
       "norm_label": "routineformstate"
     },
     {
@@ -6708,7 +6708,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "lib_routine_validation_parseroutinepayload",
-      "community": 67,
+      "community": 324,
       "norm_label": "parseroutinepayload()"
     },
     {
@@ -6758,7 +6758,7 @@
       "source_location": "L316",
       "_origin": "ast",
       "id": "lib_routine_validation_hasstructureerrors",
-      "community": 67,
+      "community": 324,
       "norm_label": "hasstructureerrors()"
     },
     {
@@ -6898,7 +6898,7 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "lib_routines_listadminroutines",
-      "community": 295,
+      "community": 211,
       "norm_label": "listadminroutines()"
     },
     {
@@ -6928,7 +6928,7 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "lib_routines_createroutine",
-      "community": 215,
+      "community": 324,
       "norm_label": "createroutine()"
     },
     {
@@ -6948,7 +6948,7 @@
       "source_location": "L276",
       "_origin": "ast",
       "id": "lib_routines_deleteroutine",
-      "community": 67,
+      "community": 324,
       "norm_label": "deleteroutine()"
     },
     {
@@ -7128,7 +7128,7 @@
       "source_location": "L214",
       "_origin": "ast",
       "id": "lib_saved_routines_getsavedroutinebyidforuser",
-      "community": 38,
+      "community": 30,
       "norm_label": "getsavedroutinebyidforuser()"
     },
     {
@@ -7178,7 +7178,7 @@
       "source_location": "L388",
       "_origin": "ast",
       "id": "lib_saved_routines_togglesavedroutineactiveforuser",
-      "community": 30,
+      "community": 33,
       "norm_label": "togglesavedroutineactiveforuser()"
     },
     {
@@ -7298,7 +7298,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "supabase_admin",
-      "community": 211,
+      "community": 33,
       "norm_label": "admin.ts"
     },
     {
@@ -7308,7 +7308,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "supabase_admin_createsupabaseadminclient",
-      "community": 211,
+      "community": 33,
       "norm_label": "createsupabaseadminclient()"
     },
     {
@@ -7548,7 +7548,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "lib_workout_tracking_getlocaltrainingdate",
-      "community": 33,
+      "community": 360,
       "norm_label": "getlocaltrainingdate()"
     },
     {
@@ -7785,7 +7785,7 @@
       "label": "MealCard()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L497",
+      "source_location": "L498",
       "_origin": "ast",
       "id": "registro_registroclient_mealcard",
       "community": 105,
@@ -7795,7 +7795,7 @@
       "label": "formatMealFoods()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L900",
+      "source_location": "L901",
       "_origin": "ast",
       "id": "registro_registroclient_formatmealfoods",
       "community": 105,
@@ -7805,7 +7805,7 @@
       "label": "MacroChip()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L911",
+      "source_location": "L912",
       "_origin": "ast",
       "id": "registro_registroclient_macrochip",
       "community": 105,
@@ -7815,7 +7815,7 @@
       "label": "FoodPickerRow()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L922",
+      "source_location": "L923",
       "_origin": "ast",
       "id": "registro_registroclient_foodpickerrow",
       "community": 105,
@@ -7825,7 +7825,7 @@
       "label": "previewItem()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1072",
+      "source_location": "L1073",
       "_origin": "ast",
       "id": "registro_registroclient_previewitem",
       "community": 105,
@@ -7835,7 +7835,7 @@
       "label": "roundQuantity()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1086",
+      "source_location": "L1087",
       "_origin": "ast",
       "id": "registro_registroclient_roundquantity",
       "community": 105,
@@ -7845,7 +7845,7 @@
       "label": "calculateStreak()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1090",
+      "source_location": "L1091",
       "_origin": "ast",
       "id": "registro_registroclient_calculatestreak",
       "community": 105,
@@ -7855,7 +7855,7 @@
       "label": "formatDateOnly()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1104",
+      "source_location": "L1105",
       "_origin": "ast",
       "id": "registro_registroclient_formatdateonly",
       "community": 105,
@@ -7865,7 +7865,7 @@
       "label": "NutritionTipCard()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1112",
+      "source_location": "L1113",
       "_origin": "ast",
       "id": "registro_registroclient_nutritiontipcard",
       "community": 105,
@@ -7875,7 +7875,7 @@
       "label": "getNutritionTip()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1141",
+      "source_location": "L1142",
       "_origin": "ast",
       "id": "registro_registroclient_getnutritiontip",
       "community": 105,
@@ -7885,7 +7885,7 @@
       "label": "SummaryStat()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1169",
+      "source_location": "L1170",
       "_origin": "ast",
       "id": "registro_registroclient_summarystat",
       "community": 105,
@@ -7895,7 +7895,7 @@
       "label": "TargetBar()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1178",
+      "source_location": "L1179",
       "_origin": "ast",
       "id": "registro_registroclient_targetbar",
       "community": 105,
@@ -7978,7 +7978,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "registro_page",
-      "community": 33,
+      "community": 360,
       "norm_label": "page.tsx"
     },
     {
@@ -7988,7 +7988,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "registro_page_registronutricionpage",
-      "community": 33,
+      "community": 360,
       "norm_label": "registronutricionpage()"
     },
     {
@@ -8005,17 +8005,17 @@
       "label": "Home()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L38",
+      "source_location": "L39",
       "_origin": "ast",
       "id": "app_page_home",
-      "community": 33,
+      "community": 360,
       "norm_label": "home()"
     },
     {
       "label": "CardLabel()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L210",
+      "source_location": "L211",
       "_origin": "ast",
       "id": "app_page_cardlabel",
       "community": 387,
@@ -8025,7 +8025,7 @@
       "label": "NutricionCard()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L227",
+      "source_location": "L228",
       "_origin": "ast",
       "id": "app_page_nutricioncard",
       "community": 387,
@@ -8035,7 +8035,7 @@
       "label": "CargaMuscularCard()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L299",
+      "source_location": "L300",
       "_origin": "ast",
       "id": "app_page_cargamuscularcard",
       "community": 387,
@@ -8045,7 +8045,7 @@
       "label": "ComidasHoyCard()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L325",
+      "source_location": "L326",
       "_origin": "ast",
       "id": "app_page_comidashoycard",
       "community": 387,
@@ -8055,21 +8055,21 @@
       "label": "formatMealFoods()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L390",
+      "source_location": "L401",
       "_origin": "ast",
       "id": "app_page_formatmealfoods",
       "community": 387,
       "norm_label": "formatmealfoods()"
     },
     {
-      "label": "MealCounter()",
+      "label": "MealMacro()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L401",
+      "source_location": "L412",
       "_origin": "ast",
-      "id": "app_page_mealcounter",
+      "id": "app_page_mealmacro",
       "community": 387,
-      "norm_label": "mealcounter()"
+      "norm_label": "mealmacro()"
     },
     {
       "label": "RecipeCatalogClient.tsx",
@@ -60826,6 +60826,17 @@
       "target": "supabase_server_createsupabaseserverclient"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "app_page",
+      "target": "lib_nutrition_style",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/nutrition-style.ts",
@@ -60959,6 +60970,17 @@
       "confidence_score": 1.0,
       "source": "registro_registroclient",
       "target": "lib_nutrition_style"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "app_page",
+      "target": "lib_nutrition_style_macro_colors",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -61569,6 +61591,17 @@
       "confidence_score": 1.0,
       "source": "registro_registroclient",
       "target": "lib_nutrition_types_mealtype"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "app_page",
+      "target": "lib_nutrition_types_meal_type_labels",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -65812,11 +65845,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/page.tsx",
-      "source_location": "L401",
+      "source_location": "L412",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "app_page",
-      "target": "app_page_mealcounter"
+      "target": "app_page_mealmacro",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -101688,5 +101721,5 @@
       "source_file": "specs/G9-user-dashboard/README.md"
     }
   ],
-  "built_at_commit": "25600c057ba9f414a7d727e7e9908c2a238e9d69"
+  "built_at_commit": "95cea809926ed0994ec8ddc387624ccccccf40ff"
 }

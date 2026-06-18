@@ -95,8 +95,8 @@
     "semantic_hash": "28f26cc26c7d3176739ca4d59ed05bb6"
   },
   "app/catalogo/RoutineCatalogClient.tsx": {
-    "mtime": 1781799126.3957765,
-    "ast_hash": "9f7eaf6e6fb4b80faa3bc4f00050c43e",
+    "mtime": 1781806932.8920045,
+    "ast_hash": "6db340b6c5f3251d7f62d548b7cc4909",
     "semantic_hash": ""
   },
   "app/catalogo/page.tsx": {
@@ -480,8 +480,8 @@
     "semantic_hash": "0dad167a95bdb389f02fecffb60b1bc8"
   },
   "AGENTS.md": {
-    "mtime": 1781793767.156617,
-    "ast_hash": "b1d131e9a812cee8a733414a944789ac",
+    "mtime": 1781801710.4736464,
+    "ast_hash": "12a91eae748884c6c7780d90b15166f6",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -1554,11 +1554,6 @@
     "ast_hash": "8e061864f388b47f33a1c3780831193e",
     "semantic_hash": "8e061864f388b47f33a1c3780831193e"
   },
-  "public/references/example.png": {
-    "mtime": 1780949240.3313289,
-    "ast_hash": "48c45cd1de57ff50b69e9014f6674e2a",
-    "semantic_hash": "48c45cd1de57ff50b69e9014f6674e2a"
-  },
   "public/references/finished/catalogo.png": {
     "mtime": 1781024777.8997512,
     "ast_hash": "99dd616e7d9b596085bd8e93ea26443e",
@@ -1810,8 +1805,8 @@
     "semantic_hash": ""
   },
   "app/nutricion/registro/RegistroClient.tsx": {
-    "mtime": 1781799152.9524648,
-    "ast_hash": "c713b5fb20508c5806c82b1905ec62b1",
+    "mtime": 1781806907.0171046,
+    "ast_hash": "2ce28f271ec1ac53cebc0171ef077f14",
     "semantic_hash": ""
   },
   "app/nutricion/registro/actions.ts": {
@@ -2534,21 +2529,6 @@
     "ast_hash": "5da9991ba8ed88199a4451e2b9690535",
     "semantic_hash": ""
   },
-  "public/references/bug.png": {
-    "mtime": 1781735810.557112,
-    "ast_hash": "f7adff6dab0f13995fc9d60f6f472702",
-    "semantic_hash": ""
-  },
-  "public/references/hueco.png": {
-    "mtime": 1781733658.9304404,
-    "ast_hash": "a3d0282e2d663d308ca0be6ca02f4e22",
-    "semantic_hash": ""
-  },
-  "public/references/image.png": {
-    "mtime": 1781740685.212288,
-    "ast_hash": "ffc9d759ff55287134189f3dc6eac838",
-    "semantic_hash": ""
-  },
   "app/components/ui/LoadingDots.tsx": {
     "mtime": 1781749439.9307683,
     "ast_hash": "7e22b0297afde9bf108f866ea4671160",
@@ -2567,6 +2547,11 @@
   "scripts/validate-mobile.mjs": {
     "mtime": 1781797322.8321228,
     "ast_hash": "d67fc837215ee9c947452125f9fc0cc5",
+    "semantic_hash": ""
+  },
+  "public/references/nutricion.png": {
+    "mtime": 1781803719.0307739,
+    "ast_hash": "df897eea484ec005b6d5ff732df0d0b1",
     "semantic_hash": ""
   }
 }

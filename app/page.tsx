@@ -25,7 +25,8 @@ import {
 import { calculateNutritionPlan } from "@/app/lib/nutrition-calc";
 import { MOCK_PROFILE_DEFAULTS } from "@/app/lib/nutrition-mock";
 import { getNutritionProfile } from "@/app/lib/nutrition-profile";
-import type { Macros } from "@/app/lib/nutrition-types";
+import { MACRO_COLORS } from "@/app/lib/nutrition-style";
+import { MEAL_TYPE_LABELS, type Macros } from "@/app/lib/nutrition-types";
 import {
   getSavedRoutineByIdForUser,
   listSavedRoutinesForUser,
@@ -332,57 +333,67 @@ function ComidasHoyCard({
   const preview = meals.slice(0, 2);
 
   return (
-    <div className="flex h-full flex-col gap-2 rounded-2xl bg-[#0e131e] p-3">
-        <CardLabel icon={UtensilsCrossed} label="Comidas hoy" />
+    <div className="flex h-full flex-col rounded-2xl bg-[#0e131e] p-3">
+        <div className="mb-3 flex items-center justify-between gap-2">
+          <div className="min-w-0">
+            <h2 className="font-display text-base font-semibold text-white">Comidas de hoy</h2>
 
-        <div className="flex items-baseline gap-1.5">
-          <span className="font-display text-2xl font-bold text-white">{meals.length}</span>
-          <span className="text-xs text-[#7887a6]">comidas · {totalKcal} kcal</span>
+            <p className="mt-0.5 truncate text-xs text-[#7887a6]">
+              {meals.length} comidas - {totalKcal} kcal
+            </p>
+          </div>
+          <Button asChild type="button" size="sm" className="h-8 shrink-0 px-2.5 text-[10px]">
+            <Link href="/nutricion/registro">Ver</Link>
+          </Button>
         </div>
 
         {preview.length === 0 ? (
-          <p className="text-xs text-[#7887a6]">Sin comidas registradas hoy.</p>
+          <p className="text-sm text-[#7887a6]">Sin comidas registradas hoy.</p>
         ) : (
-          <div className="flex flex-1 flex-col justify-center gap-2">
+          <div className="grid overflow-hidden rounded-xl border border-[rgba(255,255,255,0.06)] bg-[#111722]">
             {preview.map((meal) => (
-              <div key={meal.id} className="flex min-w-0 gap-2">
-                <span className="relative size-16 shrink-0 overflow-hidden rounded-xl bg-[#151d2c]">
+              <div
+                key={meal.id}
+                className="flex min-w-0 items-center gap-2.5 border-b border-[rgba(255,255,255,0.06)] p-2.5 last:border-b-0"
+              >
+                <span className="relative size-[68px] shrink-0 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card-alt)]">
                   <Image
-                    alt=""
+                    alt={MEAL_TYPE_LABELS[meal.type]}
                     className="object-cover"
                     fill
-                    sizes="64px"
+                    sizes="68px"
                     src={meal.imageUrl}
                   />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold leading-tight text-white">
+                  <p className="truncate text-[10px] font-bold uppercase tracking-[0.14em] text-[#b985ff]">
+                    {MEAL_TYPE_LABELS[meal.type]}
+                  </p>
+                  <p className="mt-0.5 truncate font-display text-[15px] font-semibold leading-tight text-white">
                     {meal.name}
                   </p>
-                  <p className="mt-1 line-clamp-1 text-[10px] leading-4 text-[#8d97ab]">
+                  <p className="mt-0.5 line-clamp-1 text-xs leading-4 text-[#8d97ab]">
                     {formatMealFoods(meal)}
                   </p>
-                  <div className="mt-1.5 grid grid-cols-4 gap-1">
-                    <MealCounter label="kcal" value={meal.kcal} />
-                    <MealCounter label="P" value={meal.macros.proteinG} unit="g" />
-                    <MealCounter label="C" value={meal.macros.carbsG} unit="g" />
-                    <MealCounter label="G" value={meal.macros.fatG} unit="g" />
+                  <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] font-semibold text-[#7887a6]">
+                    <MealMacro label="P" value={meal.macros.proteinG} color={MACRO_COLORS.protein} />
+                    <MealMacro label="C" value={meal.macros.carbsG} color={MACRO_COLORS.carbs} />
+                    <MealMacro label="G" value={meal.macros.fatG} color={MACRO_COLORS.fat} />
                   </div>
                 </div>
+                <span className="self-start whitespace-nowrap rounded-full bg-[rgba(255,255,255,0.05)] px-2 py-1 text-[11px] font-bold text-white">
+                  {meal.kcal} kcal
+                </span>
               </div>
             ))}
             {meals.length > 2 && (
-              <p className="text-[10px] text-[#7887a6]">+{meals.length - 2} mas</p>
+              <p className="px-2.5 py-2 text-[10px] font-semibold text-[#7887a6]">
+                +{meals.length - 2} mas
+              </p>
             )}
           </div>
         )}
 
-        <Link
-          href="/nutricion/registro"
-          className="mt-auto text-[10px] font-semibold text-[#9a63ff] hover:text-white"
-        >
-          Ver registro →
-        </Link>
     </div>
   );
 }
@@ -398,24 +409,18 @@ function formatMealFoods(meal: MealGroup) {
   return `${names.join(", ")}${suffix}`;
 }
 
-function MealCounter({
+function MealMacro({
   label,
   value,
-  unit = "",
+  color,
 }: {
   label: string;
   value: number;
-  unit?: string;
+  color: string;
 }) {
   return (
-    <span className="min-w-0 rounded-md bg-[#151d2c] px-1.5 py-1 text-center">
-      <span className="block text-[8px] font-bold uppercase leading-none text-[#77839a]">
-        {label}
-      </span>
-      <span className="mt-0.5 block truncate text-[10px] font-bold leading-none text-white">
-        {Math.round(value)}
-        {unit}
-      </span>
+    <span style={{ color }}>
+      {label} {Math.round(value)}g
     </span>
   );
 }
