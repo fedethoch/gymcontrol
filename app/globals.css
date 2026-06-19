@@ -366,9 +366,31 @@ a {
   height: calc(100dvh - max(env(safe-area-inset-top), 0.75rem));
 }
 
+.pwa-browser .mobile-tab-bar {
+  height: calc(4.375rem + env(safe-area-inset-bottom));
+}
+
+.pwa-browser .mobile-tab-bar-item {
+  gap: 0.125rem;
+  padding-top: 0.4375rem;
+  padding-bottom: max(0.5rem, calc(env(safe-area-inset-bottom) + 0.375rem));
+}
+
 .pwa-standalone .mobile-tab-bar {
   height: calc(1.3125rem + env(safe-area-inset-bottom));
   bottom: 0;
+}
+
+@media (display-mode: browser) {
+  .mobile-tab-bar {
+    height: calc(4.375rem + env(safe-area-inset-bottom));
+  }
+
+  .mobile-tab-bar-item {
+    gap: 0.125rem;
+    padding-top: 0.4375rem;
+    padding-bottom: max(0.5rem, calc(env(safe-area-inset-bottom) + 0.375rem));
+  }
 }
 
 @media (display-mode: standalone) {
@@ -395,6 +417,24 @@ a {
   .mobile-tab-label,
   .mobile-tab-bar-icon {
     transition: none;
+  }
+}
+
+.nutrition-compact-control,
+.nutrition-compact-control[data-slot="select-trigger"] {
+  min-height: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.625rem;
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+  font-size: 0.875rem;
+  line-height: 1.15;
+}
+
+@media (max-width: 767px) {
+  .nutrition-compact-control,
+  .nutrition-compact-control[data-slot="select-trigger"] {
+    font-size: 0.875rem;
   }
 }
 

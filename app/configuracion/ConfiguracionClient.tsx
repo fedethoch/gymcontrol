@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Beef, Droplet, Flame, LogOut, TriangleAlert, Wheat } from "lucide-react";
 import { toast } from "sonner";
 
@@ -36,12 +36,14 @@ import {
   type ActivityLevel,
   type Gender,
   type Goal,
+  type NutritionProfileInput,
 } from "@/app/lib/nutrition-types";
 import { MOCK_PROFILE_DEFAULTS } from "@/app/lib/nutrition-mock";
 import type { NutritionProfile } from "@/app/lib/nutrition-profile";
 import { cn } from "@/app/lib/utils";
 
 const DELETE_CONFIRM_TEXT = "BORRAR";
+type ProfileSaveStatus = "idle" | "saving" | "saved" | "error";
 
 export function ConfiguracionClient({
   initialProfile,
@@ -62,17 +64,17 @@ export function ConfiguracionClient({
     initialProfile?.activityLevel ?? MOCK_PROFILE_DEFAULTS.activityLevel,
   );
   const [goal, setGoal] = useState<Goal>(initialProfile?.goal ?? MOCK_PROFILE_DEFAULTS.goal);
-  const [isPending, setIsPending] = useState(false);
+  const [profileSaveStatus, setProfileSaveStatus] = useState<ProfileSaveStatus>("idle");
   const [deleteConfirm, setDeleteConfirm] = useState("");
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const plan = useMemo(() => {
+  const profileInput = useMemo<NutritionProfileInput>(() => {
     const parsedAge = Number(age) || MOCK_PROFILE_DEFAULTS.age;
     const parsedHeight = Number(heightCm) || MOCK_PROFILE_DEFAULTS.heightCm;
     const parsedWeight = Number(weightKg) || MOCK_PROFILE_DEFAULTS.weightKg;
 
-    return calculateNutritionPlan({
+    return {
       gender,
       age: parsedAge,
       heightCm: parsedHeight,
@@ -80,8 +82,49 @@ export function ConfiguracionClient({
       bodyFatPct,
       activityLevel,
       goal,
-    });
+    };
   }, [gender, age, heightCm, weightKg, bodyFatPct, activityLevel, goal]);
+
+  const profileSignature = useMemo(() => JSON.stringify(profileInput), [profileInput]);
+  const savedProfileSignatureRef = useRef(profileSignature);
+  const plan = useMemo(() => calculateNutritionPlan(profileInput), [profileInput]);
+
+  useEffect(() => {
+    if (profileSignature === savedProfileSignatureRef.current) {
+      setProfileSaveStatus("idle");
+      return;
+    }
+
+    setProfileSaveStatus("idle");
+    let ignore = false;
+
+    const timeout = window.setTimeout(() => {
+      setProfileSaveStatus("saving");
+
+      void saveNutritionProfileAction(profileInput)
+        .then(() => {
+          if (ignore) {
+            return;
+          }
+
+          savedProfileSignatureRef.current = profileSignature;
+          setProfileSaveStatus("saved");
+        })
+        .catch((error) => {
+          if (ignore) {
+            return;
+          }
+
+          setProfileSaveStatus("error");
+          toast.error(error instanceof Error ? error.message : "No se pudo guardar el perfil.");
+        });
+    }, 800);
+
+    return () => {
+      ignore = true;
+      window.clearTimeout(timeout);
+    };
+  }, [profileInput, profileSignature]);
 
   async function handleSaveName() {
     setIsSavingName(true);
@@ -95,27 +138,6 @@ export function ConfiguracionClient({
 
     setDisplayName(result.displayName ?? "");
     toast.success("Nombre actualizado.");
-  }
-
-  async function handleSaveProfile() {
-    const parsedAge = Number(age) || MOCK_PROFILE_DEFAULTS.age;
-    const parsedHeight = Number(heightCm) || MOCK_PROFILE_DEFAULTS.heightCm;
-    const parsedWeight = Number(weightKg) || MOCK_PROFILE_DEFAULTS.weightKg;
-
-    setIsPending(true);
-
-    await saveNutritionProfileAction({
-      gender,
-      age: parsedAge,
-      heightCm: parsedHeight,
-      weightKg: parsedWeight,
-      bodyFatPct,
-      activityLevel,
-      goal,
-    });
-
-    setIsPending(false);
-    toast.success("Perfil guardado.");
   }
 
   async function handleDeleteAccount() {
@@ -237,12 +259,14 @@ export function ConfiguracionClient({
     </div>
   );
 
-  const saveButton = (
-    <Button type="button" size="lg" className="justify-center" onClick={handleSaveProfile} disabled={isPending}>
-              {isPending ? <LoadingDots /> : null}
-      Guardar perfil
-    </Button>
-  );
+  const profileSaveMessage =
+    profileSaveStatus === "saving"
+      ? "Guardando perfil"
+      : profileSaveStatus === "saved"
+        ? "Perfil guardado"
+        : profileSaveStatus === "error"
+          ? "No se pudo guardar"
+          : null;
 
   return (
     <div className="grid gap-5">
@@ -318,8 +342,20 @@ export function ConfiguracionClient({
         </Card>
       </div>
 
-      <div className="lg:hidden">{saveButton}</div>
-      <div className="hidden lg:block">{saveButton}</div>
+      {profileSaveMessage ? (
+        <div
+          aria-live="polite"
+          className={cn(
+            "inline-flex items-center gap-2 justify-self-start rounded-lg border px-3 py-2 text-xs font-semibold",
+            profileSaveStatus === "error"
+              ? "border-[#7a2630] bg-[#3b1419]/40 text-[#f87171]"
+              : "border-[var(--border)] bg-[var(--card-alt)] text-[#9a63ff]",
+          )}
+        >
+          {profileSaveStatus === "saving" ? <LoadingDots /> : null}
+          {profileSaveMessage}
+        </div>
+      ) : null}
 
       <Card>
         <CardHeader>

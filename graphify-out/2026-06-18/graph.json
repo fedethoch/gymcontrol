@@ -778,7 +778,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "alimentos_foodadminclient_foodadminclient",
-      "community": 340,
+      "community": 81,
       "norm_label": "foodadminclient()"
     },
     {
@@ -818,7 +818,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "alimentos_actions",
-      "community": 29,
+      "community": 81,
       "norm_label": "actions.ts"
     },
     {
@@ -828,7 +828,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "alimentos_actions_savefoodresult",
-      "community": 29,
+      "community": 81,
       "norm_label": "savefoodresult"
     },
     {
@@ -838,7 +838,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "alimentos_actions_savefoodaction",
-      "community": 29,
+      "community": 81,
       "norm_label": "savefoodaction()"
     },
     {
@@ -848,7 +848,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "alimentos_actions_deletefoodaction",
-      "community": 29,
+      "community": 81,
       "norm_label": "deletefoodaction()"
     },
     {
@@ -858,7 +858,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_alimentos_page_tsx_alimentos_page",
-      "community": 340,
+      "community": 81,
       "norm_label": "page.tsx"
     },
     {
@@ -868,7 +868,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "alimentos_page_adminfoodspage",
-      "community": 340,
+      "community": 81,
       "norm_label": "adminfoodspage()"
     },
     {
@@ -988,7 +988,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ejercicios_actions",
-      "community": 241,
+      "community": 44,
       "norm_label": "actions.ts"
     },
     {
@@ -998,7 +998,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "ejercicios_actions_saveexerciseaction",
-      "community": 241,
+      "community": 44,
       "norm_label": "saveexerciseaction()"
     },
     {
@@ -1008,7 +1008,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "ejercicios_actions_deleteexerciseaction",
-      "community": 241,
+      "community": 44,
       "norm_label": "deleteexerciseaction()"
     },
     {
@@ -1038,7 +1038,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "admin_layout",
-      "community": 324,
+      "community": 81,
       "norm_label": "layout.tsx"
     },
     {
@@ -1048,7 +1048,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "admin_layout_adminlayout",
-      "community": 324,
+      "community": 81,
       "norm_label": "adminlayout()"
     },
     {
@@ -1098,7 +1098,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "recetas_recipeadminclient",
-      "community": 314,
+      "community": 275,
       "norm_label": "recipeadminclient.tsx"
     },
     {
@@ -1108,7 +1108,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "recetas_recipeadminclient_recipeadminclientprops",
-      "community": 314,
+      "community": 275,
       "norm_label": "recipeadminclientprops"
     },
     {
@@ -1118,7 +1118,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "recetas_recipeadminclient_recipeadminclient",
-      "community": 328,
+      "community": 81,
       "norm_label": "recipeadminclient()"
     },
     {
@@ -1128,7 +1128,7 @@
       "source_location": "L383",
       "_origin": "ast",
       "id": "recetas_recipeadminclient_recipeformsheetprops",
-      "community": 314,
+      "community": 275,
       "norm_label": "recipeformsheetprops"
     },
     {
@@ -1138,7 +1138,7 @@
       "source_location": "L391",
       "_origin": "ast",
       "id": "recetas_recipeadminclient_recipeformsheet",
-      "community": 314,
+      "community": 275,
       "norm_label": "recipeformsheet()"
     },
     {
@@ -1148,7 +1148,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "recetas_actions",
-      "community": 295,
+      "community": 81,
       "norm_label": "actions.ts"
     },
     {
@@ -1158,7 +1158,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "recetas_actions_savereciperesult",
-      "community": 295,
+      "community": 81,
       "norm_label": "savereciperesult"
     },
     {
@@ -1178,7 +1178,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "recetas_actions_deleterecipeaction",
-      "community": 295,
+      "community": 81,
       "norm_label": "deleterecipeaction()"
     },
     {
@@ -1188,7 +1188,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_recetas_page_tsx_recetas_page",
-      "community": 328,
+      "community": 81,
       "norm_label": "page.tsx"
     },
     {
@@ -1198,7 +1198,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "recetas_page_adminrecetaspage",
-      "community": 328,
+      "community": 81,
       "norm_label": "adminrecetaspage()"
     },
     {
@@ -1208,7 +1208,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "rutinas_routineadminclient",
-      "community": 32,
+      "community": 314,
       "norm_label": "routineadminclient.tsx"
     },
     {
@@ -1218,7 +1218,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_routineadminclientprops",
-      "community": 32,
+      "community": 314,
       "norm_label": "routineadminclientprops"
     },
     {
@@ -1228,7 +1228,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_sortcolumn",
-      "community": 32,
+      "community": 314,
       "norm_label": "sortcolumn"
     },
     {
@@ -1238,7 +1238,7 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_sortdirection",
-      "community": 32,
+      "community": 314,
       "norm_label": "sortdirection"
     },
     {
@@ -1248,7 +1248,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_difficulty_badge_styles",
-      "community": 32,
+      "community": 314,
       "norm_label": "difficulty_badge_styles"
     },
     {
@@ -1258,7 +1258,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_objective_badge_styles",
-      "community": 32,
+      "community": 314,
       "norm_label": "objective_badge_styles"
     },
     {
@@ -1268,7 +1268,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_objective_dot_styles",
-      "community": 32,
+      "community": 314,
       "norm_label": "objective_dot_styles"
     },
     {
@@ -1278,7 +1278,7 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_routineadminclient",
-      "community": 211,
+      "community": 241,
       "norm_label": "routineadminclient()"
     },
     {
@@ -1288,7 +1288,7 @@
       "source_location": "L578",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_stattile",
-      "community": 32,
+      "community": 314,
       "norm_label": "stattile()"
     },
     {
@@ -1298,7 +1298,7 @@
       "source_location": "L602",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_sortheader",
-      "community": 32,
+      "community": 314,
       "norm_label": "sortheader()"
     },
     {
@@ -1308,7 +1308,7 @@
       "source_location": "L634",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_routineformsheetprops",
-      "community": 32,
+      "community": 314,
       "norm_label": "routineformsheetprops"
     },
     {
@@ -1318,7 +1318,7 @@
       "source_location": "L643",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_routineformsheet",
-      "community": 32,
+      "community": 314,
       "norm_label": "routineformsheet()"
     },
     {
@@ -1328,7 +1328,7 @@
       "source_location": "L1146",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_createemptyday",
-      "community": 32,
+      "community": 314,
       "norm_label": "createemptyday()"
     },
     {
@@ -1338,7 +1338,7 @@
       "source_location": "L1154",
       "_origin": "ast",
       "id": "rutinas_routineadminclient_createemptyitem",
-      "community": 32,
+      "community": 314,
       "norm_label": "createemptyitem()"
     },
     {
@@ -1378,7 +1378,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_rutinas_page_tsx_rutinas_page",
-      "community": 211,
+      "community": 241,
       "norm_label": "page.tsx"
     },
     {
@@ -1388,7 +1388,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "rutinas_page_adminroutinespage",
-      "community": 211,
+      "community": 241,
       "norm_label": "adminroutinespage()"
     },
     {
@@ -1418,7 +1418,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "alimentos_nutritioncatalogclient_nutritioncatalogclient",
-      "community": 328,
+      "community": 81,
       "norm_label": "nutritioncatalogclient()"
     },
     {
@@ -1458,7 +1458,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_alimentos_page_tsx_alimentos_page",
-      "community": 328,
+      "community": 81,
       "norm_label": "page.tsx"
     },
     {
@@ -1468,7 +1468,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "alimentos_page_nutricionpage",
-      "community": 328,
+      "community": 81,
       "norm_label": "nutricionpage()"
     },
     {
@@ -1608,7 +1608,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "login_otploginflow",
-      "community": 49,
+      "community": 32,
       "norm_label": "otploginflow.tsx"
     },
     {
@@ -1618,7 +1618,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "login_otploginflow_requesterrorcopy",
-      "community": 49,
+      "community": 32,
       "norm_label": "requesterrorcopy"
     },
     {
@@ -1628,7 +1628,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "login_otploginflow_verifyerrorcopy",
-      "community": 49,
+      "community": 32,
       "norm_label": "verifyerrorcopy"
     },
     {
@@ -1638,7 +1638,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "login_otploginflow_otploginflowprops",
-      "community": 49,
+      "community": 32,
       "norm_label": "otploginflowprops"
     },
     {
@@ -1648,7 +1648,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "login_otploginflow_busystate",
-      "community": 49,
+      "community": 32,
       "norm_label": "busystate"
     },
     {
@@ -1658,7 +1658,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "login_otploginflow_otploginflow",
-      "community": 49,
+      "community": 32,
       "norm_label": "otploginflow()"
     },
     {
@@ -1668,7 +1668,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "login_page",
-      "community": 387,
+      "community": 32,
       "norm_label": "page.tsx"
     },
     {
@@ -1678,7 +1678,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "login_page_statuscopy",
-      "community": 387,
+      "community": 32,
       "norm_label": "statuscopy"
     },
     {
@@ -1688,7 +1688,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "login_page_reasoncopy",
-      "community": 387,
+      "community": 32,
       "norm_label": "reasoncopy"
     },
     {
@@ -1698,7 +1698,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "login_page_errorcopy",
-      "community": 387,
+      "community": 32,
       "norm_label": "errorcopy"
     },
     {
@@ -1708,7 +1708,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "login_page_loginpageprops",
-      "community": 387,
+      "community": 32,
       "norm_label": "loginpageprops"
     },
     {
@@ -1848,7 +1848,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "id_routinedetailclient",
-      "community": 207,
+      "community": 105,
       "norm_label": "routinedetailclient.tsx"
     },
     {
@@ -1858,7 +1858,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "id_routinedetailclient_faderow",
-      "community": 207,
+      "community": 105,
       "norm_label": "faderow"
     },
     {
@@ -1868,7 +1868,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "id_routinedetailclient_routinedetailclientprops",
-      "community": 207,
+      "community": 105,
       "norm_label": "routinedetailclientprops"
     },
     {
@@ -2028,7 +2028,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_bodyfatfigure",
-      "community": 105,
+      "community": 275,
       "norm_label": "bodyfatfigure.tsx"
     },
     {
@@ -2038,7 +2038,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "shared_bodyfatfigure_body_fat_values",
-      "community": 105,
+      "community": 275,
       "norm_label": "body_fat_values"
     },
     {
@@ -2048,7 +2048,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "shared_bodyfatfigure_bodyfatfigure",
-      "community": 105,
+      "community": 275,
       "norm_label": "bodyfatfigure()"
     },
     {
@@ -2152,10 +2152,20 @@
       "norm_label": "fillintensitycolor()"
     },
     {
+      "label": "buildLibraryMuscleColors()",
+      "file_type": "code",
+      "source_file": "app/components/shared/BodyMuscleFigure.tsx",
+      "source_location": "L305",
+      "_origin": "ast",
+      "id": "shared_bodymusclefigure_buildlibrarymusclecolors",
+      "community": 399,
+      "norm_label": "buildlibrarymusclecolors()"
+    },
+    {
       "label": "toLibraryMuscles()",
       "file_type": "code",
       "source_file": "app/components/shared/BodyMuscleFigure.tsx",
-      "source_location": "L308",
+      "source_location": "L318",
       "_origin": "ast",
       "id": "shared_bodymusclefigure_tolibrarymuscles",
       "community": 399,
@@ -2165,7 +2175,7 @@
       "label": "intensityToFreq()",
       "file_type": "code",
       "source_file": "app/components/shared/BodyMuscleFigure.tsx",
-      "source_location": "L340",
+      "source_location": "L350",
       "_origin": "ast",
       "id": "shared_bodymusclefigure_intensitytofreq",
       "community": 399,
@@ -2175,7 +2185,7 @@
       "label": "HIGHLIGHTED_COLORS",
       "file_type": "code",
       "source_file": "app/components/shared/BodyMuscleFigure.tsx",
-      "source_location": "L350",
+      "source_location": "L360",
       "_origin": "ast",
       "id": "shared_bodymusclefigure_highlighted_colors",
       "community": 399,
@@ -2185,7 +2195,7 @@
       "label": "BodySVG()",
       "file_type": "code",
       "source_file": "app/components/shared/BodyMuscleFigure.tsx",
-      "source_location": "L354",
+      "source_location": "L364",
       "_origin": "ast",
       "id": "shared_bodymusclefigure_bodysvg",
       "community": 399,
@@ -2195,7 +2205,7 @@
       "label": "BodyMuscleFigure()",
       "file_type": "code",
       "source_file": "app/components/shared/BodyMuscleFigure.tsx",
-      "source_location": "L378",
+      "source_location": "L394",
       "_origin": "ast",
       "id": "shared_bodymusclefigure_bodymusclefigure",
       "community": 399,
@@ -2438,7 +2448,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "shared_mobileheader_mobileheaderbadgesync",
-      "community": 366,
+      "community": 387,
       "norm_label": "mobileheaderbadgesync()"
     },
     {
@@ -2728,7 +2738,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_routinetablepreview",
-      "community": 387,
+      "community": 207,
       "norm_label": "routinetablepreview.tsx"
     },
     {
@@ -2738,7 +2748,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "shared_routinetablepreview_routinetablerow",
-      "community": 387,
+      "community": 207,
       "norm_label": "routinetablerow"
     },
     {
@@ -2748,7 +2758,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "shared_routinetablepreview_routinetablepreviewprops",
-      "community": 387,
+      "community": 207,
       "norm_label": "routinetablepreviewprops"
     },
     {
@@ -2758,7 +2768,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "shared_routinetablepreview_routinetablepreview",
-      "community": 387,
+      "community": 207,
       "norm_label": "routinetablepreview()"
     },
     {
@@ -2768,7 +2778,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_statustoast",
-      "community": 387,
+      "community": 32,
       "norm_label": "statustoast.tsx"
     },
     {
@@ -2778,7 +2788,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "shared_statustoast_statustoastprops",
-      "community": 387,
+      "community": 32,
       "norm_label": "statustoastprops"
     },
     {
@@ -2788,7 +2798,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "shared_statustoast_statustoast",
-      "community": 387,
+      "community": 32,
       "norm_label": "statustoast()"
     },
     {
@@ -3198,7 +3208,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "ui_card_cardheader",
-      "community": 387,
+      "community": 207,
       "norm_label": "cardheader()"
     },
     {
@@ -3208,7 +3218,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "ui_card_cardtitle",
-      "community": 387,
+      "community": 207,
       "norm_label": "cardtitle()"
     },
     {
@@ -3218,7 +3228,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "ui_card_carddescription",
-      "community": 387,
+      "community": 32,
       "norm_label": "carddescription()"
     },
     {
@@ -3238,7 +3248,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "ui_card_cardfooter",
-      "community": 387,
+      "community": 105,
       "norm_label": "cardfooter()"
     },
     {
@@ -3508,7 +3518,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_input",
-      "community": 105,
+      "community": 275,
       "norm_label": "input.tsx"
     },
     {
@@ -3518,7 +3528,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "ui_input_input",
-      "community": 105,
+      "community": 275,
       "norm_label": "input()"
     },
     {
@@ -3528,7 +3538,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_loadingdots",
-      "community": 105,
+      "community": 314,
       "norm_label": "loadingdots.tsx"
     },
     {
@@ -3538,7 +3548,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "ui_loadingdots_loadingdotsprops",
-      "community": 105,
+      "community": 314,
       "norm_label": "loadingdotsprops"
     },
     {
@@ -3548,7 +3558,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "ui_loadingdots_loadingdots",
-      "community": 105,
+      "community": 314,
       "norm_label": "loadingdots()"
     },
     {
@@ -3558,7 +3568,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_progressring",
-      "community": 32,
+      "community": 387,
       "norm_label": "progressring.tsx"
     },
     {
@@ -3568,7 +3578,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "ui_progressring_animatedprogressring",
-      "community": 32,
+      "community": 387,
       "norm_label": "animatedprogressring()"
     },
     {
@@ -3668,7 +3678,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "ui_select_selectlabel",
-      "community": 275,
+      "community": 105,
       "norm_label": "selectlabel()"
     },
     {
@@ -3688,7 +3698,7 @@
       "source_location": "L122",
       "_origin": "ast",
       "id": "ui_select_selectseparator",
-      "community": 275,
+      "community": 105,
       "norm_label": "selectseparator()"
     },
     {
@@ -3738,7 +3748,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "ui_sheet_sheettrigger",
-      "community": 314,
+      "community": 366,
       "norm_label": "sheettrigger()"
     },
     {
@@ -3768,7 +3778,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "ui_sheet_sheetoverlay",
-      "community": 314,
+      "community": 105,
       "norm_label": "sheetoverlay()"
     },
     {
@@ -3818,7 +3828,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "ui_sheet_sheetdescription",
-      "community": 366,
+      "community": 314,
       "norm_label": "sheetdescription()"
     },
     {
@@ -3928,7 +3938,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "ui_table_tablecaption",
-      "community": 207,
+      "community": 105,
       "norm_label": "tablecaption()"
     },
     {
@@ -3938,7 +3948,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_tabs",
-      "community": 207,
+      "community": 105,
       "norm_label": "tabs.tsx"
     },
     {
@@ -3948,7 +3958,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "ui_tabs_tabs",
-      "community": 207,
+      "community": 105,
       "norm_label": "tabs()"
     },
     {
@@ -3958,7 +3968,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "ui_tabs_tabslistvariants",
-      "community": 207,
+      "community": 105,
       "norm_label": "tabslistvariants"
     },
     {
@@ -3968,7 +3978,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "ui_tabs_tabslist",
-      "community": 207,
+      "community": 105,
       "norm_label": "tabslist()"
     },
     {
@@ -3978,7 +3988,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "ui_tabs_tabstrigger",
-      "community": 207,
+      "community": 105,
       "norm_label": "tabstrigger()"
     },
     {
@@ -3988,7 +3998,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "ui_tabs_tabscontent",
-      "community": 207,
+      "community": 105,
       "norm_label": "tabscontent()"
     },
     {
@@ -3998,7 +4008,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_textarea",
-      "community": 32,
+      "community": 314,
       "norm_label": "textarea.tsx"
     },
     {
@@ -4008,7 +4018,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "ui_textarea_textarea",
-      "community": 32,
+      "community": 314,
       "norm_label": "textarea()"
     },
     {
@@ -4068,7 +4078,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_motion",
-      "community": 275,
+      "community": 32,
       "norm_label": "motion.tsx"
     },
     {
@@ -4078,7 +4088,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "ui_motion_premiumease",
-      "community": 275,
+      "community": 32,
       "norm_label": "premiumease"
     },
     {
@@ -4088,7 +4098,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "ui_motion_microtransition",
-      "community": 275,
+      "community": 32,
       "norm_label": "microtransition"
     },
     {
@@ -4098,7 +4108,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "ui_motion_fadeup",
-      "community": 275,
+      "community": 32,
       "norm_label": "fadeup"
     },
     {
@@ -4108,7 +4118,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "ui_motion_fadescale",
-      "community": 275,
+      "community": 32,
       "norm_label": "fadescale"
     },
     {
@@ -4118,7 +4128,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "ui_motion_staggercontainer",
-      "community": 275,
+      "community": 32,
       "norm_label": "staggercontainer"
     },
     {
@@ -4158,7 +4168,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "ui_motion_motiondiv",
-      "community": 387,
+      "community": 32,
       "norm_label": "motiondiv()"
     },
     {
@@ -4168,7 +4178,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "configuracion_configuracionclient",
-      "community": 105,
+      "community": 275,
       "norm_label": "configuracionclient.tsx"
     },
     {
@@ -4198,7 +4208,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "configuracion_actions",
-      "community": 33,
+      "community": 287,
       "norm_label": "actions.ts"
     },
     {
@@ -4208,7 +4218,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "configuracion_actions_savenutritionprofileaction",
-      "community": 33,
+      "community": 287,
       "norm_label": "savenutritionprofileaction()"
     },
     {
@@ -4218,7 +4228,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "configuracion_actions_saveprofilenameaction",
-      "community": 33,
+      "community": 287,
       "norm_label": "saveprofilenameaction()"
     },
     {
@@ -4228,7 +4238,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "configuracion_actions_deleteaccountaction",
-      "community": 33,
+      "community": 287,
       "norm_label": "deleteaccountaction()"
     },
     {
@@ -4278,7 +4288,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "dashboard_page",
-      "community": 387,
+      "community": 32,
       "norm_label": "page.tsx"
     },
     {
@@ -4288,7 +4298,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "dashboard_page_legacydashboardpage",
-      "community": 387,
+      "community": 32,
       "norm_label": "legacydashboardpage()"
     },
     {
@@ -4328,7 +4338,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_dashboard_rutinas_page_tsx_rutinas_page",
-      "community": 32,
+      "community": 387,
       "norm_label": "page.tsx"
     },
     {
@@ -4338,7 +4348,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "rutinas_page_legacydashboardroutinespage",
-      "community": 32,
+      "community": 387,
       "norm_label": "legacydashboardroutinespage()"
     },
     {
@@ -4698,7 +4708,7 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "lib_auth_requireadmin",
-      "community": 324,
+      "community": 81,
       "norm_label": "requireadmin()"
     },
     {
@@ -5038,7 +5048,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "lib_exercises_listexercisecatalogitems",
-      "community": 211,
+      "community": 241,
       "norm_label": "listexercisecatalogitems()"
     },
     {
@@ -5068,7 +5078,7 @@
       "source_location": "L114",
       "_origin": "ast",
       "id": "lib_exercises_createexercise",
-      "community": 241,
+      "community": 44,
       "norm_label": "createexercise()"
     },
     {
@@ -5088,7 +5098,7 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "lib_exercises_updateexercise",
-      "community": 241,
+      "community": 44,
       "norm_label": "updateexercise()"
     },
     {
@@ -5098,7 +5108,7 @@
       "source_location": "L172",
       "_origin": "ast",
       "id": "lib_exercises_deleteexercise",
-      "community": 241,
+      "community": 44,
       "norm_label": "deleteexercise()"
     },
     {
@@ -5128,7 +5138,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_foods_form",
-      "community": 339,
+      "community": 81,
       "norm_label": "foods-form.ts"
     },
     {
@@ -5138,7 +5148,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_foods_form_foodformfield",
-      "community": 339,
+      "community": 81,
       "norm_label": "foodformfield"
     },
     {
@@ -5148,7 +5158,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "lib_foods_form_foodformpayload",
-      "community": 339,
+      "community": 81,
       "norm_label": "foodformpayload"
     },
     {
@@ -5158,7 +5168,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "lib_foods_form_foodformstate",
-      "community": 339,
+      "community": 81,
       "norm_label": "foodformstate"
     },
     {
@@ -5168,7 +5178,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "lib_foods_form_initial_food_form_state",
-      "community": 339,
+      "community": 81,
       "norm_label": "initial_food_form_state"
     },
     {
@@ -5178,7 +5188,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "lib_foods_form_parsedfoodpayload",
-      "community": 339,
+      "community": 81,
       "norm_label": "parsedfoodpayload"
     },
     {
@@ -5188,7 +5198,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_foods_validation",
-      "community": 339,
+      "community": 81,
       "norm_label": "foods-validation.ts"
     },
     {
@@ -5198,7 +5208,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "lib_foods_validation_foodtextschema",
-      "community": 339,
+      "community": 81,
       "norm_label": "foodtextschema"
     },
     {
@@ -5208,7 +5218,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "lib_foods_validation_numeric_fields",
-      "community": 339,
+      "community": 81,
       "norm_label": "numeric_fields"
     },
     {
@@ -5218,7 +5228,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "lib_foods_validation_parsefoodpayload",
-      "community": 29,
+      "community": 81,
       "norm_label": "parsefoodpayload()"
     },
     {
@@ -5228,7 +5238,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_foods",
-      "community": 29,
+      "community": 81,
       "norm_label": "foods.ts"
     },
     {
@@ -5238,7 +5248,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "lib_foods_adminfoodlistitem",
-      "community": 29,
+      "community": 81,
       "norm_label": "adminfoodlistitem"
     },
     {
@@ -5248,7 +5258,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_foods_foodrow",
-      "community": 29,
+      "community": 81,
       "norm_label": "foodrow"
     },
     {
@@ -5258,7 +5268,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "lib_foods_listfoodcatalogitems",
-      "community": 328,
+      "community": 81,
       "norm_label": "listfoodcatalogitems()"
     },
     {
@@ -5268,7 +5278,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "lib_foods_listadminfoods",
-      "community": 340,
+      "community": 81,
       "norm_label": "listadminfoods()"
     },
     {
@@ -5278,7 +5288,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "lib_foods_getfoodbyid",
-      "community": 29,
+      "community": 81,
       "norm_label": "getfoodbyid()"
     },
     {
@@ -5288,7 +5298,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "lib_foods_foodinput",
-      "community": 29,
+      "community": 81,
       "norm_label": "foodinput"
     },
     {
@@ -5298,7 +5308,7 @@
       "source_location": "L88",
       "_origin": "ast",
       "id": "lib_foods_createfood",
-      "community": 29,
+      "community": 81,
       "norm_label": "createfood()"
     },
     {
@@ -5308,7 +5318,7 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "lib_foods_updatefood",
-      "community": 29,
+      "community": 81,
       "norm_label": "updatefood()"
     },
     {
@@ -5318,7 +5328,7 @@
       "source_location": "L137",
       "_origin": "ast",
       "id": "lib_foods_deletefood",
-      "community": 29,
+      "community": 81,
       "norm_label": "deletefood()"
     },
     {
@@ -5328,7 +5338,7 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "lib_foods_mapfood",
-      "community": 29,
+      "community": 81,
       "norm_label": "mapfood()"
     },
     {
@@ -5338,7 +5348,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "lib_foods_formatdatelabel",
-      "community": 29,
+      "community": 81,
       "norm_label": "formatdatelabel()"
     },
     {
@@ -5368,7 +5378,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "lib_meal_logs_mealgroup",
-      "community": 360,
+      "community": 387,
       "norm_label": "mealgroup"
     },
     {
@@ -5588,7 +5598,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_nutrition_calc",
-      "community": 33,
+      "community": 275,
       "norm_label": "nutrition-calc.ts"
     },
     {
@@ -5598,7 +5608,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "lib_nutrition_calc_calculatebmr",
-      "community": 33,
+      "community": 360,
       "norm_label": "calculatebmr()"
     },
     {
@@ -5608,7 +5618,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "lib_nutrition_calc_calculatenutritionplan",
-      "community": 33,
+      "community": 360,
       "norm_label": "calculatenutritionplan()"
     },
     {
@@ -5618,7 +5628,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "lib_nutrition_calc_calculatemacros",
-      "community": 33,
+      "community": 360,
       "norm_label": "calculatemacros()"
     },
     {
@@ -5708,7 +5718,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "lib_nutrition_profile_savenutritionprofile",
-      "community": 33,
+      "community": 287,
       "norm_label": "savenutritionprofile()"
     },
     {
@@ -5888,7 +5898,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "lib_nutrition_types_food_measures",
-      "community": 339,
+      "community": 275,
       "norm_label": "food_measures"
     },
     {
@@ -5898,7 +5908,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "lib_nutrition_types_foodmeasure",
-      "community": 339,
+      "community": 105,
       "norm_label": "foodmeasure"
     },
     {
@@ -5918,7 +5928,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "lib_nutrition_types_meal_types",
-      "community": 360,
+      "community": 105,
       "norm_label": "meal_types"
     },
     {
@@ -5928,7 +5938,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "lib_nutrition_types_mealtype",
-      "community": 360,
+      "community": 105,
       "norm_label": "mealtype"
     },
     {
@@ -5948,7 +5958,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "lib_nutrition_types_meal_type_images",
-      "community": 360,
+      "community": 105,
       "norm_label": "meal_type_images"
     },
     {
@@ -5958,7 +5968,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "lib_nutrition_types_macros",
-      "community": 387,
+      "community": 275,
       "norm_label": "macros"
     },
     {
@@ -5978,7 +5988,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "lib_nutrition_types_recipeingredient",
-      "community": 81,
+      "community": 275,
       "norm_label": "recipeingredient"
     },
     {
@@ -6008,7 +6018,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "lib_nutrition_types_gender",
-      "community": 105,
+      "community": 275,
       "norm_label": "gender"
     },
     {
@@ -6038,7 +6048,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "lib_nutrition_types_activity_level_info",
-      "community": 33,
+      "community": 275,
       "norm_label": "activity_level_info"
     },
     {
@@ -6068,7 +6078,7 @@
       "source_location": "L125",
       "_origin": "ast",
       "id": "lib_nutrition_types_goal_info",
-      "community": 33,
+      "community": 275,
       "norm_label": "goal_info"
     },
     {
@@ -6088,7 +6098,7 @@
       "source_location": "L151",
       "_origin": "ast",
       "id": "lib_nutrition_types_nutritionprofileinput",
-      "community": 33,
+      "community": 275,
       "norm_label": "nutritionprofileinput"
     },
     {
@@ -6098,7 +6108,7 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "lib_nutrition_types_nutritionplan",
-      "community": 33,
+      "community": 275,
       "norm_label": "nutritionplan"
     },
     {
@@ -6188,7 +6198,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_recipes_form",
-      "community": 295,
+      "community": 81,
       "norm_label": "recipes-form.ts"
     },
     {
@@ -6198,7 +6208,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_recipes_form_recipeformfield",
-      "community": 295,
+      "community": 81,
       "norm_label": "recipeformfield"
     },
     {
@@ -6208,7 +6218,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "lib_recipes_form_recipeingredientpayload",
-      "community": 295,
+      "community": 81,
       "norm_label": "recipeingredientpayload"
     },
     {
@@ -6218,7 +6228,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "lib_recipes_form_recipeformpayload",
-      "community": 295,
+      "community": 81,
       "norm_label": "recipeformpayload"
     },
     {
@@ -6228,7 +6238,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "lib_recipes_form_recipeformstate",
-      "community": 295,
+      "community": 81,
       "norm_label": "recipeformstate"
     },
     {
@@ -6238,7 +6248,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "lib_recipes_form_initial_recipe_form_state",
-      "community": 295,
+      "community": 81,
       "norm_label": "initial_recipe_form_state"
     },
     {
@@ -6248,7 +6258,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "lib_recipes_form_parsedrecipepayload",
-      "community": 295,
+      "community": 81,
       "norm_label": "parsedrecipepayload"
     },
     {
@@ -6258,7 +6268,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_recipes_validation",
-      "community": 295,
+      "community": 81,
       "norm_label": "recipes-validation.ts"
     },
     {
@@ -6268,7 +6278,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "lib_recipes_validation_recipetextschema",
-      "community": 295,
+      "community": 81,
       "norm_label": "recipetextschema"
     },
     {
@@ -6278,7 +6288,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "lib_recipes_validation_parserecipepayload",
-      "community": 295,
+      "community": 81,
       "norm_label": "parserecipepayload()"
     },
     {
@@ -6338,7 +6348,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "lib_recipes_listadminrecipes",
-      "community": 328,
+      "community": 81,
       "norm_label": "listadminrecipes()"
     },
     {
@@ -6388,7 +6398,7 @@
       "source_location": "L137",
       "_origin": "ast",
       "id": "lib_recipes_deleterecipe",
-      "community": 295,
+      "community": 81,
       "norm_label": "deleterecipe()"
     },
     {
@@ -6568,7 +6578,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_routine_metadata",
-      "community": 32,
+      "community": 314,
       "norm_label": "routine-metadata.ts"
     },
     {
@@ -6578,7 +6588,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_routine_metadata_routine_difficulties",
-      "community": 32,
+      "community": 314,
       "norm_label": "routine_difficulties"
     },
     {
@@ -6588,7 +6598,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "lib_routine_metadata_routine_objectives",
-      "community": 32,
+      "community": 314,
       "norm_label": "routine_objectives"
     },
     {
@@ -6598,7 +6608,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "lib_routine_metadata_routinedifficulty",
-      "community": 32,
+      "community": 314,
       "norm_label": "routinedifficulty"
     },
     {
@@ -6608,7 +6618,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "lib_routine_metadata_routineobjective",
-      "community": 32,
+      "community": 314,
       "norm_label": "routineobjective"
     },
     {
@@ -6618,7 +6628,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "lib_routine_metadata_routine_difficulty_labels",
-      "community": 32,
+      "community": 387,
       "norm_label": "routine_difficulty_labels"
     },
     {
@@ -6628,7 +6638,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "lib_routine_metadata_routine_objective_labels",
-      "community": 32,
+      "community": 387,
       "norm_label": "routine_objective_labels"
     },
     {
@@ -6898,7 +6908,7 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "lib_routines_listadminroutines",
-      "community": 211,
+      "community": 241,
       "norm_label": "listadminroutines()"
     },
     {
@@ -7118,7 +7128,7 @@
       "source_location": "L198",
       "_origin": "ast",
       "id": "lib_saved_routines_listsavedroutinesforuser",
-      "community": 32,
+      "community": 387,
       "norm_label": "listsavedroutinesforuser()"
     },
     {
@@ -7128,7 +7138,7 @@
       "source_location": "L214",
       "_origin": "ast",
       "id": "lib_saved_routines_getsavedroutinebyidforuser",
-      "community": 30,
+      "community": 387,
       "norm_label": "getsavedroutinebyidforuser()"
     },
     {
@@ -7298,7 +7308,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "supabase_admin",
-      "community": 33,
+      "community": 287,
       "norm_label": "admin.ts"
     },
     {
@@ -7308,7 +7318,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "supabase_admin_createsupabaseadminclient",
-      "community": 33,
+      "community": 287,
       "norm_label": "createsupabaseadminclient()"
     },
     {
@@ -7418,7 +7428,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_utils",
-      "community": 105,
+      "community": 387,
       "norm_label": "utils.ts"
     },
     {
@@ -7492,10 +7502,30 @@
       "norm_label": "workoutweeklysummary"
     },
     {
-      "label": "WorkoutSessionRow",
+      "label": "MuscleStrengthRange",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
       "source_location": "L35",
+      "_origin": "ast",
+      "id": "lib_workout_tracking_musclestrengthrange",
+      "community": 38,
+      "norm_label": "musclestrengthrange"
+    },
+    {
+      "label": "MuscleStrengthSummary",
+      "file_type": "code",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "lib_workout_tracking_musclestrengthsummary",
+      "community": 38,
+      "norm_label": "musclestrengthsummary"
+    },
+    {
+      "label": "WorkoutSessionRow",
+      "file_type": "code",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "lib_workout_tracking_workoutsessionrow",
       "community": 38,
@@ -7505,7 +7535,7 @@
       "label": "WorkoutSessionItemRow",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L45",
+      "source_location": "L56",
       "_origin": "ast",
       "id": "lib_workout_tracking_workoutsessionitemrow",
       "community": 38,
@@ -7515,7 +7545,7 @@
       "label": "SavedRoutineOwnershipRow",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L52",
+      "source_location": "L63",
       "_origin": "ast",
       "id": "lib_workout_tracking_savedroutineownershiprow",
       "community": 38,
@@ -7525,7 +7555,7 @@
       "label": "RoutineDayOwnershipRow",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L57",
+      "source_location": "L68",
       "_origin": "ast",
       "id": "lib_workout_tracking_routinedayownershiprow",
       "community": 38,
@@ -7535,17 +7565,57 @@
       "label": "RoutineItemOwnershipRow",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L61",
+      "source_location": "L72",
       "_origin": "ast",
       "id": "lib_workout_tracking_routineitemownershiprow",
       "community": 38,
       "norm_label": "routineitemownershiprow"
     },
     {
+      "label": "STRENGTH_GROUPS",
+      "file_type": "code",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L91",
+      "_origin": "ast",
+      "id": "lib_workout_tracking_strength_groups",
+      "community": 38,
+      "norm_label": "strength_groups"
+    },
+    {
+      "label": "PRIMARY_STRENGTH_EXERCISES",
+      "file_type": "code",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L93",
+      "_origin": "ast",
+      "id": "lib_workout_tracking_primary_strength_exercises",
+      "community": 38,
+      "norm_label": "primary_strength_exercises"
+    },
+    {
+      "label": "STRENGTH_RANGE_COLORS",
+      "file_type": "code",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L103",
+      "_origin": "ast",
+      "id": "lib_workout_tracking_strength_range_colors",
+      "community": 38,
+      "norm_label": "strength_range_colors"
+    },
+    {
+      "label": "STRENGTH_THRESHOLDS",
+      "file_type": "code",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L111",
+      "_origin": "ast",
+      "id": "lib_workout_tracking_strength_thresholds",
+      "community": 38,
+      "norm_label": "strength_thresholds"
+    },
+    {
       "label": "getLocalTrainingDate()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L80",
+      "source_location": "L121",
       "_origin": "ast",
       "id": "lib_workout_tracking_getlocaltrainingdate",
       "community": 360,
@@ -7555,7 +7625,7 @@
       "label": "getCurrentWeekRange()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L89",
+      "source_location": "L130",
       "_origin": "ast",
       "id": "lib_workout_tracking_getcurrentweekrange",
       "community": 38,
@@ -7565,7 +7635,7 @@
       "label": "getWorkoutSessionForToday()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L107",
+      "source_location": "L148",
       "_origin": "ast",
       "id": "lib_workout_tracking_getworkoutsessionfortoday",
       "community": 38,
@@ -7575,7 +7645,7 @@
       "label": "getWorkoutSessionForDate()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L118",
+      "source_location": "L159",
       "_origin": "ast",
       "id": "lib_workout_tracking_getworkoutsessionfordate",
       "community": 38,
@@ -7585,7 +7655,7 @@
       "label": "getWorkoutSessionForWeek()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L151",
+      "source_location": "L192",
       "_origin": "ast",
       "id": "lib_workout_tracking_getworkoutsessionforweek",
       "community": 38,
@@ -7595,7 +7665,7 @@
       "label": "saveWorkoutSessionForToday()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L187",
+      "source_location": "L228",
       "_origin": "ast",
       "id": "lib_workout_tracking_saveworkoutsessionfortoday",
       "community": 38,
@@ -7605,7 +7675,7 @@
       "label": "saveWorkoutSessionForWeek()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L200",
+      "source_location": "L241",
       "_origin": "ast",
       "id": "lib_workout_tracking_saveworkoutsessionforweek",
       "community": 38,
@@ -7615,7 +7685,7 @@
       "label": "saveWorkoutSession()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L214",
+      "source_location": "L255",
       "_origin": "ast",
       "id": "lib_workout_tracking_saveworkoutsession",
       "community": 38,
@@ -7625,7 +7695,7 @@
       "label": "listWorkoutWeeklySummaries()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L332",
+      "source_location": "L373",
       "_origin": "ast",
       "id": "lib_workout_tracking_listworkoutweeklysummaries",
       "community": 38,
@@ -7635,7 +7705,7 @@
       "label": "ExerciseHistoryEntry",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L457",
+      "source_location": "L498",
       "_origin": "ast",
       "id": "lib_workout_tracking_exercisehistoryentry",
       "community": 38,
@@ -7645,27 +7715,77 @@
       "label": "getExerciseHistoryByRoutineItem()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L465",
+      "source_location": "L506",
       "_origin": "ast",
       "id": "lib_workout_tracking_getexercisehistorybyroutineitem",
       "community": 38,
       "norm_label": "getexercisehistorybyroutineitem()"
     },
     {
+      "label": "listMuscleStrengthSummariesForSavedRoutine()",
+      "file_type": "code",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L563",
+      "_origin": "ast",
+      "id": "lib_workout_tracking_listmusclestrengthsummariesforsavedroutine",
+      "community": 38,
+      "norm_label": "listmusclestrengthsummariesforsavedroutine()"
+    },
+    {
       "label": "formatHistoryDate()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L522",
+      "source_location": "L654",
       "_origin": "ast",
       "id": "lib_workout_tracking_formathistorydate",
       "community": 38,
       "norm_label": "formathistorydate()"
     },
     {
+      "label": "parseBestWeight()",
+      "file_type": "code",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L661",
+      "_origin": "ast",
+      "id": "lib_workout_tracking_parsebestweight",
+      "community": 38,
+      "norm_label": "parsebestweight()"
+    },
+    {
+      "label": "normalizeStrengthGroup()",
+      "file_type": "code",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L678",
+      "_origin": "ast",
+      "id": "lib_workout_tracking_normalizestrengthgroup",
+      "community": 38,
+      "norm_label": "normalizestrengthgroup()"
+    },
+    {
+      "label": "isPrincipalStrengthExercise()",
+      "file_type": "code",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L688",
+      "_origin": "ast",
+      "id": "lib_workout_tracking_isprincipalstrengthexercise",
+      "community": 38,
+      "norm_label": "isprincipalstrengthexercise()"
+    },
+    {
+      "label": "resolveStrengthRange()",
+      "file_type": "code",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L696",
+      "_origin": "ast",
+      "id": "lib_workout_tracking_resolvestrengthrange",
+      "community": 38,
+      "norm_label": "resolvestrengthrange()"
+    },
+    {
       "label": "getCompletedTrainingDates()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L529",
+      "source_location": "L713",
       "_origin": "ast",
       "id": "lib_workout_tracking_getcompletedtrainingdates",
       "community": 38,
@@ -7675,7 +7795,7 @@
       "label": "validateWorkoutOwnership()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L553",
+      "source_location": "L737",
       "_origin": "ast",
       "id": "lib_workout_tracking_validateworkoutownership",
       "community": 38,
@@ -7685,7 +7805,7 @@
       "label": "mapWorkoutSession()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L613",
+      "source_location": "L797",
       "_origin": "ast",
       "id": "lib_workout_tracking_mapworkoutsession",
       "community": 38,
@@ -7695,7 +7815,7 @@
       "label": "getWeekStartKey()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L637",
+      "source_location": "L821",
       "_origin": "ast",
       "id": "lib_workout_tracking_getweekstartkey",
       "community": 38,
@@ -7705,7 +7825,7 @@
       "label": "calculateCurrentStreak()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L647",
+      "source_location": "L831",
       "_origin": "ast",
       "id": "lib_workout_tracking_calculatecurrentstreak",
       "community": 38,
@@ -7715,7 +7835,7 @@
       "label": "addDays()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L689",
+      "source_location": "L873",
       "_origin": "ast",
       "id": "lib_workout_tracking_adddays",
       "community": 38,
@@ -7725,7 +7845,7 @@
       "label": "formatDateOnly()",
       "file_type": "code",
       "source_file": "app/lib/workout-tracking.ts",
-      "source_location": "L696",
+      "source_location": "L880",
       "_origin": "ast",
       "id": "lib_workout_tracking_formatdateonly",
       "community": 38,
@@ -8005,7 +8125,7 @@
       "label": "Home()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L39",
+      "source_location": "L42",
       "_origin": "ast",
       "id": "app_page_home",
       "community": 360,
@@ -8015,17 +8135,37 @@
       "label": "CardLabel()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L211",
+      "source_location": "L222",
       "_origin": "ast",
       "id": "app_page_cardlabel",
       "community": 387,
       "norm_label": "cardlabel()"
     },
     {
+      "label": "STRENGTH_LEGEND",
+      "file_type": "code",
+      "source_file": "app/page.tsx",
+      "source_location": "L239",
+      "_origin": "ast",
+      "id": "app_page_strength_legend",
+      "community": 387,
+      "norm_label": "strength_legend"
+    },
+    {
+      "label": "STRENGTH_RANGE_LABELS",
+      "file_type": "code",
+      "source_file": "app/page.tsx",
+      "source_location": "L246",
+      "_origin": "ast",
+      "id": "app_page_strength_range_labels",
+      "community": 387,
+      "norm_label": "strength_range_labels"
+    },
+    {
       "label": "NutricionCard()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L228",
+      "source_location": "L254",
       "_origin": "ast",
       "id": "app_page_nutricioncard",
       "community": 387,
@@ -8035,7 +8175,7 @@
       "label": "CargaMuscularCard()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L300",
+      "source_location": "L326",
       "_origin": "ast",
       "id": "app_page_cargamuscularcard",
       "community": 387,
@@ -8045,7 +8185,7 @@
       "label": "ComidasHoyCard()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L326",
+      "source_location": "L388",
       "_origin": "ast",
       "id": "app_page_comidashoycard",
       "community": 387,
@@ -8055,7 +8195,7 @@
       "label": "formatMealFoods()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L401",
+      "source_location": "L467",
       "_origin": "ast",
       "id": "app_page_formatmealfoods",
       "community": 387,
@@ -8065,7 +8205,7 @@
       "label": "MealMacro()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L412",
+      "source_location": "L478",
       "_origin": "ast",
       "id": "app_page_mealmacro",
       "community": 387,
@@ -8158,7 +8298,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "rutinas_weekdayslist",
-      "community": 32,
+      "community": 387,
       "norm_label": "weekdayslist.tsx"
     },
     {
@@ -8168,7 +8308,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "rutinas_weekdayslist_weekday",
-      "community": 32,
+      "community": 387,
       "norm_label": "weekday"
     },
     {
@@ -8178,7 +8318,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "rutinas_weekdayslist_weekdayslistprops",
-      "community": 32,
+      "community": 387,
       "norm_label": "weekdayslistprops"
     },
     {
@@ -8188,7 +8328,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "rutinas_weekdayslist_weekdayslist",
-      "community": 32,
+      "community": 387,
       "norm_label": "weekdayslist()"
     },
     {
@@ -8198,7 +8338,7 @@
       "source_location": "L102",
       "_origin": "ast",
       "id": "rutinas_weekdayslist_daymarker",
-      "community": 32,
+      "community": 105,
       "norm_label": "daymarker()"
     },
     {
@@ -8428,7 +8568,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_rutinas_page_tsx_rutinas_page",
-      "community": 32,
+      "community": 387,
       "norm_label": "page.tsx"
     },
     {
@@ -8438,7 +8578,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "rutinas_page_rutinaspage",
-      "community": 32,
+      "community": 387,
       "norm_label": "rutinaspage()"
     },
     {
@@ -8448,7 +8588,7 @@
       "source_location": "L196",
       "_origin": "ast",
       "id": "rutinas_page_minicard",
-      "community": 32,
+      "community": 387,
       "norm_label": "minicard()"
     },
     {
@@ -50442,6 +50582,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/components/shared/BodyMuscleFigure.tsx",
+      "source_location": "L305",
+      "weight": 1.0,
+      "source": "shared_bodymusclefigure",
+      "target": "shared_bodymusclefigure_buildlibrarymusclecolors",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/components/shared/BodyMuscleFigure.tsx",
       "source_location": "L46",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -50558,6 +50708,17 @@
       "confidence_score": 1.0,
       "source": "shared_bodymusclefigure_bodymusclefigure",
       "target": "shared_bodymusclefigure_fillmuscledata"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/components/shared/BodyMuscleFigure.tsx",
+      "source_location": "L411",
+      "weight": 1.0,
+      "source": "shared_bodymusclefigure_bodymusclefigure",
+      "target": "shared_bodymusclefigure_buildlibrarymusclecolors",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -60832,9 +60993,9 @@
       "source_file": "app/page.tsx",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_page",
-      "target": "lib_nutrition_style",
-      "confidence_score": 1.0
+      "target": "lib_nutrition_style"
     },
     {
       "relation": "contains",
@@ -60978,9 +61139,9 @@
       "source_file": "app/page.tsx",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_page",
-      "target": "lib_nutrition_style_macro_colors",
-      "confidence_score": 1.0
+      "target": "lib_nutrition_style_macro_colors"
     },
     {
       "relation": "imports",
@@ -61599,9 +61760,9 @@
       "source_file": "app/page.tsx",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_page",
-      "target": "lib_nutrition_types_meal_type_labels",
-      "confidence_score": 1.0
+      "target": "lib_nutrition_types_meal_type_labels"
     },
     {
       "relation": "imports",
@@ -64408,6 +64569,17 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L567",
+      "weight": 1.0,
+      "source": "lib_workout_tracking_listmusclestrengthsummariesforsavedroutine",
+      "target": "supabase_server_createsupabaseserverclient"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app/lib/workout-tracking.ts",
       "source_location": "L275",
       "weight": 1.0,
       "source": "lib_workout_tracking_listworkoutweeklysummaries",
@@ -64755,6 +64927,26 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L688",
+      "weight": 1.0,
+      "source": "lib_workout_tracking",
+      "target": "lib_workout_tracking_isprincipalstrengthexercise",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L563",
+      "weight": 1.0,
+      "source": "lib_workout_tracking",
+      "target": "lib_workout_tracking_listmusclestrengthsummariesforsavedroutine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/workout-tracking.ts",
       "source_location": "L266",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -64770,6 +64962,66 @@
       "confidence_score": 1.0,
       "source": "lib_workout_tracking",
       "target": "lib_workout_tracking_mapworkoutsession"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "lib_workout_tracking",
+      "target": "lib_workout_tracking_musclestrengthrange",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "lib_workout_tracking",
+      "target": "lib_workout_tracking_musclestrengthsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L678",
+      "weight": 1.0,
+      "source": "lib_workout_tracking",
+      "target": "lib_workout_tracking_normalizestrengthgroup",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L661",
+      "weight": 1.0,
+      "source": "lib_workout_tracking",
+      "target": "lib_workout_tracking_parsebestweight",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "lib_workout_tracking",
+      "target": "lib_workout_tracking_primary_strength_exercises",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L696",
+      "weight": 1.0,
+      "source": "lib_workout_tracking",
+      "target": "lib_workout_tracking_resolvestrengthrange",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -64830,6 +65082,36 @@
       "confidence_score": 1.0,
       "source": "lib_workout_tracking",
       "target": "lib_workout_tracking_saveworkoutsessionforweek"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "lib_workout_tracking",
+      "target": "lib_workout_tracking_strength_groups",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L103",
+      "weight": 1.0,
+      "source": "lib_workout_tracking",
+      "target": "lib_workout_tracking_strength_range_colors",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L111",
+      "weight": 1.0,
+      "source": "lib_workout_tracking",
+      "target": "lib_workout_tracking_strength_thresholds",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -64921,6 +65203,17 @@
       "confidence_score": 1.0,
       "source": "dia_actions",
       "target": "lib_workout_tracking_workoutsessioniteminput"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "app_page",
+      "target": "lib_workout_tracking_musclestrengthsummary",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -65350,6 +65643,61 @@
       "confidence_score": 1.0,
       "source": "lib_workout_tracking_getexercisehistorybyroutineitem",
       "target": "lib_workout_tracking_formathistorydate"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "app_page",
+      "target": "lib_workout_tracking_listmusclestrengthsummariesforsavedroutine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app/page.tsx",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "app_page_home",
+      "target": "lib_workout_tracking_listmusclestrengthsummariesforsavedroutine"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L629",
+      "weight": 1.0,
+      "source": "lib_workout_tracking_listmusclestrengthsummariesforsavedroutine",
+      "target": "lib_workout_tracking_isprincipalstrengthexercise",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L615",
+      "weight": 1.0,
+      "source": "lib_workout_tracking_listmusclestrengthsummariesforsavedroutine",
+      "target": "lib_workout_tracking_normalizestrengthgroup",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/workout-tracking.ts",
+      "source_location": "L616",
+      "weight": 1.0,
+      "source": "lib_workout_tracking_listmusclestrengthsummariesforsavedroutine",
+      "target": "lib_workout_tracking_parsebestweight",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -65847,9 +66195,9 @@
       "source_file": "app/page.tsx",
       "source_location": "L412",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_page",
-      "target": "app_page_mealmacro",
-      "confidence_score": 1.0
+      "target": "app_page_mealmacro"
     },
     {
       "relation": "contains",
@@ -65860,6 +66208,26 @@
       "confidence_score": 1.0,
       "source": "app_page",
       "target": "app_page_nutricioncard"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L239",
+      "weight": 1.0,
+      "source": "app_page",
+      "target": "app_page_strength_legend",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L246",
+      "weight": 1.0,
+      "source": "app_page",
+      "target": "app_page_strength_range_labels",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -101721,5 +102089,5 @@
       "source_file": "specs/G9-user-dashboard/README.md"
     }
   ],
-  "built_at_commit": "95cea809926ed0994ec8ddc387624ccccccf40ff"
+  "built_at_commit": "86a6dbd4b8ff7a041e9a0bc1566d4d812fe8ae46"
 }

@@ -16,10 +16,10 @@ export function PwaRuntime() {
   const handledLaunchRef = useRef(false);
 
   useEffect(() => {
-    document.documentElement.classList.toggle(
-      "pwa-standalone",
-      isStandaloneDisplay(),
-    );
+    const standalone = isStandaloneDisplay();
+
+    document.documentElement.classList.toggle("pwa-standalone", standalone);
+    document.documentElement.classList.toggle("pwa-browser", !standalone);
   }, []);
 
   useEffect(() => {

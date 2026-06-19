@@ -345,13 +345,13 @@
     "semantic_hash": "d9837f38cc05303254571985e3164050"
   },
   "app/lib/workout-tracking.ts": {
-    "mtime": 1781367007.1432846,
-    "ast_hash": "e82daab18699ed0afa044e80c7ed67b1",
+    "mtime": 1781811064.5970433,
+    "ast_hash": "815c8050ac5f4bcb60a2a1d16cd09e6a",
     "semantic_hash": ""
   },
   "app/page.tsx": {
-    "mtime": 1781808802.6144192,
-    "ast_hash": "ff21ba4849658ba8bc6d06c6054fad51",
+    "mtime": 1781811202.24051,
+    "ast_hash": "09e424c2eaccfbc0607ca725d19b28b1",
     "semantic_hash": ""
   },
   "components.json": {
@@ -2045,8 +2045,8 @@
     "semantic_hash": ""
   },
   "app/components/shared/BodyMuscleFigure.tsx": {
-    "mtime": 1781653808.1834886,
-    "ast_hash": "428003cf098ccd530847a6dfcf37836b",
+    "mtime": 1781811376.3390515,
+    "ast_hash": "a6e7c409922549ca7ef0a61279381dde",
     "semantic_hash": ""
   },
   "app/components/shared/FilterPanel.tsx": {

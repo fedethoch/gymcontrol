@@ -72,6 +72,9 @@ type DraftItem = {
   quantity: number;
 };
 
+const compactControlClass = "nutrition-compact-control";
+const compactButtonClass = "h-9 rounded-lg px-3 text-xs";
+
 export function RegistroClient({
   foods,
   logDate,
@@ -212,21 +215,21 @@ export function RegistroClient({
   }
 
   const newMealBody = (
-    <div className="flex flex-1 flex-col gap-4">
-      <div className="grid grid-cols-[76px_1fr] items-end gap-3">
-        <div className="relative aspect-square overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card-alt)]">
+    <div className="flex max-h-[calc(82dvh-4.25rem)] flex-col gap-2.5 overflow-y-auto pr-1">
+      <div className="grid grid-cols-[60px_1fr] items-end gap-2.5">
+        <div className="relative aspect-square overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card-alt)]">
           <Image
             alt={MEAL_TYPE_LABELS[mealType]}
             className="object-cover"
             fill
-            sizes="76px"
+            sizes="60px"
             src={MEAL_TYPE_IMAGES[mealType]}
           />
         </div>
-        <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+        <label className="grid gap-1 text-[11px] font-semibold text-[#c2c8d6]">
           Tipo de comida
           <Select value={mealType} onValueChange={(value) => handleNewMealTypeChange(value as MealType)}>
-            <SelectTrigger>
+            <SelectTrigger className={compactControlClass}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -240,9 +243,10 @@ export function RegistroClient({
         </label>
       </div>
 
-      <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+      <label className="grid gap-1 text-[11px] font-semibold text-[#c2c8d6]">
         Nombre de la comida
         <Input
+          className={compactControlClass}
           placeholder="Ej. Desayuno"
           value={mealName}
           onChange={(event) => {
@@ -254,17 +258,17 @@ export function RegistroClient({
 
       <FoodPickerRow foods={foods} onAdd={handleAddDraftItem} actionLabel="Agregar" />
 
-      <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-[var(--border)]">
-        <div className="grid grid-cols-[1fr_auto_auto_auto] gap-3 bg-[var(--card-alt)] px-3.5 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#7887a6]">
+      <div className="flex min-h-[6.75rem] flex-col overflow-hidden rounded-xl border border-[var(--border)]">
+        <div className="grid grid-cols-[1fr_auto_auto_auto] gap-2 bg-[var(--card-alt)] px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-[#7887a6]">
           <span>Alimento</span>
           <span className="text-right">Cantidad</span>
           <span className="text-right">Calorías</span>
           <span />
         </div>
         {draftItems.length === 0 ? (
-          <div className="flex flex-1 flex-col items-center justify-center gap-2 px-4 py-8 text-center">
-            <UtensilsCrossed className="size-6 text-[#3c4456]" />
-            <p className="text-sm text-[#7887a6]">Agregá alimentos a esta comida.</p>
+          <div className="flex flex-1 flex-col items-center justify-center gap-1.5 px-3 py-4 text-center">
+            <UtensilsCrossed className="size-5 text-[#3c4456]" />
+            <p className="text-xs text-[#7887a6]">Agregá alimentos a esta comida.</p>
           </div>
         ) : (
           draftItems.map((item) => {
@@ -279,7 +283,7 @@ export function RegistroClient({
             return (
               <div
                 key={item.localId}
-                className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-3 border-t border-[var(--border)] px-3.5 py-2.5 text-sm"
+                className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-2 border-t border-[var(--border)] px-2.5 py-1.5 text-xs"
               >
                 <span className="truncate font-semibold text-white">{food.name}</span>
                 <span className="text-right text-[var(--foreground-muted)]">
@@ -290,10 +294,10 @@ export function RegistroClient({
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="justify-self-end"
+                  className="size-8 justify-self-end rounded-lg"
                   onClick={() => handleRemoveDraftItem(item.localId)}
                 >
-                  <Trash2 className="size-4" />
+                  <Trash2 className="size-3.5" />
                 </Button>
               </div>
             );
@@ -301,7 +305,12 @@ export function RegistroClient({
         )}
       </div>
 
-      <Button type="button" onClick={handleSaveMeal} disabled={isSavingMeal}>
+      <Button
+        type="button"
+        className="sticky bottom-0 h-10 shrink-0 rounded-lg text-sm shadow-[0_-10px_24px_rgba(8,11,16,0.85)]"
+        onClick={handleSaveMeal}
+        disabled={isSavingMeal}
+      >
                     {isSavingMeal ? <LoadingDots /> : <Plus className="size-4" />}
         Guardar comida
       </Button>
@@ -309,13 +318,13 @@ export function RegistroClient({
   );
 
   const newMealIntro = (
-    <div className="flex flex-col items-center gap-2 text-center">
-      <span className="grid size-12 place-items-center rounded-xl border border-[var(--accent-soft-border)] bg-[var(--accent-soft-surface)] text-[var(--accent-bright)]">
-        <UtensilsCrossed className="size-6" />
+    <div className="flex flex-col items-center gap-1.5 text-center">
+      <span className="grid size-10 place-items-center rounded-xl border border-[var(--accent-soft-border)] bg-[var(--accent-soft-surface)] text-[var(--accent-bright)]">
+        <UtensilsCrossed className="size-5" />
       </span>
       <div>
-        <CardTitle className="text-lg">Nueva comida</CardTitle>
-        <p className="mt-0.5 text-sm text-[var(--foreground-muted)]">
+        <CardTitle className="text-base">Nueva comida</CardTitle>
+        <p className="mt-0.5 text-xs text-[var(--foreground-muted)]">
           Agregá los alimentos que consumiste y guardá tu comida.
         </p>
       </div>
@@ -333,15 +342,15 @@ export function RegistroClient({
       />
 
       <Drawer open={newMealOpen} onOpenChange={setNewMealOpen}>
-        <DrawerContent>
-          <DrawerHeader>
+        <DrawerContent className="max-h-[82dvh]">
+          <DrawerHeader className="px-3 py-2">
             <DrawerTitle className="sr-only">Nueva comida</DrawerTitle>
             <DrawerDescription className="sr-only">
               Agregá los alimentos que consumiste y guardá tu comida.
             </DrawerDescription>
             {newMealIntro}
           </DrawerHeader>
-          <div className="px-4 pb-4">{newMealBody}</div>
+          <div className="min-h-0 px-3 pb-3">{newMealBody}</div>
         </DrawerContent>
       </Drawer>
 
@@ -673,7 +682,7 @@ function MealCard({
                       void handleSaveItem(item.id, nextMeasure, nextQuantity);
                     }}
                   >
-                    <SelectTrigger className="w-24 sm:w-28">
+                    <SelectTrigger className={cn(compactControlClass, "w-24 sm:w-28")}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -689,7 +698,7 @@ function MealCard({
                   value={editQuantity}
                   onChange={(event) => setEditQuantity(event.target.value)}
                   onBlur={() => handleSaveItem(item.id)}
-                  className="w-16 sm:w-20"
+                  className={cn(compactControlClass, "w-16 sm:w-20")}
                 />
                 {isSavingItem && <LoadingDots className="text-[#9a63ff]" />}
               </div>
@@ -801,7 +810,7 @@ function MealCard({
             </div>
             <div className="grid min-w-0 flex-1 gap-2">
               <Select value={type} onValueChange={(value) => handleTypeChange(value as MealType)}>
-                <SelectTrigger className="h-9 text-sm">
+                <SelectTrigger className={compactControlClass}>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -821,7 +830,7 @@ function MealCard({
                     toast.error("Ponele un nombre a la comida.");
                   }
                 }}
-                className="min-w-0"
+                className={cn("min-w-0", compactControlClass)}
               />
               {(isSavingName || isSavingType) && (
                 <span className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#9a63ff]">
@@ -986,14 +995,14 @@ function FoodPickerRow({
   }
 
   return (
-    <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-end">
+    <div className="grid gap-1.5 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-end">
       <div ref={containerRef} className="relative sm:col-span-2 lg:col-span-1">
-        <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+        <label className="grid gap-1 text-[11px] font-semibold text-[#c2c8d6]">
           Buscar alimento
           <div className="relative">
-            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#7d8697]" />
+            <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-[#7d8697]" />
             <Input
-              className="pl-9"
+              className={cn("pl-8", compactControlClass)}
               placeholder="Buscar alimento..."
               value={query}
               onChange={(event) => {
@@ -1007,23 +1016,23 @@ function FoodPickerRow({
         </label>
 
         {showResults && results.length > 0 && (
-          <div className="absolute left-0 right-0 top-[calc(100%+4px)] z-20 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] shadow-[0_12px_28px_rgba(0,0,0,0.35)]">
+          <div className="absolute left-0 right-0 top-[calc(100%+4px)] z-20 max-h-44 overflow-y-auto rounded-xl border border-[var(--border)] bg-[var(--card)] shadow-[0_12px_28px_rgba(0,0,0,0.35)]">
             {results.map((food) => (
               <button
                 key={food.id}
                 type="button"
                 onClick={() => handleSelectFood(food)}
-                className="flex w-full items-center justify-between gap-3 border-b border-[var(--border)] px-3.5 py-2.5 text-left text-sm text-[var(--foreground)] last:border-b-0 hover:bg-[rgba(124,58,237,0.1)]"
+                className="flex w-full items-center justify-between gap-2 border-b border-[var(--border)] px-3 py-2 text-left text-xs text-[var(--foreground)] last:border-b-0 hover:bg-[rgba(124,58,237,0.1)]"
               >
                 <span className="truncate">{food.name}</span>
-                <span className="whitespace-nowrap text-xs text-[#7887a6]">{food.calories} kcal/{food.servingG}g</span>
+                <span className="whitespace-nowrap text-[11px] text-[#7887a6]">{food.calories} kcal/{food.servingG}g</span>
               </button>
             ))}
           </div>
         )}
       </div>
 
-      <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+      <label className="grid gap-1 text-[11px] font-semibold text-[#c2c8d6]">
         Porción
         <Select
           value={canChooseUnit ? measure : "g"}
@@ -1041,7 +1050,7 @@ function FoodPickerRow({
             setMeasure(nextMeasure);
           }}
         >
-          <SelectTrigger>
+          <SelectTrigger className={compactControlClass}>
             <SelectValue placeholder="Medida" />
           </SelectTrigger>
           <SelectContent>
@@ -1051,9 +1060,16 @@ function FoodPickerRow({
         </Select>
       </label>
 
-      <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+      <label className="grid gap-1 text-[11px] font-semibold text-[#c2c8d6]">
         {isUnit ? "Unidades" : "Gramos"}
-        <Input type="number" min={isUnit ? 0.5 : 1} step={isUnit ? 0.5 : 1} value={quantity} onChange={(event) => setQuantity(event.target.value)} />
+        <Input
+          type="number"
+          min={isUnit ? 0.5 : 1}
+          step={isUnit ? 0.5 : 1}
+          value={quantity}
+          className={compactControlClass}
+          onChange={(event) => setQuantity(event.target.value)}
+        />
       </label>
 
       <Button
@@ -1061,7 +1077,7 @@ function FoodPickerRow({
         variant="outline"
         onClick={handleAdd}
         disabled={isAdding || !foodId}
-        className="sm:col-span-2 lg:col-span-1"
+        className={cn(compactButtonClass, "sm:col-span-2 lg:col-span-1")}
       >
               {isAdding ? <LoadingDots /> : <Plus className="size-4" />}
         {actionLabel}

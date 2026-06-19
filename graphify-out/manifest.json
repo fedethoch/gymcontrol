@@ -1805,8 +1805,8 @@
     "semantic_hash": ""
   },
   "app/nutricion/registro/RegistroClient.tsx": {
-    "mtime": 1781808488.4717424,
-    "ast_hash": "4afec979699b150d62dfb3012abaf619",
+    "mtime": 1781836873.0154724,
+    "ast_hash": "1e973b40bfff75e814efc981d9e333fe",
     "semantic_hash": ""
   },
   "app/nutricion/registro/actions.ts": {
@@ -1850,8 +1850,8 @@
     "semantic_hash": ""
   },
   "app/configuracion/ConfiguracionClient.tsx": {
-    "mtime": 1781749760.939368,
-    "ast_hash": "6996422f8246fd71c016cf41749e7d41",
+    "mtime": 1781836909.8307424,
+    "ast_hash": "7fa215e6e62cde06aa5234a13528e598",
     "semantic_hash": ""
   },
   "app/configuracion/actions.ts": {
@@ -2475,8 +2475,8 @@
     "semantic_hash": ""
   },
   "app/components/pwa/PwaRuntime.tsx": {
-    "mtime": 1781733405.3091075,
-    "ast_hash": "cf2c243f52462bfc51b4c0703cd2aacf",
+    "mtime": 1781836708.0159042,
+    "ast_hash": "57ef1481866f27b9715ceeb9d45931e1",
     "semantic_hash": ""
   },
   "app/manifest.ts": {
