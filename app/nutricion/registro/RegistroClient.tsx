@@ -1016,7 +1016,7 @@ function FoodPickerRow({
       className={cn(
         "grid gap-1",
         isStacked
-          ? "grid-cols-2"
+          ? "grid-cols-2 gap-y-3"
           : "sm:grid-cols-2 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-end",
       )}
     >
@@ -1074,7 +1074,7 @@ function FoodPickerRow({
             setMeasure(nextMeasure);
           }}
         >
-          <SelectTrigger className={compactControlClass}>
+          <SelectTrigger className={cn(compactControlClass, isStacked && "h-8 px-2 text-[12px]")}>
             <SelectValue placeholder="Medida" />
           </SelectTrigger>
           <SelectContent>
@@ -1091,7 +1091,7 @@ function FoodPickerRow({
           min={isUnit ? 0.5 : 1}
           step={isUnit ? 0.5 : 1}
           value={quantity}
-          className={compactControlClass}
+          className={cn(compactControlClass, isStacked && "h-8 px-2 text-[12px]")}
           onChange={(event) => setQuantity(event.target.value)}
         />
       </label>
@@ -1101,7 +1101,7 @@ function FoodPickerRow({
         variant="outline"
         onClick={handleAdd}
         disabled={isAdding || !foodId}
-        className={cn(compactButtonClass, isStacked ? "col-span-2" : "sm:col-span-2 lg:col-span-1")}
+        className={cn(compactButtonClass, isStacked ? "col-span-2 mt-1" : "sm:col-span-2 lg:col-span-1")}
       >
               {isAdding ? <LoadingDots /> : <Plus className="size-4" />}
         {actionLabel}
