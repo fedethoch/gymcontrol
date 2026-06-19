@@ -718,3 +718,17 @@ Migracion: `20260613_g21_nutrition_fase3.sql`. Nota: las dietas predefinidas (`d
 
 - `recipes.category`
 - `recipe_items.recipe_id`, `recipe_items.food_id`
+
+## Seed ampliado de catalogo (G28)
+
+Migracion: `20260619_g28_catalog_seed.sql`.
+
+Estado confirmado al 2026-06-19:
+
+- se aplico en Supabase la carga semilla `g28_catalog_seed`
+- `foods` queda con un catalogo amplio de alimentos por categorias `protein`, `carb`, `fat`, `vegetable` y `mixed`
+- `recipes` queda poblada con 20 recetas nuevas, usando categorias reales `desayuno`, `comida` y `snack`
+- `exercises` queda ampliada con 60 ejercicios soporte para construir rutinas variadas
+- `routine_templates` queda ampliada con 15 rutinas nuevas y sus dias/items
+- la carga es idempotente: alimentos, ejercicios, recetas y rutinas se insertan por nombre solo si faltan; los items de recetas/rutinas semilla se reconstruyen para mantener consistencia
+- los valores nutricionales del seed son valores de catalogo aproximados para uso funcional de la app; si se requiere precision clinica o regulatoria, deben reemplazarse por una fuente nutricional auditada

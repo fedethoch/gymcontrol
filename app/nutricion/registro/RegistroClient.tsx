@@ -394,8 +394,8 @@ export function RegistroClient({
       </div>
 
       {/* Row 2: Macros card */}
-      <div className="rounded-2xl bg-[#0e131e] px-3.5 py-3.5">
-        <div className="mb-2.5 flex items-center gap-2">
+      <div className="rounded-2xl bg-[#0e131e] px-3 py-3">
+        <div className="mb-2 flex items-center gap-2">
           <span className="grid size-6 place-items-center rounded-full bg-[rgba(124,58,237,0.14)] text-[var(--accent-bright)]">
             <UtensilsCrossed className="size-3.5" />
           </span>
@@ -411,19 +411,19 @@ export function RegistroClient({
           ).map(({ Icon: MacroIcon, label, value, target, color }) => {
             const pct = target > 0 ? Math.min(100, Math.round((value / target) * 100)) : 0;
             return (
-              <div key={label} className="flex min-w-0 flex-col items-center px-2 first:pl-0 last:pr-0">
-                <p className="mb-1 truncate text-[10px] font-bold leading-none text-white">{label}</p>
-                <AnimatedProgressRing value={pct} size={46} strokeWidth={4} progressColor={color}>
-                  <MacroIcon className="size-3.5" style={{ color }} />
+              <div key={label} className="flex min-w-0 flex-col items-center px-1.5 first:pl-0 last:pr-0">
+                <p className="mb-1.5 truncate text-[10px] font-bold leading-none text-white">{label}</p>
+                <AnimatedProgressRing value={pct} size={42} strokeWidth={4} progressColor={color}>
+                  <MacroIcon className="size-3" style={{ color }} />
                 </AnimatedProgressRing>
-                <div className="mt-1.5 w-full min-w-0 text-center">
-                  <p className="mt-1 whitespace-nowrap text-[11px] font-bold leading-none text-white">
+                <div className="mt-1 w-full min-w-0 text-center">
+                  <p className="mt-1 whitespace-nowrap text-[10px] font-bold leading-none text-white">
                     {Math.round(value)} / {Math.round(target)}g
                   </p>
-                  <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-[#1a2235]">
+                  <div className="mt-1 h-1 overflow-hidden rounded-full bg-[#1a2235]">
                     <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }} />
                   </div>
-                  <p className="mt-1 text-center text-[10px] font-semibold leading-none" style={{ color }}>
+                  <p className="mt-1 text-center text-[9px] font-semibold leading-none" style={{ color }}>
                     {pct}%
                   </p>
                 </div>
@@ -1016,7 +1016,7 @@ function FoodPickerRow({
       className={cn(
         "grid gap-1",
         isStacked
-          ? "grid-cols-2 gap-y-3"
+          ? "grid-cols-2 gap-x-2.5 gap-y-3"
           : "sm:grid-cols-2 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-end",
       )}
     >
@@ -1026,7 +1026,7 @@ function FoodPickerRow({
           <div className="relative">
             <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-[#7d8697]" />
             <Input
-              className={cn("pl-8", compactControlClass)}
+              className={cn("pl-8 text-[12px] placeholder:text-[12px]", compactControlClass)}
               placeholder="Buscar alimento..."
               value={query}
               onChange={(event) => {
@@ -1091,7 +1091,7 @@ function FoodPickerRow({
           min={isUnit ? 0.5 : 1}
           step={isUnit ? 0.5 : 1}
           value={quantity}
-          className={cn(compactControlClass, isStacked && "h-8 px-2 text-[12px]")}
+          className={cn(compactControlClass, isStacked && "h-8 px-2 text-[11px]")}
           onChange={(event) => setQuantity(event.target.value)}
         />
       </label>
