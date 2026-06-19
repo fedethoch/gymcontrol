@@ -259,15 +259,6 @@ export function ConfiguracionClient({
     </div>
   );
 
-  const profileSaveMessage =
-    profileSaveStatus === "saving"
-      ? "Guardando perfil"
-      : profileSaveStatus === "saved"
-        ? "Perfil guardado"
-        : profileSaveStatus === "error"
-          ? "No se pudo guardar"
-          : null;
-
   return (
     <div className="grid gap-5">
       {/* Mobile: secciones del perfil agrupadas en accordion */}
@@ -341,21 +332,6 @@ export function ConfiguracionClient({
           <CardContent>{goalBody}</CardContent>
         </Card>
       </div>
-
-      {profileSaveMessage ? (
-        <div
-          aria-live="polite"
-          className={cn(
-            "inline-flex items-center gap-2 justify-self-start rounded-lg border px-3 py-2 text-xs font-semibold",
-            profileSaveStatus === "error"
-              ? "border-[#7a2630] bg-[#3b1419]/40 text-[#f87171]"
-              : "border-[var(--border)] bg-[var(--card-alt)] text-[#9a63ff]",
-          )}
-        >
-          {profileSaveStatus === "saving" ? <LoadingDots /> : null}
-          {profileSaveMessage}
-        </div>
-      ) : null}
 
       <Card>
         <CardHeader>

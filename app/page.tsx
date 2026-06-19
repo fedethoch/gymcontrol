@@ -260,7 +260,7 @@ function NutricionCard({
   ];
 
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-2 rounded-2xl bg-[#0e131e] p-3 text-center">
+    <div className="flex h-full flex-col items-center justify-center gap-2 rounded-2xl bg-[#0e131e] p-3 text-center nutricion-card">
         <CardLabel icon={Flame} label="Nutrición" />
 
         {/* Circle — fills most of the card width */}

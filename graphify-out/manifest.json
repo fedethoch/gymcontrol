@@ -350,8 +350,8 @@
     "semantic_hash": ""
   },
   "app/page.tsx": {
-    "mtime": 1781841378.2895243,
-    "ast_hash": "c395244ac7e5552512be5d4428eae53b",
+    "mtime": 1781876391.8715594,
+    "ast_hash": "4f90980d489a7fcc5753bac005ef736b",
     "semantic_hash": ""
   },
   "components.json": {
@@ -1805,8 +1805,8 @@
     "semantic_hash": ""
   },
   "app/nutricion/registro/RegistroClient.tsx": {
-    "mtime": 1781841224.9569123,
-    "ast_hash": "d3d6332f79ae3c1432baa595d930eb0e",
+    "mtime": 1781877435.1645477,
+    "ast_hash": "e5c198adc7496702d6e60af0f499218f",
     "semantic_hash": ""
   },
   "app/nutricion/registro/actions.ts": {
