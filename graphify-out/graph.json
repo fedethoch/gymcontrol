@@ -4215,7 +4215,7 @@
       "label": "ToggleOption()",
       "file_type": "code",
       "source_file": "app/configuracion/ConfiguracionClient.tsx",
-      "source_location": "L487",
+      "source_location": "L463",
       "_origin": "ast",
       "id": "configuracion_configuracionclient_toggleoption",
       "community": 105,
@@ -7935,7 +7935,7 @@
       "label": "formatMealFoods()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L920",
+      "source_location": "L923",
       "_origin": "ast",
       "id": "registro_registroclient_formatmealfoods",
       "community": 105,
@@ -7945,7 +7945,7 @@
       "label": "MacroChip()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L931",
+      "source_location": "L934",
       "_origin": "ast",
       "id": "registro_registroclient_macrochip",
       "community": 105,
@@ -7955,7 +7955,7 @@
       "label": "FoodPickerRow()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L942",
+      "source_location": "L945",
       "_origin": "ast",
       "id": "registro_registroclient_foodpickerrow",
       "community": 105,
@@ -7965,7 +7965,7 @@
       "label": "previewItem()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1099",
+      "source_location": "L1113",
       "_origin": "ast",
       "id": "registro_registroclient_previewitem",
       "community": 105,
@@ -7975,7 +7975,7 @@
       "label": "roundQuantity()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1113",
+      "source_location": "L1127",
       "_origin": "ast",
       "id": "registro_registroclient_roundquantity",
       "community": 105,
@@ -7985,7 +7985,7 @@
       "label": "calculateStreak()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1117",
+      "source_location": "L1131",
       "_origin": "ast",
       "id": "registro_registroclient_calculatestreak",
       "community": 105,
@@ -7995,7 +7995,7 @@
       "label": "formatDateOnly()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1131",
+      "source_location": "L1145",
       "_origin": "ast",
       "id": "registro_registroclient_formatdateonly",
       "community": 105,
@@ -8005,7 +8005,7 @@
       "label": "NutritionTipCard()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1139",
+      "source_location": "L1153",
       "_origin": "ast",
       "id": "registro_registroclient_nutritiontipcard",
       "community": 105,
@@ -8015,7 +8015,7 @@
       "label": "getNutritionTip()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1168",
+      "source_location": "L1182",
       "_origin": "ast",
       "id": "registro_registroclient_getnutritiontip",
       "community": 105,
@@ -8025,7 +8025,7 @@
       "label": "SummaryStat()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1196",
+      "source_location": "L1210",
       "_origin": "ast",
       "id": "registro_registroclient_summarystat",
       "community": 105,
@@ -8035,7 +8035,7 @@
       "label": "TargetBar()",
       "file_type": "code",
       "source_file": "app/nutricion/registro/RegistroClient.tsx",
-      "source_location": "L1205",
+      "source_location": "L1219",
       "_origin": "ast",
       "id": "registro_registroclient_targetbar",
       "community": 105,
@@ -29678,7 +29678,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_01_definir_shell_principal_con_panel_lateral_izquierdo",
-      "community": 3,
+      "community": 12,
       "norm_label": "01-definir-shell-principal-con-panel-lateral-izquierdo.md"
     },
     {
@@ -29778,7 +29778,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_02_definir_navegacion_base_para_usuario_y_admin",
-      "community": 3,
+      "community": 12,
       "norm_label": "02-definir-navegacion-base-para-usuario-y-admin.md"
     },
     {
@@ -30278,7 +30278,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_07_definir_patron_visual_del_panel_lateral_y_area_de_contenido",
-      "community": 3,
+      "community": 12,
       "norm_label": "07-definir-patron-visual-del-panel-lateral-y-area-de-contenido.md"
     },
     {
@@ -30678,7 +30678,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_11_disenar_pantalla_ejercicio_con_organigrama_semanal",
-      "community": 3,
+      "community": 210,
       "norm_label": "11-disenar-pantalla-ejercicio-con-organigrama-semanal.md"
     },
     {
@@ -30788,7 +30788,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_12_disenar_pantalla_de_detalle_diario_de_rutina_disenar_pantalla_de_detalle_diario_de_rutina_enfocar_la_consulta_del_entrenamiento_del_dia",
-      "community": 206,
+      "community": 3,
       "norm_label": "disenar pantalla de detalle diario de rutina: enfocar la consulta del entrenamiento del dia"
     },
     {
@@ -30798,7 +30798,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_12_disenar_pantalla_de_detalle_diario_de_rutina_objetivo",
-      "community": 206,
+      "community": 3,
       "norm_label": "objetivo"
     },
     {
@@ -30808,7 +30808,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_12_disenar_pantalla_de_detalle_diario_de_rutina_estado",
-      "community": 206,
+      "community": 3,
       "norm_label": "estado"
     },
     {
@@ -30818,7 +30818,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_12_disenar_pantalla_de_detalle_diario_de_rutina_archivos",
-      "community": 206,
+      "community": 3,
       "norm_label": "archivos"
     },
     {
@@ -30828,7 +30828,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_12_disenar_pantalla_de_detalle_diario_de_rutina_pasos",
-      "community": 206,
+      "community": 3,
       "norm_label": "pasos"
     },
     {
@@ -30838,7 +30838,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_12_disenar_pantalla_de_detalle_diario_de_rutina_criterios_de_aceptacion",
-      "community": 206,
+      "community": 3,
       "norm_label": "criterios de aceptacion"
     },
     {
@@ -30848,7 +30848,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_12_disenar_pantalla_de_detalle_diario_de_rutina_resolucion",
-      "community": 206,
+      "community": 3,
       "norm_label": "resolucion"
     },
     {
@@ -30858,7 +30858,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_12_disenar_pantalla_de_detalle_diario_de_rutina_validacion",
-      "community": 206,
+      "community": 3,
       "norm_label": "validacion"
     },
     {
@@ -30868,7 +30868,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_12_disenar_pantalla_de_detalle_diario_de_rutina_estado_final",
-      "community": 206,
+      "community": 3,
       "norm_label": "estado final"
     },
     {
@@ -31178,7 +31178,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_16_disenar_entradas_para_gestion_de_ejercicios_y_rutinas",
-      "community": 74,
+      "community": 3,
       "norm_label": "16-disenar-entradas-para-gestion-de-ejercicios-y-rutinas.md"
     },
     {
@@ -31278,7 +31278,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_17_implementar_shell_navegable_definitivo_del_frontend_base",
-      "community": 3,
+      "community": 12,
       "norm_label": "17-implementar-shell-navegable-definitivo-del-frontend-base.md"
     },
     {
@@ -31378,7 +31378,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_18_implementar_vistas_base_y_placeholders_del_nuevo_flujo",
-      "community": 58,
+      "community": 3,
       "norm_label": "18-implementar-vistas-base-y-placeholders-del-nuevo-flujo.md"
     },
     {
@@ -31478,7 +31478,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright",
-      "community": 3,
+      "community": 12,
       "norm_label": "19-validar-navegacion-responsive-panel-y-modal-con-playwright.md"
     },
     {
@@ -31628,7 +31628,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g5_auth_and_roles_01_implementar_autenticacion_base_de_usuario",
-      "community": 209,
+      "community": 232,
       "norm_label": "01-implementar-autenticacion-base-de-usuario.md"
     },
     {
@@ -31728,7 +31728,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g5_auth_and_roles_02_integrar_type_rol_al_flujo_de_acceso_y_sesion",
-      "community": 209,
+      "community": 232,
       "norm_label": "02-integrar-type-rol-al-flujo-de-acceso-y-sesion.md"
     },
     {
@@ -41126,7 +41126,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 12,
       "norm_label": "shell principal unico (panel lateral + area de contenido)",
       "id": "frontend_experience_shell_principal"
     },
@@ -41139,7 +41139,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 12,
       "norm_label": "navegacion base usuario/admin en panel lateral",
       "id": "frontend_experience_navegacion_base"
     },
@@ -41165,7 +41165,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 3,
       "norm_label": "fronteras funcionales entre modulos (agregar rutinas, mis rutinas, ejercicio, admin)",
       "id": "frontend_experience_fronteras_modulos"
     },
@@ -41204,7 +41204,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 12,
       "norm_label": "patron visual panel lateral + area de contenido",
       "id": "frontend_experience_patron_panel_contenido"
     },
@@ -41230,7 +41230,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 3,
       "norm_label": "pantalla agregar rutinas (catalogo)",
       "id": "frontend_experience_pantalla_agregar_rutinas"
     },
@@ -41243,7 +41243,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 3,
       "norm_label": "pantalla mis rutinas con rutina activa",
       "id": "frontend_experience_pantalla_mis_rutinas"
     },
@@ -41256,7 +41256,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 3,
       "norm_label": "pantalla ejercicio con organigrama semanal",
       "id": "frontend_experience_pantalla_ejercicio_organigrama"
     },
@@ -41269,7 +41269,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 3,
       "norm_label": "pantalla de detalle diario de rutina",
       "id": "frontend_experience_pantalla_detalle_diario"
     },
@@ -41308,7 +41308,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 74,
+      "community": 3,
       "norm_label": "base visual de admin dashboard (rutinas y ejercicios)",
       "id": "frontend_experience_admin_dashboard_base_visual"
     },
@@ -41321,7 +41321,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 74,
+      "community": 3,
       "norm_label": "entradas administrativas gestion de rutinas / gestion de ejercicios",
       "id": "frontend_experience_entradas_gestion_admin"
     },
@@ -41334,7 +41334,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 209,
+      "community": 232,
       "norm_label": "app/layout.tsx",
       "id": "app_layout_tsx"
     },
@@ -41347,7 +41347,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 12,
       "norm_label": "app/globals.css",
       "id": "app_globals_css"
     },
@@ -41360,7 +41360,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 209,
+      "community": 232,
       "norm_label": "supabase auth con @supabase/ssr (login, logout, middleware, magic link)",
       "id": "supabase_auth_ssr_implementation"
     },
@@ -41373,7 +41373,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 209,
+      "community": 232,
       "norm_label": "profiles.type_rol",
       "id": "profiles_type_rol"
     },
@@ -41386,7 +41386,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 209,
+      "community": 232,
       "norm_label": "contexto de auth con rol expuesto a layout, navegacion y guards",
       "id": "auth_context_rol"
     },
@@ -50684,9 +50684,9 @@
       "source_file": "app/components/shared/BodyMuscleFigure.tsx",
       "source_location": "L318",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "shared_bodymusclefigure",
-      "target": "shared_bodymusclefigure_normalizemusclekey",
-      "confidence_score": 1.0
+      "target": "shared_bodymusclefigure_normalizemusclekey"
     },
     {
       "relation": "contains",
@@ -50737,9 +50737,9 @@
       "source_file": "app/components/shared/BodyMuscleFigure.tsx",
       "source_location": "L323",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "shared_bodymusclefigure_tolibrarymuscles",
-      "target": "shared_bodymusclefigure_normalizemusclekey",
-      "confidence_score": 1.0
+      "target": "shared_bodymusclefigure_normalizemusclekey"
     },
     {
       "relation": "imports",
@@ -102133,5 +102133,5 @@
       "source_file": "specs/G9-user-dashboard/README.md"
     }
   ],
-  "built_at_commit": "f168b81221611c6fec411ed6d8c0028797385c0c"
+  "built_at_commit": "ab75637a91771962d76c5a4f537f100a5e6c6391"
 }

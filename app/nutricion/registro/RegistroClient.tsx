@@ -808,7 +808,7 @@ function MealCard({
     >
       {isEditing ? (
         <>
-          <div className="flex items-start justify-between gap-2.5">
+          <div className="grid grid-cols-[40px_minmax(0,1fr)_auto] items-center gap-2.5">
             <div className="relative size-10 shrink-0 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card-alt)]">
               <Image
                 alt={MEAL_TYPE_LABELS[type]}
@@ -818,7 +818,7 @@ function MealCard({
                 src={MEAL_TYPE_IMAGES[type]}
               />
             </div>
-            <div className="grid min-w-0 flex-1 gap-1.5">
+            <div className="min-w-0">
               <Select value={type} onValueChange={(value) => handleTypeChange(value as MealType)}>
                 <SelectTrigger className={compactControlClass}>
                   <SelectValue />
@@ -831,25 +831,28 @@ function MealCard({
                   ))}
                 </SelectContent>
               </Select>
-              <Input
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-                onBlur={() => {
-                  if (!name.trim()) {
-                    setName(meal.name);
-                    toast.error("Ponele un nombre a la comida.");
-                  }
-                }}
-                className={cn("min-w-0", compactControlClass)}
-              />
-              {(isSavingName || isSavingType) && (
-                <span className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#9a63ff]">
-                  <LoadingDots />
-                  Guardando
-                </span>
-              )}
             </div>
             <p className="whitespace-nowrap text-sm font-semibold text-white">{meal.kcal} kcal</p>
+          </div>
+
+          <div className="grid gap-1.5">
+            <Input
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              onBlur={() => {
+                if (!name.trim()) {
+                  setName(meal.name);
+                  toast.error("Ponele un nombre a la comida.");
+                }
+              }}
+              className={cn("min-w-0", compactControlClass)}
+            />
+            {(isSavingName || isSavingType) && (
+              <span className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#9a63ff]">
+                <LoadingDots />
+                Guardando
+              </span>
+            )}
           </div>
 
           {meal.items.length === 0 ? (
@@ -858,7 +861,7 @@ function MealCard({
             itemsList
           )}
 
-          <FoodPickerRow foods={foods} onAdd={handleAddItem} actionLabel="Agregar" />
+          <FoodPickerRow foods={foods} onAdd={handleAddItem} actionLabel="Agregar" layout="stacked" />
 
           <div className="mt-auto flex items-center justify-between gap-2.5 border-t border-[var(--border)] pt-2.5">
             {macroChips}
@@ -943,10 +946,12 @@ function FoodPickerRow({
   foods,
   onAdd,
   actionLabel,
+  layout = "responsive",
 }: {
   foods: Food[];
   onAdd: (foodId: string, measure: FoodMeasure, quantity: number) => void | Promise<void>;
   actionLabel: string;
+  layout?: "responsive" | "stacked";
 }) {
   const [query, setQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
@@ -1004,9 +1009,18 @@ function FoodPickerRow({
     }
   }
 
+  const isStacked = layout === "stacked";
+
   return (
-    <div className="grid gap-1 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-end">
-      <div ref={containerRef} className="relative sm:col-span-2 lg:col-span-1">
+    <div
+      className={cn(
+        "grid gap-1",
+        isStacked
+          ? "grid-cols-2"
+          : "sm:grid-cols-2 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-end",
+      )}
+    >
+      <div ref={containerRef} className={cn("relative", isStacked ? "col-span-2" : "sm:col-span-2 lg:col-span-1")}>
         <label className="grid gap-0.5 text-[11px] font-semibold text-[#c2c8d6]">
           Buscar alimento
           <div className="relative">
@@ -1087,7 +1101,7 @@ function FoodPickerRow({
         variant="outline"
         onClick={handleAdd}
         disabled={isAdding || !foodId}
-        className={cn(compactButtonClass, "sm:col-span-2 lg:col-span-1")}
+        className={cn(compactButtonClass, isStacked ? "col-span-2" : "sm:col-span-2 lg:col-span-1")}
       >
               {isAdding ? <LoadingDots /> : <Plus className="size-4" />}
         {actionLabel}
