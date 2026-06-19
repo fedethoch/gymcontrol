@@ -100,7 +100,16 @@ export default async function RootLayout({
           />
         </AppShell>
         <PwaRuntime />
-        <Toaster richColors position="top-center" />
+        <Toaster
+          richColors
+          position="top-center"
+          offset={{ top: "calc(env(safe-area-inset-top) + 24px)" }}
+          mobileOffset={{
+            top: "calc(env(safe-area-inset-top) + 16px)",
+            left: 16,
+            right: 16,
+          }}
+        />
       </body>
     </html>
   );

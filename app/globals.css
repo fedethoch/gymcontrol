@@ -386,6 +386,14 @@ a {
   text-align: left;
 }
 
+.pwa-standalone .mobile-more-sheet[data-state="open"] {
+  animation-duration: 450ms;
+}
+
+.pwa-standalone .mobile-more-sheet[data-state="closed"] {
+  animation-duration: 450ms;
+}
+
 @media (display-mode: browser) {
   .mobile-tab-bar {
     height: calc(4.375rem + env(safe-area-inset-bottom));
