@@ -315,34 +315,39 @@ function buildLibraryMuscleColors(muscleColors: Record<string, string>) {
 // ── Muscle-name → library slug mapping ───────────────────────────────────────
 // Keys in muscleLoad come from exercise.muscleGroup in DB (Spanish + English).
 
+function normalizeMuscleKey(key: string) {
+  return key.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+}
+
 function toLibraryMuscles(key: string): Muscle[] {
-  const k = key.toLowerCase();
-  if (k.includes("trap") || k.includes("trapecio")) return ["trapezius"];
-  if (k.includes("hombro") || k.includes("deltoid") || k.includes("shoulder"))
-    return ["front-deltoids", "back-deltoids"];
+  const k = normalizeMuscleKey(key);
   if (k.includes("pecho") || k.includes("chest") || k.includes("pectoral")) return ["chest"];
-  if (k.includes("bicep")) return ["biceps"];
-  if (k.includes("tricep")) return ["triceps"];
-  if (k.includes("antebrazo") || k.includes("forearm")) return ["forearm"];
-  if (k.includes("abdomen") || k.includes("abs") || k.includes("core")) return ["abs"];
-  if (k.includes("oblicuo") || k.includes("oblique")) return ["obliques"];
-  if (
-    k.includes("pierna") ||
-    k.includes("quad") ||
-    k.includes("cuad") ||
-    k.includes("femoral")
-  )
-    return ["quadriceps"];
-  if (k.includes("pantorrilla") || k.includes("calf") || k.includes("gemelo")) return ["calves"];
   if (
     k.includes("espalda") ||
     k.includes("dorsal") ||
     k.includes("lat") ||
+    k.includes("trap") ||
     (k.includes("back") && !k.includes("back-deltoid"))
   )
-    return ["upper-back", "lower-back"];
-  if (k.includes("gluteo") || k.includes("glute")) return ["gluteal"];
-  if (k.includes("isquio") || k.includes("hamstring")) return ["hamstring"];
+    return ["trapezius", "upper-back", "lower-back"];
+  if (
+    k.includes("pierna") ||
+    k.includes("quad") ||
+    k.includes("cuad") ||
+    k.includes("femoral") ||
+    k.includes("pantorrilla") ||
+    k.includes("calf") ||
+    k.includes("gemelo") ||
+    k.includes("gluteo") ||
+    k.includes("glute") ||
+    k.includes("isquio") ||
+    k.includes("hamstring")
+  )
+    return ["quadriceps", "hamstring", "adductor", "abductors", "gluteal", "calves", "left-soleus", "right-soleus"];
+  if (k.includes("hombro") || k.includes("deltoid") || k.includes("shoulder"))
+    return ["front-deltoids", "back-deltoids"];
+  if (k.includes("bicep")) return ["biceps"];
+  if (k.includes("tricep")) return ["triceps"];
   return [];
 }
 

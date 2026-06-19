@@ -236,20 +236,7 @@ function CardLabel({
   );
 }
 
-const STRENGTH_LEGEND = [
-  { label: "Base", color: "#22c55e" },
-  { label: "Fuerte", color: "#eab308" },
-  { label: "Avanz.", color: "#f97316" },
-  { label: "Elite", color: "#ef4444" },
-];
-
-const STRENGTH_RANGE_LABELS: Record<MuscleStrengthSummary["range"], string> = {
-  sin_datos: "sin datos",
-  base: "base",
-  fuerte: "fuerte",
-  avanzado: "avanzado",
-  elite: "elite",
-};
+const STRENGTH_LEGEND_GRADIENT = "linear-gradient(90deg,#22c55e 0%,#eab308 33%,#f97316 66%,#ef4444 100%)";
 
 function NutricionCard({
   totalKcal,
@@ -273,22 +260,22 @@ function NutricionCard({
   ];
 
   return (
-    <div className="flex h-full flex-col gap-2 rounded-2xl bg-[#0e131e] p-3">
+    <div className="flex h-full flex-col items-center justify-center gap-2 rounded-2xl bg-[#0e131e] p-3 text-center">
         <CardLabel icon={Flame} label="Nutrición" />
 
         {/* Circle — fills most of the card width */}
-        <div className="flex justify-center">
+        <div className="flex w-full justify-center">
           <AnimatedProgressRing
             value={kcalPercent}
-            size={96}
-            strokeWidth={9}
+            size={116}
+            strokeWidth={10}
             progressColor="var(--accent-bright)"
           >
             <div className="flex flex-col items-center">
-              <span className="font-display text-base font-bold leading-none text-white">
+              <span className="font-display text-lg font-bold leading-none text-white">
                 {totalKcal}
               </span>
-              <span className="text-[8px] text-[#7887a6]">kcal</span>
+              <span className="text-[9px] text-[#7887a6]">kcal</span>
             </div>
           </AnimatedProgressRing>
         </div>
@@ -299,7 +286,7 @@ function NutricionCard({
         </p>
 
         {/* Macro bars — stacked */}
-        <div className="flex flex-col gap-1">
+        <div className="flex w-full flex-col gap-1">
           {macros.map(({ label, value, target, color }) => {
             const pct = target > 0 ? Math.min(100, Math.round((value / target) * 100)) : 0;
             const remaining = Math.max(0, Math.round(target - value));
@@ -337,11 +324,6 @@ function CargaMuscularCard({
   const muscleColors = Object.fromEntries(
     strengthSummaries.map((summary) => [summary.muscleGroup, summary.color]),
   );
-  const visibleSummaries = [
-    ...strengthSummaries.filter((summary) => summary.bestWeight != null),
-    ...strengthSummaries.filter((summary) => summary.bestWeight == null),
-  ].slice(0, 3);
-
   return (
     <div className="flex h-full flex-col gap-2 rounded-2xl bg-[#0e131e] p-3">
         <CardLabel icon={Zap} label="Carga muscular" />
@@ -357,27 +339,12 @@ function CargaMuscularCard({
               maxCount={maxCount}
               muscleColors={muscleColors}
             />
-            <div className="grid grid-cols-4 gap-1">
-              {STRENGTH_LEGEND.map((item) => (
-                <div key={item.label} className="grid gap-0.5">
-                  <div className="h-1.5 rounded-full" style={{ backgroundColor: item.color }} />
-                  <span className="truncate text-center text-[7px] font-semibold text-[#6e7788]">
-                    {item.label}
-                  </span>
-                </div>
-              ))}
-            </div>
             <div className="grid gap-1">
-              {visibleSummaries.map((summary) => (
-                <div key={summary.muscleGroup} className="flex items-center justify-between gap-2 text-[9px]">
-                  <span className="min-w-0 truncate font-semibold text-[#c5cad8]">{summary.muscleGroup}</span>
-                  <span className="shrink-0 font-bold" style={{ color: summary.color }}>
-                    {summary.bestWeight == null
-                      ? STRENGTH_RANGE_LABELS[summary.range]
-                      : `${summary.bestWeight}kg · ${STRENGTH_RANGE_LABELS[summary.range]}`}
-                  </span>
-                </div>
-              ))}
+              <div className="h-1.5 rounded-full" style={{ background: STRENGTH_LEGEND_GRADIENT }} />
+              <div className="flex items-center justify-between text-[7px] font-semibold text-[#6e7788]">
+                <span>Base</span>
+                <span>Elite</span>
+              </div>
             </div>
           </div>
         )}

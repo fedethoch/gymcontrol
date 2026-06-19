@@ -350,8 +350,8 @@
     "semantic_hash": ""
   },
   "app/page.tsx": {
-    "mtime": 1781841378.2895243,
-    "ast_hash": "c395244ac7e5552512be5d4428eae53b",
+    "mtime": 1781811202.24051,
+    "ast_hash": "09e424c2eaccfbc0607ca725d19b28b1",
     "semantic_hash": ""
   },
   "components.json": {
@@ -1805,8 +1805,8 @@
     "semantic_hash": ""
   },
   "app/nutricion/registro/RegistroClient.tsx": {
-    "mtime": 1781841224.9569123,
-    "ast_hash": "d3d6332f79ae3c1432baa595d930eb0e",
+    "mtime": 1781836873.0154724,
+    "ast_hash": "1e973b40bfff75e814efc981d9e333fe",
     "semantic_hash": ""
   },
   "app/nutricion/registro/actions.ts": {
@@ -2045,8 +2045,8 @@
     "semantic_hash": ""
   },
   "app/components/shared/BodyMuscleFigure.tsx": {
-    "mtime": 1781841409.1948953,
-    "ast_hash": "b7e76c9f0bc91fd5c599267543a53b97",
+    "mtime": 1781811376.3390515,
+    "ast_hash": "a6e7c409922549ca7ef0a61279381dde",
     "semantic_hash": ""
   },
   "app/components/shared/FilterPanel.tsx": {

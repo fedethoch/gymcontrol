@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Beef,
+  Check,
   Droplet,
   Flame,
   type LucideIcon,
@@ -679,7 +680,6 @@ function MealCard({
                           : editQuantity;
                       setEditMeasure(nextMeasure);
                       setEditQuantity(nextQuantity);
-                      void handleSaveItem(item.id, nextMeasure, nextQuantity);
                     }}
                   >
                     <SelectTrigger className={cn(compactControlClass, "w-24 sm:w-28")}>
@@ -697,10 +697,20 @@ function MealCard({
                   step={editMeasure === "unit" ? 0.5 : 1}
                   value={editQuantity}
                   onChange={(event) => setEditQuantity(event.target.value)}
-                  onBlur={() => handleSaveItem(item.id)}
                   className={cn(compactControlClass, "w-16 sm:w-20")}
                 />
-                {isSavingItem && <LoadingDots className="text-[#9a63ff]" />}
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  className="size-9 rounded-lg"
+                  onClick={() => handleSaveItem(item.id)}
+                  disabled={isSavingItem}
+                  title="Guardar alimento"
+                  aria-label="Guardar alimento"
+                >
+                  {isSavingItem ? <LoadingDots /> : <Check className="size-4" />}
+                </Button>
               </div>
             )}
             {isEditing && !isEditingItem && (
