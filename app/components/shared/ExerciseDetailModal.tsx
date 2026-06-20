@@ -190,6 +190,7 @@ export function ExerciseDetailModal({
                     fill
                     sizes="(max-width: 768px) 100vw, 34rem"
                     src={(demoState.status === "ready" && demoState.demo.imageUrl) || displayExercise.imageUrl || ""}
+                    unoptimized={demoState.status === "ready" && demoState.demo.imageUrl ? true : false}
                   />
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(5,7,11,0.85)_100%)]" />
                 </>
