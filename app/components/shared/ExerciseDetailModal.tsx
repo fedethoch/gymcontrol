@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Dumbbell, Star } from "lucide-react";
+import { AlertCircle, Dumbbell, Loader2, PlayCircle, Star } from "lucide-react";
 import { useState } from "react";
 
 import { Badge } from "@/app/components/ui/Badge";
@@ -30,6 +30,8 @@ export type ExerciseDetail = {
   name: string;
   description: string;
   imageUrl: string;
+  videoUrl?: string | null;
+  exerciseDbId?: string | null;
   muscleGroup?: string | null;
   equipment?: string | null;
   series?: number;
@@ -52,21 +54,95 @@ type ExerciseDetailModalProps = {
 const TABS = [
   { key: "descripcion", label: "Descripcion" },
   { key: "tecnica", label: "Tecnica" },
+  { key: "demostracion", label: "Demostracion" },
   { key: "historial", label: "Historial" },
 ] as const;
 
 type TabKey = (typeof TABS)[number]["key"];
+
+type ExerciseDemoResponse =
+  | {
+      available: true;
+      source: "manual" | "exercisedb";
+      name: string;
+      mediaUrl: string;
+      mediaType: "video" | "gif";
+      providerExerciseId?: string;
+      instructions?: string[];
+    }
+  | {
+      available: false;
+      reason: "missing-api-key" | "not-found" | "provider-error";
+      message: string;
+    };
+
+type DemoState =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "ready"; demo: Extract<ExerciseDemoResponse, { available: true }> }
+  | { status: "unavailable"; message: string }
+  | { status: "error"; message: string };
 
 export function ExerciseDetailModal({
   exercise,
   open,
   onOpenChange,
 }: ExerciseDetailModalProps) {
-  const [displayExercise, setDisplayExercise] = useState<ExerciseDetail | null>(exercise);
   const [tab, setTab] = useState<TabKey>("descripcion");
+  const [demoState, setDemoState] = useState<DemoState>({ status: "idle" });
 
-  if (exercise && exercise !== displayExercise) {
-    setDisplayExercise(exercise);
+  const displayExercise = exercise;
+
+  function handleTabSelect(nextTab: TabKey) {
+    setTab(nextTab);
+
+    if (nextTab !== "demostracion" || !displayExercise) {
+      return;
+    }
+
+    loadDemo(displayExercise);
+  }
+
+  function loadDemo(targetExercise: ExerciseDetail) {
+    if (targetExercise.videoUrl) {
+      setDemoState({
+        status: "ready",
+        demo: {
+          available: true,
+          source: "manual",
+          name: targetExercise.name,
+          mediaUrl: targetExercise.videoUrl,
+          mediaType: "video",
+        },
+      });
+      return;
+    }
+
+    setDemoState({ status: "loading" });
+
+    fetch(`/api/exercises/${targetExercise.id}/demo`, {
+      cache: "no-store",
+    })
+      .then(async (response) => {
+        const data = (await response.json()) as ExerciseDemoResponse;
+
+        if (!data.available) {
+          setDemoState({ status: "unavailable", message: data.message });
+          return;
+        }
+
+        setDemoState({ status: "ready", demo: data });
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return;
+        }
+
+        setDemoState({
+          status: "error",
+          message: "No se pudo cargar la demostracion.",
+        });
+      });
   }
 
   const hasIdealRange =
@@ -89,6 +165,8 @@ export function ExerciseDetailModal({
         onOpenChange(nextOpen);
         if (nextOpen) {
           setTab("descripcion");
+        } else {
+          setDemoState({ status: "idle" });
         }
       }}
     >
@@ -103,14 +181,14 @@ export function ExerciseDetailModal({
 
             {/* Hero */}
             <div className="relative h-[218px] shrink-0 overflow-hidden">
-              {displayExercise.imageUrl ? (
+              {(demoState.status === "ready" && demoState.demo.imageUrl) || displayExercise.imageUrl ? (
                 <>
                   <Image
                     alt={displayExercise.name}
                     className="object-cover"
                     fill
                     sizes="(max-width: 768px) 100vw, 34rem"
-                    src={displayExercise.imageUrl}
+                    src={(demoState.status === "ready" && demoState.demo.imageUrl) || displayExercise.imageUrl || ""}
                   />
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(5,7,11,0.85)_100%)]" />
                 </>
@@ -167,7 +245,7 @@ export function ExerciseDetailModal({
                 <button
                   key={item.key}
                   type="button"
-                  onClick={() => setTab(item.key)}
+                  onClick={() => handleTabSelect(item.key)}
                   className={cn(
                     "-mb-px border-b-2 px-3.5 py-3 text-sm font-semibold transition-colors",
                     tab === item.key
@@ -265,6 +343,14 @@ export function ExerciseDetailModal({
                 </div>
               ) : null}
 
+              {tab === "demostracion" ? (
+                <DemoPanel
+                  state={demoState}
+                  exerciseName={displayExercise.name}
+                  onRetry={() => loadDemo(displayExercise)}
+                />
+              ) : null}
+
               {tab === "historial" ? (
                 <div className="flex flex-col gap-3">
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7887a6]">
@@ -322,6 +408,143 @@ export function ExerciseDetailModal({
       </SheetContent>
     </Sheet>
   );
+}
+
+function DemoPanel({
+  state,
+  exerciseName,
+  onRetry,
+}: {
+  state: DemoState;
+  exerciseName: string;
+  onRetry: () => void;
+}) {
+  if (state.status === "idle" || state.status === "loading") {
+    return (
+      <div className="grid min-h-[18rem] place-items-center rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-6 text-center">
+        <div className="grid gap-3 justify-items-center">
+          <Loader2 className="size-7 animate-spin text-[var(--accent-bright)]" aria-hidden="true" />
+          <p className="text-sm font-semibold text-white">Cargando demostracion</p>
+          <p className="max-w-xs text-xs leading-5 text-[#7887a6]">
+            Buscando una referencia visual para {exerciseName}.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (state.status === "ready") {
+    return (
+      <div className="grid gap-4">
+        <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-black">
+          <DemoMedia demo={state.demo} exerciseName={exerciseName} />
+        </div>
+
+        <div className="flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-4">
+          <PlayCircle className="mt-0.5 size-4 shrink-0 text-[var(--accent-bright)]" aria-hidden="true" />
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-white">
+              {state.demo.source === "manual" ? "Video del ejercicio" : state.demo.name}
+            </p>
+            <p className="mt-1 text-xs leading-5 text-[#7887a6]">
+              La demostracion se reproduce dentro de la app.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid min-h-[18rem] place-items-center rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-6 text-center">
+      <div className="grid max-w-xs gap-3 justify-items-center">
+        <AlertCircle className="size-7 text-[#facc15]" aria-hidden="true" />
+        <p className="text-sm font-semibold text-white">
+          {state.status === "unavailable" ? "Demostracion no disponible" : "No se pudo cargar"}
+        </p>
+        <p className="text-xs leading-5 text-[#7887a6]">{state.message}</p>
+        {state.status === "error" ? (
+          <button
+            type="button"
+            onClick={onRetry}
+            className="mt-1 rounded-xl border border-[var(--border)] px-3 py-2 text-xs font-semibold text-[var(--foreground)] transition-colors hover:border-[var(--accent-bright)] hover:text-white"
+          >
+            Reintentar
+          </button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function DemoMedia({
+  demo,
+  exerciseName,
+}: {
+  demo: Extract<ExerciseDemoResponse, { available: true }>;
+  exerciseName: string;
+}) {
+  const embedUrl = resolveEmbedUrl(demo.mediaUrl);
+
+  if (embedUrl) {
+    return (
+      <iframe
+        className="aspect-video w-full"
+        src={embedUrl}
+        title={`Demostracion de ${exerciseName}`}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        referrerPolicy="strict-origin-when-cross-origin"
+      />
+    );
+  }
+
+  if (demo.mediaType === "video") {
+    return (
+      <video
+        className="aspect-video w-full bg-black"
+        src={demo.mediaUrl}
+        controls
+        preload="metadata"
+      >
+        Tu navegador no puede reproducir este video.
+      </video>
+    );
+  }
+
+  return (
+    // ExerciseDB streams GIFs, so a plain image element avoids Next image optimization/cache.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      className="aspect-square w-full bg-black object-contain sm:aspect-video"
+      src={demo.mediaUrl}
+      alt={`Demostracion de ${exerciseName}`}
+    />
+  );
+}
+
+function resolveEmbedUrl(value: string) {
+  try {
+    const url = new URL(value);
+
+    if (url.hostname === "youtu.be") {
+      return `https://www.youtube.com/embed/${url.pathname.slice(1)}`;
+    }
+
+    if (url.hostname.endsWith("youtube.com")) {
+      const videoId = url.searchParams.get("v");
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+    }
+
+    if (url.hostname.endsWith("vimeo.com")) {
+      const videoId = url.pathname.split("/").filter(Boolean)[0];
+      return videoId ? `https://player.vimeo.com/video/${videoId}` : null;
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
 }
 
 function SpecChip({ label, value }: { label: string; value: string }) {
