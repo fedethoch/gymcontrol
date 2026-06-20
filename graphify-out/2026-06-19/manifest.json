@@ -505,8 +505,8 @@
     "semantic_hash": "0092992cf9d418966e69f88c24090e53"
   },
   "docs/DATABASE.md": {
-    "mtime": 1781794954.967293,
-    "ast_hash": "52808affced9e00c42a1299bd48c4e73",
+    "mtime": 1781883661.3961828,
+    "ast_hash": "9cda9f91ddd8ebf73190d8691118b9bd",
     "semantic_hash": ""
   },
   "docs/DOCUMENTATION_ROADMAP.md": {
@@ -1805,8 +1805,8 @@
     "semantic_hash": ""
   },
   "app/nutricion/registro/RegistroClient.tsx": {
-    "mtime": 1781881956.5478287,
-    "ast_hash": "58566358fecddb24391fd0b1c871c68f",
+    "mtime": 1781882517.6791184,
+    "ast_hash": "7f2314495c1ccc470ac1374eaa79c76e",
     "semantic_hash": ""
   },
   "app/nutricion/registro/actions.ts": {
@@ -2552,6 +2552,11 @@
   "public/references/nutricion.png": {
     "mtime": 1781803719.0307739,
     "ast_hash": "df897eea484ec005b6d5ff732df0d0b1",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/20260619_g28_catalog_seed.sql": {
+    "mtime": 1781883344.4796884,
+    "ast_hash": "440fd7f1ef789523c8759565496d88b6",
     "semantic_hash": ""
   }
 }

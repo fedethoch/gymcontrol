@@ -5,7 +5,6 @@ import {
   ChevronRight,
   Dumbbell,
   Flame,
-  Image as ImageIcon,
   UtensilsCrossed,
   Zap,
 } from "lucide-react";
@@ -38,6 +37,8 @@ import {
   listWorkoutWeeklySummaries,
   type MuscleStrengthSummary,
 } from "@/app/lib/workout-tracking";
+
+const TODAY_CARD_FALLBACK_IMAGE = "/images/dashboard/hoy-toca-fallback.png";
 
 export default async function Home() {
   const auth = await requireUser();
@@ -90,6 +91,8 @@ export default async function Home() {
       : activeRoutine
         ? "/rutinas"
         : "/";
+  const todayCardImageUrl =
+    activeRoutine?.imageUrl || activeRoutineListItem?.coverImageUrl || TODAY_CARD_FALLBACK_IMAGE;
 
   const meals = mealLog?.meals ?? [];
   const totalKcal = meals.reduce((sum, m) => sum + m.kcal, 0);
@@ -128,11 +131,17 @@ export default async function Home() {
       {/* Hero: hoy toca — image placeholder banner */}
       <div className="relative overflow-hidden rounded-2xl bg-[#11151f]">
         {/* Placeholder bg */}
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <ImageIcon className="size-16 text-[#1e2540]" />
-        </div>
+        <Image
+          alt={activeRoutine?.displayName ?? "Entrenamiento de hoy"}
+          className="object-cover saturate-[0.9]"
+          fill
+          priority
+          sizes="100vw"
+          src={todayCardImageUrl}
+        />
         {/* Scrim */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_14%_12%,rgba(124,58,237,0.3),transparent_35%)]" />
         {/* Content */}
         <div className="relative z-10 flex flex-col gap-2 p-4 pb-5">
           <p className="text-xs font-medium text-[#9a9eb0]">Hoy toca:</p>

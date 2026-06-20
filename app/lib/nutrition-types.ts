@@ -38,11 +38,11 @@ export const MEAL_TYPE_LABELS: Record<MealType, string> = {
 };
 
 export const MEAL_TYPE_IMAGES: Record<MealType, string> = {
-  desayuno: "/images/meals/placeholder.svg",
-  almuerzo: "/images/meals/placeholder.svg",
-  merienda: "/images/meals/placeholder.svg",
-  cena: "/images/meals/placeholder.svg",
-  snack: "/images/meals/placeholder.svg",
+  desayuno: "/images/meals/desayuno.png",
+  almuerzo: "/images/meals/almuerzo.png",
+  merienda: "/images/meals/merienda.png",
+  cena: "/images/meals/cena.png",
+  snack: "/images/meals/snack.png",
 };
 
 export type Macros = {

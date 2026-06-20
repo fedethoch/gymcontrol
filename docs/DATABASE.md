@@ -171,6 +171,10 @@ Valores cerrados de metadata:
   - `hipertrofia`
   - `fuerza`
   - `mantenimiento`
+- `image_url`:
+  - referencia publica opcional a una imagen de portada de la rutina
+  - cuando existe, debe usarse antes que la imagen derivada del primer ejercicio
+  - apunta al bucket publico `routine-images` en Supabase Storage
 
 #### Traduccion SQL
 
@@ -182,6 +186,7 @@ Valores cerrados de metadata:
 - `created_by uuid not null references public.profiles(id) on delete restrict`
 - `created_at timestamptz not null default now()`
 - `updated_at timestamptz not null default now()`
+- `image_url text` (g29, portada publica opcional en bucket `routine-images`)
 
 ### 5. Dia de rutina
 
@@ -423,6 +428,16 @@ Estado confirmado de storage despues de `G6`:
 - `storage.objects` permite lectura publica del bucket y escritura, actualizacion y borrado solo para usuarios admin autenticados
 - `exercises.image_url` guarda la URL publica final del objeto subido
 
+Estado confirmado de imagenes generadas despues de `G29`:
+
+- existe el bucket publico `routine-images`
+- existe el bucket publico `recipe-images`
+- ambos buckets usan `file_size_limit = 5242880` y `allowed_mime_types = ['image/jpeg', 'image/png', 'image/webp']`
+- `storage.objects` permite lectura publica de ambos buckets y escritura, actualizacion y borrado solo para usuarios admin autenticados
+- `routine_templates.image_url` guarda la URL publica final de la portada de rutina
+- `recipes.image_url` guarda la URL publica final de la imagen de receta
+- los tipos de comida (`desayuno`, `almuerzo`, `merienda`, `cena`, `snack`) usan assets locales versionados porque no son entidad global de catalogo
+
 Estado confirmado de tracking despues de la vista diaria interactiva:
 
 - existen `workout_sessions` y `workout_session_items` con RLS owner-only
@@ -620,7 +635,7 @@ Migraciones: `20260613_g18_nutrition_core.sql` (esquema + RLS + storage), `20260
 - `id uuid primary key`
 - `name text not null`
 - `image_url text not null` (sin uso por ahora, catalogo usa iconos por categoria)
-- `category text not null check (category in ('protein','carb','fat','vegetable','mixed'))`
+- `category text not null check (category in ('desayuno','comida','snack'))`
 - `serving_g integer not null default 100 check (serving_g > 0)`
 - `measure text not null default 'g' check (measure in ('g','unit'))` (medida por defecto, g22)
 - `grams_per_unit numeric check (grams_per_unit is null or grams_per_unit > 0)` (g24; si esta seteado, el alimento se puede registrar tambien por unidades/porciones)
@@ -699,6 +714,7 @@ Migracion: `20260613_g21_nutrition_fase3.sql`. Nota: las dietas predefinidas (`d
 - `name text not null`
 - `description text`
 - `image_url text`
+- en `G29`, apunta a la URL publica final del bucket `recipe-images` cuando la receta tiene imagen generada
 - `category text not null check (category in ('protein','carb','fat','vegetable','mixed'))`
 - `servings integer not null default 1 check (servings > 0)`
 - `created_by uuid references profiles(id)`
@@ -729,6 +745,8 @@ Estado confirmado al 2026-06-19:
 - `foods` queda con un catalogo amplio de alimentos por categorias `protein`, `carb`, `fat`, `vegetable` y `mixed`
 - `recipes` queda poblada con 20 recetas nuevas, usando categorias reales `desayuno`, `comida` y `snack`
 - `exercises` queda ampliada con 60 ejercicios soporte para construir rutinas variadas
-- `routine_templates` queda ampliada con 15 rutinas nuevas y sus dias/items
-- la carga es idempotente: alimentos, ejercicios, recetas y rutinas se insertan por nombre solo si faltan; los items de recetas/rutinas semilla se reconstruyen para mantener consistencia
+- `routine_templates` se reemplaza despues por la migracion `20260619_g30_routine_catalog_reset.sql` con un catalogo base de 8 rutinas: `Push Pull Legs 6 dias`, `Push Pull Legs 5 dias`, `Push Pull Legs x Arnold Split 6 dias`, `Push Pull Legs x Arnold Split 5 dias`, `Upper Lower 4 dias`, `Fullbody 3 dias`, `Fullbody mantenimiento 3 dias` y `Prio Legs(woman) 5 dias`
+- la migracion `20260619_g32_arnold_split_catalog.sql` amplia ese catalogo con `Arnold Split 6 dias` sin resetear las rutinas existentes
+- `g30_routine_catalog_reset` borra las rutinas anteriores del catalogo y reconstruye sus dias/items; por cascada tambien elimina rutinas guardadas y sesiones asociadas a templates anteriores
+- la carga de alimentos, ejercicios y recetas es idempotente por nombre; las rutinas quedan como catalogo cerrado reconstruido por `g30_routine_catalog_reset`
 - los valores nutricionales del seed son valores de catalogo aproximados para uso funcional de la app; si se requiere precision clinica o regulatoria, deben reemplazarse por una fuente nutricional auditada

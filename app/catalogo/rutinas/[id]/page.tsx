@@ -61,7 +61,7 @@ export default async function CatalogRoutineDetailPage({
 
   const dayCount = routine.days.length;
   const itemCount = routine.days.reduce((total, day) => total + day.items.length, 0);
-  const coverImageUrl = routine.days[0]?.items[0]?.exercise.imageUrl || "";
+  const coverImageUrl = routine.imageUrl || routine.days[0]?.items[0]?.exercise.imageUrl || "";
   const objectiveLabel = ROUTINE_OBJECTIVE_LABELS[routine.objective];
   const isSavedState =
     savedRoutine !== null ||

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { ComponentType } from "react";
 import {
@@ -111,7 +112,16 @@ export default async function RutinasPage() {
 
       {/* Row 1: Routine header card with placeholder bg */}
       <div className="relative overflow-hidden rounded-2xl bg-[#15102a] p-3.5">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,rgba(124,58,237,0.2),transparent_65%)]" />
+        {activeRoutine.imageUrl ? (
+          <Image
+            alt={activeRoutine.displayName}
+            className="object-cover opacity-55 saturate-[0.85]"
+            fill
+            sizes="100vw"
+            src={activeRoutine.imageUrl}
+          />
+        ) : null}
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(8,7,17,0.88),rgba(8,7,17,0.48)),radial-gradient(circle_at_80%_50%,rgba(124,58,237,0.28),transparent_65%)]" />
         <div className="relative">
           <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#b985ff]">Rutina activa</p>
           <h2 className="font-display mt-0.5 text-lg font-semibold leading-tight text-white sm:text-xl">

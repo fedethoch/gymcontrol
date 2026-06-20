@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ImageIcon, Search } from "lucide-react";
 import { useState } from "react";
 
@@ -124,11 +125,12 @@ function RecipeCard({ recipe, onSelect }: { recipe: Recipe; onSelect: () => void
     >
       <div className="relative aspect-[16/9] w-full shrink-0 bg-[var(--card)]">
         {recipe.imageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={recipe.imageUrl}
+          <Image
             alt={recipe.name}
-            className="h-full w-full object-cover"
+            className="object-cover"
+            fill
+            sizes="(max-width: 1024px) 50vw, 33vw"
+            src={recipe.imageUrl}
           />
         ) : (
           <div className="grid h-full w-full place-items-center">

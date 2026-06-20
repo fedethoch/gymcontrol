@@ -325,7 +325,7 @@ function getRoutineItemCount(routine: RoutineTemplate) {
 }
 
 function getRoutineCoverImage(routine: RoutineTemplate) {
-  return routine.days[0]?.items[0]?.exercise.imageUrl || "";
+  return routine.imageUrl || routine.days[0]?.items[0]?.exercise.imageUrl || "";
 }
 
 function getVisiblePages(currentPage: number, totalPages: number) {

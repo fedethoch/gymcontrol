@@ -29,6 +29,7 @@ export type RoutineTemplate = {
   id: string;
   name: string;
   description: string;
+  imageUrl: string;
   difficulty: RoutineDifficulty;
   objective: RoutineObjective;
   days: RoutineDay[];
@@ -48,6 +49,7 @@ type RoutineRow = {
   id: string;
   name: string;
   description: string | null;
+  image_url: string | null;
   difficulty: RoutineDifficulty;
   objective: RoutineObjective;
   created_at: string;
@@ -98,6 +100,7 @@ const ROUTINE_SELECT = `
   id,
   name,
   description,
+  image_url,
   difficulty,
   objective,
   created_at,
@@ -212,6 +215,7 @@ export async function createRoutine(input: CreateRoutineInput) {
     .insert({
       name: input.name,
       description: input.description || null,
+      image_url: null,
       difficulty: input.difficulty,
       objective: input.objective,
       created_by: input.createdBy,
@@ -245,6 +249,7 @@ export async function updateRoutine(input: UpdateRoutineInput) {
       .update({
         name: input.name,
         description: input.description || null,
+        image_url: previousRoutine.imageUrl || null,
         difficulty: input.difficulty,
         objective: input.objective,
       })
@@ -313,6 +318,7 @@ function mapRoutineTemplate(routine: RoutineRow): RoutineTemplate {
     id: routine.id,
     name: routine.name,
     description: routine.description ?? "",
+    imageUrl: routine.image_url ?? "",
     difficulty: routine.difficulty,
     objective: routine.objective,
     days,
@@ -419,6 +425,7 @@ async function restoreRoutineSnapshot(
     .update({
       name: routine.name,
       description: routine.description || null,
+      image_url: routine.imageUrl || null,
       difficulty: routine.difficulty,
       objective: routine.objective,
     })

@@ -11,6 +11,7 @@ export type SavedRoutineListItem = {
   templateDescription: string;
   difficulty: RoutineDifficulty;
   objective: RoutineObjective;
+  imageUrl: string;
   coverImageUrl: string;
   customName: string | null;
   displayName: string;
@@ -30,6 +31,7 @@ export type SavedRoutineDetail = {
   templateDescription: string;
   difficulty: RoutineDifficulty;
   objective: RoutineObjective;
+  imageUrl: string;
   customName: string | null;
   displayName: string;
   savedAt: string;
@@ -75,6 +77,7 @@ type RoutineTemplateSummaryRow = {
   id: string;
   name: string;
   description: string | null;
+  image_url: string | null;
   difficulty: RoutineDifficulty;
   objective: RoutineObjective;
   routine_days: Array<{
@@ -92,6 +95,7 @@ type RoutineTemplateDetailRow = {
   id: string;
   name: string;
   description: string | null;
+  image_url: string | null;
   difficulty: RoutineDifficulty;
   objective: RoutineObjective;
   routine_days: RoutineDayRow[] | null;
@@ -127,6 +131,7 @@ const SAVED_ROUTINE_LIST_SELECT = `
     id,
     name,
     description,
+    image_url,
     difficulty,
     objective,
     routine_days (
@@ -163,6 +168,7 @@ const SAVED_ROUTINE_DETAIL_SELECT = `
     id,
     name,
     description,
+    image_url,
     difficulty,
     objective,
     routine_days (
@@ -516,7 +522,8 @@ function mapSavedRoutineListItem(row: SavedRoutineListRow): SavedRoutineListItem
     templateDescription: template.description ?? "",
     difficulty: template.difficulty,
     objective: template.objective,
-    coverImageUrl: resolveCoverImageUrl(template),
+    imageUrl: template.image_url ?? "",
+    coverImageUrl: template.image_url || resolveCoverImageUrl(template),
     customName: normalizeCustomName(row.custom_name),
     displayName: resolveDisplayName(row.custom_name, template.name),
     isActive: row.is_active,
@@ -580,6 +587,7 @@ function mapSavedRoutineDetail(row: SavedRoutineDetailRow): SavedRoutineDetail {
     templateDescription: template.description ?? "",
     difficulty: template.difficulty,
     objective: template.objective,
+    imageUrl: template.image_url ?? "",
     customName: normalizeCustomName(row.custom_name),
     displayName: resolveDisplayName(row.custom_name, template.name),
     savedAt: row.saved_at,

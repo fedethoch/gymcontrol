@@ -8,6 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "check": "pnpm lint && pnpm build",
+    "media:manifest": "node scripts/media-manifest.mjs",
+    "media:render": "powershell -ExecutionPolicy Bypass -File scripts/render-generated-images.ps1",
+    "media:upload": "node scripts/upload-generated-images.mjs",
     "validate:mobile": "node scripts/validate-mobile.mjs",
     "check:ui": "pnpm build && pnpm validate:mobile"
   },
