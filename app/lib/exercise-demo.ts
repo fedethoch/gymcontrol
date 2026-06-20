@@ -204,16 +204,34 @@ export async function fetchExerciseDbImage(providerExerciseId: string, resolutio
   });
 }
 
+export async function fetchExerciseDbGif(providerExerciseId: string, resolution: string) {
+  const apiKey = getExerciseDbApiKey();
+
+  if (!apiKey) {
+    return null;
+  }
+
+  const safeResolution = ALLOWED_RESOLUTIONS.has(resolution) ? resolution : DEFAULT_DEMO_RESOLUTION;
+  const url = new URL("/gifs", EXERCISEDB_BASE_URL);
+  url.searchParams.set("exerciseId", providerExerciseId);
+  url.searchParams.set("resolution", safeResolution);
+
+  return fetch(url, {
+    cache: "no-store",
+    headers: exerciseDbHeaders(apiKey),
+  });
+}
+
 function getExerciseDbApiKey() {
   return process.env.EXERCISEDB_API_KEY?.trim() || process.env.EXERCISEDB_RAPIDAPI_KEY?.trim() || "";
 }
 
 function buildExerciseDbImageUrl(providerExerciseId: string) {
-  return `/api/exercises/demo-image?providerExerciseId=${encodeURIComponent(providerExerciseId)}&resolution=${DEFAULT_DEMO_RESOLUTION}`;
+  return `/api/exercises/demo-image?providerExerciseId=${encodeURIComponent(providerExerciseId)}&resolution=${DEFAULT_DEMO_RESOLUTION}&type=gif`;
 }
 
 function buildExerciseDbStaticImageUrl(providerExerciseId: string) {
-  return `/api/exercises/demo-image?providerExerciseId=${encodeURIComponent(providerExerciseId)}&resolution=360`;
+  return `/api/exercises/demo-image?providerExerciseId=${encodeURIComponent(providerExerciseId)}&resolution=360&type=image`;
 }
 
 async function searchExerciseDb(name: string, apiKey: string) {
