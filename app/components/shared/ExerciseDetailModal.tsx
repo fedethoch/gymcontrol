@@ -69,6 +69,7 @@ type ExerciseDemoResponse =
       mediaType: "video" | "gif";
       providerExerciseId?: string;
       instructions?: string[];
+      imageUrl?: string;
     }
   | {
       available: false;
