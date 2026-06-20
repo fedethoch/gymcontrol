@@ -67,6 +67,7 @@ type ExerciseRow = {
   muscle_group: string | null;
   equipment: string | null;
   video_url: string | null;
+  exercisedb_id: string | null;
   min_reps: number | null;
   max_reps: number | null;
   steps: string[];
@@ -148,6 +149,7 @@ const SAVED_ROUTINE_LIST_SELECT = `
           muscle_group,
           equipment,
           video_url,
+          exercisedb_id,
           min_reps,
           max_reps,
           steps,
@@ -191,6 +193,7 @@ const SAVED_ROUTINE_DETAIL_SELECT = `
           muscle_group,
           equipment,
           video_url,
+          exercisedb_id,
           min_reps,
           max_reps,
           steps,
@@ -628,6 +631,7 @@ function mapExercise(item: RoutineItemRow): RoutineExerciseRef {
     muscleGroup: exercise.muscle_group,
     equipment: exercise.equipment,
     videoUrl: exercise.video_url,
+    exerciseDbId: exercise.exercisedb_id,
     minReps: exercise.min_reps,
     maxReps: exercise.max_reps,
     steps: exercise.steps,

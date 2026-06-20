@@ -5,6 +5,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const PROJECT_ROOT = process.cwd();
 const DEFAULT_OUT = path.join(PROJECT_ROOT, "scripts", "media", "generated-image-manifest.json");
+const EXERCISE_IMAGE_BUCKET = "exercise-images";
 const ROUTINE_IMAGE_BUCKET = "routine-images";
 const RECIPE_IMAGE_BUCKET = "recipe-images";
 
@@ -67,7 +68,8 @@ const DASHBOARD_ASSETS = [
 
 async function main() {
   const outPath = resolveArg("--out") ?? DEFAULT_OUT;
-  const [recipes, routines] = await Promise.all([fetchRecipes(), fetchRoutines()]);
+  const onlyKind = resolveArg("--kind");
+  const [exercises, recipes, routines] = await Promise.all([fetchExercises(), fetchRecipes(), fetchRoutines()]);
   const manifest = {
     generatedAt: new Date().toISOString(),
     defaults: {
@@ -94,14 +96,28 @@ async function main() {
         status: "needs-generation",
         ...asset,
       })),
+      ...exercises.map((exercise) => exerciseToAsset(exercise)),
       ...routines.map((routine) => routineToAsset(routine)),
       ...recipes.map((recipe) => recipeToAsset(recipe)),
-    ],
+    ].filter((asset) => !onlyKind || asset.kind === onlyKind),
   };
 
   await mkdir(path.dirname(outPath), { recursive: true });
   await writeFile(outPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
   console.log(`Wrote ${manifest.assets.length} assets to ${path.relative(PROJECT_ROOT, outPath)}`);
+}
+
+async function fetchExercises() {
+  const { data, error } = await supabase
+    .from("exercises")
+    .select("id, name, description, image_url, muscle_group, equipment")
+    .order("name", { ascending: true });
+
+  if (error) {
+    throw new Error(`Could not fetch exercises: ${error.message}`);
+  }
+
+  return (data ?? []).filter((exercise) => !isTestExercise(exercise.name));
 }
 
 async function fetchRecipes() {
@@ -131,6 +147,27 @@ async function fetchRoutines() {
   }
 
   return (data ?? []).filter((routine) => !isTestRoutine(routine.name));
+}
+
+function exerciseToAsset(exercise) {
+  const slug = slugify(exercise.name);
+
+  return {
+    kind: "exercise",
+    id: exercise.id,
+    name: exercise.name,
+    bucket: EXERCISE_IMAGE_BUCKET,
+    storagePath: `${exercise.id}-${slug}.png`,
+    localPath: `scripts/media/generated/exercises/${exercise.id}-${slug}.png`,
+    publicUrl: exercise.image_url || null,
+    status: exercise.image_url ? "linked" : "needs-generation",
+    muscleGroup: exercise.muscle_group,
+    equipment: exercise.equipment,
+    prompt:
+      `Use case: photorealistic-natural. Asset type: exercise catalog card. Primary request: ${exercise.name}. ` +
+      `Description: ${exercise.description}. Muscle group: ${exercise.muscle_group ?? "general"}. Equipment: ${exercise.equipment ?? "none"}. ` +
+      "Scene: one clear gym exercise setup matching the movement and equipment. Composition: horizontal 16:9, premium fitness photography, no text, no logo, no watermark.",
+  };
 }
 
 function routineToAsset(routine) {
@@ -194,6 +231,11 @@ function collectRoutineExercises(routine) {
 }
 
 function isTestRoutine(name) {
+  const normalized = name.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+  return normalized.includes("test") || normalized.includes("qa ");
+}
+
+function isTestExercise(name) {
   const normalized = name.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
   return normalized.includes("test") || normalized.includes("qa ");
 }

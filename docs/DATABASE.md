@@ -138,6 +138,7 @@ Implementacion tecnica minima:
   - `name`
   - `description`
   - `image_url`
+  - `exercisedb_id` opcional como identificador estable del proveedor de demostraciones
   - `created_by`
   - `created_at`
   - `updated_at`
@@ -427,6 +428,9 @@ Estado confirmado de storage despues de `G6`:
 - `storage.buckets` fija `file_size_limit = 5242880` y `allowed_mime_types = ['image/jpeg', 'image/png', 'image/webp']`
 - `storage.objects` permite lectura publica del bucket y escritura, actualizacion y borrado solo para usuarios admin autenticados
 - `exercises.image_url` guarda la URL publica final del objeto subido
+- las demostraciones externas de ejercicios se resuelven en vivo via API interna; no se persisten ni cachean imagenes, GIFs o metadata de ExerciseDB en la base
+- `exercises.exercisedb_id` guarda solo el ID estable de ExerciseDB para evitar matching por nombre en runtime cuando el mapeo ya fue revisado
+- `exercises.video_url` queda como override manual para videos propios o embebibles controlados por admin
 
 Estado confirmado de imagenes generadas despues de `G29`:
 
@@ -515,6 +519,7 @@ Esta seccion fija el criterio tecnico minimo para pasar el modelo a Supabase sin
 - `muscle_group text check (muscle_group in ('Pecho','Espalda','Piernas','Hombros','Biceps','Triceps','Core'))`
 - `equipment text check (equipment in ('Barra','Mancuernas','Maquina','Polea','Peso corporal','Kettlebell'))`
 - `video_url text`
+- `exercisedb_id text` (ID opcional del proveedor para demostraciones GIF in-app)
 - `min_reps integer` / `max_reps integer` (rango de reps ideales; ambos null o ambos definidos con `min_reps >= 1 and min_reps <= max_reps`, via `exercises_rep_range_check`)
 - `steps text[] not null default '{}'` (pasos de ejecucion, tab Tecnica)
 - `tips text[] not null default '{}'` (claves de tecnica, tab Tecnica)

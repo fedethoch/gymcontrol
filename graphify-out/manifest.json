@@ -125,8 +125,8 @@
     "semantic_hash": "34ab8345b7662fbc78040abce29b4250"
   },
   "app/components/shared/ExerciseDetailModal.tsx": {
-    "mtime": 1781366991.287277,
-    "ast_hash": "981687f9f542bb598d8487fa5a8acc88",
+    "mtime": 1781973672.2411385,
+    "ast_hash": "6cec60cb6b0f8f414fd570a41b85f292",
     "semantic_hash": ""
   },
   "app/components/shared/PlaceholderPanel.tsx": {
@@ -280,8 +280,8 @@
     "semantic_hash": ""
   },
   "app/lib/exercises.ts": {
-    "mtime": 1781366611.2595518,
-    "ast_hash": "6136155beecf9eab261202a74a1c1506",
+    "mtime": 1781973659.238537,
+    "ast_hash": "9c954a5cac7e6c76721bd285f7a3645b",
     "semantic_hash": ""
   },
   "app/lib/otp-rate-limit.ts": {
@@ -310,13 +310,13 @@
     "semantic_hash": "06e2201313f1c032589dfa64d6eb9dfc"
   },
   "app/lib/routines.ts": {
-    "mtime": 1781903607.5622087,
-    "ast_hash": "99a5d02e058507cfb83f7ce8a4e2806e",
+    "mtime": 1781973822.1351507,
+    "ast_hash": "ca8799ad0a4b16c4dd8272356d4597df",
     "semantic_hash": ""
   },
   "app/lib/saved-routines.ts": {
-    "mtime": 1781903607.5622087,
-    "ast_hash": "9a7c91d01e028580ae89ceec53cf049c",
+    "mtime": 1781973860.898655,
+    "ast_hash": "8b807f6a78e69f35f17154a5aaa9dc79",
     "semantic_hash": ""
   },
   "app/lib/supabase/browser.ts": {
@@ -370,8 +370,8 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1781903981.5474212,
-    "ast_hash": "8745239f94415fe7b449268e50712459",
+    "mtime": 1781973735.2639117,
+    "ast_hash": "e72e7ee750966a71406b615653d5805c",
     "semantic_hash": ""
   },
   "postcss.config.mjs": {
@@ -505,8 +505,8 @@
     "semantic_hash": "0092992cf9d418966e69f88c24090e53"
   },
   "docs/DATABASE.md": {
-    "mtime": 1781924308.1966267,
-    "ast_hash": "edc5c81404de35bddc659ef5ff217937",
+    "mtime": 1781973755.4767587,
+    "ast_hash": "61dab54000fe77c8cd3433b0e67484e6",
     "semantic_hash": ""
   },
   "docs/DOCUMENTATION_ROADMAP.md": {
@@ -575,14 +575,14 @@
     "semantic_hash": "67b3c5330398d9beb1354ea0a5ac944d"
   },
   "docs/codex/COMMANDS.md": {
-    "mtime": 1781797293.1671095,
-    "ast_hash": "c9a157001bdcfddb5b6e70bdd37af2f9",
+    "mtime": 1781973755.4767587,
+    "ast_hash": "db9346a1fd4510beaeffac796199198d",
     "semantic_hash": ""
   },
   "docs/codex/ENV_INDEX.md": {
-    "mtime": 1781019180.904739,
-    "ast_hash": "d0845112faf8932034561978a8c6d9e1",
-    "semantic_hash": "d0845112faf8932034561978a8c6d9e1"
+    "mtime": 1781972486.2451675,
+    "ast_hash": "69b6d3a047bdcf65ab880bbbe429349a",
+    "semantic_hash": ""
   },
   "docs/codex/FILE_OWNERSHIP.md": {
     "mtime": 1780947754.0040104,
@@ -610,8 +610,8 @@
     "semantic_hash": "709abfc38d66edca4c4ee0b4e7f8f2a6"
   },
   "docs/codex/TEST_MATRIX.md": {
-    "mtime": 1781796862.8090308,
-    "ast_hash": "7bef9d4ef8a39ac86034bcd150e19246",
+    "mtime": 1781973755.4767587,
+    "ast_hash": "30e3a86aae09d1bcb8b5e02328d2bbfa",
     "semantic_hash": ""
   },
   "pnpm-workspace.yaml": {
@@ -2560,23 +2560,23 @@
     "semantic_hash": ""
   },
   "scripts/media-manifest.mjs": {
-    "mtime": 1781903981.545306,
-    "ast_hash": "2e3504e812dcda7e06883f1622768eb7",
+    "mtime": 1781972439.0229838,
+    "ast_hash": "4b75bcba476d9152f1dcb65434a5c165",
     "semantic_hash": ""
   },
   "scripts/media/generated-image-manifest.json": {
-    "mtime": 1781904227.8518796,
-    "ast_hash": "08c227997fc980dbb163f95c91a411d6",
+    "mtime": 1781973154.1982996,
+    "ast_hash": "5c3894d366d23890150bb3566c9fd5f7",
     "semantic_hash": ""
   },
   "scripts/render-generated-images.ps1": {
-    "mtime": 1781904206.840848,
-    "ast_hash": "d7a157b5e89980d4586c09ae6f734381",
+    "mtime": 1781972505.479828,
+    "ast_hash": "9358479b6eb7e5212d8d9b4e8f9dc273",
     "semantic_hash": ""
   },
   "scripts/upload-generated-images.mjs": {
-    "mtime": 1781903797.1125994,
-    "ast_hash": "89b93a8c871b31f4ecc60b4ab1f48c44",
+    "mtime": 1781972557.5030787,
+    "ast_hash": "2ba9e49c6574ccadcf9081b5f3f60477",
     "semantic_hash": ""
   },
   "supabase/migrations/20260619_g29_generated_content_images.sql": {
@@ -2825,43 +2825,368 @@
     "semantic_hash": ""
   },
   "supabase/migrations/20260619_g32_arnold_split_catalog.sql": {
-    "mtime": 1781924308.1961215,
-    "ast_hash": "cf05dba867dcaa15d0e8415d8f848411",
+    "mtime": 1781924429.3884199,
+    "ast_hash": "de886e285575085c2141ea9e96e3dae5",
     "semantic_hash": ""
   },
   "public/rutinas/arnold-split.png": {
-    "mtime": 1781913261.9880486,
-    "ast_hash": "4b5420a23add7c27e77af5aa88ce0660",
+    "mtime": 1781973084.5311325,
+    "ast_hash": "60b4e145f2b2acd7d302b0eabf4f6f08",
     "semantic_hash": ""
   },
   "public/rutinas/full-body-mantenimiento.png": {
-    "mtime": 1781910438.2808208,
-    "ast_hash": "6783e59f0f31526387dafbb18c4ad201",
+    "mtime": 1781970875.3402932,
+    "ast_hash": "a6b27fe4239af879d7a3ac12f8c7c2f3",
     "semantic_hash": ""
   },
   "public/rutinas/full-body.png": {
-    "mtime": 1781911877.3101463,
-    "ast_hash": "203e2de75f857378d5ea5f10a66045e4",
+    "mtime": 1781968594.4946759,
+    "ast_hash": "aa1044a5dbcc265c8f275309956f3bbd",
     "semantic_hash": ""
   },
   "public/rutinas/pplxarnoldslpit.png": {
-    "mtime": 1781910296.6489625,
-    "ast_hash": "f5e2a73cbc40e2fba0a40abe7fcd21c5",
+    "mtime": 1781970975.906163,
+    "ast_hash": "03032b48995245ee133a25090d91483d",
     "semantic_hash": ""
   },
   "public/rutinas/prio-legs.png": {
-    "mtime": 1781924273.0086794,
-    "ast_hash": "e1b74c11e67cae79a3a0422ac18a022a",
+    "mtime": 1781971115.2400396,
+    "ast_hash": "a9f3983031a0e494ea6efb225b7a59fc",
     "semantic_hash": ""
   },
   "public/rutinas/push-pull-legs.png": {
-    "mtime": 1781909705.813687,
-    "ast_hash": "ba3eff4e304a537217868130722ed341",
+    "mtime": 1781971211.2884767,
+    "ast_hash": "156752f356451a489d788c65fa0302cb",
     "semantic_hash": ""
   },
   "public/rutinas/upper-lower.png": {
-    "mtime": 1781909990.4082034,
-    "ast_hash": "baed92b1f76d34904d58c370be84e8e0",
+    "mtime": 1781971426.5314865,
+    "ast_hash": "0fae7e1ccd57cc4a466751b9735b97bd",
+    "semantic_hash": ""
+  },
+  "app/api/exercises/[id]/demo/route.ts": {
+    "mtime": 1781972353.9713686,
+    "ast_hash": "079578a21f96435791df212471e2705f",
+    "semantic_hash": ""
+  },
+  "app/api/exercises/demo-image/route.ts": {
+    "mtime": 1781972363.1900003,
+    "ast_hash": "b83fc11cad7d9e68d8a53e4bc71ed0eb",
+    "semantic_hash": ""
+  },
+  "app/lib/exercise-demo.ts": {
+    "mtime": 1781973672.2396202,
+    "ast_hash": "e3f8eb1c840493abc31cf1fbdf71e863",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/00bf503b-3fca-4222-be4e-dbd48eb3bf0e-remo-sentado-en-polea.png": {
+    "mtime": 1781972543.2584348,
+    "ast_hash": "b46922b2adf339a22909421a30c1d49c",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/04e232e4-9858-432b-abe0-bc1f0dcf4e69-curl-alterno-mancuernas.png": {
+    "mtime": 1781972533.1454513,
+    "ast_hash": "e73eeaae38756eb4acaf79e7657f0221",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/14c930bd-3f1b-4df4-a957-f3e4efcd4eb3-press-militar-de-pie.png": {
+    "mtime": 1781972541.9682941,
+    "ast_hash": "22babbf4955b1b9f352c428085172019",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/1e2190b0-1b92-4cba-98fe-caa32cef0207-curl-concentrado.png": {
+    "mtime": 1781972533.5653958,
+    "ast_hash": "a3db5eed240fb12d8606bdd8f9ea7036",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/2004d100-c569-4c50-8912-0ca83b496482-curl-barra-recta.png": {
+    "mtime": 1781972533.3527822,
+    "ast_hash": "93c187f2fcb6699dd2016ebaf5f707d9",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/2357f70f-f8ae-453f-83ce-85e090a6e679-elevacion-de-piernas.png": {
+    "mtime": 1781972535.318064,
+    "ast_hash": "f67861ab8a012e6887bb17214788f1f6",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/397291ca-4206-407b-8d4c-08be7bc0cc3a-pallof-press.png": {
+    "mtime": 1781972539.376863,
+    "ast_hash": "b46922b2adf339a22909421a30c1d49c",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/3a20b1cc-5cd5-4eb5-983e-bc385fe8b6f3-hip-thrust.png": {
+    "mtime": 1781972538.5041163,
+    "ast_hash": "a3db5eed240fb12d8606bdd8f9ea7036",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/3dd49c6b-1fe1-46d9-8efb-b58928a27047-flexiones-de-brazos.png": {
+    "mtime": 1781972537.6531992,
+    "ast_hash": "f67861ab8a012e6887bb17214788f1f6",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/46951d13-5432-45b0-89f4-715aeb387ffb-abduccion-de-cadera.png": {
+    "mtime": 1781972532.2414749,
+    "ast_hash": "a3db5eed240fb12d8606bdd8f9ea7036",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/46e8de3d-fc6f-4f0e-b48b-6de4bdcdaa7f-curl-martillo.png": {
+    "mtime": 1781972534.4360085,
+    "ast_hash": "37f23d0c3e2bb202e6c3e6085f55dd1d",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/48b5beca-2117-4f97-b97a-d596b0a5e6b8-press-hombros-sentado.png": {
+    "mtime": 1781972541.7599697,
+    "ast_hash": "aa8d753885c8f725aef63d4510145261",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/48bd316a-bdfa-454a-9ddf-ed11553fc8d6-elevaciones-laterales.png": {
+    "mtime": 1781972535.722715,
+    "ast_hash": "fa528d93381e8d852fa5906d580583f9",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/49cc744a-45ec-4b38-8849-328423cf940b-elevaciones-frontales.png": {
+    "mtime": 1781972535.5196276,
+    "ast_hash": "923ad001994f8c118f93fd8716c4bb94",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/4e834f63-4562-4c7c-a968-284c57a6c7d7-rompecraneos-barra-z.png": {
+    "mtime": 1781972543.4644992,
+    "ast_hash": "923ad001994f8c118f93fd8716c4bb94",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/4f910c8f-ea82-42e6-bf49-4f07682f0c85-dominadas-pronas.png": {
+    "mtime": 1781972534.8681364,
+    "ast_hash": "ac9c27696f0415e86959e4d8d4429bb1",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/518479bf-484d-488c-b6eb-e460135a3128-aperturas-con-mancuernas.png": {
+    "mtime": 1781972532.481422,
+    "ast_hash": "226f0faf2bd8f6007818713d4375b515",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/54d33629-4ca2-4fce-8547-80b8b8478e8c-pajaros-posteriores.png": {
+    "mtime": 1781972539.1662426,
+    "ast_hash": "923ad001994f8c118f93fd8716c4bb94",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/579af5be-5a7c-4169-931a-b5f44c02b064-zancadas-caminando.png": {
+    "mtime": 1781972544.9399467,
+    "ast_hash": "e3ab4e248f17ec6d90968bfe9f3acec0",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/5daa865e-cce8-4de4-bb5b-08bad241f314-prensa-45.png": {
+    "mtime": 1781972540.4882035,
+    "ast_hash": "79b8e586dacf1aed6e572b401addd7c4",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/5f21af1e-542b-4a25-998c-9c3fb7ec91b2-peso-muerto-rumano.png": {
+    "mtime": 1781972540.038334,
+    "ast_hash": "e73eeaae38756eb4acaf79e7657f0221",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/60e0adfd-99cc-478f-9f17-5849665b9ff0-extension-cuerda-sobre-cabeza.png": {
+    "mtime": 1781972536.1696424,
+    "ast_hash": "0c5abdcf82f00d5c9a04a497ec4344f8",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/62ec0faf-82ed-4a47-a7f4-996c0b115619-step-up-con-mancuernas.png": {
+    "mtime": 1781972544.7269974,
+    "ast_hash": "f0d4d0aa531d7bd88b943885b7dcfae3",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/6524150e-478c-4b77-97f1-40ead728ca9b-plancha-frontal.png": {
+    "mtime": 1781972540.2584543,
+    "ast_hash": "0c5abdcf82f00d5c9a04a497ec4344f8",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/6692d467-5366-4e31-9c7d-991f8cb992d5-pullover-en-polea.png": {
+    "mtime": 1781972542.3912203,
+    "ast_hash": "366045fd83ebe72d503303df688811b2",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/6768c210-486f-48af-baf0-3139313fef1c-crunch-abdominal.png": {
+    "mtime": 1781972532.9168053,
+    "ast_hash": "8ca5c89c3642a47bf613241ade575053",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/68ed61d6-d996-40d1-8bba-3f348ea645d5-press-cerrado.png": {
+    "mtime": 1781972541.3338711,
+    "ast_hash": "0c5abdcf82f00d5c9a04a497ec4344f8",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/6f5a9f9e-f5ed-4cee-b5d5-526ab7306da5-patada-triceps.png": {
+    "mtime": 1781972539.5865753,
+    "ast_hash": "53f017fd44c32ee433b79014a49b6534",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/77425194-cf76-4fa5-b546-c6200f4078f0-mountain-climbers.png": {
+    "mtime": 1781972538.9396772,
+    "ast_hash": "e3ab4e248f17ec6d90968bfe9f3acec0",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/7870bbc1-177b-4f99-a376-72290e5f4b77-curl-en-polea.png": {
+    "mtime": 1781972533.7716477,
+    "ast_hash": "8ca5c89c3642a47bf613241ade575053",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/7da6e57d-c91c-4251-ac8b-d621b94af025-remo-con-mancuerna.png": {
+    "mtime": 1781972543.033882,
+    "ast_hash": "56c0a1f72c624bfe2ccfc15289019f63",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/861a4aa9-944b-4d27-888a-bc0b56b59bf0-russian-twist.png": {
+    "mtime": 1781972543.8815508,
+    "ast_hash": "79b8e586dacf1aed6e572b401addd7c4",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/87400aad-d721-4000-a774-91db280c5f84-farmer-walk.png": {
+    "mtime": 1781972537.2330322,
+    "ast_hash": "f0d4d0aa531d7bd88b943885b7dcfae3",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/8a69cd1b-9df4-4016-8ff8-e93a414abf15-remo-con-barra.png": {
+    "mtime": 1781972542.8283134,
+    "ast_hash": "93c187f2fcb6699dd2016ebaf5f707d9",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/8d7e7f9e-c204-46e2-b0be-3bc42b64e993-jalon-al-pecho.png": {
+    "mtime": 1781972538.726748,
+    "ast_hash": "e73eeaae38756eb4acaf79e7657f0221",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/91ca76d6-7d51-40a0-ba76-57d2d11f3ffd-press-banca-inclinado.png": {
+    "mtime": 1781972540.9126613,
+    "ast_hash": "93c187f2fcb6699dd2016ebaf5f707d9",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/961d27ea-e8d0-4975-b893-2662d97b704f-curl-predicador.png": {
+    "mtime": 1781972534.6456182,
+    "ast_hash": "e3ab4e248f17ec6d90968bfe9f3acec0",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/9a598bf1-c4bd-4116-99ec-3aa7f51ebd12-peso-muerto-convencional.png": {
+    "mtime": 1781972539.8099408,
+    "ast_hash": "22babbf4955b1b9f352c428085172019",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/add408c6-6c7d-4840-8a71-c59fd930be14-sentadilla-frontal.png": {
+    "mtime": 1781972544.0981913,
+    "ast_hash": "5c86d7311255d75f72e64973ec0f542d",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/ade3aa9c-2a81-4d80-93d6-1cb8aada7228-gemelos-de-pie.png": {
+    "mtime": 1781972538.3039708,
+    "ast_hash": "aa8d753885c8f725aef63d4510145261",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/b3142fb9-7689-440d-b18f-0a13847cc369-remo-al-menton.png": {
+    "mtime": 1781972542.6162117,
+    "ast_hash": "79b8e586dacf1aed6e572b401addd7c4",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/b449e944-ac67-4958-9d01-ee0a964dbb7b-face-pull.png": {
+    "mtime": 1781972537.0063474,
+    "ast_hash": "366045fd83ebe72d503303df688811b2",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/b96e906b-6378-481b-9335-7a26b44ccae4-press-arnold.png": {
+    "mtime": 1781972540.7052515,
+    "ast_hash": "e3ab4e248f17ec6d90968bfe9f3acec0",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/bded2867-2fed-4bff-87d3-f8e5a22ce827-encogimientos-trapecio.png": {
+    "mtime": 1781972535.9400449,
+    "ast_hash": "f950ec7614338089e1f8a4fc5bcae750",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/be0d2aaa-11af-48c8-8332-069e32178bb3-sentadilla-goblet.png": {
+    "mtime": 1781972544.3084033,
+    "ast_hash": "37f23d0c3e2bb202e6c3e6085f55dd1d",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/c08c147b-4c6a-4f46-ad55-6fd3095bf248-extension-triceps-polea.png": {
+    "mtime": 1781972536.8059525,
+    "ast_hash": "0c5abdcf82f00d5c9a04a497ec4344f8",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/c0a2b84b-edd4-4698-96cc-f9bfaa2ab435-sentadilla-trasera.png": {
+    "mtime": 1781972544.50982,
+    "ast_hash": "f0b4cdfa43b65a5c2a7e70cd8dbfd307",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/cd783225-14f2-4527-9577-dd2259ba18d7-cruce-de-poleas.png": {
+    "mtime": 1781972532.7013586,
+    "ast_hash": "923ad001994f8c118f93fd8716c4bb94",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/cf98dc06-9226-41cb-a533-d9ed135202d6-fondos-banco.png": {
+    "mtime": 1781972537.8844817,
+    "ast_hash": "79b8e586dacf1aed6e572b401addd7c4",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/d56f018e-cb66-48b2-ae60-ded299813074-dominadas-supinas.png": {
+    "mtime": 1781972535.0980375,
+    "ast_hash": "e3ab4e248f17ec6d90968bfe9f3acec0",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/da4805ee-494c-48da-92aa-6badd01bace3-fondos-en-paralelas.png": {
+    "mtime": 1781972538.086685,
+    "ast_hash": "5c86d7311255d75f72e64973ec0f542d",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/e10f0a42-bffa-400c-9d7b-dfdbfad0c351-extension-triceps-mancuerna.png": {
+    "mtime": 1781972536.603971,
+    "ast_hash": "226f0faf2bd8f6007818713d4375b515",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/e2eefadb-6f14-479f-8aad-8a212dece3ca-flexion-diamante.png": {
+    "mtime": 1781972537.4363732,
+    "ast_hash": "8ca5c89c3642a47bf613241ade575053",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/e77f64bd-b24d-40d4-afdc-0c34561608d8-rueda-abdominal.png": {
+    "mtime": 1781972543.662968,
+    "ast_hash": "53f017fd44c32ee433b79014a49b6534",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/eb8e108c-e0ac-4c1a-b671-634c5357505f-curl-inclinado.png": {
+    "mtime": 1781972534.2294633,
+    "ast_hash": "f0d4d0aa531d7bd88b943885b7dcfae3",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/f1525b9c-508f-4124-8bb9-501ecef92d92-pull-over-con-mancuerna.png": {
+    "mtime": 1781972542.1866362,
+    "ast_hash": "e3ab4e248f17ec6d90968bfe9f3acec0",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/f15910db-dcd3-4267-ae9f-fa2755b9e400-extension-de-cuadriceps.png": {
+    "mtime": 1781972536.3812885,
+    "ast_hash": "fa528d93381e8d852fa5906d580583f9",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/f647b1f7-b1ad-49af-805d-83f07d8eea9e-curl-femoral-acostado.png": {
+    "mtime": 1781972533.9930868,
+    "ast_hash": "5c86d7311255d75f72e64973ec0f542d",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/f7893231-d441-4915-9ce6-bd77fbbb4340-press-en-maquina-pecho.png": {
+    "mtime": 1781972541.5381255,
+    "ast_hash": "53f017fd44c32ee433b79014a49b6534",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/exercises/fd6b2726-1eba-4c4f-996c-b85d40e2b663-press-banca-plano.png": {
+    "mtime": 1781972541.1210368,
+    "ast_hash": "8ca5c89c3642a47bf613241ade575053",
+    "semantic_hash": ""
+  },
+  "scripts/map-exercisedb-demos.mjs": {
+    "mtime": 1781973735.262362,
+    "ast_hash": "396f2571e41d53219c99ac1deb034eeb",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/20260620_g33_exercise_demo_provider_ids.sql": {
+    "mtime": 1781973649.6826577,
+    "ast_hash": "c103c7670733642c3a1009e7aad59b1a",
     "semantic_hash": ""
   }
 }

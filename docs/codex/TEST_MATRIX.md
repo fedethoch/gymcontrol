@@ -9,6 +9,7 @@
 | Supabase / migraciones | revisar SQL afectado y contrastar con `docs/DATABASE.md`; usar MCP si aplica |
 | RLS / policies | revisar SQL y policies contra `docs/DATABASE.md`; validar escenarios `anon`, `authenticated`, `admin` y propietario si aplica |
 | Env / deploy | `pnpm build` y revisar `docs/codex/ENV_INDEX.md` |
+| Integracion ExerciseDB / demostraciones | `pnpm check` + `pnpm exercisedb:audit` con API key disponible + validar que `EXERCISEDB_API_KEY` no aparece en cliente + prueba manual/Playwright del modal en desktop/mobile |
 | Docs | no correr tests |
 
 Fallback actual: `pnpm lint`, `pnpm build`, `pnpm validate:mobile` o validacion manual minima.

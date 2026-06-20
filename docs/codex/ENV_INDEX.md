@@ -6,6 +6,7 @@
 | --- | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | URL publica de Supabase | `.env.example`, `app/lib/supabase/env.ts`, `app/lib/supabase/browser.ts`, `app/lib/supabase/server.ts` |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | clave publishable de Supabase | `.env.example`, `app/lib/supabase/env.ts`, `app/lib/supabase/browser.ts`, `app/lib/supabase/server.ts` |
+| `EXERCISEDB_API_KEY` | clave server-only de ExerciseDB/RapidAPI para demostraciones de ejercicios in-app; no se expone al cliente ni se usa para cachear media externa | `.env.example`, `app/lib/exercise-demo.ts`, `app/api/exercises/[id]/demo/route.ts`, `app/api/exercises/demo-image/route.ts` |
 
 ## Auth post-MVP
 

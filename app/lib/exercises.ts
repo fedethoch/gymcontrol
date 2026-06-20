@@ -10,6 +10,7 @@ export type ExerciseCatalogItem = {
   muscleGroup: string | null;
   equipment: string | null;
   videoUrl: string | null;
+  exerciseDbId: string | null;
   minReps: number | null;
   maxReps: number | null;
   steps: string[];
@@ -30,6 +31,7 @@ type ExerciseRow = {
   muscle_group: string | null;
   equipment: string | null;
   video_url: string | null;
+  exercisedb_id: string | null;
   min_reps: number | null;
   max_reps: number | null;
   steps: string[];
@@ -41,7 +43,7 @@ export async function listAdminExercises(): Promise<AdminExerciseListItem[]> {
   const { data, error } = await supabase
     .from("exercises")
     .select(
-      "id, name, description, image_url, created_at, muscle_group, equipment, video_url, min_reps, max_reps, steps, tips",
+      "id, name, description, image_url, created_at, muscle_group, equipment, video_url, exercisedb_id, min_reps, max_reps, steps, tips",
     )
     .order("created_at", { ascending: false });
 
@@ -60,7 +62,7 @@ export async function listExerciseCatalogItems(): Promise<ExerciseCatalogItem[]>
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("exercises")
-    .select("id, name, description, image_url, muscle_group, equipment, video_url, min_reps, max_reps, steps, tips")
+    .select("id, name, description, image_url, muscle_group, equipment, video_url, exercisedb_id, min_reps, max_reps, steps, tips")
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -75,7 +77,7 @@ export async function getExerciseById(id: string) {
   const { data, error } = await supabase
     .from("exercises")
     .select(
-      "id, name, description, image_url, created_at, muscle_group, equipment, video_url, min_reps, max_reps, steps, tips",
+      "id, name, description, image_url, created_at, muscle_group, equipment, video_url, exercisedb_id, min_reps, max_reps, steps, tips",
     )
     .eq("id", id)
     .maybeSingle();
@@ -194,6 +196,7 @@ function mapExerciseCatalogItem(
     | "muscle_group"
     | "equipment"
     | "video_url"
+    | "exercisedb_id"
     | "min_reps"
     | "max_reps"
     | "steps"
@@ -208,6 +211,7 @@ function mapExerciseCatalogItem(
     muscleGroup: exercise.muscle_group,
     equipment: exercise.equipment,
     videoUrl: exercise.video_url,
+    exerciseDbId: exercise.exercisedb_id,
     minReps: exercise.min_reps,
     maxReps: exercise.max_reps,
     steps: exercise.steps,

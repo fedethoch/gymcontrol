@@ -22,8 +22,11 @@ const supabase = createClient(
 
 async function main() {
   const manifestPath = resolveArg("--manifest") ?? DEFAULT_MANIFEST;
-  const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
-  const remoteAssets = manifest.assets.filter((asset) => asset.bucket && asset.storagePath);
+  const onlyKind = resolveArg("--kind");
+  const manifest = JSON.parse(stripBom(await readFile(manifestPath, "utf8")));
+  const remoteAssets = manifest.assets.filter(
+    (asset) => asset.bucket && asset.storagePath && (!onlyKind || asset.kind === onlyKind),
+  );
   const missingFiles = [];
   let uploaded = 0;
 
@@ -57,7 +60,9 @@ async function main() {
     asset.publicUrl = data.publicUrl;
     asset.status = "linked";
 
-    if (asset.kind === "routine") {
+    if (asset.kind === "exercise") {
+      await updateTable("exercises", asset.id, data.publicUrl);
+    } else if (asset.kind === "routine") {
       await updateTable("routine_templates", asset.id, data.publicUrl);
     } else if (asset.kind === "recipe") {
       await updateTable("recipes", asset.id, data.publicUrl);
@@ -76,6 +81,10 @@ async function main() {
   }
 
   console.log(`Uploaded and linked ${uploaded} assets.`);
+}
+
+function stripBom(value) {
+  return value.charCodeAt(0) === 0xfeff ? value.slice(1) : value;
 }
 
 async function updateTable(table, id, imageUrl) {

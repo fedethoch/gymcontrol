@@ -1,5 +1,6 @@
 param(
-  [string]$Manifest = "scripts/media/generated-image-manifest.json"
+  [string]$Manifest = "scripts/media/generated-image-manifest.json",
+  [string]$Kind = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -152,6 +153,58 @@ function Draw-RoutineImage($Graphics, $Asset, $Palette) {
   $accentPen.Dispose()
 }
 
+function Draw-ExerciseImage($Graphics, $Asset, $Palette) {
+  Fill-Background $Graphics $Palette
+
+  $floorBrush = New-Object System.Drawing.SolidBrush (New-Color 6 10 16 190)
+  $Graphics.FillRectangle($floorBrush, 0, 575, $Width, 289)
+  $floorBrush.Dispose()
+
+  $spotlight = New-Object System.Drawing.SolidBrush (New-Color 255 255 255 24)
+  $Graphics.FillEllipse($spotlight, 420, 80, 700, 560)
+  $spotlight.Dispose()
+
+  $matBrush = New-Object System.Drawing.SolidBrush (New-Color 18 25 36 235)
+  $Graphics.FillRectangle($matBrush, 455, 560, 625, 64)
+  $matBrush.Dispose()
+
+  $metal = New-Object System.Drawing.Pen (New-Color 220 226 236), 20
+  $accent = New-Object System.Drawing.Pen $Palette[1], 18
+  $dark = New-Object System.Drawing.Pen (New-Color 18 24 33), 26
+
+  $seed = Get-StableHash "$($Asset.name)|$($Asset.muscleGroup)|$($Asset.equipment)"
+  $variant = $seed % 5
+
+  if ($variant -eq 0) {
+    $Graphics.DrawLine($metal, 420, 470, 1110, 470)
+    $Graphics.DrawLine($dark, 520, 420, 520, 545)
+    $Graphics.DrawLine($dark, 1010, 420, 1010, 545)
+    $Graphics.DrawEllipse($accent, 660, 300, 220, 220)
+  } elseif ($variant -eq 1) {
+    $Graphics.DrawLine($metal, 510, 325, 700, 565)
+    $Graphics.DrawLine($metal, 1010, 325, 820, 565)
+    $Graphics.DrawEllipse($accent, 640, 270, 250, 250)
+    $Graphics.DrawEllipse($accent, 710, 250, 250, 250)
+  } elseif ($variant -eq 2) {
+    $Graphics.DrawLine($metal, 760, 165, 760, 590)
+    $Graphics.DrawArc($accent, 540, 250, 440, 360, 200, 145)
+    $Graphics.DrawLine($dark, 620, 600, 900, 600)
+  } elseif ($variant -eq 3) {
+    $Graphics.DrawLine($metal, 520, 510, 1030, 345)
+    $Graphics.DrawLine($metal, 520, 345, 1030, 510)
+    $Graphics.DrawEllipse($accent, 620, 240, 300, 300)
+  } else {
+    $Graphics.DrawArc($accent, 560, 190, 420, 420, 205, 130)
+    $Graphics.DrawLine($metal, 510, 500, 1025, 500)
+    $Graphics.DrawLine($dark, 650, 500, 610, 680)
+    $Graphics.DrawLine($dark, 890, 500, 930, 680)
+  }
+
+  $metal.Dispose()
+  $accent.Dispose()
+  $dark.Dispose()
+}
+
 function Render-Asset($Asset) {
   $bitmap = New-Object System.Drawing.Bitmap $Width, $Height
   $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
@@ -162,6 +215,8 @@ function Render-Asset($Asset) {
   $palette = Get-Palette $Asset
   if ($Asset.kind -eq "routine" -or $Asset.kind -eq "dashboard") {
     Draw-RoutineImage $graphics $Asset $palette
+  } elseif ($Asset.kind -eq "exercise") {
+    Draw-ExerciseImage $graphics $Asset $palette
   } else {
     Draw-FoodImage $graphics $Asset $palette
   }
@@ -173,12 +228,18 @@ function Render-Asset($Asset) {
   $bitmap.Dispose()
 }
 
+$Rendered = 0
 foreach ($asset in $ManifestJson.assets) {
+  if ($Kind -and $asset.kind -ne $Kind) {
+    continue
+  }
+
   Render-Asset $asset
+  $Rendered += 1
   if (-not $asset.bucket) {
     $asset.status = "generated"
   }
 }
 
 $ManifestJson | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $ManifestPath -Encoding utf8
-Write-Host "Rendered $($ManifestJson.assets.Count) generated images."
+Write-Host "Rendered $Rendered generated images."

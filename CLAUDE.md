@@ -2,6 +2,10 @@
 
 Router corto de contexto. Regla principal: no explorar todo el repo por defecto.
 
+## Global agent rules
+
+Antes de cualquier tarea, leer y aplicar tambien `C:\Users\fedet\.claude\CLAUDE.md` como contexto global, salvo conflicto con instrucciones de mayor prioridad.
+
 ## Context router
 
 Do not read all files. Pick only the relevant source from this map.
@@ -98,11 +102,18 @@ Rules:
 - After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
 
 ## Frontend
-- Framework: React + Tailwind 
-- Componentes base: shadcn/ui — no crear componentes desde cero si ya existe uno
-- Íconos: lucide-react únicamente
-- No usar estilos inline salvo excepciones justificadas
-- Siempre mobile-first
+- For any frontend/UI task, use `ui-ux-pro-max` for UX/layout, `context7` for current docs, `shadcn` for components/patterns, `magic` for premium UI generation/refinement, and `$playwright-cli` to inspect desktop/mobile after meaningful visual changes.
+- Do not finish only because it compiles: open the changed screen, check layout/overflow/responsiveness/navigation, then make one visual refinement pass if needed.
+- Stack: React + Tailwind. Base components: shadcn/ui. Icons: `lucide-react` only.
+- Prefer existing components and shadcn primitives. Do not create custom components when a project/shadcn component already fits.
+- Use Framer Motion for subtle microinteractions when useful: hover, press, selection changes, tabs, loading, drawers/modals, and icon transitions.
+- Keep UI premium/minimal: clear hierarchy, balanced spacing, restrained violet accents, consistent radius/shadows, readable contrast.
+- Avoid generic AI UI: excessive gradients, random glows, cheap glassmorphism, oversized cards, inconsistent spacing, and decorative noise.
+- Always mobile-first, but do not just stack desktop sections vertically; design a thoughtful mobile layout.
+- Do not modify mobile/PWA bottom navbar size, position, or behavior unless explicitly requested.
+- Keep changes surgical unless the user explicitly asks for a redesign.
+
+
 
 ## Admin account
 - You can find the credentials in .env.local at the name of "EMAIL" and "EMAIL_PASSWORD"

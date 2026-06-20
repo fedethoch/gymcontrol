@@ -11,6 +11,7 @@
     "media:manifest": "node scripts/media-manifest.mjs",
     "media:render": "powershell -ExecutionPolicy Bypass -File scripts/render-generated-images.ps1",
     "media:upload": "node scripts/upload-generated-images.mjs",
+    "exercisedb:audit": "node scripts/map-exercisedb-demos.mjs",
     "validate:mobile": "node scripts/validate-mobile.mjs",
     "check:ui": "pnpm build && pnpm validate:mobile"
   },
