@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 import { requireAdmin } from "@/app/lib/auth";
 import { listExerciseCatalogItems } from "@/app/lib/exercises";
@@ -72,6 +72,7 @@ export async function saveRoutineAction(
 
   revalidatePath("/admin/rutinas");
   revalidatePath("/catalogo");
+  revalidateTag("routines", {});
 
   if (existingRoutine) {
     revalidatePath(`/catalogo/rutinas/${existingRoutine.id}`);
@@ -102,6 +103,7 @@ export async function deleteRoutineAction(id: string): Promise<{ ok: true } | { 
   revalidatePath("/admin/rutinas");
   revalidatePath("/catalogo");
   revalidatePath(`/catalogo/rutinas/${id}`);
+  revalidateTag("routines", {});
 
   return { ok: true };
 }

@@ -64,8 +64,6 @@ export const viewport: Viewport = {
   themeColor: "#05070b",
 };
 
-export const dynamic = "force-dynamic";
-
 export default async function RootLayout({
   children,
 }: Readonly<{

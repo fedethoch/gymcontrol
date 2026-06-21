@@ -1,5 +1,8 @@
 import "server-only";
 
+import { unstable_cache } from "next/cache";
+import { createClient } from "@supabase/supabase-js";
+
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 
 export type ExerciseCatalogItem = {
@@ -38,6 +41,14 @@ type ExerciseRow = {
   tips: string[];
 };
 
+function createAnonClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } },
+  );
+}
+
 export async function listAdminExercises(): Promise<AdminExerciseListItem[]> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
@@ -58,19 +69,23 @@ export async function listAdminExercises(): Promise<AdminExerciseListItem[]> {
   }));
 }
 
-export async function listExerciseCatalogItems(): Promise<ExerciseCatalogItem[]> {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("exercises")
-    .select("id, name, description, image_url, muscle_group, equipment, video_url, exercisedb_id, min_reps, max_reps, steps, tips")
-    .order("created_at", { ascending: false });
+export const listExerciseCatalogItems = unstable_cache(
+  async (): Promise<ExerciseCatalogItem[]> => {
+    const supabase = createAnonClient();
+    const { data, error } = await supabase
+      .from("exercises")
+      .select("id, name, description, image_url, muscle_group, equipment, video_url, exercisedb_id, min_reps, max_reps, steps, tips")
+      .order("created_at", { ascending: false });
 
-  if (error) {
-    throw new Error(`No se pudo leer el catalogo de ejercicios: ${error.message}`);
-  }
+    if (error) {
+      throw new Error(`No se pudo leer el catalogo de ejercicios: ${error.message}`);
+    }
 
-  return (data ?? []).map((exercise) => mapExerciseCatalogItem(exercise as ExerciseRow));
-}
+    return (data ?? []).map((exercise) => mapExerciseCatalogItem(exercise as ExerciseRow));
+  },
+  ["exercise-catalog"],
+  { revalidate: 3600, tags: ["exercises"] },
+);
 
 export async function getExerciseById(id: string) {
   const supabase = await createSupabaseServerClient();

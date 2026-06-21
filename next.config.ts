@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
             port: supabaseHost.port,
             pathname: "/storage/v1/object/public/**",
           },
+          {
+            protocol: "https",
+            hostname: "fitnessprogramer.com",
+          },
         ],
       }
     : undefined,

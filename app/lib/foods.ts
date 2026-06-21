@@ -1,5 +1,8 @@
 import "server-only";
 
+import { unstable_cache } from "next/cache";
+import { createClient } from "@supabase/supabase-js";
+
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 import type { Food, FoodCategory, FoodMeasure } from "@/app/lib/nutrition-types";
 
@@ -25,20 +28,32 @@ type FoodRow = {
 
 const FOOD_SELECT = "id, name, image_url, category, measure, serving_g, grams_per_unit, calories, protein_g, carbs_g, fat_g, created_at";
 
-export async function listFoodCatalogItems(): Promise<Food[]> {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("foods")
-    .select(FOOD_SELECT)
-    .order("category", { ascending: true })
-    .order("name", { ascending: true });
-
-  if (error) {
-    throw new Error(`No se pudo leer el catalogo de alimentos: ${error.message}`);
-  }
-
-  return (data ?? []).map((food) => mapFood(food as FoodRow));
+function createAnonClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } },
+  );
 }
+
+export const listFoodCatalogItems = unstable_cache(
+  async (): Promise<Food[]> => {
+    const supabase = createAnonClient();
+    const { data, error } = await supabase
+      .from("foods")
+      .select(FOOD_SELECT)
+      .order("category", { ascending: true })
+      .order("name", { ascending: true });
+
+    if (error) {
+      throw new Error(`No se pudo leer el catalogo de alimentos: ${error.message}`);
+    }
+
+    return (data ?? []).map((food) => mapFood(food as FoodRow));
+  },
+  ["food-catalog"],
+  { revalidate: 3600, tags: ["foods"] },
+);
 
 export async function listAdminFoods(): Promise<AdminFoodListItem[]> {
   const supabase = await createSupabaseServerClient();

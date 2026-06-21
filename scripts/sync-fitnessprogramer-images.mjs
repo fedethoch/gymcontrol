@@ -108,9 +108,11 @@ async function main() {
   );
 
   console.log("Fetching exercises from DB…");
+  const supabaseUrl = getRequiredEnv("NEXT_PUBLIC_SUPABASE_URL");
+
   const { data: exercises, error } = await supabase
     .from("exercises")
-    .select("id, name")
+    .select("id, name, image_url")
     .order("name", { ascending: true });
   if (error) throw new Error(`DB fetch failed: ${error.message}`);
   console.log(`  ${exercises.length} exercises\n`);
@@ -118,6 +120,12 @@ async function main() {
   const results = [];
 
   for (const exercise of exercises) {
+    // Skip exercises already hosted on Supabase
+    if (exercise.image_url && exercise.image_url.startsWith(supabaseUrl)) {
+      console.log(`  ${exercise.name} → already in Supabase, skipping`);
+      continue;
+    }
+
     const searchTerm = resolveSearchTerm(exercise.name);
     process.stdout.write(`  ${exercise.name} (${searchTerm}) → `);
 
@@ -168,21 +176,46 @@ async function main() {
     return;
   }
 
-  console.log("\nUpdating DB…");
+  console.log("\nUploading to Supabase and updating DB…");
   let updated = 0;
   for (const { exercise, gifUrl } of matched) {
-    const { error: updateError } = await supabase
-      .from("exercises")
-      .update({ image_url: gifUrl })
-      .eq("id", exercise.id);
-    if (updateError) {
-      console.log(`  ✗ ${exercise.name}: ${updateError.message}`);
-    } else {
-      console.log(`  ✓ ${exercise.name}`);
-      updated++;
+    process.stdout.write(`  ${exercise.name} → `);
+    try {
+      const publicUrl = await uploadGifToSupabase(supabase, exercise, gifUrl);
+      const { error: updateError } = await supabase
+        .from("exercises")
+        .update({ image_url: publicUrl })
+        .eq("id", exercise.id);
+      if (updateError) {
+        console.log(`✗ DB: ${updateError.message}`);
+      } else {
+        console.log(`✓ ${publicUrl}`);
+        updated++;
+      }
+    } catch (err) {
+      console.log(`✗ ${err.message}`);
     }
   }
-  console.log(`\nDone: ${updated} updated.`);
+  console.log(`\nDone: ${updated} uploaded and updated.`);
+}
+
+async function uploadGifToSupabase(supabase, exercise, gifUrl) {
+  const res = await fetch(gifUrl, { headers: HEADERS });
+  if (!res.ok) throw new Error(`GIF fetch failed (${res.status}): ${gifUrl}`);
+  const bytes = Buffer.from(await res.arrayBuffer());
+  const storagePath = `exercises/${exercise.id}.gif`;
+
+  const { error } = await supabase.storage
+    .from("exercise-images")
+    .upload(storagePath, bytes, {
+      contentType: "image/gif",
+      cacheControl: "31536000",
+      upsert: true,
+    });
+  if (error) throw new Error(`Storage upload failed: ${error.message}`);
+
+  const { data } = supabase.storage.from("exercise-images").getPublicUrl(storagePath);
+  return data.publicUrl;
 }
 
 async function findExerciseUrl(searchTerm) {

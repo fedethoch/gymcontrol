@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 import { requireAdmin } from "@/app/lib/auth";
 import type { ExerciseFormPayload, ExerciseFormState } from "@/app/lib/exercise-form";
@@ -76,6 +76,7 @@ export async function saveExerciseAction(
   }
 
   revalidatePath("/admin/ejercicios");
+  revalidateTag("exercises", {});
 
   return {
     status: "success",
@@ -99,6 +100,7 @@ export async function deleteExerciseAction(id: string): Promise<{ ok: true } | {
   }
 
   revalidatePath("/admin/ejercicios");
+  revalidateTag("exercises", {});
 
   return { ok: true };
 }

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
 import { BookOpen, Calendar, LayoutDashboard, Menu, Shield, UtensilsCrossed, X } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -54,16 +53,12 @@ type MobileTabBarProps = {
 export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
   const pathname = usePathname();
   const [moreOpen, setMoreOpen] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
 
   if (pathname.startsWith("/auth")) {
     return null;
   }
 
   const tabs = role === "admin" ? ADMIN_TABS : isAuthenticated ? USER_TABS : GUEST_TABS;
-  const iconTransition = shouldReduceMotion
-    ? { duration: 0 }
-    : { type: "spring" as const, stiffness: 520, damping: 36, mass: 0.65 };
 
   return (
     <nav
@@ -87,15 +82,11 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
                 active ? "text-[#b995ff]" : "text-[#8a93ad]",
               )}
             >
-              <motion.span
-                className="mobile-tab-icon-shell"
-                animate={
-                  active && !shouldReduceMotion
-                    ? { scale: 1.06, rotate: -2, opacity: 1 }
-                    : { scale: 1, rotate: 0, opacity: active ? 1 : 0.82 }
-                }
-                whileTap={{ scale: shouldReduceMotion ? 1 : 0.94 }}
-                transition={iconTransition}
+              <span
+                className={cn(
+                  "mobile-tab-icon-shell transition-[transform,opacity] duration-200 motion-reduce:transition-none active:scale-95",
+                  active ? "scale-105 -rotate-2 opacity-100" : "opacity-[0.82]",
+                )}
               >
                 <Icon
                   className={cn(
@@ -103,7 +94,7 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
                     "duration-200 motion-reduce:duration-0",
                   )}
                 />
-              </motion.span>
+              </span>
               <span className="mobile-tab-label transition-colors duration-200 motion-reduce:duration-0">
                 {tab.label}
               </span>
@@ -123,15 +114,11 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
                 moreOpen ? "text-[#b995ff]" : "text-[#8a93ad]",
               )}
             >
-              <motion.span
-                className="mobile-tab-icon-shell"
-                animate={
-                  moreOpen && !shouldReduceMotion
-                    ? { scale: 1.06, rotate: 2, opacity: 1 }
-                    : { scale: 1, rotate: 0, opacity: moreOpen ? 1 : 0.82 }
-                }
-                whileTap={{ scale: shouldReduceMotion ? 1 : 0.94 }}
-                transition={iconTransition}
+              <span
+                className={cn(
+                  "mobile-tab-icon-shell transition-[transform,opacity] duration-200 motion-reduce:transition-none active:scale-95",
+                  moreOpen ? "scale-105 rotate-2 opacity-100" : "opacity-[0.82]",
+                )}
               >
                 <Menu
                   className={cn(
@@ -147,7 +134,7 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
                     moreOpen ? "scale-100 opacity-100 rotate-0" : "scale-75 opacity-0 -rotate-45",
                   )}
                 />
-              </motion.span>
+              </span>
               <span className="mobile-tab-label transition-colors duration-200 motion-reduce:duration-0">
                 Mas
               </span>

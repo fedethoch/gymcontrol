@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Dumbbell } from "lucide-react";
 import { useState } from "react";
 
@@ -72,22 +73,22 @@ export function ExerciseDetailModal({
     >
       <SheetContent
         side="right"
-        className="w-full max-w-full overflow-hidden p-0 sm:max-w-[34rem]"
+        className="w-[72vw] max-w-full overflow-hidden p-0 sm:max-w-[34rem]"
         aria-describedby="exercise-detail-description"
       >
         {displayExercise ? (
           <div className="flex h-full flex-col overflow-hidden">
-            <div className="h-0.5 shrink-0 bg-[linear-gradient(90deg,transparent,#7c3aed_25%,#b995ff_60%,transparent)]" />
-
             {/* Hero */}
             <div className="relative h-[218px] shrink-0 overflow-hidden">
               {displayExercise.imageUrl && !heroImgFailed ? (
                 <>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     alt={displayExercise.name}
-                    className="h-full w-full object-cover"
+                    className="object-contain"
                     src={displayExercise.imageUrl}
+                    fill
+                    sizes="(max-width: 640px) 72vw, 34rem"
+                    unoptimized={displayExercise.imageUrl.endsWith(".gif")}
                     onError={() => setHeroImgFailed(true)}
                   />
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(5,7,11,0.85)_100%)]" />

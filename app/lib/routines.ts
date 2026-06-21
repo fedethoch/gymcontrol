@@ -1,5 +1,8 @@
 import "server-only";
 
+import { unstable_cache } from "next/cache";
+import { createClient } from "@supabase/supabase-js";
+
 import type { ExerciseCatalogItem } from "@/app/lib/exercises";
 import type { RoutineDayWriteInput, RoutineWriteInput } from "@/app/lib/routine-form";
 import type { RoutineDifficulty, RoutineObjective } from "@/app/lib/routine-metadata";
@@ -44,6 +47,14 @@ export type AdminRoutineListItem = RoutineTemplate & {
 };
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createSupabaseServerClient>>;
+
+function createAnonClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } },
+  );
+}
 
 type RoutineRow = {
   id: string;
@@ -177,19 +188,23 @@ export async function listAdminRoutines(): Promise<AdminRoutineListItem[]> {
   });
 }
 
-export async function listRoutineTemplates(): Promise<RoutineTemplate[]> {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("routine_templates")
-    .select(ROUTINE_SELECT)
-    .order("created_at", { ascending: false });
+export const listRoutineTemplates = unstable_cache(
+  async (): Promise<RoutineTemplate[]> => {
+    const supabase = createAnonClient();
+    const { data, error } = await supabase
+      .from("routine_templates")
+      .select(ROUTINE_SELECT)
+      .order("created_at", { ascending: false });
 
-  if (error) {
-    throw new Error(`No se pudo listar las rutinas reutilizables: ${error.message}`);
-  }
+    if (error) {
+      throw new Error(`No se pudo listar las rutinas reutilizables: ${error.message}`);
+    }
 
-  return ((data ?? []) as unknown as RoutineRow[]).map(mapRoutineTemplate);
-}
+    return ((data ?? []) as unknown as RoutineRow[]).map(mapRoutineTemplate);
+  },
+  ["routine-templates"],
+  { revalidate: 3600, tags: ["routines"] },
+);
 
 export async function getRoutineById(id: string) {
   const supabase = await createSupabaseServerClient();
