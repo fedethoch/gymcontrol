@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { AlertCircle, Dumbbell, Loader2, PlayCircle, Star } from "lucide-react";
 import { useState } from "react";
 
@@ -91,6 +90,7 @@ export function ExerciseDetailModal({
 }: ExerciseDetailModalProps) {
   const [tab, setTab] = useState<TabKey>("descripcion");
   const [demoState, setDemoState] = useState<DemoState>({ status: "idle" });
+  const [heroImgFailed, setHeroImgFailed] = useState(false);
 
   const displayExercise = exercise;
 
@@ -98,6 +98,10 @@ export function ExerciseDetailModal({
     setTab(nextTab);
 
     if (nextTab !== "demostracion" || !displayExercise) {
+      return;
+    }
+
+    if (demoState.status === "ready" || demoState.status === "loading") {
       return;
     }
 
@@ -166,6 +170,10 @@ export function ExerciseDetailModal({
         onOpenChange(nextOpen);
         if (nextOpen) {
           setTab("descripcion");
+          setHeroImgFailed(false);
+          if (displayExercise) {
+            loadDemo(displayExercise);
+          }
         } else {
           setDemoState({ status: "idle" });
         }
@@ -182,15 +190,35 @@ export function ExerciseDetailModal({
 
             {/* Hero */}
             <div className="relative h-[218px] shrink-0 overflow-hidden">
-              {(demoState.status === "ready" && demoState.demo.imageUrl) || displayExercise.imageUrl ? (
+              {tab === "demostracion" && demoState.status === "ready" && demoState.demo.mediaType === "gif" ? (
                 <>
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     alt={displayExercise.name}
-                    className="object-cover"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 34rem"
-                    src={(demoState.status === "ready" && demoState.demo.imageUrl) || displayExercise.imageUrl || ""}
-                    unoptimized={demoState.status === "ready" && demoState.demo.imageUrl ? true : false}
+                    className="h-full w-full object-cover"
+                    src={demoState.demo.mediaUrl}
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(5,7,11,0.85)_100%)]" />
+                </>
+              ) : demoState.status === "ready" && demoState.demo.imageUrl && !heroImgFailed ? (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt={displayExercise.name}
+                    className="h-full w-full object-cover"
+                    src={demoState.demo.imageUrl}
+                    onError={() => setHeroImgFailed(true)}
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(5,7,11,0.85)_100%)]" />
+                </>
+              ) : displayExercise.imageUrl && !heroImgFailed ? (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt={displayExercise.name}
+                    className="h-full w-full object-cover"
+                    src={displayExercise.imageUrl}
+                    onError={() => setHeroImgFailed(true)}
                   />
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(5,7,11,0.85)_100%)]" />
                 </>

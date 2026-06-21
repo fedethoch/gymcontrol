@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
+import { exerciseImageUrl } from "@/app/lib/exercise-image";
 
 export type ExerciseCatalogItem = {
   id: string;
@@ -207,7 +208,7 @@ function mapExerciseCatalogItem(
     id: exercise.id,
     name: exercise.name,
     description: exercise.description,
-    imageUrl: exercise.image_url,
+    imageUrl: exerciseImageUrl(exercise.name),
     muscleGroup: exercise.muscle_group,
     equipment: exercise.equipment,
     videoUrl: exercise.video_url,
