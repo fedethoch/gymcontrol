@@ -427,7 +427,8 @@ Estado confirmado de storage despues de `G6`:
 - existe el bucket publico `exercise-images`
 - `storage.buckets` fija `file_size_limit = 5242880` y `allowed_mime_types = ['image/jpeg', 'image/png', 'image/webp']`
 - `storage.objects` permite lectura publica del bucket y escritura, actualizacion y borrado solo para usuarios admin autenticados
-- `exercises.image_url` guarda la URL publica final del objeto subido
+- `exercises.image_url` guarda la URL publica del frame 0 estático (PNG) del ejercicio — se usa en el hero del detalle y en todas las listas/cards
+- `exercises.gif_url` guarda la URL publica del GIF animado completo — solo se consume en el popup de animacion del detalle; null cuando no hay GIF disponible
 - las demostraciones externas de ejercicios se resuelven en vivo via API interna; no se persisten ni cachean imagenes, GIFs o metadata de ExerciseDB en la base
 - `exercises.exercisedb_id` guarda solo el ID estable de ExerciseDB para evitar matching por nombre en runtime cuando el mapeo ya fue revisado
 - `exercises.video_url` queda como override manual para videos propios o embebibles controlados por admin

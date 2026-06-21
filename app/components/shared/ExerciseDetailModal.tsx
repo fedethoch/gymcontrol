@@ -1,10 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { Dumbbell } from "lucide-react";
+import { Dumbbell, Play } from "lucide-react";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 import { Badge } from "@/app/components/ui/Badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/app/components/ui/Dialog";
 import {
   Sheet,
   SheetContent,
@@ -24,6 +30,7 @@ export type ExerciseDetail = {
   name: string;
   description: string;
   imageUrl: string;
+  gifUrl?: string | null;
   videoUrl?: string | null;
   exerciseDbId?: string | null;
   muscleGroup?: string | null;
@@ -48,6 +55,7 @@ export function ExerciseDetailModal({
   onOpenChange,
 }: ExerciseDetailModalProps) {
   const [heroImgFailed, setHeroImgFailed] = useState(false);
+  const [gifOpen, setGifOpen] = useState(false);
 
   const displayExercise = exercise;
 
@@ -62,12 +70,14 @@ export function ExerciseDetailModal({
   const heroGradient = muscleGroup ? MUSCLE_GRADIENTS[muscleGroup] ?? MUSCLE_GRADIENTS.Core : MUSCLE_GRADIENTS.Core;
 
   return (
+    <>
     <Sheet
       open={open && displayExercise !== null}
       onOpenChange={(nextOpen) => {
         onOpenChange(nextOpen);
         if (nextOpen) {
           setHeroImgFailed(false);
+          setGifOpen(false);
         }
       }}
     >
@@ -84,7 +94,8 @@ export function ExerciseDetailModal({
                 <>
                   <Image
                     alt={displayExercise.name}
-                    className="object-contain"
+                    className="object-cover"
+                    style={{ objectPosition: "50% 60%" }}
                     src={displayExercise.imageUrl}
                     fill
                     sizes="(max-width: 640px) 72vw, 34rem"
@@ -92,6 +103,19 @@ export function ExerciseDetailModal({
                     onError={() => setHeroImgFailed(true)}
                   />
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(5,7,11,0.85)_100%)]" />
+                  {displayExercise.gifUrl ? (
+                    <motion.button
+                      type="button"
+                      aria-label="Ver animación"
+                      className="absolute right-3 top-3 flex size-9 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm"
+                      onClick={() => setGifOpen(true)}
+                      whileHover={{ scale: 1.08 }}
+                      whileTap={{ scale: 0.93 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <Play className="size-4 fill-white" />
+                    </motion.button>
+                  ) : null}
                 </>
               ) : (
                 <>
@@ -177,6 +201,27 @@ export function ExerciseDetailModal({
         ) : null}
       </SheetContent>
     </Sheet>
+
+    {displayExercise?.gifUrl ? (
+      <Dialog open={gifOpen} onOpenChange={setGifOpen}>
+        <DialogContent open={gifOpen}>
+          <DialogTitle className="sr-only">
+            Animación: {displayExercise.name}
+          </DialogTitle>
+          <div className="relative aspect-square w-full overflow-hidden">
+            <Image
+              alt={`Animación de ${displayExercise.name}`}
+              src={displayExercise.gifUrl}
+              fill
+              sizes="min(42rem, calc(100vw - 2rem))"
+              className="object-contain"
+              unoptimized
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
+    ) : null}
+    </>
   );
 }
 

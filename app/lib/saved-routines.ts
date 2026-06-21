@@ -64,6 +64,7 @@ type ExerciseRow = {
   name: string;
   description: string;
   image_url: string;
+  gif_url: string | null;
   muscle_group: string | null;
   equipment: string | null;
   video_url: string | null;
@@ -146,6 +147,7 @@ const SAVED_ROUTINE_LIST_SELECT = `
           name,
           description,
           image_url,
+          gif_url,
           muscle_group,
           equipment,
           video_url,
@@ -190,6 +192,7 @@ const SAVED_ROUTINE_DETAIL_SELECT = `
           name,
           description,
           image_url,
+          gif_url,
           muscle_group,
           equipment,
           video_url,
@@ -628,6 +631,7 @@ function mapExercise(item: RoutineItemRow): RoutineExerciseRef {
     name: exercise.name,
     description: exercise.description,
     imageUrl: exercise.image_url || "",
+    gifUrl: exercise.gif_url ?? null,
     muscleGroup: exercise.muscle_group,
     equipment: exercise.equipment,
     videoUrl: exercise.video_url,

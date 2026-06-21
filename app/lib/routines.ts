@@ -90,6 +90,7 @@ type ExerciseRow = {
   name: string;
   description: string;
   image_url: string;
+  gif_url: string | null;
   muscle_group: string | null;
   equipment: string | null;
   video_url: string | null;
@@ -133,6 +134,7 @@ const ROUTINE_SELECT = `
         name,
         description,
         image_url,
+        gif_url,
         muscle_group,
         equipment,
         video_url,
@@ -358,6 +360,7 @@ function mapRoutineExercise(item: RoutineItemRow): RoutineExerciseRef {
     name: exercise.name,
     description: exercise.description,
     imageUrl: exercise.image_url || "",
+    gifUrl: exercise.gif_url ?? null,
     muscleGroup: exercise.muscle_group,
     equipment: exercise.equipment,
     videoUrl: exercise.video_url,

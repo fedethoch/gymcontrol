@@ -10,6 +10,7 @@ export type ExerciseCatalogItem = {
   name: string;
   description: string;
   imageUrl: string;
+  gifUrl: string | null;
   muscleGroup: string | null;
   equipment: string | null;
   videoUrl: string | null;
@@ -30,6 +31,7 @@ type ExerciseRow = {
   name: string;
   description: string;
   image_url: string;
+  gif_url: string | null;
   created_at: string;
   muscle_group: string | null;
   equipment: string | null;
@@ -54,7 +56,7 @@ export async function listAdminExercises(): Promise<AdminExerciseListItem[]> {
   const { data, error } = await supabase
     .from("exercises")
     .select(
-      "id, name, description, image_url, created_at, muscle_group, equipment, video_url, exercisedb_id, min_reps, max_reps, steps, tips",
+      "id, name, description, image_url, gif_url, created_at, muscle_group, equipment, video_url, exercisedb_id, min_reps, max_reps, steps, tips",
     )
     .order("created_at", { ascending: false });
 
@@ -74,7 +76,7 @@ export const listExerciseCatalogItems = unstable_cache(
     const supabase = createAnonClient();
     const { data, error } = await supabase
       .from("exercises")
-      .select("id, name, description, image_url, muscle_group, equipment, video_url, exercisedb_id, min_reps, max_reps, steps, tips")
+      .select("id, name, description, image_url, gif_url, muscle_group, equipment, video_url, exercisedb_id, min_reps, max_reps, steps, tips")
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -92,7 +94,7 @@ export async function getExerciseById(id: string) {
   const { data, error } = await supabase
     .from("exercises")
     .select(
-      "id, name, description, image_url, created_at, muscle_group, equipment, video_url, exercisedb_id, min_reps, max_reps, steps, tips",
+      "id, name, description, image_url, gif_url, created_at, muscle_group, equipment, video_url, exercisedb_id, min_reps, max_reps, steps, tips",
     )
     .eq("id", id)
     .maybeSingle();
@@ -208,6 +210,7 @@ function mapExerciseCatalogItem(
     | "name"
     | "description"
     | "image_url"
+    | "gif_url"
     | "muscle_group"
     | "equipment"
     | "video_url"
@@ -223,6 +226,7 @@ function mapExerciseCatalogItem(
     name: exercise.name,
     description: exercise.description,
     imageUrl: exercise.image_url || "",
+    gifUrl: exercise.gif_url ?? null,
     muscleGroup: exercise.muscle_group,
     equipment: exercise.equipment,
     videoUrl: exercise.video_url,
