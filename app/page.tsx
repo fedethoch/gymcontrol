@@ -263,8 +263,8 @@ export default async function Home() {
           />
         </MotionDiv>
 
-        {/* Comidas hoy — col-span-1 compacto */}
-        <MotionDiv variants={fadeUp} whileTap={tapFeedback} className="col-span-1 h-full">
+        {/* Comidas hoy — full ancho */}
+        <MotionDiv variants={fadeUp} whileTap={tapFeedback} className="col-span-2 h-full lg:col-span-1">
           <ComidasHoyCard meals={meals} totalKcal={totalKcal} />
         </MotionDiv>
 
@@ -278,10 +278,10 @@ export default async function Home() {
           </div>
         </MotionDiv>
 
-        {/* Calendario nutrición — full ancho, compacto */}
-        <MotionDiv variants={fadeUp} whileTap={tapFeedback} className="col-span-2 h-full lg:col-span-1">
+        {/* Calendario nutrición */}
+        <MotionDiv variants={fadeUp} whileTap={tapFeedback} className="col-span-1 h-full">
           <div className="flex h-full flex-col gap-1.5 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-2.5 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
-            <CardLabel icon={UtensilsCrossed} label="Nutrición · historial" />
+            <CardLabel icon={UtensilsCrossed} label="Nutrición" />
             <div className="flex flex-1 items-center justify-center">
               <NutritionCalendarCard loggedDates={new Set(nutritionLoggedDates)} weeks={5} bare />
             </div>
@@ -442,76 +442,84 @@ function ComidasHoyCard({
   meals: MealGroup[];
   totalKcal: number;
 }) {
-  // Col-span-1: vista compacta, sin thumbnails, max 2 comidas
   const preview = meals.slice(0, 2);
 
   return (
     <div className="flex h-full flex-col rounded-2xl border border-white/[0.06] bg-[#0e131e] p-2.5 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
-      {/* Header */}
-      <div className="mb-2 flex items-center justify-between gap-1">
+      <div className="mb-2 flex items-center justify-between gap-2">
         <div className="min-w-0">
-          <h2 className="font-display text-xs font-semibold text-white">Comidas</h2>
-          <p className="truncate text-[9px] text-[#7887a6]">
+          <h2 className="font-display text-sm font-semibold text-white">Comidas de hoy</h2>
+          <p className="mt-0.5 truncate text-[10px] text-[#7887a6]">
             {meals.length > 0
-              ? `${meals.length} · ${totalKcal} kcal`
-              : "Nada aún"}
+              ? `${meals.length} comida${meals.length === 1 ? "" : "s"} · ${totalKcal} kcal`
+              : "Nada registrado aún"}
           </p>
         </div>
         <Link
           href="/nutricion/registro"
-          aria-label="Ver registro"
-          className="grid size-6 shrink-0 place-items-center text-[#8f98ad] transition-colors hover:text-white"
+          aria-label="Ver registro de nutricion"
+          className="grid size-7 shrink-0 place-items-center text-[#8f98ad] transition-colors hover:text-white"
         >
-          <ChevronRight className="size-3.5" />
+          <ChevronRight className="size-4" />
         </Link>
       </div>
 
-      {/* Empty state */}
       {preview.length === 0 ? (
-        <div className="flex flex-1 flex-col items-center justify-center gap-2">
-          <div className="flex size-8 items-center justify-center rounded-xl bg-[#111722]">
-            <UtensilsCrossed className="size-4 text-[#2e3b52]" />
+        <div className="flex flex-1 flex-col items-center justify-center gap-3 py-3">
+          <div className="flex size-10 items-center justify-center rounded-2xl bg-[#111722]">
+            <UtensilsCrossed className="size-5 text-[#2e3b52]" />
           </div>
-          <p className="text-center text-[9px] font-semibold leading-snug text-[#6b7590]">
-            Sin comidas
-            <br />registradas
-          </p>
+          <div className="space-y-0.5 text-center">
+            <p className="text-xs font-semibold text-[#6b7590]">Todavía no registraste comidas</p>
+            <p className="text-[10px] text-[#404e66]">Llevá el control de lo que comés hoy</p>
+          </div>
           <Link
             href="/nutricion/registro"
-            className="inline-flex items-center gap-0.5 rounded-lg bg-[#1a2235] px-2 py-1 text-[9px] font-semibold text-[#b995ff] transition-colors hover:bg-[#1e2840]"
+            className="inline-flex items-center gap-1 rounded-lg bg-[#1a2235] px-3 py-1.5 text-[10px] font-semibold text-[#b995ff] transition-colors hover:bg-[#1e2840] hover:text-white"
           >
-            <Plus className="size-2.5" />
-            Agregar
+            <Plus className="size-3" />
+            Agregar comida
           </Link>
         </div>
       ) : (
-        /* Compact meal rows sin thumbnail */
-        <div className="grid overflow-hidden rounded-xl border border-white/[0.05] bg-[#111722]">
+        <div className="grid overflow-hidden rounded-xl border border-[rgba(255,255,255,0.06)] bg-[#111722]">
           {preview.map((meal) => (
             <div
               key={meal.id}
-              className="flex min-w-0 items-center gap-2 border-b border-white/[0.05] px-2 py-2 last:border-b-0"
+              className="flex min-w-0 items-center gap-2 border-b border-[rgba(255,255,255,0.06)] p-2 last:border-b-0"
             >
+              <span className="relative size-12 shrink-0 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card-alt)]">
+                <Image
+                  alt={MEAL_TYPE_LABELS[meal.type]}
+                  className="object-cover"
+                  fill
+                  sizes="48px"
+                  src={meal.imageUrl}
+                />
+              </span>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-[8px] font-bold uppercase tracking-[0.1em] text-[#b985ff]">
+                <p className="truncate text-[9px] font-bold uppercase tracking-[0.12em] text-[#b985ff]">
                   {MEAL_TYPE_LABELS[meal.type]}
                 </p>
-                <p className="truncate font-display text-xs font-semibold text-white">
+                <p className="mt-0.5 truncate font-display text-xs font-semibold leading-tight text-white">
                   {meal.name}
                 </p>
-                <div className="mt-0.5 flex gap-1.5 text-[8px] font-semibold">
+                <p className="mt-0.5 line-clamp-1 text-[10px] leading-4 text-[#8d97ab]">
+                  {formatMealFoods(meal)}
+                </p>
+                <div className="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-[8px] font-semibold">
                   <MealMacro label="P" value={meal.macros.proteinG} color={MACRO_COLORS.protein} />
                   <MealMacro label="C" value={meal.macros.carbsG} color={MACRO_COLORS.carbs} />
                   <MealMacro label="G" value={meal.macros.fatG} color={MACRO_COLORS.fat} />
                 </div>
               </div>
-              <span className="shrink-0 self-start rounded-full bg-white/[0.05] px-1.5 py-0.5 text-[9px] font-bold text-white">
-                {meal.kcal}
+              <span className="self-start whitespace-nowrap rounded-full bg-[rgba(255,255,255,0.05)] px-1.5 py-0.5 text-[10px] font-bold text-white">
+                {meal.kcal} kcal
               </span>
             </div>
           ))}
           {meals.length > 2 && (
-            <p className="px-2 py-1 text-[8px] font-semibold text-[#7887a6]">
+            <p className="px-2 py-1.5 text-[9px] font-semibold text-[#7887a6]">
               +{meals.length - 2} más
             </p>
           )}
@@ -519,6 +527,13 @@ function ComidasHoyCard({
       )}
     </div>
   );
+}
+
+function formatMealFoods(meal: MealGroup) {
+  if (meal.items.length === 0) return "Sin alimentos";
+  const names = meal.items.slice(0, 3).map((item) => item.foodName);
+  const suffix = meal.items.length > 3 ? ` +${meal.items.length - 3}` : "";
+  return `${names.join(", ")}${suffix}`;
 }
 
 function MealMacro({
