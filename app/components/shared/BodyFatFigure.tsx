@@ -8,14 +8,14 @@ import { cn } from "@/app/lib/utils";
 const BODY_FAT_VALUES = [12, 17, 22, 27, 33] as const;
 
 export function BodyFatFigure({ gender, value, className }: { gender: Gender; value: number | null; className?: string }) {
-  void gender;
+  const folder = gender === "female" ? "female" : "male";
   const known = value !== null && BODY_FAT_VALUES.includes(value as (typeof BODY_FAT_VALUES)[number]);
 
   return (
     <div className={cn("grid place-items-center rounded-xl border border-[var(--border)] bg-[var(--card)] p-4", className)}>
       {known ? (
         <Image
-          src={`/references/body-fat/${value}.png`}
+          src={`/references/body-fat/${folder}/${value}.png`}
           alt={`Referencia visual de ${value}% de grasa corporal`}
           width={140}
           height={160}

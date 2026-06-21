@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { Search } from "lucide-react";
 import { useState } from "react";
 
@@ -125,11 +127,15 @@ function FoodRow({ food, onSelect }: { food: Food; onSelect: () => void }) {
       className="group flex w-full flex-col gap-3 px-4 py-3.5 text-left transition-colors duration-200 hover:bg-[rgba(255,255,255,0.03)] sm:flex-row sm:items-center sm:gap-4"
     >
       <span
-        className="grid size-11 shrink-0 place-items-center rounded-xl"
+        className="relative grid size-11 shrink-0 place-items-center overflow-hidden rounded-xl"
         style={{ background: CATEGORY_GRADIENTS[food.category] }}
         aria-hidden="true"
       >
-        <Icon className="size-5" style={{ color: CATEGORY_ACCENT[food.category] }} />
+        {food.imageUrl ? (
+          <Image src={food.imageUrl} alt={food.name} fill className="object-cover" sizes="44px" />
+        ) : (
+          <Icon className="size-5" style={{ color: CATEGORY_ACCENT[food.category] }} />
+        )}
       </span>
 
       <div className="min-w-0 flex-1">
@@ -179,17 +185,25 @@ function FoodDetailSheet({
         aria-describedby="food-detail-description"
       >
         <div className="flex h-full flex-col overflow-hidden">
-          <div className="h-0.5 shrink-0 bg-[linear-gradient(90deg,transparent,#7c3aed_25%,#b995ff_60%,transparent)]" />
-
           <div
             className="relative flex h-44 shrink-0 items-end p-5"
             style={{ background: CATEGORY_GRADIENTS[displayFood.category] }}
           >
-            <Icon
-              className="absolute right-5 top-5 size-12 opacity-30"
-              style={{ color: CATEGORY_ACCENT[displayFood.category] }}
-              aria-hidden="true"
-            />
+            {displayFood.imageUrl ? (
+              <Image
+                src={displayFood.imageUrl}
+                alt={displayFood.name}
+                fill
+                className="object-cover opacity-40"
+                sizes="448px"
+              />
+            ) : (
+              <Icon
+                className="absolute right-5 top-5 size-12 opacity-30"
+                style={{ color: CATEGORY_ACCENT[displayFood.category] }}
+                aria-hidden="true"
+              />
+            )}
             <div>
               <SheetTitle className="font-display text-2xl font-bold tracking-[-0.05em] text-white">
                 {displayFood.name}

@@ -193,17 +193,25 @@ function RecipeDetailSheet({
         aria-describedby="recipe-detail-description"
       >
         <div className="flex h-full flex-col overflow-hidden">
-          <div className="h-0.5 shrink-0 bg-[linear-gradient(90deg,transparent,#7c3aed_25%,#b995ff_60%,transparent)]" />
-
           <div
             className="relative flex h-44 shrink-0 items-end p-5"
             style={{ background: RECIPE_CATEGORY_GRADIENTS[displayRecipe.category] }}
           >
-            <Icon
-              className="absolute right-5 top-5 size-12 opacity-30"
-              style={{ color: RECIPE_CATEGORY_ACCENT[displayRecipe.category] }}
-              aria-hidden="true"
-            />
+            {displayRecipe.imageUrl ? (
+              <Image
+                src={displayRecipe.imageUrl}
+                alt={displayRecipe.name}
+                fill
+                className="object-cover opacity-40"
+                sizes="448px"
+              />
+            ) : (
+              <Icon
+                className="absolute right-5 top-5 size-12 opacity-30"
+                style={{ color: RECIPE_CATEGORY_ACCENT[displayRecipe.category] }}
+                aria-hidden="true"
+              />
+            )}
             <div>
               <SheetTitle className="font-display text-2xl font-bold tracking-[-0.05em] text-white">
                 {displayRecipe.name}

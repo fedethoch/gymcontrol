@@ -53,7 +53,7 @@ export function ConfiguracionClient({
   initialDisplayName: string | null;
 }) {
   const [displayName, setDisplayName] = useState(initialDisplayName ?? "");
-  const [isSavingName, setIsSavingName] = useState(false);
+  const savedNameRef = useRef(initialDisplayName ?? "");
 
   const [gender, setGender] = useState<Gender>(initialProfile?.gender ?? MOCK_PROFILE_DEFAULTS.gender);
   const [age, setAge] = useState(String(initialProfile?.age ?? MOCK_PROFILE_DEFAULTS.age));
@@ -127,17 +127,18 @@ export function ConfiguracionClient({
   }, [profileInput, profileSignature]);
 
   async function handleSaveName() {
-    setIsSavingName(true);
-    const result = await saveProfileNameAction(displayName);
-    setIsSavingName(false);
+    const trimmed = displayName.trim();
+    if (trimmed === savedNameRef.current) return;
+
+    const result = await saveProfileNameAction(trimmed);
 
     if (!result.ok) {
       toast.error(result.message);
       return;
     }
 
-    setDisplayName(result.displayName ?? "");
-    toast.success("Nombre actualizado.");
+    savedNameRef.current = result.displayName ?? trimmed;
+    setDisplayName(result.displayName ?? trimmed);
   }
 
   async function handleDeleteAccount() {
@@ -151,20 +152,17 @@ export function ConfiguracionClient({
   }
 
   const accountBody = (
-    <div className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+    <div className="grid gap-3">
       <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
         Nombre para mostrar
         <Input
           placeholder="Ej. Fede"
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
+          onBlur={handleSaveName}
           maxLength={40}
         />
       </label>
-      <Button type="button" onClick={handleSaveName} disabled={isSavingName}>
-                  {isSavingName ? <LoadingDots /> : null}
-        Guardar nombre
-      </Button>
     </div>
   );
 

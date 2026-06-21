@@ -107,7 +107,7 @@ export function ExerciseDetailModal({
                     <motion.button
                       type="button"
                       aria-label="Ver animación"
-                      className="absolute right-3 top-3 flex size-9 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm"
+                      className="absolute bottom-3 right-3 flex size-9 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm"
                       onClick={() => setGifOpen(true)}
                       whileHover={{ scale: 1.08 }}
                       whileTap={{ scale: 0.93 }}
@@ -150,16 +150,15 @@ export function ExerciseDetailModal({
                 </SheetTitle>
                 <div className="flex flex-wrap gap-1.5">
                   {muscleGroup ? (
-                    <Badge
-                      className={cn(
-                        "border",
-                        MUSCLE_BADGE_STYLES[muscleGroup] ?? MUSCLE_BADGE_STYLES.Core,
-                      )}
-                    >
+                    <Badge className="border-0 bg-white/10 text-white backdrop-blur-sm">
                       {muscleLabel(muscleGroup)}
                     </Badge>
                   ) : null}
-                  {equipment ? <Badge variant="neutral">{equipmentLabel(equipment)}</Badge> : null}
+                  {equipment ? (
+                    <Badge className="border-0 bg-white/10 text-white backdrop-blur-sm">
+                      {equipmentLabel(equipment)}
+                    </Badge>
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -228,7 +227,7 @@ export function ExerciseDetailModal({
 function SpecChip({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col gap-1 rounded-xl border border-[var(--border)] bg-[var(--card-alt)] px-3.5 py-2.5">
-      <span className="text-[9.5px] font-bold uppercase tracking-[0.15em] text-[#7887a6]">
+      <span className="whitespace-nowrap text-[9.5px] font-bold uppercase tracking-[0.08em] text-[#7887a6]">
         {label}
       </span>
       <span className="text-sm font-semibold tracking-[-0.01em] text-[var(--foreground)]">{value}</span>

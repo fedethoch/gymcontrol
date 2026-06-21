@@ -8,6 +8,7 @@ const DEFAULT_OUT = path.join(PROJECT_ROOT, "scripts", "media", "generated-image
 const EXERCISE_IMAGE_BUCKET = "exercise-images";
 const ROUTINE_IMAGE_BUCKET = "routine-images";
 const RECIPE_IMAGE_BUCKET = "recipe-images";
+const FOOD_IMAGE_BUCKET = "food-images";
 
 loadDotEnvFile(path.join(PROJECT_ROOT, ".env.local"));
 
@@ -69,7 +70,7 @@ const DASHBOARD_ASSETS = [
 async function main() {
   const outPath = resolveArg("--out") ?? DEFAULT_OUT;
   const onlyKind = resolveArg("--kind");
-  const [exercises, recipes, routines] = await Promise.all([fetchExercises(), fetchRecipes(), fetchRoutines()]);
+  const [exercises, recipes, routines, foods] = await Promise.all([fetchExercises(), fetchRecipes(), fetchRoutines(), fetchFoods()]);
   const manifest = {
     generatedAt: new Date().toISOString(),
     defaults: {
@@ -99,6 +100,7 @@ async function main() {
       ...exercises.map((exercise) => exerciseToAsset(exercise)),
       ...routines.map((routine) => routineToAsset(routine)),
       ...recipes.map((recipe) => recipeToAsset(recipe)),
+      ...foods.map((food) => foodToAsset(food)),
     ].filter((asset) => !onlyKind || asset.kind === onlyKind),
   };
 
@@ -147,6 +149,35 @@ async function fetchRoutines() {
   }
 
   return (data ?? []).filter((routine) => !isTestRoutine(routine.name));
+}
+
+async function fetchFoods() {
+  const { data, error } = await supabase
+    .from("foods")
+    .select("id, name, image_url, category")
+    .order("name", { ascending: true });
+
+  if (error) {
+    throw new Error(`Could not fetch foods: ${error.message}`);
+  }
+
+  return data ?? [];
+}
+
+function foodToAsset(food) {
+  const slug = slugify(food.name);
+
+  return {
+    kind: "food",
+    id: food.id,
+    name: food.name,
+    bucket: FOOD_IMAGE_BUCKET,
+    storagePath: `${food.id}-${slug}.png`,
+    localPath: `scripts/media/generated/foods/${food.id}-${slug}.png`,
+    publicUrl: food.image_url || null,
+    status: food.image_url ? "linked" : "needs-generation",
+    category: food.category,
+  };
 }
 
 function exerciseToAsset(exercise) {

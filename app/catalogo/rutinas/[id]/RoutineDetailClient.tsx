@@ -46,15 +46,15 @@ export function RoutineDetailClient({ routine }: RoutineDetailClientProps) {
               className="overflow-hidden rounded-2xl border border-[rgba(148,163,184,0.16)] bg-[linear-gradient(180deg,rgba(15,21,34,0.92),rgba(9,13,23,0.96))] px-4 shadow-[0_18px_55px_rgba(0,0,0,0.26)]"
             >
               <AccordionTrigger className="py-3 hover:no-underline">
-                <div className="flex items-center gap-3">
+                <div className="flex flex-1 items-center gap-3">
                   <CalendarDays className="size-4 shrink-0 text-[var(--accent-bright)]" />
                   <span className="font-display text-base font-semibold tracking-[-0.04em] text-white">
                     {day.dayName || `Dia ${day.dayOrder}`}
                   </span>
-                  <span className="text-[11px] text-[#7887a6]">
-                    {day.items.length} ejercicios
-                  </span>
                 </div>
+                <span className="mr-2 text-[11px] text-[#7887a6]">
+                  {day.items.length} ejercicios
+                </span>
               </AccordionTrigger>
               <AccordionContent className="pb-4">
                 <div className="overflow-x-auto">

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ComponentProps } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { motion, type Variants } from "framer-motion";
 
 export const premiumEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -69,6 +69,49 @@ export function MotionDiv({
     <motion.div className={className} {...props}>
       {children}
     </motion.div>
+  );
+}
+
+/** Pulso suave de brillo para destacar un elemento activo (ej. figura muscular). */
+export function GlowPulseWrapper({
+  active,
+  children,
+  className,
+}: {
+  active: boolean;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      className={className}
+      animate={
+        active
+          ? { filter: ["brightness(1)", "brightness(1.1)", "brightness(1)"] }
+          : undefined
+      }
+      transition={
+        active
+          ? { duration: 2.8, repeat: Infinity, ease: "easeInOut" }
+          : undefined
+      }
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/** Barra de macro animada desde 0 hasta el porcentaje dado. */
+export function AnimatedMacroBar({ pct, color }: { pct: number; color: string }) {
+  return (
+    <motion.div
+      className="h-full rounded-full"
+      style={{ backgroundColor: color }}
+      initial={{ width: 0 }}
+      whileInView={{ width: `${pct}%` }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.65, ease: premiumEase, delay: 0.05 }}
+    />
   );
 }
 
