@@ -200,17 +200,6 @@ export function ExerciseDetailModal({
                   />
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(5,7,11,0.85)_100%)]" />
                 </>
-              ) : demoState.status === "ready" && demoState.demo.imageUrl && !heroImgFailed ? (
-                <>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    alt={displayExercise.name}
-                    className="h-full w-full object-cover"
-                    src={demoState.demo.imageUrl}
-                    onError={() => setHeroImgFailed(true)}
-                  />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(5,7,11,0.85)_100%)]" />
-                </>
               ) : displayExercise.imageUrl && !heroImgFailed ? (
                 <>
                   {/* eslint-disable-next-line @next/next/no-img-element */}

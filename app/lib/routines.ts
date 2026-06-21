@@ -3,7 +3,6 @@ import "server-only";
 import type { ExerciseCatalogItem } from "@/app/lib/exercises";
 import type { RoutineDayWriteInput, RoutineWriteInput } from "@/app/lib/routine-form";
 import type { RoutineDifficulty, RoutineObjective } from "@/app/lib/routine-metadata";
-import { exerciseImageUrl } from "@/app/lib/exercise-image";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 
 export type RoutineExerciseRef = ExerciseCatalogItem;
@@ -343,7 +342,7 @@ function mapRoutineExercise(item: RoutineItemRow): RoutineExerciseRef {
     id: exercise.id,
     name: exercise.name,
     description: exercise.description,
-    imageUrl: exerciseImageUrl(exercise.name),
+    imageUrl: exercise.image_url || "",
     muscleGroup: exercise.muscle_group,
     equipment: exercise.equipment,
     videoUrl: exercise.video_url,
