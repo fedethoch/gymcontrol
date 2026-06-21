@@ -183,7 +183,7 @@ export default async function Home() {
             fill
             priority
             sizes="100vw"
-            src={todayCardImageUrl}
+            src="/images/hero.png"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_100%,rgba(124,58,237,0.25),transparent_50%)]" />
