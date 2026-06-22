@@ -14,7 +14,7 @@ export const MACRO_COLORS = {
 } as const;
 
 export const MACRO_LABELS = {
-  protein: "Proteína",
+  protein: "Proteínas",
   carbs: "Carbohidratos",
   fat: "Grasas",
 } as const;

@@ -1,7 +1,7 @@
 "use client";
 
-import type { ComponentProps, ReactNode } from "react";
-import { motion, type Variants } from "framer-motion";
+import { useEffect, useRef, useState, type ComponentProps, type ReactNode } from "react";
+import { animate, motion, type Variants } from "framer-motion";
 
 export const premiumEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -102,7 +102,7 @@ export function GlowPulseWrapper({
 }
 
 /** Barra de macro animada desde 0 hasta el porcentaje dado. */
-export function AnimatedMacroBar({ pct, color }: { pct: number; color: string }) {
+export function AnimatedMacroBar({ pct, color, delay = 0.05 }: { pct: number; color: string; delay?: number }) {
   return (
     <motion.div
       className="h-full rounded-full"
@@ -110,9 +110,29 @@ export function AnimatedMacroBar({ pct, color }: { pct: number; color: string })
       initial={{ width: 0 }}
       whileInView={{ width: `${pct}%` }}
       viewport={{ once: true }}
-      transition={{ duration: 0.65, ease: premiumEase, delay: 0.05 }}
+      transition={{ duration: 0.65, ease: premiumEase, delay }}
     />
   );
+}
+
+/** Contador animado que tween-ea desde el valor anterior hasta el nuevo. */
+export function AnimatedNumber({ value, className }: { value: number; className?: string }) {
+  const [display, setDisplay] = useState(0);
+  const previousRef = useRef(0);
+
+  useEffect(() => {
+    const controls = animate(previousRef.current, value, {
+      duration: 0.6,
+      ease: "easeOut",
+      onUpdate: (latest) => {
+        previousRef.current = latest;
+        setDisplay(latest);
+      },
+    });
+    return () => controls.stop();
+  }, [value]);
+
+  return <span className={className}>{Math.round(display)}</span>;
 }
 
 export { motion };

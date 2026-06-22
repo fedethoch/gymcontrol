@@ -39,6 +39,13 @@ import { Input } from "@/app/components/ui/Input";
 import { LoadingDots } from "@/app/components/ui/LoadingDots";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
 import {
+  AnimatedMacroBar,
+  AnimatedNumber,
+  fadeUp,
+  motion,
+  staggerContainer,
+} from "@/app/components/ui/motion";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -75,6 +82,13 @@ type DraftItem = {
 
 const compactControlClass = "nutrition-compact-control";
 const compactButtonClass = "h-8 rounded-lg px-2.5 text-xs";
+
+const NUTRITION_PHRASES = [
+  "Cada comida registrada te acerca a tu objetivo.",
+  "La constancia pesa más que la perfección.",
+  "Lo que medís, lo mejorás.",
+  "Un registro hoy, un hábito mañana.",
+] as const;
 
 export function RegistroClient({
   foods,
@@ -113,6 +127,9 @@ export function RegistroClient({
   );
 
   const streak = calculateStreak(loggedDates, logDate);
+  const macrosEmpty = totalMacros.proteinG === 0 && totalMacros.carbsG === 0 && totalMacros.fatG === 0;
+  const dailyPhrase = NUTRITION_PHRASES[parseInt(logDate.replace(/-/g, ""), 10) % NUTRITION_PHRASES.length];
+  const todayDow = (new Date().getDay() + 6) % 7;
 
   function handleAddDraftItem(foodId: string, measure: FoodMeasure, quantity: number) {
     setDraftItems((current) => [...current, { localId: crypto.randomUUID(), foodId, measure, quantity }]);
@@ -355,152 +372,214 @@ export function RegistroClient({
         </DrawerContent>
       </Drawer>
 
-      {/* Row 1: Calorías card */}
-      <div className="rounded-2xl bg-[#0e131e] p-3">
-        <div className="mb-2 flex items-center gap-1.5">
-          <Flame className="size-3.5 text-[var(--accent-bright)]" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#7887a6]">Calorías</span>
-          <Button asChild type="button" variant="outline" size="sm" className="ml-auto h-6 gap-1 border-[rgba(255,255,255,0.1)] px-2 text-[10px]">
-            <Link href="/configuracion">
-              <Settings2 className="size-3" />
-              <span className="hidden sm:inline">Editar</span>
-            </Link>
-          </Button>
-        </div>
-        <div className="grid grid-cols-3 items-center">
-          <div className="flex flex-col items-center">
-            <span className="font-display text-xl font-bold text-white">{targetKcal}</span>
-            <span className="text-[9px] text-[#7887a6]">objetivo</span>
+      <motion.div
+        className="grid gap-3"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Row 1: Calorías card */}
+        <motion.div variants={fadeUp} className="rounded-2xl bg-[#0e131e] p-3">
+          <div className="mb-2 flex items-center gap-1.5">
+            <Flame className="size-3.5 text-[var(--accent-bright)]" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#7887a6]">Calorías</span>
+            <Button asChild type="button" variant="outline" size="sm" className="ml-auto h-6 gap-1 border-[rgba(255,255,255,0.1)] px-2 text-[10px]">
+              <Link href="/configuracion">
+                <Settings2 className="size-3" />
+                <span>Editar objetivo</span>
+              </Link>
+            </Button>
           </div>
-          <div className="flex justify-center">
-            <AnimatedProgressRing
-              value={targetKcal > 0 ? Math.min(100, Math.round((totalKcal / targetKcal) * 100)) : 0}
-              size={72}
-              strokeWidth={5}
-              progressColor="var(--accent-bright)"
-            >
-              <div className="flex flex-col items-center">
-                <span className="font-display text-sm font-bold text-white">
-                  {targetKcal > 0 ? Math.min(100, Math.round((totalKcal / targetKcal) * 100)) : 0}%
-                </span>
-              </div>
-            </AnimatedProgressRing>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="font-display text-xl font-bold text-white">{Math.max(0, targetKcal - totalKcal)}</span>
-            <span className="text-[9px] text-[#7887a6]">restantes</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Row 2: Macros card */}
-      <div className="rounded-2xl bg-[#0e131e] px-3 py-3">
-        <div className="mb-2 flex items-center gap-2">
-          <span className="grid size-6 place-items-center rounded-full bg-[rgba(124,58,237,0.14)] text-[var(--accent-bright)]">
-            <UtensilsCrossed className="size-3.5" />
-          </span>
-          <span className="font-display text-base font-semibold text-white">Macros</span>
-        </div>
-        <div className="grid grid-cols-3 divide-x divide-[rgba(255,255,255,0.07)]">
-          {(
-            [
-              { Icon: Beef, label: MACRO_LABELS.protein, value: totalMacros.proteinG, target: targetMacros.proteinG, color: MACRO_COLORS.protein },
-              { Icon: Wheat, label: MACRO_LABELS.carbs, value: totalMacros.carbsG, target: targetMacros.carbsG, color: MACRO_COLORS.carbs },
-              { Icon: Droplet, label: MACRO_LABELS.fat, value: totalMacros.fatG, target: targetMacros.fatG, color: MACRO_COLORS.fat },
-            ] as { Icon: LucideIcon; label: string; value: number; target: number; color: string }[]
-          ).map(({ Icon: MacroIcon, label, value, target, color }) => {
-            const pct = target > 0 ? Math.min(100, Math.round((value / target) * 100)) : 0;
-            return (
-              <div key={label} className="flex min-w-0 flex-col items-center px-1.5 first:pl-0 last:pr-0">
-                <p className="mb-1.5 truncate text-[10px] font-bold leading-none text-white">{label}</p>
-                <AnimatedProgressRing value={pct} size={42} strokeWidth={4} progressColor={color}>
-                  <MacroIcon className="size-3" style={{ color }} />
-                </AnimatedProgressRing>
-                <div className="mt-1 w-full min-w-0 text-center">
-                  <p className="mt-1 whitespace-nowrap text-[10px] font-bold leading-none text-white">
-                    {Math.round(value)} / {Math.round(target)}g
-                  </p>
-                  <div className="mt-1 h-1 overflow-hidden rounded-full bg-[#1a2235]">
-                    <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }} />
-                  </div>
-                  <p className="mt-1 text-center text-[9px] font-semibold leading-none" style={{ color }}>
-                    {pct}%
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Row 3: Comidas de hoy */}
-      <div className="rounded-2xl bg-[#0e131e] p-3">
-        <div className="mb-3 flex items-center justify-between gap-2">
-          <div className="min-w-0">
-            <h2 className="font-display text-base font-semibold text-white">Comidas de hoy</h2>
-            <p className="mt-0.5 truncate text-xs text-[#7887a6]">Cada comida suma a tu registro diario</p>
-          </div>
-          <Button type="button" size="sm" className="h-8 shrink-0 px-2.5 text-[10px]" onClick={() => setNewMealOpen(true)}>
-            <Plus className="size-4" />
-            Nueva
-          </Button>
-        </div>
-        {meals.length === 0 ? (
-          <p className="text-sm text-[#7887a6]">
-            Todavía no creaste comidas hoy. Usá &quot;Nueva&quot; para empezar.
+          <p className="mb-2 text-center text-[9px] font-semibold text-[#7887a6]">
+            Objetivo: {targetKcal} kcal
           </p>
-        ) : (
-          <div className="grid overflow-hidden rounded-xl border border-[rgba(255,255,255,0.06)] bg-[#111722] sm:grid-cols-2 sm:gap-3 sm:border-0 sm:bg-transparent">
-            {meals.map((meal) => (
-              <MealCard
-                key={meal.id}
-                meal={meal}
-                foods={foods}
-                isEditing={editingMealId === meal.id}
-                onToggleEdit={() => setEditingMealId((current) => (current === meal.id ? null : meal.id))}
-                onDeleteMeal={() => handleDeleteMeal(meal.id)}
-                onUpdateMeal={(input) => handleUpdateMeal(meal.id, input)}
-                onAddItem={(foodId, measure, quantity) => handleAddItem(meal.id, foodId, measure, quantity)}
-                onDeleteItem={handleDeleteItem}
-                onUpdateItem={handleUpdateItem}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Row 4: Constancia */}
-      <div className="rounded-2xl bg-[#0e131e] p-3">
-        <div className="flex items-start gap-3">
-          <Flame className="mt-0.5 size-6 shrink-0 text-orange-400" />
-          <div className="flex-1">
-            <p className="font-display font-semibold text-white">{streak} días seguidos</p>
-            <div className="mt-2 flex justify-between">
-              {(["L","M","M","J","V","S","D"] as const).map((letter, i) => {
-                const d = new Date();
-                const todayDow = (d.getDay() + 6) % 7;
-                d.setDate(d.getDate() - todayDow + i);
-                const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-                const logged = loggedDates.includes(key);
-                return (
-                  <div key={i} className="flex flex-col items-center gap-1">
-                    <span className="text-[9px] font-medium text-[#7887a6]">{letter}</span>
-                    <div className={`size-4 rounded-full border-2 ${logged ? "border-orange-400 bg-orange-400" : "border-[#3a4560] bg-transparent"}`} />
-                  </div>
-                );
-              })}
+          <div className="grid grid-cols-3 items-center">
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="font-display text-xl font-bold text-white">
+                <AnimatedNumber value={totalKcal} />
+              </span>
+              <span className="text-center text-[9px] leading-tight text-[#7887a6]">kcal consumidas</span>
+            </div>
+            <div className="flex justify-center">
+              <AnimatedProgressRing
+                value={targetKcal > 0 ? Math.min(100, Math.round((totalKcal / targetKcal) * 100)) : 0}
+                size={72}
+                strokeWidth={5}
+                progressColor="var(--accent-bright)"
+              >
+                <div className="flex flex-col items-center gap-0.5">
+                  <span className="font-display text-sm font-bold text-white">
+                    {targetKcal > 0 ? Math.min(100, Math.round((totalKcal / targetKcal) * 100)) : 0}%
+                  </span>
+                  {totalKcal === 0 && (
+                    <span className="text-[7px] leading-none text-[#7887a6]">Sin registro</span>
+                  )}
+                </div>
+              </AnimatedProgressRing>
+            </div>
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="font-display text-xl font-bold text-white">
+                <AnimatedNumber value={Math.max(0, targetKcal - totalKcal)} />
+              </span>
+              <span className="text-center text-[9px] leading-tight text-[#7887a6]">kcal restantes</span>
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
 
-      {/* Row 5: Frase motivadora (placeholder bg) */}
-      <div className="relative flex min-h-[72px] items-center justify-center overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#1a1535_0%,#0e1528_100%)] px-4 py-4">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(124,58,237,0.25),transparent_70%)]" />
-        <p className="relative text-center text-sm font-semibold italic text-white/80">
-          &ldquo;Cada repetición te acerca a quien quieres ser.&rdquo;
-        </p>
-      </div>
+        {/* Row 2: Macros card */}
+        <motion.div variants={fadeUp} className="rounded-2xl bg-[#0e131e] px-3 py-3">
+          <div className="mb-2 flex items-center gap-2">
+            <span className="grid size-6 place-items-center rounded-full bg-[rgba(124,58,237,0.14)] text-[var(--accent-bright)]">
+              <UtensilsCrossed className="size-3.5" />
+            </span>
+            <span className="font-display text-base font-semibold text-white">Macros</span>
+          </div>
+          <div className="grid grid-cols-3 divide-x divide-[rgba(255,255,255,0.07)]">
+            {(
+              [
+                { Icon: Beef, label: MACRO_LABELS.protein, value: totalMacros.proteinG, target: targetMacros.proteinG, color: MACRO_COLORS.protein, barDelay: 0 },
+                { Icon: Wheat, label: MACRO_LABELS.carbs, value: totalMacros.carbsG, target: targetMacros.carbsG, color: MACRO_COLORS.carbs, barDelay: 0.1 },
+                { Icon: Droplet, label: MACRO_LABELS.fat, value: totalMacros.fatG, target: targetMacros.fatG, color: MACRO_COLORS.fat, barDelay: 0.2 },
+              ] as { Icon: LucideIcon; label: string; value: number; target: number; color: string; barDelay: number }[]
+            ).map(({ Icon: MacroIcon, label, value, target, color, barDelay }) => {
+              const pct = target > 0 ? Math.min(100, Math.round((value / target) * 100)) : 0;
+              return (
+                <div key={label} className="flex min-w-0 flex-col items-center px-1.5 first:pl-0 last:pr-0">
+                  <p className="mb-1.5 truncate text-[10px] font-bold leading-none text-white">{label}</p>
+                  <AnimatedProgressRing value={pct} size={42} strokeWidth={4} progressColor={color}>
+                    <MacroIcon className="size-3" style={{ color }} />
+                  </AnimatedProgressRing>
+                  <div className="mt-1 w-full min-w-0 text-center">
+                    <p className="mt-1 whitespace-nowrap text-[10px] font-bold leading-none text-white">
+                      <AnimatedNumber value={Math.round(value)} /> / {Math.round(target)}g
+                    </p>
+                    <div className="mt-1 h-1 overflow-hidden rounded-full bg-[#1a2235]">
+                      <AnimatedMacroBar pct={pct} color={color} delay={barDelay} />
+                    </div>
+                    <p className="mt-1 text-center text-[9px] font-semibold leading-none" style={{ color }}>
+                      {pct}%
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          {macrosEmpty && (
+            <p className="mt-3 text-center text-[10px] text-[#7887a6]">
+              Agregá una comida para ver tu distribución diaria de macros.
+            </p>
+          )}
+        </motion.div>
+
+        {/* Row 3: Comidas de hoy */}
+        <motion.div variants={fadeUp} className="rounded-2xl bg-[#0e131e] p-3">
+          <div className="mb-3 flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <h2 className="font-display text-base font-semibold text-white">Comidas de hoy</h2>
+              <p className="mt-0.5 truncate text-xs text-[#7887a6]">Cada comida suma a tu registro diario</p>
+            </div>
+            <Button type="button" size="sm" className="h-8 shrink-0 px-2.5 text-[10px]" onClick={() => setNewMealOpen(true)}>
+              <Plus className="size-4" />
+              Nueva comida
+            </Button>
+          </div>
+          {meals.length === 0 ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
+              className="flex flex-col items-center gap-2 py-4 text-center"
+            >
+              <UtensilsCrossed className="size-6 text-[#3c4456]" />
+              <p className="text-sm text-[#7887a6]">
+                Todavía no registraste comidas hoy.{" "}
+                <span className="text-white/50">Agregá tu primera comida para empezar a sumar calorías y macros.</span>
+              </p>
+            </motion.div>
+          ) : (
+            <div className="grid overflow-hidden rounded-xl border border-[rgba(255,255,255,0.06)] bg-[#111722] sm:grid-cols-2 sm:gap-3 sm:border-0 sm:bg-transparent">
+              {meals.map((meal) => (
+                <MealCard
+                  key={meal.id}
+                  meal={meal}
+                  foods={foods}
+                  isEditing={editingMealId === meal.id}
+                  onToggleEdit={() => setEditingMealId((current) => (current === meal.id ? null : meal.id))}
+                  onDeleteMeal={() => handleDeleteMeal(meal.id)}
+                  onUpdateMeal={(input) => handleUpdateMeal(meal.id, input)}
+                  onAddItem={(foodId, measure, quantity) => handleAddItem(meal.id, foodId, measure, quantity)}
+                  onDeleteItem={handleDeleteItem}
+                  onUpdateItem={handleUpdateItem}
+                />
+              ))}
+            </div>
+          )}
+        </motion.div>
+
+        {/* Row 4: Constancia */}
+        <motion.div variants={fadeUp} className="rounded-2xl bg-[#0e131e] p-3">
+          <div className="flex items-start gap-3">
+            <Flame className="mt-0.5 size-6 shrink-0 text-orange-400" />
+            <div className="flex-1">
+              <p className="font-display font-semibold text-white">{streak} días seguidos</p>
+              {streak === 0 && (
+                <p className="mt-0.5 text-xs text-[#7887a6]">Registrá una comida hoy para iniciar tu racha.</p>
+              )}
+              <div className="mt-2 flex justify-between">
+                {(["L","M","M","J","V","S","D"] as const).map((letter, i) => {
+                  const d = new Date();
+                  d.setDate(d.getDate() - todayDow + i);
+                  const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+                  const logged = loggedDates.includes(key) || (i === todayDow && meals.length > 0);
+                  const isToday = i === todayDow;
+                  const todayActive = isToday && (loggedDates.includes(logDate) || meals.length > 0);
+                  return (
+                    <div key={i} className="flex flex-col items-center gap-1">
+                      <span className={`text-[9px] font-medium ${isToday ? "text-white" : "text-[#7887a6]"}`}>{letter}</span>
+                      <motion.div
+                        className={`size-4 rounded-full border-2 ${
+                          logged
+                            ? "border-orange-400 bg-orange-400"
+                            : isToday
+                            ? "border-[var(--accent-bright)] bg-transparent"
+                            : "border-[#3a4560] bg-transparent"
+                        }`}
+                        animate={
+                          todayActive
+                            ? {
+                                boxShadow: [
+                                  "0 0 0px 0px rgba(251,146,60,0)",
+                                  "0 0 6px 2px rgba(251,146,60,0.55)",
+                                  "0 0 0px 0px rgba(251,146,60,0)",
+                                ],
+                              }
+                            : undefined
+                        }
+                        transition={
+                          todayActive
+                            ? { duration: 1.8, repeat: Infinity, ease: "easeInOut" }
+                            : undefined
+                        }
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Row 5: Frase motivadora */}
+        <motion.div
+          variants={fadeUp}
+          className="relative flex min-h-[72px] items-center justify-center overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#1a1535_0%,#0e1528_100%)] px-4 py-4"
+        >
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(124,58,237,0.25),transparent_70%)]" />
+          <p className="relative text-center text-sm font-semibold italic text-white/80">
+            &ldquo;{dailyPhrase}&rdquo;
+          </p>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

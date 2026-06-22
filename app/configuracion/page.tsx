@@ -13,11 +13,10 @@ export default async function ConfiguracionPage() {
           Configuración
         </p>
         <h2 className="font-display mt-2 text-3xl font-semibold tracking-[-0.06em] text-white">
-          Tu perfil
+          Tu perfil nutricional
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--foreground-muted)]">
-          Estos datos son opcionales. Completalos para recibir un cálculo personalizado de
-          calorías de mantenimiento, objetivo diario y distribución de macronutrientes.
+          Completá tus datos para calcular calorías y macros personalizados.
         </p>
       </div>
 

@@ -131,11 +131,7 @@ function FoodRow({ food, onSelect }: { food: Food; onSelect: () => void }) {
         style={{ background: CATEGORY_GRADIENTS[food.category] }}
         aria-hidden="true"
       >
-        {food.imageUrl ? (
-          <Image src={food.imageUrl} alt={food.name} fill className="object-cover" sizes="44px" />
-        ) : (
-          <Icon className="size-5" style={{ color: CATEGORY_ACCENT[food.category] }} />
-        )}
+        <Icon className="size-5" style={{ color: CATEGORY_ACCENT[food.category] }} />
       </span>
 
       <div className="min-w-0 flex-1">

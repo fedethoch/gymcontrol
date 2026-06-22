@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Beef, Droplet, Flame, LogOut, TriangleAlert, Wheat } from "lucide-react";
+import { AnimatePresence } from "framer-motion";
+import { Beef, Check, Droplet, Flame, LogOut, TriangleAlert, Wheat } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -41,9 +42,22 @@ import {
 import { MOCK_PROFILE_DEFAULTS } from "@/app/lib/nutrition-mock";
 import type { NutritionProfile } from "@/app/lib/nutrition-profile";
 import { cn } from "@/app/lib/utils";
+import {
+  AnimatedNumber,
+  fadeScale,
+  motion,
+  premiumEase,
+  tapFeedback,
+} from "@/app/components/ui/motion";
 
 const DELETE_CONFIRM_TEXT = "BORRAR";
 type ProfileSaveStatus = "idle" | "saving" | "saved" | "error";
+
+const GOAL_ADJ_LABELS: Record<Goal, string> = {
+  bulk: "Superávit moderado aplicado",
+  cut: "Déficit calórico aplicado",
+  recomposition: "Sin ajuste calórico",
+};
 
 export function ConfiguracionClient({
   initialProfile,
@@ -65,6 +79,7 @@ export function ConfiguracionClient({
   );
   const [goal, setGoal] = useState<Goal>(initialProfile?.goal ?? MOCK_PROFILE_DEFAULTS.goal);
   const [profileSaveStatus, setProfileSaveStatus] = useState<ProfileSaveStatus>("idle");
+  const [isRecalculating, setIsRecalculating] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState("");
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -87,8 +102,10 @@ export function ConfiguracionClient({
 
   const profileSignature = useMemo(() => JSON.stringify(profileInput), [profileInput]);
   const savedProfileSignatureRef = useRef(profileSignature);
+  const isFirstRender = useRef(true);
   const plan = useMemo(() => calculateNutritionPlan(profileInput), [profileInput]);
 
+  // Auto-save (unchanged behavior)
   useEffect(() => {
     if (profileSignature === savedProfileSignatureRef.current) {
       setProfileSaveStatus("idle");
@@ -103,18 +120,12 @@ export function ConfiguracionClient({
 
       void saveNutritionProfileAction(profileInput)
         .then(() => {
-          if (ignore) {
-            return;
-          }
-
+          if (ignore) return;
           savedProfileSignatureRef.current = profileSignature;
           setProfileSaveStatus("saved");
         })
         .catch((error) => {
-          if (ignore) {
-            return;
-          }
-
+          if (ignore) return;
           setProfileSaveStatus("error");
           toast.error(error instanceof Error ? error.message : "No se pudo guardar el perfil.");
         });
@@ -125,6 +136,17 @@ export function ConfiguracionClient({
       window.clearTimeout(timeout);
     };
   }, [profileInput, profileSignature]);
+
+  // "Recalculando…" visual indicator — skips first render
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    setIsRecalculating(true);
+    const t = window.setTimeout(() => setIsRecalculating(false), 600);
+    return () => window.clearTimeout(t);
+  }, [profileSignature]);
 
   async function handleSaveName() {
     const trimmed = displayName.trim();
@@ -151,6 +173,40 @@ export function ConfiguracionClient({
     }
   }
 
+  // ─── Derived state ──────────────────────────────────────────────────────────
+
+  const sectionStatus = useMemo(() => {
+    const parsedAge = Number(age);
+    const parsedHeight = Number(heightCm);
+    const parsedWeight = Number(weightKg);
+    return {
+      cuenta: displayName.trim().length > 0,
+      datos: parsedAge > 0 && parsedHeight > 0 && parsedWeight > 0,
+      grasa: bodyFatPct !== null,
+      actividad: true,
+      objetivo: true,
+    };
+  }, [displayName, age, heightCm, weightKg, bodyFatPct]);
+
+  const completedCount = useMemo(
+    () => Object.values(sectionStatus).filter(Boolean).length,
+    [sectionStatus],
+  );
+
+  const datosSuficientes = sectionStatus.cuenta && sectionStatus.datos;
+
+  const bodyFatRef = useMemo(
+    () => BODY_FAT_REFERENCES.find((r) => r.value === bodyFatPct) ?? null,
+    [bodyFatPct],
+  );
+
+  const kcalDiff = plan.targetKcal - plan.maintenanceKcal;
+
+  const bodyFatSummary = bodyFatRef ? `${bodyFatRef.label} ${bodyFatRef.range}` : "Estimado";
+  const dataSummary = `${age}a · ${heightCm}cm · ${weightKg}kg`;
+
+  // ─── Section bodies ─────────────────────────────────────────────────────────
+
   const accountBody = (
     <div className="grid gap-3">
       <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
@@ -169,7 +225,8 @@ export function ConfiguracionClient({
   const basicsBody = (
     <div className="grid gap-4">
       <div className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-        Género
+        Sexo{" "}
+        <span className="font-normal text-[var(--foreground-muted)]">(para estimación calórica)</span>
         <div className="grid grid-cols-2 gap-1.5">
           {GENDERS.map((value) => (
             <ToggleOption
@@ -196,6 +253,12 @@ export function ConfiguracionClient({
           <Input type="number" min={30} max={250} value={weightKg} onChange={(e) => setWeightKg(e.target.value)} />
         </label>
       </div>
+
+      {sectionStatus.datos && (
+        <p className="flex items-center gap-1 text-xs text-[var(--accent)]">
+          <Check className="size-3" /> Datos completos
+        </p>
+      )}
     </div>
   );
 
@@ -206,6 +269,7 @@ export function ConfiguracionClient({
     </p>
   );
 
+  // Full body fat body — used in desktop cards (unchanged)
   const bodyFatBody = (
     <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_10rem]">
       <div className="grid gap-2.5 sm:grid-cols-2">
@@ -229,6 +293,77 @@ export function ConfiguracionClient({
     </div>
   );
 
+  // Compact body fat body — used in mobile accordion
+  const bodyFatBodyCompact = (
+    <div className="grid gap-3">
+      <div className="grid grid-cols-2 gap-2">
+        <ToggleOption
+          compact
+          active={bodyFatPct === null}
+          label="No lo sé"
+          onClick={() => setBodyFatPct(null)}
+        />
+        {BODY_FAT_REFERENCES.map((reference) => (
+          <ToggleOption
+            key={reference.range}
+            compact
+            active={bodyFatPct === reference.value}
+            label={`${reference.label} · ${reference.range}`}
+            onClick={() => setBodyFatPct(reference.value)}
+          />
+        ))}
+      </div>
+
+      {/* Description of active option only */}
+      <AnimatePresence mode="wait">
+        {bodyFatPct === null ? (
+          <motion.p
+            key="no-se"
+            variants={fadeScale}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="text-xs text-[var(--foreground-muted)]"
+          >
+            Usamos tu peso, altura, edad y sexo para estimar.
+          </motion.p>
+        ) : bodyFatRef ? (
+          <motion.p
+            key={String(bodyFatPct)}
+            variants={fadeScale}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="text-xs text-[var(--foreground-muted)]"
+          >
+            {bodyFatRef.description}
+          </motion.p>
+        ) : null}
+      </AnimatePresence>
+
+      {/* Estimation mini-card (replaces broken "?" block) */}
+      <div className="rounded-xl border border-[var(--border)] bg-[var(--card-alt)] px-3.5 py-2.5">
+        {bodyFatPct !== null && bodyFatRef ? (
+          <>
+            <p className="text-xs font-semibold text-white">
+              Grasa estimada: {bodyFatPct}% aprox.
+            </p>
+            <p className="mt-0.5 text-[10px] text-[var(--foreground-muted)]">
+              {bodyFatRef.label} · {bodyFatRef.range}
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="text-xs font-semibold text-white">Estimada automáticamente</p>
+            <p className="mt-0.5 text-[10px] text-[var(--foreground-muted)]">
+              Basado en peso, altura, edad y sexo
+            </p>
+          </>
+        )}
+      </div>
+    </div>
+  );
+
   const activityBody = (
     <div className="grid gap-2.5 sm:grid-cols-2">
       {ACTIVITY_LEVELS.map((value) => (
@@ -244,55 +379,188 @@ export function ConfiguracionClient({
   );
 
   const goalBody = (
-    <div className="grid gap-2.5 sm:grid-cols-3">
-      {GOALS.map((value) => (
-        <ToggleOption
-          key={value}
-          active={goal === value}
-          label={GOAL_INFO[value].label}
-          description={GOAL_INFO[value].description}
-          onClick={() => setGoal(value)}
-        />
-      ))}
+    <div className="grid gap-3">
+      <div className="grid gap-2.5 sm:grid-cols-3">
+        {GOALS.map((value) => (
+          <ToggleOption
+            key={value}
+            active={goal === value}
+            label={GOAL_INFO[value].label}
+            description={GOAL_INFO[value].description}
+            onClick={() => setGoal(value)}
+          />
+        ))}
+      </div>
+      <p className="text-xs">
+        <span className="font-semibold text-[var(--accent)]">{GOAL_ADJ_LABELS[goal]}</span>
+      </p>
     </div>
   );
 
+  // ─── Render ─────────────────────────────────────────────────────────────────
+
   return (
     <div className="grid gap-5">
-      {/* Mobile: secciones del perfil agrupadas en accordion */}
-      <Accordion
-        type="multiple"
-        defaultValue={["cuenta", "datos", "grasa", "actividad", "objetivo"]}
-        className="grid gap-3 lg:hidden"
-      >
-        <AccordionItem value="cuenta" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
-          <AccordionTrigger>Tu cuenta</AccordionTrigger>
-          <AccordionContent>{accountBody}</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="datos" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
-          <AccordionTrigger>Datos básicos</AccordionTrigger>
-          <AccordionContent>{basicsBody}</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="grasa" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
-          <AccordionTrigger>Porcentaje de grasa corporal</AccordionTrigger>
-          <AccordionContent>
-            <div className="grid gap-3">
-              {bodyFatDescription}
-              {bodyFatBody}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="actividad" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
-          <AccordionTrigger>Nivel de actividad física</AccordionTrigger>
-          <AccordionContent>{activityBody}</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="objetivo" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
-          <AccordionTrigger>Objetivo</AccordionTrigger>
-          <AccordionContent>{goalBody}</AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      {/* ── MOBILE: progress row + mini plan card + accordion ─────────────── */}
+      <div className="grid gap-4 lg:hidden">
+        {/* A. Progress row */}
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex gap-1">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <span
+                key={i}
+                className={cn(
+                  "size-2 rounded-full transition-colors duration-300",
+                  i < completedCount ? "bg-[var(--accent)]" : "bg-[var(--border)]",
+                )}
+              />
+            ))}
+          </div>
+          <span className="text-xs text-[var(--foreground-muted)]">Perfil {completedCount}/5</span>
+          {datosSuficientes && (
+            <span className="flex items-center gap-1 rounded-full bg-[var(--accent)]/15 px-2 py-0.5 text-[10px] font-semibold text-[var(--accent)]">
+              <Check className="size-3" /> Datos suficientes para tu plan
+            </span>
+          )}
+        </div>
 
-      {/* Desktop: cards apiladas como antes */}
+        {/* B. Mini-card "Plan actual" */}
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] px-4 py-3">
+          <div className="flex items-center gap-3">
+            <AnimatedProgressRing value={100} size={52} strokeWidth={5} progressColor="var(--accent)">
+              <Flame className="size-4 text-[var(--accent)]" />
+            </AnimatedProgressRing>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-baseline gap-1.5">
+                <span className="font-display text-xl font-bold text-white">
+                  <AnimatedNumber value={plan.targetKcal} />
+                </span>
+                <span className="text-xs text-[var(--foreground-muted)]">kcal</span>
+                <span className="ml-1 truncate text-xs font-semibold text-[var(--accent)]">
+                  {GOAL_INFO[goal].label}
+                </span>
+              </div>
+              <p className="mt-0.5 text-[10px] text-[var(--foreground-muted)]">
+                <span style={{ color: MACRO_COLORS.protein }}>P</span>{" "}
+                <AnimatedNumber value={plan.macros.proteinG} />g
+                {" · "}
+                <span style={{ color: MACRO_COLORS.carbs }}>C</span>{" "}
+                <AnimatedNumber value={plan.macros.carbsG} />g
+                {" · "}
+                <span style={{ color: MACRO_COLORS.fat }}>G</span>{" "}
+                <AnimatedNumber value={plan.macros.fatG} />g
+              </p>
+            </div>
+            {/* Save status chip */}
+            <AnimatePresence mode="wait">
+              {profileSaveStatus === "saving" && (
+                <motion.span
+                  key="saving"
+                  variants={fadeScale}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="shrink-0 rounded-full bg-[var(--card-alt)] px-2 py-0.5 text-[10px] text-[var(--foreground-muted)]"
+                >
+                  Guardando…
+                </motion.span>
+              )}
+              {profileSaveStatus === "saved" && (
+                <motion.span
+                  key="saved"
+                  variants={fadeScale}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="flex shrink-0 items-center gap-1 rounded-full bg-[var(--accent)]/10 px-2 py-0.5 text-[10px] text-[var(--accent)]"
+                >
+                  <Check className="size-2.5" /> Guardado
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* C. Accordion sections with rich headers */}
+        <Accordion
+          type="multiple"
+          defaultValue={["cuenta", "datos", "grasa", "actividad", "objetivo"]}
+          className="grid gap-3"
+        >
+          <AccordionItem value="cuenta" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
+            <AccordionTrigger>
+              <div className="flex flex-1 items-center justify-between gap-2 pr-2">
+                <span className="font-semibold">Tu cuenta</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="truncate text-xs text-[var(--foreground-muted)]">
+                    {displayName || "Sin nombre"}
+                  </span>
+                  {sectionStatus.cuenta && <Check className="size-3 shrink-0 text-[var(--accent)]" />}
+                </div>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>{accountBody}</AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="datos" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
+            <AccordionTrigger>
+              <div className="flex flex-1 items-center justify-between gap-2 pr-2">
+                <span className="font-semibold">Datos básicos</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="truncate text-xs text-[var(--foreground-muted)]">{dataSummary}</span>
+                  {sectionStatus.datos && <Check className="size-3 shrink-0 text-[var(--accent)]" />}
+                </div>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>{basicsBody}</AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="grasa" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
+            <AccordionTrigger>
+              <div className="flex flex-1 items-center justify-between gap-2 pr-2">
+                <span className="font-semibold">Grasa corporal</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="truncate text-xs text-[var(--foreground-muted)]">{bodyFatSummary}</span>
+                  {sectionStatus.grasa && <Check className="size-3 shrink-0 text-[var(--accent)]" />}
+                </div>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>{bodyFatBodyCompact}</AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="actividad" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
+            <AccordionTrigger>
+              <div className="flex flex-1 items-center justify-between gap-2 pr-2">
+                <span className="font-semibold">Actividad física</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="truncate text-xs text-[var(--foreground-muted)]">
+                    {ACTIVITY_LEVEL_INFO[activityLevel].label}
+                  </span>
+                  <Check className="size-3 shrink-0 text-[var(--accent)]" />
+                </div>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>{activityBody}</AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="objetivo" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
+            <AccordionTrigger>
+              <div className="flex flex-1 items-center justify-between gap-2 pr-2">
+                <span className="font-semibold">Objetivo</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="truncate text-xs text-[var(--foreground-muted)]">
+                    {GOAL_INFO[goal].label}
+                  </span>
+                  <Check className="size-3 shrink-0 text-[var(--accent)]" />
+                </div>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>{goalBody}</AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </div>
+
+      {/* ── DESKTOP: cards apiladas (sin cambios) ─────────────────────────── */}
       <div className="hidden gap-5 lg:grid">
         <Card>
           <CardHeader>
@@ -331,36 +599,84 @@ export function ConfiguracionClient({
         </Card>
       </div>
 
+      {/* ── PLAN ESTIMADO (shared mobile + desktop, mejorado) ─────────────── */}
       <Card>
         <CardHeader>
-          <CardTitle>Tu plan estimado</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            Tu plan estimado
+            <AnimatePresence>
+              {isRecalculating && (
+                <motion.span
+                  key="recalc"
+                  variants={fadeScale}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="rounded-full bg-[var(--card-alt)] px-2 py-0.5 text-[10px] font-normal text-[var(--foreground-muted)]"
+                >
+                  Recalculando…
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </CardTitle>
           <p className="text-sm text-[var(--foreground-muted)]">
             Estimación nutricional, no reemplaza el consejo de un profesional.
           </p>
         </CardHeader>
         <CardContent className="flex flex-col gap-6 lg:flex-row lg:items-center">
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center gap-3">
             <AnimatedProgressRing value={100} size={200} strokeWidth={16} progressColor="var(--accent)">
               <div className="flex flex-col items-center">
                 <Flame className="mb-1 size-6 text-[var(--accent)]" />
                 <span className="font-display text-3xl font-bold tracking-[-0.04em] text-white">
-                  {plan.targetKcal}
+                  <AnimatedNumber value={plan.targetKcal} />
                 </span>
                 <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#7887a6]">
                   kcal objetivo
                 </span>
               </div>
             </AnimatedProgressRing>
-            <p className="text-xs text-[var(--foreground-muted)]">
-              Mantenimiento estimado · <span className="font-semibold text-white">{plan.maintenanceKcal} kcal</span>
-            </p>
+
+            {/* Plan desglose */}
+            <div className="w-full rounded-xl border border-[var(--border)] bg-[var(--card-alt)] px-3.5 py-2.5 text-xs">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[var(--foreground-muted)]">Mantenimiento estimado</span>
+                <span className="font-semibold text-white">
+                  <AnimatedNumber value={plan.maintenanceKcal} /> kcal
+                </span>
+              </div>
+              <div className="mt-1.5 flex items-center justify-between gap-2">
+                <span className="text-[var(--foreground-muted)]">Objetivo aplicado</span>
+                <span
+                  className={cn(
+                    "font-semibold",
+                    kcalDiff > 0
+                      ? "text-emerald-400"
+                      : kcalDiff < 0
+                        ? "text-rose-400"
+                        : "text-white",
+                  )}
+                >
+                  {kcalDiff > 0 ? "+" : ""}
+                  <AnimatedNumber value={kcalDiff} /> kcal
+                </span>
+              </div>
+              <p className="mt-1.5 text-[10px] font-semibold text-[var(--accent)]">
+                {GOAL_ADJ_LABELS[goal]}
+              </p>
+            </div>
           </div>
 
           <div className="hidden h-full w-px self-stretch bg-[var(--border)] lg:block" />
 
           <div className="flex w-full flex-1 flex-col gap-4">
-            {(["protein", "carbs", "fat"] as const).map((key) => {
-              const grams = key === "protein" ? plan.macros.proteinG : key === "carbs" ? plan.macros.carbsG : plan.macros.fatG;
+            {(["protein", "carbs", "fat"] as const).map((key, index) => {
+              const grams =
+                key === "protein"
+                  ? plan.macros.proteinG
+                  : key === "carbs"
+                    ? plan.macros.carbsG
+                    : plan.macros.fatG;
               const kcalPerG = key === "fat" ? 9 : 4;
               const pct = Math.round(((grams * kcalPerG) / plan.targetKcal) * 100);
               const Icon = key === "protein" ? Beef : key === "carbs" ? Wheat : Droplet;
@@ -376,18 +692,29 @@ export function ConfiguracionClient({
                         <Icon className="size-3.5" style={{ color: MACRO_COLORS[key] }} />
                         {MACRO_LABELS[key]}
                       </span>
-                      <span className="font-display text-sm font-semibold text-white">{grams} g</span>
+                      <span className="font-display text-sm font-semibold text-white">
+                        <AnimatedNumber value={grams} /> g
+                      </span>
                     </div>
                     <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-[var(--card-alt)]">
-                      <div
-                        className="h-full rounded-full transition-[width] duration-300"
-                        style={{ width: `${Math.min(100, pct)}%`, backgroundColor: MACRO_COLORS[key] }}
+                      <motion.div
+                        className="h-full rounded-full"
+                        style={{ backgroundColor: MACRO_COLORS[key] }}
+                        animate={{ width: `${Math.min(100, pct)}%` }}
+                        transition={{
+                          duration: 0.6,
+                          ease: premiumEase,
+                          delay: index * 0.08,
+                        }}
                       />
                     </div>
                   </div>
                 </div>
               );
             })}
+            <p className="text-[11px] text-[var(--foreground-muted)]">
+              Este plan se actualiza cuando modificás tus datos.
+            </p>
           </div>
         </CardContent>
       </Card>
@@ -447,7 +774,7 @@ export function ConfiguracionClient({
                 disabled={deleteConfirm !== DELETE_CONFIRM_TEXT || isDeleting}
                 onClick={handleDeleteAccount}
               >
-              {isDeleting ? <LoadingDots /> : <TriangleAlert className="size-4" />}
+                {isDeleting ? <LoadingDots /> : <TriangleAlert className="size-4" />}
                 Sí, borrar mi cuenta
               </Button>
             </div>
@@ -462,26 +789,31 @@ function ToggleOption({
   active,
   label,
   description,
+  compact = false,
   onClick,
 }: {
   active: boolean;
   label: string;
   description?: string;
+  compact?: boolean;
   onClick: () => void;
 }) {
   return (
-    <button
+    <motion.button
       type="button"
       onClick={onClick}
+      whileTap={tapFeedback}
       className={cn(
         "rounded-xl border px-3.5 py-2.5 text-left transition-colors",
         active
-          ? "border-[var(--accent)] bg-[var(--accent)]/15 text-white"
+          ? "border-[var(--accent)] bg-[var(--accent)]/15 text-white shadow-[0_0_0_1px_var(--accent)]"
           : "border-[var(--border)] bg-[var(--card-alt)] text-[#9aa3b8] hover:text-white",
       )}
     >
       <p className="text-sm font-semibold">{label}</p>
-      {description ? <p className="mt-1 text-xs leading-5 text-[var(--foreground-muted)]">{description}</p> : null}
-    </button>
+      {!compact && description ? (
+        <p className="mt-1 text-xs leading-5 text-[var(--foreground-muted)]">{description}</p>
+      ) : null}
+    </motion.button>
   );
 }
