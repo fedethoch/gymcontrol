@@ -106,7 +106,7 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
           <SheetTrigger asChild>
             <button
               type="button"
-              aria-label="Mas"
+              aria-label="Más"
               aria-expanded={moreOpen}
               className={cn(
                 "mobile-tab-bar-item group flex flex-col items-center justify-end px-1 text-[10px] font-semibold leading-none transition-colors",
@@ -136,7 +136,7 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
                 />
               </span>
               <span className="mobile-tab-label transition-colors duration-200 motion-reduce:duration-0">
-                Mas
+                Más
               </span>
             </button>
           </SheetTrigger>

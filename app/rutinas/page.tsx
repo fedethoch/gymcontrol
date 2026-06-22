@@ -1,13 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
-import type { ComponentType } from "react";
-import {
-  CalendarDays,
-  Clock3,
-  Dumbbell,
-  Flame,
-} from "lucide-react";
+import { Dumbbell } from "lucide-react";
 
 import { MobileHeaderBadgeSync } from "@/app/components/shared/MobileHeader";
 import { Button } from "@/app/components/ui/Button";
@@ -16,6 +9,7 @@ import { requireUser } from "@/app/lib/auth";
 import { ROUTINE_OBJECTIVE_LABELS, ROUTINE_DIFFICULTY_LABELS } from "@/app/lib/routine-metadata";
 import { listSavedRoutinesForUser, getSavedRoutineByIdForUser } from "@/app/lib/saved-routines";
 import { listWorkoutWeeklySummaries } from "@/app/lib/workout-tracking";
+import { RutinasOverview } from "@/app/rutinas/RutinasOverview";
 import { WeekDaysList } from "@/app/rutinas/WeekDaysList";
 
 export default async function RutinasPage() {
@@ -83,18 +77,17 @@ export default async function RutinasPage() {
     totalDays > 0 ? Math.min(100, Math.round((completedDayCount / totalDays) * 100)) : 0;
   const completedDayIds = new Set(weeklySummary?.completedRoutineDayIds ?? []);
   const nextPendingDay = activeRoutine.days.find((day) => !completedDayIds.has(day.id)) ?? null;
+  const remaining = totalDays - completedDayCount;
+  const currentStreak = weeklySummary?.currentStreak ?? 0;
+  const hasRealData = weeklySummary?.hasRealData ?? false;
 
   const objectiveLabel = ROUTINE_OBJECTIVE_LABELS[activeRoutineListItem.objective];
   const difficultyLabel = ROUTINE_DIFFICULTY_LABELS[activeRoutineListItem.difficulty];
-  const nextTrainingLabel = (() => {
-    if (!totalDays) return "—";
-    if (completedDayCount >= totalDays) return "Semana completa";
-    const dayOfWeek = (new Date().getDay() + 6) % 7; // Mon=0, Sun=6
-    if (dayOfWeek < totalDays && completedDayCount <= dayOfWeek) return "Hoy";
-    if (dayOfWeek + 1 < totalDays && completedDayCount <= dayOfWeek + 1) return "Mañana";
-    const remaining = totalDays - completedDayCount;
-    return remaining === 1 ? "En 1 día" : `En ${remaining} días`;
-  })();
+
+  const startHref =
+    nextPendingDay != null
+      ? `/rutinas/dia?savedRoutineId=${activeRoutine.id}&day=${nextPendingDay.dayOrder}`
+      : null;
 
   return (
     <section className="page-frame dashboard-page-frame bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
@@ -110,68 +103,21 @@ export default async function RutinasPage() {
         }
       />
 
-      {/* Row 1: Routine header card with placeholder bg */}
-      <div className="relative overflow-hidden rounded-2xl bg-[#15102a] p-3.5">
-        {activeRoutine.imageUrl ? (
-          <Image
-            alt={activeRoutine.displayName}
-            className="object-cover opacity-55 saturate-[0.85]"
-            fill
-            sizes="100vw"
-            src={activeRoutine.imageUrl}
-          />
-        ) : null}
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(8,7,17,0.88),rgba(8,7,17,0.48)),radial-gradient(circle_at_80%_50%,rgba(124,58,237,0.28),transparent_65%)]" />
-        <div className="relative">
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#b985ff]">Rutina activa</p>
-          <h2 className="font-display mt-0.5 text-lg font-semibold leading-tight text-white sm:text-xl">
-            {activeRoutine.displayName}
-          </h2>
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {[objectiveLabel, difficultyLabel, `${totalDays} días/sem`].map((chip) => (
-              <span
-                key={chip}
-                className="inline-flex items-center rounded-md border border-[rgba(139,92,246,0.35)] bg-[rgba(20,15,36,0.6)] px-2 py-0.5 text-[10px] font-semibold text-[#d4c6ff]"
-              >
-                {chip}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Row 2: Weekly summary */}
-      <div className="flex items-center gap-4 rounded-2xl bg-[#0e131e] px-4 py-3">
-        <div className="shrink-0 text-center">
-          <div className="font-display text-2xl font-bold leading-none">
-            <span className="text-white">{completedDayCount}</span>
-            <span className="text-[#9a63ff]">/{totalDays}</span>
-          </div>
-          <p className="mt-0.5 text-[9px] text-[#7887a6]">días</p>
-        </div>
-        <div className="flex flex-1 flex-col gap-1">
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#c25cff]">Resumen semanal</p>
-          <div className="h-2.5 overflow-hidden rounded-full bg-[#151c2d]">
-            <div
-              className="h-full rounded-full bg-[#7c3aed] transition-all duration-700"
-              style={{ width: `${weeklyProgressPercent}%` }}
-            />
-          </div>
-          <p className="text-[10px] text-[#7887a6]">{weeklyProgressPercent}% completado</p>
-        </div>
-      </div>
-
-      {/* Row 3: 3 mini stat cards */}
-      <div className="grid grid-cols-3 gap-2">
-        <MiniCard
-          icon={Flame}
-          label="Racha"
-          value={weeklySummary?.hasRealData ? `${weeklySummary.currentStreak} días` : "0 días"}
-          accent="warm"
-        />
-        <MiniCard icon={Clock3} label="Tiempo" value={totalDays > 0 ? "60 min" : "—"} />
-        <MiniCard icon={CalendarDays} label="Próximo" value={nextTrainingLabel} />
-      </div>
+      <RutinasOverview
+        displayName={activeRoutine.displayName}
+        imageUrl={activeRoutine.imageUrl}
+        objectiveLabel={objectiveLabel}
+        difficultyLabel={difficultyLabel}
+        totalDays={totalDays}
+        completedDayCount={completedDayCount}
+        weeklyProgressPercent={weeklyProgressPercent}
+        currentStreak={currentStreak}
+        hasRealData={hasRealData}
+        nextPendingDayOrder={nextPendingDay?.dayOrder ?? null}
+        nextPendingDayName={nextPendingDay?.dayName ?? null}
+        startHref={startHref}
+        remaining={remaining}
+      />
 
       {/* Row 4: Days list */}
       {activeRoutine.days.length > 0 ? (
@@ -185,6 +131,7 @@ export default async function RutinasPage() {
           completedDayIds={Array.from(completedDayIds)}
           currentDayId={nextPendingDay?.id ?? activeRoutine.days[0]?.id ?? null}
           activeRoutineId={activeRoutine.id}
+          animationDelay={0.32}
         />
       ) : (
         <Card className="bg-[#0e131e]">
@@ -203,30 +150,4 @@ export default async function RutinasPage() {
   );
 }
 
-function MiniCard({
-  icon: Icon,
-  label,
-  value,
-  accent = "default",
-}: {
-  icon: ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-  accent?: "default" | "warm";
-}) {
-  const iconClass =
-    accent === "warm"
-      ? "text-[#ff9a75]"
-      : "text-[#9db5ff]";
-
-  return (
-    <div className="flex flex-col items-center gap-1.5 rounded-2xl bg-[#0e131e] px-2 py-3 text-center">
-      <Icon className={`size-4 shrink-0 ${iconClass}`} />
-      <div>
-        <p className="font-display text-sm font-semibold leading-tight text-white">{value}</p>
-        <p className="mt-0.5 text-[10px] text-[#7887a6]">{label}</p>
-      </div>
-    </div>
-  );
-}
 

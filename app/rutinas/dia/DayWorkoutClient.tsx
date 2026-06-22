@@ -9,7 +9,19 @@ import {
   type MouseEvent,
   type ReactNode,
 } from "react";
-import { ArrowLeft, Check, ChevronDown, ChevronRight, Clock3, Dumbbell, TrendingUp } from "lucide-react";
+import {
+  ArrowLeft,
+  Check,
+  CheckCircle2,
+  ChevronDown,
+  ChevronRight,
+  Circle,
+  Clock3,
+  Dumbbell,
+  Play,
+  Timer,
+  TrendingUp,
+} from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 
@@ -44,6 +56,37 @@ function isAtOrAboveMaxReps(value: string, maxReps: number) {
   const lastValue = tokens.at(-1);
 
   return lastValue != null && !Number.isNaN(lastValue) && lastValue >= maxReps;
+}
+
+/** Parses "90s", "90", "1:30" (mm:ss) → seconds. Returns null if unrecognized. */
+function parseRestSeconds(rest: string): number | null {
+  const s = rest.trim().toLowerCase();
+  const simple = /^(\d+)s?$/.exec(s);
+  if (simple) return parseInt(simple[1], 10);
+  const mmss = /^(\d+):(\d+)$/.exec(s);
+  if (mmss) return parseInt(mmss[1], 10) * 60 + parseInt(mmss[2], 10);
+  return null;
+}
+
+function formatSeconds(s: number): string {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+}
+
+/** Counts how many series have both reps and weight filled (derived, no DB). */
+function countCompletedSeries(
+  performedReps: string,
+  usedWeight: string,
+  series: number,
+): number {
+  const reps = splitSeriesValues(performedReps, series);
+  const weights = splitSeriesValues(usedWeight, series);
+
+  return Array.from(
+    { length: series },
+    (_, i) => Boolean(reps[i]?.trim() && weights[i]?.trim()),
+  ).filter(Boolean).length;
 }
 
 type DayWorkoutRow = {
@@ -81,6 +124,11 @@ type RowSaveState =
   | { status: "saved" }
   | { status: "error"; message: string };
 
+type RestTimer = {
+  rowId: string;
+  secondsLeft: number;
+};
+
 export function DayWorkoutClient({
   savedRoutineId,
   routineDayId,
@@ -110,8 +158,12 @@ export function DayWorkoutClient({
   const [saveStateByItemId, setSaveStateByItemId] = useState<Record<string, RowSaveState>>(() =>
     Object.fromEntries(rows.map((row) => [row.id, { status: "idle" } satisfies RowSaveState])),
   );
+  const [restTimer, setRestTimer] = useState<RestTimer | null>(null);
+
   const timersRef = useRef<Record<string, ReturnType<typeof setTimeout> | undefined>>({});
   const requestVersionRef = useRef<Record<string, number>>({});
+  const restIntervalRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+  const exerciseRefs = useRef<Record<string, HTMLElement | null>>({});
   const [, startAutosaveTransition] = useTransition();
   const isCompletedSession = sessionStatus === "completed";
 
@@ -120,10 +172,9 @@ export function DayWorkoutClient({
 
     return () => {
       for (const timer of Object.values(timers)) {
-        if (timer) {
-          clearTimeout(timer);
-        }
+        if (timer) clearTimeout(timer);
       }
+      if (restIntervalRef.current) clearInterval(restIntervalRef.current);
     };
   }, []);
 
@@ -133,11 +184,27 @@ export function DayWorkoutClient({
   );
   const progressPercent = rows.length > 0 ? Math.round((completedCount / rows.length) * 100) : 0;
 
+  const nextIncompleteRow = useMemo(
+    () => rows.find((row) => !completedByItemId[row.id]),
+    [completedByItemId, rows],
+  );
+
+  const contextualText = useMemo(() => {
+    if (rows.length === 0) return null;
+    if (completedCount === 0) return "Empezá registrando tu primera serie";
+    if (completedCount === rows.length) return "¡Día completado! 💪";
+    return `Próximo: ${nextIncompleteRow?.exercise.name ?? ""}`;
+  }, [completedCount, rows.length, nextIncompleteRow]);
+
+  const ctaLabel = useMemo(() => {
+    if (completedCount === 0) return "Iniciar entrenamiento";
+    if (completedCount === rows.length) return "Ver mis rutinas";
+    return "Continuar";
+  }, [completedCount, rows.length]);
+
   function isAllCompleted(overrideId?: string, overrideValue?: boolean) {
     return rows.every((row) => {
-      if (overrideId && row.id === overrideId) {
-        return overrideValue;
-      }
+      if (overrideId && row.id === overrideId) return overrideValue;
 
       return completedByItemId[row.id] ?? false;
     });
@@ -152,9 +219,7 @@ export function DayWorkoutClient({
   ) {
     const existingTimer = timersRef.current[routineItemId];
 
-    if (existingTimer) {
-      clearTimeout(existingTimer);
-    }
+    if (existingTimer) clearTimeout(existingTimer);
 
     const runAutosave = () => {
       const nextVersion = (requestVersionRef.current[routineItemId] ?? 0) + 1;
@@ -177,9 +242,7 @@ export function DayWorkoutClient({
           complete,
         });
 
-        if (requestVersionRef.current[routineItemId] !== nextVersion) {
-          return;
-        }
+        if (requestVersionRef.current[routineItemId] !== nextVersion) return;
 
         setSaveStateByItemId((current) => ({
           ...current,
@@ -199,24 +262,64 @@ export function DayWorkoutClient({
     timersRef.current[routineItemId] = setTimeout(runAutosave, AUTOSAVE_DELAY_MS);
   }
 
+  function startRestTimer(rowId: string, seconds: number) {
+    if (restIntervalRef.current) clearInterval(restIntervalRef.current);
+    setRestTimer({ rowId, secondsLeft: seconds });
+    restIntervalRef.current = setInterval(() => {
+      setRestTimer((current) => {
+        if (!current) return null;
+        if (current.secondsLeft <= 1) {
+          clearInterval(restIntervalRef.current);
+          restIntervalRef.current = undefined;
+          return null;
+        }
+
+        return { ...current, secondsLeft: current.secondsLeft - 1 };
+      });
+    }, 1000);
+  }
+
+  function stopRestTimer() {
+    if (restIntervalRef.current) clearInterval(restIntervalRef.current);
+    restIntervalRef.current = undefined;
+    setRestTimer(null);
+  }
+
   function handleDraftChange(
     routineItemId: string,
     field: keyof DraftState,
     value: string,
   ) {
+    // Detect newly completed series → start rest timer (no DB change)
+    const currentDraft = drafts[routineItemId] ?? { performedReps: "", usedWeight: "" };
+    const nextDraft = { ...currentDraft, [field]: value };
+    const row = rows.find((r) => r.id === routineItemId);
+
+    if (row) {
+      const prevReps = splitSeriesValues(currentDraft.performedReps, row.series);
+      const prevWeights = splitSeriesValues(currentDraft.usedWeight, row.series);
+      const nextReps = splitSeriesValues(nextDraft.performedReps, row.series);
+      const nextWeights = splitSeriesValues(nextDraft.usedWeight, row.series);
+
+      for (let i = 0; i < row.series; i++) {
+        const wasComplete = Boolean(prevReps[i]?.trim() && prevWeights[i]?.trim());
+        const isNowComplete = Boolean(nextReps[i]?.trim() && nextWeights[i]?.trim());
+
+        if (!wasComplete && isNowComplete) {
+          const secs = parseRestSeconds(row.rest);
+          if (secs !== null && secs > 0) startRestTimer(routineItemId, secs);
+          break;
+        }
+      }
+    }
+
     setDrafts((current) => {
-      const nextDraft = {
-        ...(current[routineItemId] ?? { performedReps: "", usedWeight: "" }),
-        [field]: value,
-      };
-      const nextDrafts = {
-        ...current,
-        [routineItemId]: nextDraft,
-      };
+      const prev = current[routineItemId] ?? { performedReps: "", usedWeight: "" };
+      const next = { ...prev, [field]: value };
 
-      scheduleAutosave(routineItemId, nextDraft, completedByItemId[routineItemId] ?? false);
+      scheduleAutosave(routineItemId, next, completedByItemId[routineItemId] ?? false);
 
-      return nextDrafts;
+      return { ...current, [routineItemId]: next };
     });
   }
 
@@ -236,9 +339,18 @@ export function DayWorkoutClient({
     );
   }
 
+  function handleCtaClick() {
+    const target = nextIncompleteRow;
+    if (!target) return;
+    setExpandedId(target.id);
+    setTimeout(() => {
+      exerciseRefs.current[target.id]?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 100);
+  }
+
   return (
     <>
-      <div className="page-frame auto-rows-max content-start gap-4 bg-[radial-gradient(circle_at_12%_0%,rgba(137,76,255,0.16),transparent_32%),linear-gradient(180deg,#030a13_0%,#07111d_46%,#030812_100%)] xl:gap-4 xl:p-6">
+      <div className="page-frame auto-rows-max content-start gap-4 bg-[radial-gradient(circle_at_12%_0%,rgba(137,76,255,0.16),transparent_32%),linear-gradient(180deg,#030a13_0%,#07111d_46%,#030812_100%)] pb-28 xl:gap-4 xl:p-6 xl:pb-10">
         <header className="grid gap-1 sm:pt-1">
           <div className="flex items-start gap-4">
             <Button
@@ -268,45 +380,70 @@ export function DayWorkoutClient({
                 ) : null}
               </div>
               <h1 className="mt-2 font-display text-2xl font-semibold leading-none tracking-normal text-white sm:text-3xl lg:text-[2.65rem]">
-                {`Dia ${dayOrder} - ${dayName}`}
+                {`Día ${dayOrder} · ${dayName}`}
               </h1>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-[#d3d8e4] sm:text-base">
-                Completa tu entrenamiento de hoy y registra tu rendimiento
+                Completá tu entrenamiento de hoy y registrá tu rendimiento
               </p>
             </div>
           </div>
         </header>
 
-        <section className="rounded-2xl border border-[#172236] bg-[linear-gradient(180deg,rgba(9,18,31,0.94),rgba(6,13,23,0.98))] px-5 py-3 shadow-[0_24px_70px_rgba(0,0,0,0.28)] xl:px-8 xl:py-4">
-          {/* Mobile layout: ring left, data right */}
-          <div className="flex items-center gap-5 xl:hidden">
-            <AnimatedProgressRing
-              value={progressPercent}
-              size={69.6}
-              strokeWidth={8}
-              progressColor="#a855ff"
-              trackColor="rgba(24,37,57,0.86)"
-            >
-              <div className="grid size-[3.35rem] place-items-center rounded-full border border-[#1c2b42] bg-[#07101b] text-center leading-none">
-                <span className="text-sm font-semibold text-white">
-                  {completedCount}/{rows.length}
-                </span>
-              </div>
-            </AnimatedProgressRing>
-            <div className="flex min-w-0 flex-col gap-3">
-              <div>
-                <p className="text-[10px] text-[#aeb8cc]">Tiempo estimado</p>
+        <section className="rounded-2xl border border-[#172236] bg-[linear-gradient(180deg,rgba(9,18,31,0.94),rgba(6,13,23,0.98))] px-5 py-4 shadow-[0_24px_70px_rgba(0,0,0,0.28)] xl:px-8 xl:py-4">
+          {/* Mobile: progress + context + CTA */}
+          <div className="flex flex-col gap-4 xl:hidden">
+            <div className="flex items-center gap-5">
+              <AnimatedProgressRing
+                value={progressPercent}
+                size={69.6}
+                strokeWidth={8}
+                progressColor="#a855ff"
+                trackColor="rgba(24,37,57,0.86)"
+              >
+                <div className="grid size-[3.35rem] place-items-center rounded-full border border-[#1c2b42] bg-[#07101b] text-center leading-none">
+                  <span className="text-sm font-semibold text-white">
+                    {completedCount}/{rows.length}
+                  </span>
+                </div>
+              </AnimatedProgressRing>
+              <div className="flex min-w-0 flex-col gap-1.5">
                 <p className="text-sm font-semibold text-white">
-                  {rows.length > 0 ? "60 min" : "Sin carga"}
+                  {completedCount} de {rows.length} ejercicios completados
                 </p>
-              </div>
-              <div>
-                <p className="text-[10px] text-[#aeb8cc]">Ejercicios</p>
-                <p className="text-sm font-semibold text-white">{rows.length} ejercicios</p>
+                <p className="text-xs text-[#aeb8cc]">
+                  ~{rows.length > 0 ? `${rows.length * 10} min` : "Sin carga"} · {rows.length}{" "}
+                  ejercicios
+                </p>
+                {contextualText ? (
+                  <p className="text-xs font-medium text-[#c084fc]">{contextualText}</p>
+                ) : null}
               </div>
             </div>
+            {rows.length > 0 ? (
+              completedCount === rows.length ? (
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-10 w-full rounded-xl border-[#285f43] bg-[#0d2218] text-sm font-semibold text-[#52f58a] hover:bg-[#0f2a1e]"
+                >
+                  <Link href="/rutinas">Ver mis rutinas</Link>
+                </Button>
+              ) : (
+                <motion.div whileTap={{ scale: 0.98 }}>
+                  <Button
+                    type="button"
+                    onClick={handleCtaClick}
+                    className="h-10 w-full rounded-xl bg-[#7d4bff] text-sm font-semibold text-white shadow-[0_4px_20px_rgba(125,75,255,0.4)] hover:bg-[#6b3cee]"
+                  >
+                    <Play className="size-4 fill-current" />
+                    {ctaLabel}
+                  </Button>
+                </motion.div>
+              )
+            ) : null}
           </div>
-          {/* Desktop layout: original 4-col grid */}
+
+          {/* Desktop: original 4-col grid */}
           <div className="hidden xl:grid xl:grid-cols-[1.35fr_0.8fr_0.95fr_1.25fr]">
             <SummaryMetric
               label="Rutina activa"
@@ -346,7 +483,7 @@ export function DayWorkoutClient({
                 </div>
               </AnimatedProgressRing>
               <div className="min-w-0">
-                <p className="text-sm leading-5 text-[#aeb8cc]">Progreso del dia</p>
+                <p className="text-sm leading-5 text-[#aeb8cc]">Progreso del día</p>
                 <p className="mt-1 text-lg font-medium leading-6 text-white">
                   {completedCount} de {rows.length} ejercicios
                 </p>
@@ -369,23 +506,38 @@ export function DayWorkoutClient({
                 const isCompleted = completedByItemId[row.id] ?? false;
                 const saveState = saveStateByItemId[row.id] ?? { status: "idle" };
                 const isExpanded = expandedId === row.id;
+                const completedSeries = countCompletedSeries(
+                  draft.performedReps,
+                  draft.usedWeight,
+                  row.series,
+                );
+                const isTimerForThis = restTimer?.rowId === row.id;
 
                 return (
                   <motion.article
                     key={row.id}
+                    ref={(el) => {
+                      exerciseRefs.current[row.id] = el;
+                    }}
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.04, duration: 0.3, ease: "easeOut" }}
                     className={cn(
-                      "overflow-hidden rounded-xl border bg-[linear-gradient(180deg,rgba(9,18,31,0.96),rgba(7,14,24,0.98))] shadow-[0_14px_36px_rgba(0,0,0,0.16)] transition-colors",
-                      isCompleted ? "border-[#1e754a]" : "border-[#172236]",
+                      "overflow-hidden rounded-xl border bg-[linear-gradient(180deg,rgba(9,18,31,0.96),rgba(7,14,24,0.98))] shadow-[0_14px_36px_rgba(0,0,0,0.16)] transition-all duration-300",
+                      isCompleted
+                        ? "border-[#1e754a]"
+                        : isExpanded
+                          ? "border-[#7d4bff] shadow-[0_0_0_1px_rgba(125,75,255,0.25),0_18px_50px_rgba(125,75,255,0.14)]"
+                          : "border-[#172236]",
                     )}
                   >
                     <div
                       role="button"
                       tabIndex={0}
                       aria-expanded={isExpanded}
-                      onClick={() => setExpandedId((current) => (current === row.id ? null : row.id))}
+                      onClick={() =>
+                        setExpandedId((current) => (current === row.id ? null : row.id))
+                      }
                       onKeyDown={(event) => {
                         if (event.key === "Enter" || event.key === " ") {
                           event.preventDefault();
@@ -420,12 +572,24 @@ export function DayWorkoutClient({
                         <RowSaveIndicator state={saveState} className="mt-1" />
                       </button>
 
-                      <ChevronDown
-                        className={cn(
-                          "size-5 shrink-0 text-[#7887a6] transition-transform",
-                          isExpanded ? "rotate-180" : "",
-                        )}
-                      />
+                      <div className="flex shrink-0 items-center gap-2">
+                        <span
+                          className={cn(
+                            "text-[11px] font-semibold tabular-nums",
+                            completedSeries === row.series && row.series > 0
+                              ? "text-[#52f58a]"
+                              : "text-[#7887a6]",
+                          )}
+                        >
+                          {completedSeries}/{row.series}
+                        </span>
+                        <ChevronDown
+                          className={cn(
+                            "size-5 shrink-0 text-[#7887a6] transition-transform duration-200",
+                            isExpanded ? "rotate-180" : "",
+                          )}
+                        />
+                      </div>
                     </div>
 
                     <AnimatePresence initial={false}>
@@ -434,7 +598,7 @@ export function DayWorkoutClient({
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2, ease: "easeOut" }}
+                          transition={{ duration: 0.22, ease: "easeOut" }}
                           className="overflow-hidden"
                         >
                           <div className="grid gap-4 border-t border-[#172236] px-5 py-4 xl:px-6">
@@ -456,19 +620,63 @@ export function DayWorkoutClient({
                               <div className="flex items-center gap-2 rounded-lg border border-[#3a2d5c] bg-[#1c1438] px-3 py-2 text-sm text-[#cbb8ff]">
                                 <TrendingUp className="size-4 shrink-0" />
                                 Llegaste al tope del rango ideal ({row.exercise.minReps}-
-                                {row.exercise.maxReps} reps). Proba aumentar el peso la proxima serie.
+                                {row.exercise.maxReps} reps). Probá aumentar el peso en la próxima
+                                serie.
                               </div>
                             ) : null}
 
-                            <Button
-                              type="button"
-                              variant="outline"
-                              className="h-10 w-full rounded-lg border-[#26364f] bg-[#07111d] px-4 text-sm font-medium sm:w-auto sm:justify-self-start"
-                              onClick={() => setSelectedExercise(row.exercise)}
-                            >
-                              Ver detalle
-                              <ChevronRight className="size-4" />
-                            </Button>
+                            {/* Rest timer */}
+                            <AnimatePresence>
+                              {isTimerForThis && restTimer ? (
+                                <motion.div
+                                  key="rest-timer"
+                                  initial={{ opacity: 0, y: 6, scale: 0.97 }}
+                                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                                  exit={{ opacity: 0, y: 6, scale: 0.97 }}
+                                  transition={{ duration: 0.2, ease: "easeOut" }}
+                                >
+                                  <RestTimerCard
+                                    secondsLeft={restTimer.secondsLeft}
+                                    onAdd15={() =>
+                                      setRestTimer((t) =>
+                                        t ? { ...t, secondsLeft: t.secondsLeft + 15 } : null,
+                                      )
+                                    }
+                                    onSkip={stopRestTimer}
+                                  />
+                                </motion.div>
+                              ) : null}
+                            </AnimatePresence>
+
+                            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                              <motion.div
+                                whileTap={{ scale: 0.98 }}
+                                className="flex-1 sm:flex-none"
+                              >
+                                <Button
+                                  type="button"
+                                  onClick={() => handleToggleCompleted(row.id)}
+                                  className={cn(
+                                    "h-10 w-full rounded-lg px-5 text-sm font-semibold sm:w-auto",
+                                    isCompleted
+                                      ? "border border-[#1e754a] bg-[#0d2218] text-[#52f58a] hover:bg-[#0f2a1e]"
+                                      : "bg-[#7d4bff] text-white shadow-[0_4px_16px_rgba(125,75,255,0.35)] hover:bg-[#6b3cee]",
+                                  )}
+                                >
+                                  <Check className="size-4" />
+                                  {isCompleted ? "Ejercicio completado" : "Completar ejercicio"}
+                                </Button>
+                              </motion.div>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                className="h-10 w-full rounded-lg border-[#26364f] bg-[#07111d] px-4 text-sm font-medium sm:w-auto sm:justify-self-start"
+                                onClick={() => setSelectedExercise(row.exercise)}
+                              >
+                                Ver detalle
+                                <ChevronRight className="size-4" />
+                              </Button>
+                            </div>
                           </div>
                         </motion.div>
                       ) : null}
@@ -480,11 +688,11 @@ export function DayWorkoutClient({
           ) : (
             <div className="rounded-xl border border-dashed border-[#25324b] bg-[#08101b]/88 p-8 text-center">
               <p className="font-display text-2xl font-semibold text-white">
-                Este dia todavia no tiene ejercicios
+                Este día todavía no tiene ejercicios
               </p>
               <p className="mx-auto mt-2 max-w-2xl text-sm leading-6 text-[#96a3be]">
-                Cuando el admin cargue filas en esta plantilla, esta vista mostrara el registro real
-                del entrenamiento y permitira finalizar la sesion del dia.
+                Cuando el admin cargue filas en esta plantilla, esta vista mostrará el registro real
+                del entrenamiento y permitirá finalizar la sesión del día.
               </p>
             </div>
           )}
@@ -495,12 +703,48 @@ export function DayWorkoutClient({
         exercise={selectedExercise}
         open={selectedExercise !== null}
         onOpenChange={(open) => {
-          if (!open) {
-            setSelectedExercise(null);
-          }
+          if (!open) setSelectedExercise(null);
         }}
       />
     </>
+  );
+}
+
+function RestTimerCard({
+  secondsLeft,
+  onAdd15,
+  onSkip,
+}: {
+  secondsLeft: number;
+  onAdd15: () => void;
+  onSkip: () => void;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-3 rounded-xl border border-[#2a1f52] bg-[#130d28] px-4 py-3">
+      <div className="flex items-center gap-2">
+        <Timer className="size-4 shrink-0 text-[#c084fc]" />
+        <span className="text-sm font-semibold text-white">
+          Descanso{" "}
+          <span className="tabular-nums text-[#c084fc]">{formatSeconds(secondsLeft)}</span>
+        </span>
+      </div>
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={onAdd15}
+          className="rounded-md border border-[#2a1f52] bg-[#1c1438] px-2 py-1 text-[11px] font-semibold text-[#c084fc] transition-colors hover:bg-[#251345]"
+        >
+          +15s
+        </button>
+        <button
+          type="button"
+          onClick={onSkip}
+          className="rounded-md border border-[#253149] bg-[#07101b] px-2 py-1 text-[11px] font-semibold text-[#8a93a8] transition-colors hover:border-[#394d6b] hover:text-[#d3d8e4]"
+        >
+          Saltar
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -578,22 +822,17 @@ function RowSaveIndicator({
   state: RowSaveState;
   className?: string;
 }) {
-  if (state.status !== "error") {
-    return null;
-  }
-
-  const config = { label: "Error", className: "text-[#ffb8c4]" };
+  if (state.status !== "error") return null;
 
   return (
     <span
       className={cn(
-        "items-center text-[10px] font-semibold uppercase tracking-[0.14em]",
-        config.className,
+        "items-center text-[10px] font-semibold uppercase tracking-[0.14em] text-[#ffb8c4]",
         className,
       )}
       title={state.status === "error" ? state.message : undefined}
     >
-      {config.label}
+      Error
     </span>
   );
 }
@@ -616,37 +855,74 @@ function SeriesInputsGroup({
   const repsValues = splitSeriesValues(performedReps, series);
   const weightValues = splitSeriesValues(usedWeight, series);
 
-  if (series <= 0) {
-    return null;
-  }
+  if (series <= 0) return null;
 
   return (
     <div className="grid gap-2">
-      <div className="grid grid-cols-[2.5rem_minmax(0,1fr)_minmax(0,1fr)] items-center gap-2 px-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#7887a6]">
+      <div className="grid grid-cols-[2.5rem_minmax(0,1fr)_minmax(0,1fr)_1.75rem] items-center gap-2 px-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#7887a6]">
         <span />
         <span className="text-center">Reps</span>
         <span className="text-center">Peso (kg)</span>
+        <span />
       </div>
-      {Array.from({ length: series }, (_, index) => (
-        <div
-          key={index}
-          className="grid grid-cols-[2.5rem_minmax(0,1fr)_minmax(0,1fr)] items-center gap-2"
-        >
-          <span className="text-center text-xs font-semibold text-[#7887a6]">#{index + 1}</span>
-          <SeriesCell
-            name={`performedReps:${rowId}:${index}`}
-            value={repsValues[index] ?? ""}
-            onChange={(value) =>
-              onPerformedRepsChange(joinSeriesValues(repsValues, index, value))
-            }
-          />
-          <SeriesCell
-            name={`usedWeight:${rowId}:${index}`}
-            value={weightValues[index] ?? ""}
-            onChange={(value) => onUsedWeightChange(joinSeriesValues(weightValues, index, value))}
-          />
-        </div>
-      ))}
+      {Array.from({ length: series }, (_, index) => {
+        const isSeriesDone = Boolean(
+          repsValues[index]?.trim() && weightValues[index]?.trim(),
+        );
+
+        return (
+          <div
+            key={index}
+            className={cn(
+              "grid grid-cols-[2.5rem_minmax(0,1fr)_minmax(0,1fr)_1.75rem] items-center gap-2 rounded-lg px-0.5 transition-colors duration-300",
+              isSeriesDone ? "bg-[rgba(16,36,24,0.6)]" : "bg-transparent",
+            )}
+          >
+            <span className="text-center text-xs font-semibold text-[#7887a6]">
+              #{index + 1}
+            </span>
+            <SeriesCell
+              name={`performedReps:${rowId}:${index}`}
+              value={repsValues[index] ?? ""}
+              onChange={(value) =>
+                onPerformedRepsChange(joinSeriesValues(repsValues, index, value))
+              }
+            />
+            <SeriesCell
+              name={`usedWeight:${rowId}:${index}`}
+              value={weightValues[index] ?? ""}
+              onChange={(value) =>
+                onUsedWeightChange(joinSeriesValues(weightValues, index, value))
+              }
+            />
+            <div className="flex items-center justify-center">
+              <AnimatePresence mode="wait">
+                {isSeriesDone ? (
+                  <motion.div
+                    key="done"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                  >
+                    <CheckCircle2 className="size-4 text-[#35ea75]" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="pending"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <Circle className="size-4 text-[#2b3a54]" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -666,7 +942,7 @@ function SeriesCell({
       value={value}
       onChange={(event) => onChange(event.target.value)}
       inputMode="decimal"
-      className="h-10 w-full rounded-md border-[#20304a] bg-[#07111d] text-center text-base text-white placeholder:text-[#748098]"
+      className="h-10 w-full rounded-md border-[#20304a] bg-[#07111d] text-center text-base text-white placeholder:text-[#748098] focus-visible:border-[#9d5cff] focus-visible:ring-2 focus-visible:ring-[#9d5cff]/30"
     />
   );
 }
