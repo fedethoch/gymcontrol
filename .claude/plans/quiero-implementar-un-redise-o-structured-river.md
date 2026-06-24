@@ -1,128 +1,117 @@
-# Rediseño visual — Dashboard principal (PWA)
+# Corrección visual — Dashboard principal (PWA) — Ronda 2
 
 ## Context
 
-El dashboard principal (`app/page.tsx`, server component en ruta `/`) ya tiene
-todas las features y datos reales: hero del día, nutrición, carga muscular,
-comidas, constancia y calendario nutricional. Pero la dirección visual actual es
-condensada (cards de medio ancho, sin stats en el hero, sin fila de resumen
-diario). El mockup `docs/design-references/dashboard-principal-redesign-v1.png`
-pide una versión **dark fitness premium** más accionable y con jerarquía clara:
-hero con stats y grupos musculares, fila de 3 cards de resumen, y cards de
-nutrición / carga muscular más grandes con CTAs.
+El rediseño v1 de `app/page.tsx` ya tiene la estructura general y todos los datos
+reales, pero **no replica fielmente** el mockup
+`docs/design-references/dashboard-principal-redesign-v1.png`. Diferencias clave:
+hero demasiado alto y con imagen dinámica, cards de resumen sin color/jerarquía,
+Nutrición y Carga muscular **apiladas** cuando la referencia las pone en **una
+fila de 2 columnas**, empty state de Comidas sin la composición del mockup, y
+cards inferiores que leen como "calendario genérico" sin header de día ni
+contador. Objetivo: corregir la capa visual para acercarla al mockup **sin tocar
+lógica, rutas, datos, auth ni DB**. Solo `app/page.tsx`.
 
-Objetivo: replicar fielmente el mockup **sin tocar lógica, rutas, datos, auth ni
-DB**. Solo capa visual. Reutilizar componentes existentes; crear sub-componentes
-presentacionales nuevos solo donde mejora consistencia.
+## Decisiones confirmadas (esta ronda)
 
-Alcance estricto: solo `app/page.tsx` (+ ajustes CSS menores en `globals.css` si
-hacen falta). **No** tocar el navbar inferior (`MobileTabBar`), header
-(`MobileHeader`), ni otras secciones.
+- **Hero**: imagen **fija** `/images/hero.png` (no `todayCardImageUrl`).
+- **CTA "Ver detalle muscular"**: **se omite** (no existe ruta). La card Carga
+  muscular queda sin CTA, igual que hoy.
 
-## Decisiones tomadas (confirmadas con el usuario)
+## Diagnóstico — diferencias actuales vs referencia
 
-- **Duración estimada del hero**: no existe en DB → derivar de `series` + `rest`
-  de los ejercicios del día (estimación real, no hardcode).
-- **CTA "Ver detalle muscular"**: no existe ruta dedicada → **se omite** el CTA.
-  La card de carga muscular queda sin link.
+1. **Hero**: usa imagen dinámica (`todayCardImageUrl`), `minHeight: 220` →
+   demasiado alto. Referencia es más compacto.
+2. **3 cards resumen**: poco color (todos los iconos violeta `#9a63ff`), número
+   chico (`text-base`), labels en 8px apretados. Referencia: cada card con icono
+   de color distinto (Entrenamiento violeta, Nutrición naranja/flame, Constancia
+   verde/trending), número grande, label + sublabel legibles, más peso visual.
+3. **Nutrición de hoy + Carga muscular**: hoy **apiladas full-width**. Referencia
+   = **misma fila, 2 columnas**.
+4. **Comidas de hoy (empty)**: hoy centrado vertical. Referencia: texto a la
+   izquierda + ilustración/icono tenue a la derecha, CTA debajo.
+5. **Constancia semanal / Registro nutricional**: `bare` actual orienta días en
+   vertical (7 filas, flujo por columna), sin header de día ni contador.
+   Referencia: subtítulo + grilla heatmap + contador `0 de 7 días`.
 
-## Datos: todo derivable de lo que ya se fetchea (sin nuevas queries)
+## Plan de corrección por bloque
 
-`app/page.tsx` ya carga `activeRoutine`, `nextPendingDay`, `weeklySummary`,
-`mealLog`, `plan`, `muscleStrengthSummaries`, `completedTrainingDates`, `streak`,
-`nutritionLoggedDates`. Derivar lo nuevo en el server component:
+### 1. Hero (compacto + imagen fija)
+- `src={todayCardImageUrl}` → `src="/images/hero.png"`.
+- Bajar altura: `minHeight: 220` → ~170–180, reducir `pt-28` y `pb-5`.
+- Mantener: eyebrow "HOY TOCA", título grupos musculares con separador violeta,
+  subtítulo "Día N…", fila de 3 `HeroStat`, CTAs (Comenzar + Ver rutina).
 
-- **Grupos musculares del día** (título hero, ej. "Pierna · Bíceps · Abs"):
-  de `nextPendingDay.items[].exercise.muscleGroup` → dedupe + ordenar por
-  frecuencia, tomar top ~3. Fallback: `nextPendingDay.dayName`.
-- **Subtítulo hero** ("Día N de tu rutina semanal"): `nextPendingDay.dayOrder` +
-  `activeRoutine.days.length`.
-- **N ejercicios** (hero stat + card Entrenamiento): `nextPendingDay.items.length`.
-- **Duración estimada** (hero stat): helper `estimateDayMinutes(items)` →
-  `Σ series * (~tiempo_serie + rest_segundos)` redondeado a 5 min. Label "~X min".
-- **Completados** (hero stat): `completedDayIds.size` de días de la rutina
-  (`weeklySummary.completedRoutineDayIds`). Real.
-- **Card Entrenamiento** (resumen): "0/N ejercicios · Pendiente" si el día está
-  pendiente (no trackeamos por-ejercicio en dashboard → 0 cuando pendiente);
-  CTA → `primaryHref` (ya calculado).
-- **Card Nutrición** (resumen): `totalKcal` agregadas / `plan.targetKcal` objetivo.
-- **Card Constancia** (resumen): `streak` + label "racha actual".
+### 2. Tres cards de resumen (más color y jerarquía)
+- `SummaryStatCard`: prop `accent` por card (icono + tinte del chip). Entrenamiento
+  violeta (`--accent`), Nutrición naranja (`#fb923c`), Constancia verde (`#22c55e`).
+- Subir número (`text-base` → `text-lg`/`text-xl`), label 9–10px legible (no 8px),
+  sublabel 9px. Icono en chip redondeado con bg del accent al 10–15%.
 
-## Estructura objetivo (mobile-first, top → bottom)
+### 3. Nutrición de hoy + Carga muscular en una fila
+- Envolver ambas en `grid grid-cols-2 gap-2` (en vez del stack actual).
+- `NutricionTodayCard` → layout vertical compacto (ring arriba, macros debajo,
+  CTA al pie) para entrar en media columna. Mantener `AnimatedProgressRing` +
+  `AnimatedMacroBar` + CTA "Agregar comida" → `/nutricion/registro`.
+- `CargaMuscularCard` en la otra media columna; `BodyMuscleFigure` escalado para
+  no recortarse; leyenda Base/Intensidad/Elite. **Sin CTA**.
+- `ComidasHoyCard` pasa a fila propia full-width debajo de ese grid.
 
-1. **Hero** (rediseño de bloque existente, líneas ~168-230):
-   - eyebrow "HOY TOCA"
-   - título = grupos musculares del día (acento violeta en separadores)
-   - subtítulo "Día N de tu rutina semanal"
-   - **fila de stats** (nueva): `~X min` · `N ejercicios` · `X completados`,
-     cada uno con icono lucide (`Clock`, `Dumbbell`/`ListChecks`, `CircleCheck`)
-   - CTAs: "Comenzar entrenamiento" (`primaryHref`) + "Ver rutina" (`/rutinas`)
-   - imagen `/images/hero.png` con gradiente oscuro + glow violeta (ya existe)
-2. **Fila 3 cards de resumen** (nueva): Entrenamiento / Nutrición / Constancia.
-   `grid grid-cols-3 gap-2`. Sub-componente nuevo `<SummaryStatCard>` (icono,
-   valor grande, label, sublabel/estado).
-3. **Card Nutrición de hoy** (ancho completo): reusar lógica de `NutricionCard`
-   pero layout horizontal: ring kcal a la izquierda, macros a la derecha, CTA
-   "Agregar comida" → `/nutricion/registro`. `col-span-2` / full width.
-4. **Card Carga muscular** (ancho completo): reusar `CargaMuscularCard` +
-   `BodyMuscleFigure` (ya renderiza front+back). Sin CTA. Leyenda de intensidad.
-5. **Card Comidas de hoy** (existente `ComidasHoyCard`): mantener; empty state ya
-   coincide con el mockup ("Todavía no registraste comidas" + "Agregar comida").
-6. **Fila inferior** (existente): Constancia semanal (`TrainingCalendarCard`) +
-   Registro nutricional (`NutritionCalendarCard`), grid 2-col.
+### 4. Comidas de hoy (empty state fiel)
+- Empty: layout horizontal → título/texto/CTA a la izquierda, icono
+  `UtensilsCrossed` grande y tenue a la derecha. CTA → `/nutricion/registro`.
+- Estado con comidas: sin cambios.
 
-Layout: pasar de `grid-cols-2` compacto a una secuencia más vertical/espaciada
-con cards full-width para nutrición y carga muscular, manteniendo el grid 2-col
-solo en la fila inferior de calendarios. Respetar `lg:` para desktop.
+### 5. Constancia semanal / Registro nutricional (heatmap con contexto)
+- Mantener `TrainingCalendarCard`/`NutritionCalendarCard` `bare`.
+- Wrapper en `page.tsx`: subtítulo ("Entrenamientos completados" / "Días con
+  registro") + **contador** `X de N días` derivado de `completedTrainingDates` /
+  `nutritionLoggedDates` en la ventana mostrada. Ajustar spacing al mockup.
+- Header exacto `L M M J V S D` horizontal chocaría con la orientación vertical
+  del `bare` (modificar el componente compartido está fuera de alcance);
+  aproximación: subtítulo + contador sin tocar el componente.
 
 ## Archivos a modificar
 
-- **`app/page.tsx`** (principal): reescribir el JSX del `return` y agregar
-  sub-componentes presentacionales nuevos en el mismo archivo:
-  - `HeroStat` (icono + valor + label)
-  - `SummaryStatCard` (las 3 cards de resumen)
-  - helper `estimateDayMinutes(items)` y `dayMuscleGroups(items)`
-  - adaptar `NutricionCard` a variante horizontal con CTA (o nueva
-    `NutricionTodayCard` reutilizando los cálculos de macros existentes)
-  - quitar CTA/route inexistente en `CargaMuscularCard`
-  Mantener intactos: data fetching (líneas 70-153), imports de datos, lógica.
-- **`app/globals.css`** (solo si necesario): ajustes mínimos de spacing del
-  `page-frame` / clases auxiliares. Evitar tocar reglas del `mobile-tab-bar`.
+- **`app/page.tsx`** (único): reescribir `return` + sub-componentes
+  (`SummaryStatCard`, `NutricionTodayCard`, `CargaMuscularCard`, `ComidasHoyCard`,
+  wrappers de heatmaps). Reutilizar sin tocar: `Button`, `AnimatedProgressRing`,
+  `AnimatedMacroBar`, `GlowPulseWrapper`, motion helpers, `BodyMuscleFigure`,
+  `TrainingCalendarCard`, `NutritionCalendarCard`, `MobileHeaderBadgeSync`.
+  Iconos: solo `lucide-react`.
+- **`app/globals.css`**: solo si hace falta ajuste mínimo de spacing. No tocar
+  reglas de `mobile-tab-bar`.
+- **No tocar**: `MobileTabBar`, `MobileHeader`, calendar/body components, rutas,
+  queries, auth, DB.
 
-Reutilizar (sin modificar): `Button`, `AnimatedProgressRing`, `AnimatedMacroBar`,
-`GlowPulseWrapper`, motion helpers (`fadeUp`, `MotionDiv`, `MotionSection`,
-`staggerContainer`, `tapFeedback`), `BodyMuscleFigure`, `TrainingCalendarCard`,
-`NutritionCalendarCard`, `MobileHeaderBadgeSync`. Iconos: solo `lucide-react`.
-Acento violeta vía vars existentes (`--accent`, `--accent-bright`).
+## Riesgos / limitaciones
 
-## No hacer
+- **2 columnas en mobile (390px)**: ring + macros y dos figuras de cuerpo en
+  media columna quedan apretados → reducir tamaños (ring ~72px, figuras
+  escaladas) y validar overflow con Playwright.
+- **`BodyMuscleFigure`** SVG fijo 90×180 → puede recortar en media columna;
+  aplicar `scale`/contenedor `overflow-hidden` y verificar.
+- **Header de día del heatmap**: replicarlo exacto requeriría tocar el componente
+  compartido (fuera de alcance) → aproximación con subtítulo + contador.
+- Cambios de densidad → revisar scroll y padding del `page-frame` (safe-area +
+  navbar).
 
-- No tocar `MobileTabBar`, `MobileHeader` (greeting "Hola, Fede" + bell + racha
-  ya existen y coinciden con el mockup), ni layout/AppShell.
-- No nuevas rutas, queries, migraciones, ni cambios de auth.
-- No hardcodear kcal/objetivo/ejercicios — todo derivado de datos reales.
-- No agregar libs nuevas (framer-motion ya instalado; usar microinteracciones
-  sutiles existentes: tap feedback, fadeUp/stagger).
+## Verificación con Playwright (obligatoria)
 
-## Verificación
+1. Dev en puerto libre: `npx next dev --port 3001` (3000 ocupado por otra app).
+2. Auth: sesión Supabase vía `signInWithPassword` (service role key de
+   `.env.local`); inyectar cookie `sb-ignlzahslkkfucgnekkb-auth-token` =
+   `"base64-" + base64url(JSON.stringify(session))` en el contexto Playwright
+   (método ya validado en ronda anterior).
+3. Abrir `/`, viewport mobile ~390px; screenshot full del `shell-main`.
+4. Comparar lado a lado vs `docs/design-references/...v1.png`: altura hero,
+   color/jerarquía de las 3 cards, fila 2-col Nutrición+Carga, empty de Comidas,
+   heatmaps con contador. Anotar diffs.
+5. **≥1 ronda de corrección visual** sobre los diffs; re-screenshot.
+6. Checks: `npm run lint` (0 errores nuevos) + `tsc --noEmit`. No tocar config del
+   linter.
+7. Confirmar empty states limpios con usuario sin datos.
 
-1. `npm run dev` (o el script equivalente del proyecto).
-2. Login con credenciales de `.env.local` (EMAIL / EMAIL_PASSWORD).
-3. **Playwright MCP**: abrir `/`, viewport mobile (~390px) y desktop, screenshot.
-4. Comparar contra `docs/design-references/dashboard-principal-redesign-v1.png`:
-   layout, jerarquía, spacing, contraste, tamaños de texto, estados vacíos,
-   responsive (sin overflow, navbar inferior intacto).
-5. **≥1 ronda de corrección visual** tras la comparación.
-6. Checks del proyecto: `npm run lint` y typecheck (`tsc --noEmit` / script
-   `typecheck` si existe). No modificar config del linter para pasar.
-7. Confirmar que con usuario sin datos (kcal 0, sin comidas, sin racha) los
-   empty states se ven limpios como en el mockup.
+## Formato de entrega (al implementar)
 
-## Riesgos
-
-- Estimación de duración puede verse arbitraria → mantener label "~X min" y
-  redondeo a 5 min para que lea como aproximación.
-- Cards full-width cambian densidad → revisar que no rompa el scroll ni el
-  padding inferior del `page-frame` (safe-area + navbar).
-- `BodyMuscleFigure` tiene tamaño SVG fijo (90×180) → validar que escale bien en
-  card full-width sin recortes.
+1. Diagnóstico  2. Archivos cambiados  3. Tests ejecutados  4. Riesgos.

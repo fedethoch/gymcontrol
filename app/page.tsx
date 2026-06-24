@@ -52,8 +52,6 @@ import {
   type MuscleStrengthSummary,
 } from "@/app/lib/workout-tracking";
 
-const TODAY_CARD_FALLBACK_IMAGE = "/images/dashboard/hoy-toca-fallback.png";
-
 const STRENGTH_LEGEND_GRADIENT =
   "linear-gradient(90deg,#22c55e 0%,#eab308 33%,#f97316 66%,#ef4444 100%)";
 
@@ -111,6 +109,20 @@ function dayMuscleGroups(items: RoutineItem[]): string[] {
     .map(([g]) => g);
 }
 
+/** Cuenta cuántas fechas del set caen en la ventana de N días hasta hoy. */
+function countDatesInWindow(dates: Set<string>, days: number): number {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  let count = 0;
+  for (let i = 0; i < days; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    if (dates.has(key)) count++;
+  }
+  return count;
+}
+
 export default async function Home() {
   const auth = await requireUser();
   const logDate = getLocalTrainingDate();
@@ -162,8 +174,6 @@ export default async function Home() {
     activeRoutine && nextPendingDay
       ? `/rutinas/dia?savedRoutineId=${activeRoutine.id}&day=${nextPendingDay.dayOrder}`
       : "/rutinas";
-  const todayCardImageUrl =
-    activeRoutine?.imageUrl || activeRoutineListItem?.coverImageUrl || TODAY_CARD_FALLBACK_IMAGE;
 
   const meals = mealLog?.meals ?? [];
   const totalKcal = meals.reduce((sum, m) => sum + m.kcal, 0);
@@ -197,13 +207,19 @@ export default async function Home() {
 
   const streak = computeStreak(completedTrainingDates, logDate);
 
-  // ── Derived for redesign ──
+  // ── Derived for hero ──
   const dayItems = nextPendingDay?.items ?? [];
   const estimatedMinutes = estimateDayMinutes(dayItems);
   const exerciseCount = dayItems.length;
   const muscleGroups = dayMuscleGroups(dayItems);
   const completedDaysCount = completedDayIds.size;
   const totalDaysCount = activeRoutine?.days.length ?? 0;
+
+  // ── Derived for heatmap counters ──
+  const nutritionDatesSet = new Set(nutritionLoggedDates);
+  const heatmapDays = 35; // 5 semanas
+  const trainingHeatmapCount = countDatesInWindow(completedTrainingDates, heatmapDays);
+  const nutritionHeatmapCount = countDatesInWindow(nutritionDatesSet, heatmapDays);
 
   return (
     <section className="page-frame auto-rows-max content-start bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
@@ -229,23 +245,24 @@ export default async function Home() {
           Hoy toca
         </p>
 
-        <div className="relative overflow-hidden rounded-2xl bg-[#11151f]" style={{ minHeight: 220 }}>
+        <div className="relative overflow-hidden rounded-2xl bg-[#11151f]" style={{ minHeight: 178 }}>
+          {/* Fixed hero image */}
           <Image
-            alt={activeRoutine?.displayName ?? "Entrenamiento de hoy"}
-            className="object-cover saturate-[0.82]"
+            alt="Entrenamiento de hoy"
+            className="object-cover"
             fill
             priority
             sizes="100vw"
-            src={todayCardImageUrl}
+            src="/images/hero.png"
           />
-          {/* Dark gradient from bottom */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-transparent" />
+          {/* Dark gradient from bottom — lighter at top so photo shows */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/92 via-black/40 to-transparent" />
           {/* Violet glow at bottom-right */}
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_75%_100%,rgba(124,58,237,0.32),transparent_55%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_75%_100%,rgba(124,58,237,0.28),transparent_50%)]" />
 
-          <div className="relative z-10 flex h-full flex-col justify-end gap-3 p-4 pb-5 pt-28">
+          <div className="relative z-10 flex h-full flex-col justify-end gap-2.5 p-4 pb-4 pt-14">
             {/* Muscle groups title + subtitle */}
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-0.5">
               <h2 className="font-display text-xl font-bold leading-tight text-white">
                 {muscleGroups.length > 0 ? (
                   muscleGroups.map((g, i) => (
@@ -272,7 +289,7 @@ export default async function Home() {
 
             {/* Stats row */}
             {nextPendingDay && (
-              <div className="flex items-center gap-3 flex-wrap">
+              <div className="flex items-center gap-2 flex-wrap">
                 {estimatedMinutes > 0 && (
                   <HeroStat icon={Clock} value={`~${estimatedMinutes} min`} />
                 )}
@@ -328,6 +345,7 @@ export default async function Home() {
         <MotionDiv variants={fadeUp} whileTap={tapFeedback}>
           <SummaryStatCard
             icon={Dumbbell}
+            accent="#7c3aed"
             value={nextPendingDay ? `0/${exerciseCount}` : completedDaysCount > 0 ? "✓" : "—"}
             label="Entrenamiento"
             sublabel={
@@ -343,6 +361,7 @@ export default async function Home() {
         <MotionDiv variants={fadeUp} whileTap={tapFeedback}>
           <SummaryStatCard
             icon={Flame}
+            accent="#fb923c"
             value={String(totalKcal)}
             label="Nutrición"
             sublabel={`/ ${plan.targetKcal} kcal`}
@@ -352,6 +371,7 @@ export default async function Home() {
         <MotionDiv variants={fadeUp} whileTap={tapFeedback}>
           <SummaryStatCard
             icon={TrendingUp}
+            accent="#22c55e"
             value={String(streak)}
             label="Constancia"
             sublabel={streak === 1 ? "día racha" : "días racha"}
@@ -359,7 +379,7 @@ export default async function Home() {
         </MotionDiv>
       </MotionSection>
 
-      {/* ── Main cards (vertical stack) ── */}
+      {/* ── Nutrición + Carga muscular (2-col) + Comidas (full-width) ── */}
       <MotionSection
         variants={staggerContainer}
         initial="hidden"
@@ -367,28 +387,26 @@ export default async function Home() {
         viewport={{ once: true, margin: "-60px" }}
         className="flex flex-col gap-3"
       >
-        {/* Nutrición de hoy */}
-        <MotionDiv variants={fadeUp} whileTap={tapFeedback}>
-          <NutricionTodayCard
-            totalKcal={totalKcal}
-            targetKcal={plan.targetKcal}
-            kcalPercent={kcalPercent}
-            kcalRemaining={kcalRemaining}
-            totalMacros={totalMacros}
-            targetMacros={plan.macros}
-          />
-        </MotionDiv>
+        <div className="grid grid-cols-2 gap-2">
+          <MotionDiv variants={fadeUp} whileTap={tapFeedback} className="h-full">
+            <NutricionTodayCard
+              totalKcal={totalKcal}
+              targetKcal={plan.targetKcal}
+              kcalPercent={kcalPercent}
+              kcalRemaining={kcalRemaining}
+              totalMacros={totalMacros}
+              targetMacros={plan.macros}
+            />
+          </MotionDiv>
+          <MotionDiv variants={fadeUp} whileTap={tapFeedback} className="h-full">
+            <CargaMuscularCard
+              muscleLoad={muscleLoad}
+              maxCount={maxMuscleCount}
+              strengthSummaries={muscleStrengthSummaries}
+            />
+          </MotionDiv>
+        </div>
 
-        {/* Carga muscular */}
-        <MotionDiv variants={fadeUp} whileTap={tapFeedback}>
-          <CargaMuscularCard
-            muscleLoad={muscleLoad}
-            maxCount={maxMuscleCount}
-            strengthSummaries={muscleStrengthSummaries}
-          />
-        </MotionDiv>
-
-        {/* Comidas de hoy */}
         <MotionDiv variants={fadeUp} whileTap={tapFeedback}>
           <ComidasHoyCard meals={meals} totalKcal={totalKcal} />
         </MotionDiv>
@@ -403,20 +421,34 @@ export default async function Home() {
         className="grid grid-cols-2 gap-2"
       >
         <MotionDiv variants={fadeUp} whileTap={tapFeedback} className="h-full">
-          <div className="flex h-full flex-col gap-1.5 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-2.5 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
+          <div className="flex h-full flex-col gap-2 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-2.5 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
             <CardLabel icon={CalendarRange} label="Constancia semanal" />
+            <p className="text-[9px] text-[#4a5368] -mt-0.5">Entrenamientos completados</p>
             <div className="flex flex-1 items-center justify-center">
               <TrainingCalendarCard completedDates={completedTrainingDates} weeks={5} bare />
             </div>
+            <p className="text-[10px] font-semibold text-[#7887a6]">
+              <span className="text-white">{trainingHeatmapCount}</span>
+              {" de "}
+              <span>{heatmapDays}</span>
+              {" días"}
+            </p>
           </div>
         </MotionDiv>
 
         <MotionDiv variants={fadeUp} whileTap={tapFeedback} className="h-full">
-          <div className="flex h-full flex-col gap-1.5 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-2.5 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
+          <div className="flex h-full flex-col gap-2 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-2.5 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
             <CardLabel icon={UtensilsCrossed} label="Registro nutricional" />
+            <p className="text-[9px] text-[#4a5368] -mt-0.5">Días con registro</p>
             <div className="flex flex-1 items-center justify-center">
-              <NutritionCalendarCard loggedDates={new Set(nutritionLoggedDates)} weeks={5} bare />
+              <NutritionCalendarCard loggedDates={nutritionDatesSet} weeks={5} bare />
             </div>
+            <p className="text-[10px] font-semibold text-[#7887a6]">
+              <span className="text-white">{nutritionHeatmapCount}</span>
+              {" de "}
+              <span>{heatmapDays}</span>
+              {" días"}
+            </p>
           </div>
         </MotionDiv>
       </MotionSection>
@@ -467,12 +499,14 @@ function HeroStat({
 /** One of the three summary cards below the hero. */
 function SummaryStatCard({
   icon: Icon,
+  accent,
   value,
   label,
   sublabel,
   href,
 }: {
   icon: typeof Flame;
+  accent: string;
   value: string;
   label: string;
   sublabel: string;
@@ -480,17 +514,21 @@ function SummaryStatCard({
 }) {
   const inner = (
     <div className="flex h-full flex-col gap-2 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)] transition-colors hover:border-white/[0.1]">
-      <div className="flex size-7 items-center justify-center rounded-xl bg-[#161d2f]">
-        <Icon className="size-3.5 text-[#9a63ff]" />
+      {/* Icon chip with accent tint */}
+      <div
+        className="flex size-7 items-center justify-center rounded-xl"
+        style={{ background: `${accent}22` }}
+      >
+        <Icon className="size-3.5" style={{ color: accent }} />
       </div>
       <div className="flex min-w-0 flex-col gap-0.5">
-        <span className="truncate font-display text-base font-bold leading-none text-white">
+        <span className="truncate font-display text-xl font-bold leading-none text-white">
           {value}
         </span>
-        <span className="line-clamp-2 text-[8px] font-bold uppercase tracking-[0.08em] text-[#7887a6] leading-tight">
+        <span className="line-clamp-2 text-[9px] font-bold uppercase tracking-[0.06em] text-[#7887a6] leading-tight">
           {label}
         </span>
-        <span className="line-clamp-1 text-[8px] text-[#4a5368]">{sublabel}</span>
+        <span className="line-clamp-1 text-[9px] text-[#4a5368]">{sublabel}</span>
       </div>
     </div>
   );
@@ -504,7 +542,7 @@ function SummaryStatCard({
   );
 }
 
-/** Full-width nutrition card with ring + macro bars + CTA. */
+/** Compact vertical nutrition card for half-column layout. */
 function NutricionTodayCard({
   totalKcal,
   targetKcal,
@@ -523,19 +561,19 @@ function NutricionTodayCard({
   const isEmpty = totalKcal === 0;
   const macros = [
     {
-      label: "Proteína",
+      label: "Prot.",
       value: totalMacros.proteinG,
       target: targetMacros.proteinG,
       color: "#4ade80",
     },
     {
-      label: "Carbohid.",
+      label: "Carb.",
       value: totalMacros.carbsG,
       target: targetMacros.carbsG,
       color: "#fb923c",
     },
     {
-      label: "Grasas",
+      label: "Gras.",
       value: totalMacros.fatG,
       target: targetMacros.fatG,
       color: "#f472b6",
@@ -543,69 +581,63 @@ function NutricionTodayCard({
   ];
 
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
+    <div className="flex h-full flex-col gap-2.5 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <CardLabel icon={Flame} label="Nutrición de hoy" />
-        <span className="text-[10px] text-[#4a5368]">Objetivo: {targetKcal} kcal</span>
+      <CardLabel icon={Flame} label="Nutrición de hoy" />
+
+      {/* Progress ring centered */}
+      <div className="flex flex-col items-center gap-1">
+        <AnimatedProgressRing
+          value={kcalPercent}
+          size={72}
+          strokeWidth={7}
+          progressColor="var(--accent-bright)"
+        >
+          <div className="flex flex-col items-center">
+            <span className="font-display text-sm font-bold leading-none text-white">
+              {totalKcal}
+            </span>
+            <span className="text-[7px] text-[#7887a6]">kcal</span>
+          </div>
+        </AnimatedProgressRing>
+        {isEmpty ? (
+          <p className="text-[8px] text-[#4a5368]">Sin registro</p>
+        ) : (
+          <p className="text-[8px] font-semibold text-[#c5cad8]">
+            <span className="text-white">{kcalRemaining}</span> rest.
+          </p>
+        )}
+        <p className="text-[8px] text-[#4a5368]">/ {targetKcal} kcal</p>
       </div>
 
-      {/* Ring + macros row */}
-      <div className="flex items-center gap-4">
-        {/* Progress ring */}
-        <div className="flex shrink-0 flex-col items-center gap-1">
-          <AnimatedProgressRing
-            value={kcalPercent}
-            size={88}
-            strokeWidth={8}
-            progressColor="var(--accent-bright)"
-          >
-            <div className="flex flex-col items-center">
-              <span className="font-display text-sm font-bold leading-none text-white">
-                {totalKcal}
-              </span>
-              <span className="text-[7px] text-[#7887a6]">kcal</span>
-            </div>
-          </AnimatedProgressRing>
-          {isEmpty ? (
-            <p className="text-[8px] text-[#4a5368]">Sin registro</p>
-          ) : (
-            <p className="text-[9px] font-semibold text-[#c5cad8]">
-              <span className="text-white">{kcalRemaining}</span> rest.
-            </p>
-          )}
-        </div>
-
-        {/* Macro bars */}
-        <div className="flex min-w-0 flex-1 flex-col gap-2">
-          {macros.map(({ label, value, target, color }) => {
-            const pct = target > 0 ? Math.min(100, Math.round((value / target) * 100)) : 0;
-            const remaining = Math.max(0, Math.round(target - value));
-            return (
-              <div key={label} className="grid gap-0.5">
-                <div className="flex items-center justify-between gap-1">
-                  <span className="truncate text-[9px] font-bold" style={{ color }}>
-                    {label}
-                  </span>
-                  <span className="shrink-0 text-[8px] text-[#7887a6]">
-                    {Math.round(value)}g / {remaining}g
-                  </span>
-                </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-[#1a2235]">
-                  <AnimatedMacroBar pct={pct} color={color} />
-                </div>
+      {/* Macro bars */}
+      <div className="flex flex-col gap-1.5">
+        {macros.map(({ label, value, target, color }) => {
+          const pct = target > 0 ? Math.min(100, Math.round((value / target) * 100)) : 0;
+          return (
+            <div key={label} className="grid gap-0.5">
+              <div className="flex items-center justify-between gap-1">
+                <span className="text-[8px] font-bold" style={{ color }}>
+                  {label}
+                </span>
+                <span className="shrink-0 text-[7px] text-[#7887a6]">
+                  {Math.round(value)}g
+                </span>
               </div>
-            );
-          })}
-        </div>
+              <div className="h-1 overflow-hidden rounded-full bg-[#1a2235]">
+                <AnimatedMacroBar pct={pct} color={color} />
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* CTA */}
       <Link
         href="/nutricion/registro"
-        className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-[#161d2f] py-2 text-xs font-semibold text-[#b995ff] transition-colors hover:bg-[#1e2840] hover:text-white"
+        className="mt-auto flex w-full items-center justify-center gap-1 rounded-xl bg-[#161d2f] py-1.5 text-[10px] font-semibold text-[#b995ff] transition-colors hover:bg-[#1e2840] hover:text-white"
       >
-        <Plus className="size-3.5" />
+        <Plus className="size-3" />
         Agregar comida
       </Link>
     </div>
@@ -628,27 +660,29 @@ function CargaMuscularCard({
   );
 
   return (
-    <div className="flex flex-col gap-2 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
+    <div className="flex h-full flex-col gap-2 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
       <CardLabel icon={Zap} label="Carga muscular" />
 
       {isEmpty ? (
-        <div className="flex flex-col items-center justify-center gap-2 py-6">
-          <Zap className="size-7 text-[#1e2840]" />
-          <p className="text-center text-[10px] font-semibold text-[#6b7590]">Sin rutina activa</p>
-          <p className="text-center text-[9px] leading-relaxed text-[#404e66]">
+        <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4">
+          <Zap className="size-6 text-[#1e2840]" />
+          <p className="text-center text-[9px] font-semibold text-[#6b7590]">Sin rutina activa</p>
+          <p className="text-center text-[8px] leading-relaxed text-[#404e66]">
             Activá una rutina para ver tu carga muscular
           </p>
         </div>
       ) : (
-        <div className="flex flex-col gap-2">
-          <GlowPulseWrapper active className="flex justify-center py-1">
-            <BodyMuscleFigure
-              muscleLoad={hasStrengthData ? {} : muscleLoad}
-              maxCount={maxCount}
-              muscleColors={muscleColors}
-            />
+        <div className="flex flex-1 flex-col gap-1.5">
+          <GlowPulseWrapper active className="flex justify-center py-0.5">
+            <div className="scale-[0.82] origin-top">
+              <BodyMuscleFigure
+                muscleLoad={hasStrengthData ? {} : muscleLoad}
+                maxCount={maxCount}
+                muscleColors={muscleColors}
+              />
+            </div>
           </GlowPulseWrapper>
-          <div className="grid gap-0.5">
+          <div className="mt-auto grid gap-0.5">
             <div className="h-1 rounded-full" style={{ background: STRENGTH_LEGEND_GRADIENT }} />
             <div className="flex items-center justify-between text-[7px] font-semibold text-[#6e7788]">
               <span>Base</span>
@@ -692,21 +726,26 @@ function ComidasHoyCard({
       </div>
 
       {preview.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-3 py-5">
-          <div className="flex size-10 items-center justify-center rounded-2xl bg-[#111722]">
-            <UtensilsCrossed className="size-5 text-[#2e3b52]" />
+        /* Empty state: text left + icon right */
+        <div className="flex items-center gap-3 py-3">
+          <div className="flex flex-1 flex-col gap-2">
+            <div className="space-y-0.5">
+              <p className="text-xs font-semibold text-[#6b7590]">
+                Todavía no registraste comidas
+              </p>
+              <p className="text-[10px] text-[#404e66]">
+                Llevá el control de lo que comés hoy
+              </p>
+            </div>
+            <Link
+              href="/nutricion/registro"
+              className="inline-flex w-fit items-center gap-1 rounded-lg bg-[#161d2f] px-3 py-1.5 text-[10px] font-semibold text-[#b995ff] transition-colors hover:bg-[#1e2840] hover:text-white"
+            >
+              <Plus className="size-3" />
+              Agregar primera comida
+            </Link>
           </div>
-          <div className="space-y-0.5 text-center">
-            <p className="text-xs font-semibold text-[#6b7590]">Todavía no registraste comidas</p>
-            <p className="text-[10px] text-[#404e66]">Llevá el control de lo que comés hoy</p>
-          </div>
-          <Link
-            href="/nutricion/registro"
-            className="inline-flex items-center gap-1 rounded-lg bg-[#161d2f] px-3 py-1.5 text-[10px] font-semibold text-[#b995ff] transition-colors hover:bg-[#1e2840] hover:text-white"
-          >
-            <Plus className="size-3" />
-            Agregar primera comida
-          </Link>
+          <UtensilsCrossed className="size-14 shrink-0 text-[#131c2e]" />
         </div>
       ) : (
         <div className="grid overflow-hidden rounded-xl border border-[rgba(255,255,255,0.06)] bg-[#111722]">
