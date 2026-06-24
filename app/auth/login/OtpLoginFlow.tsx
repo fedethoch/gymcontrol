@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { ArrowRight, KeyRound, Mail } from "lucide-react";
+import { ArrowLeft, ArrowRight, KeyRound, Mail } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/app/components/ui/Button";
@@ -193,9 +193,23 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
               void verifyOtp();
             }}
           >
+          <button
+            type="button"
+            disabled={busyState !== null}
+            onClick={() => {
+              setStep("email");
+              setToken("");
+            }}
+            className="flex w-fit items-center gap-1.5 rounded-lg px-1 py-1 text-xs font-medium text-[#8b94a8] transition-colors hover:text-white disabled:pointer-events-none disabled:opacity-40"
+            aria-label="Volver a ingresar email"
+          >
+            <ArrowLeft className="size-3.5" />
+            Volver
+          </button>
+
           <div className="rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] px-4 py-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8b94a8]">
-              Email actual
+              Codigo enviado a
             </p>
             <p className="mt-1 text-sm text-white">{normalizeEmail(email)}</p>
           </div>
@@ -224,32 +238,18 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
             <ArrowRight className="size-4" />
           </Button>
 
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <Button
-              type="button"
-              variant="secondary"
-              className="flex-1"
-              disabled={busyState !== null}
-              onClick={() => {
-                void requestOtp("resend");
-              }}
-            >
-              {busyState === "resend" ? <LoadingDots /> : null}
-              {busyState === "resend" ? "Reenviando" : "Reenviar codigo"}
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              className="flex-1"
-              disabled={busyState !== null}
-              onClick={() => {
-                setStep("email");
-                setToken("");
-              }}
-            >
-              Cambiar email
-            </Button>
-          </div>
+          <Button
+            type="button"
+            variant="secondary"
+            className="w-full"
+            disabled={busyState !== null}
+            onClick={() => {
+              void requestOtp("resend");
+            }}
+          >
+            {busyState === "resend" ? <LoadingDots /> : null}
+            {busyState === "resend" ? "Reenviando" : "Reenviar codigo"}
+          </Button>
           </motion.form>
         )}
       </AnimatePresence>

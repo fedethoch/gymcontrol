@@ -11,10 +11,6 @@ const statusCopy: Record<string, string> = {
   "signed-out": "La sesion se cerro correctamente.",
 };
 
-const reasonCopy: Record<string, string> = {
-  "auth-required": "Necesitas iniciar sesion para entrar a esa seccion.",
-};
-
 const errorCopy: Record<string, string> = {
   "missing-user": "La sesion se creo sin usuario resoluble. Reintenta el acceso.",
   "missing-profile":
@@ -31,7 +27,6 @@ type LoginPageProps = {
   searchParams: Promise<{
     error?: string;
     status?: string;
-    reason?: string;
     email?: string;
   }>;
 };
@@ -45,7 +40,6 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   const params = await searchParams;
   const statusMessage = params.status ? statusCopy[params.status] : null;
-  const reasonMessage = params.reason ? reasonCopy[params.reason] : null;
   const errorMessage = params.error ? errorCopy[params.error] : null;
   const email = params.email ?? "";
 
@@ -105,7 +99,6 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             </p>
           </div>
 
-          <StatusToast message={reasonMessage} isError clearParams={["reason"]} />
           <StatusToast message={statusMessage} clearParams={["status"]} />
           <StatusToast message={errorMessage} isError clearParams={["error"]} />
 

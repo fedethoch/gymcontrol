@@ -400,11 +400,11 @@ export function ConfiguracionClient({
   // ─── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <div className="grid gap-5">
+    <div className="grid w-full min-w-0 grid-cols-[minmax(0,1fr)] gap-5">
       {/* ── MOBILE: progress row + mini plan card + accordion ─────────────── */}
-      <div className="grid gap-4 lg:hidden">
+      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-4 lg:hidden">
         {/* A. Progress row */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex min-w-0 flex-wrap items-center gap-2">
           <div className="flex gap-1">
             {Array.from({ length: 5 }).map((_, i) => (
               <span

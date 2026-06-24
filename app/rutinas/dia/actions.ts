@@ -93,10 +93,18 @@ function parseSeriesValues(
     return null;
   }
 
-  const tokens = normalized.split("/").map((token) => token.trim());
+  const allTokens = normalized.split("/").map((token) => token.trim());
 
-  if (options.maxValues > 0 && tokens.length > options.maxValues) {
+  // Reject if the user provided more slots than series (e.g. pasted wrong data)
+  if (options.maxValues > 0 && allTokens.length > options.maxValues) {
     throw new Error(options.message);
+  }
+
+  // Drop empty slots — partial entries are valid (only filled series are saved)
+  const tokens = allTokens.filter((t) => t !== "");
+
+  if (tokens.length === 0) {
+    return null;
   }
 
   for (const token of tokens) {

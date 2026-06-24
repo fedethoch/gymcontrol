@@ -1,16 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { Dumbbell, Play } from "lucide-react";
+import { Dumbbell, Pause, Play } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 
 import { Badge } from "@/app/components/ui/Badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/app/components/ui/Dialog";
 import {
   Sheet,
   SheetContent,
@@ -18,12 +13,10 @@ import {
   SheetTitle,
 } from "@/app/components/ui/Sheet";
 import {
-  MUSCLE_BADGE_STYLES,
   MUSCLE_GRADIENTS,
   equipmentLabel,
   muscleLabel,
 } from "@/app/lib/exercise-form";
-import { cn } from "@/app/lib/utils";
 
 export type ExerciseDetail = {
   id: string;
@@ -55,7 +48,7 @@ export function ExerciseDetailModal({
   onOpenChange,
 }: ExerciseDetailModalProps) {
   const [heroImgFailed, setHeroImgFailed] = useState(false);
-  const [gifOpen, setGifOpen] = useState(false);
+  const [showingGif, setShowingGif] = useState(false);
 
   const displayExercise = exercise;
 
@@ -69,15 +62,20 @@ export function ExerciseDetailModal({
   const equipment = displayExercise?.equipment ?? null;
   const heroGradient = muscleGroup ? MUSCLE_GRADIENTS[muscleGroup] ?? MUSCLE_GRADIENTS.Core : MUSCLE_GRADIENTS.Core;
 
+  // The active hero src: gif when playing, static image otherwise
+  const heroSrc = showingGif && displayExercise?.gifUrl
+    ? displayExercise.gifUrl
+    : displayExercise?.imageUrl ?? null;
+  const heroIsGif = heroSrc?.endsWith(".gif") || showingGif;
+
   return (
-    <>
     <Sheet
       open={open && displayExercise !== null}
       onOpenChange={(nextOpen) => {
         onOpenChange(nextOpen);
         if (nextOpen) {
           setHeroImgFailed(false);
-          setGifOpen(false);
+          setShowingGif(false);
         }
       }}
     >
@@ -90,30 +88,33 @@ export function ExerciseDetailModal({
           <div className="flex h-full flex-col overflow-hidden">
             {/* Hero */}
             <div className="relative h-[218px] shrink-0 overflow-hidden">
-              {displayExercise.imageUrl && !heroImgFailed ? (
+              {heroSrc && !heroImgFailed ? (
                 <>
                   <Image
+                    key={heroSrc}
                     alt={displayExercise.name}
                     className="object-cover"
                     style={{ objectPosition: "50% 60%" }}
-                    src={displayExercise.imageUrl}
+                    src={heroSrc}
                     fill
                     sizes="(max-width: 640px) 72vw, 34rem"
-                    unoptimized={displayExercise.imageUrl.endsWith(".gif")}
+                    unoptimized={!!heroIsGif}
                     onError={() => setHeroImgFailed(true)}
                   />
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(5,7,11,0.85)_100%)]" />
                   {displayExercise.gifUrl ? (
                     <motion.button
                       type="button"
-                      aria-label="Ver animación"
+                      aria-label={showingGif ? "Ver imagen estática" : "Ver animación"}
                       className="absolute bottom-3 right-3 flex size-9 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm"
-                      onClick={() => setGifOpen(true)}
+                      onClick={() => setShowingGif((s) => !s)}
                       whileHover={{ scale: 1.08 }}
                       whileTap={{ scale: 0.93 }}
                       transition={{ duration: 0.15 }}
                     >
-                      <Play className="size-4 fill-white" />
+                      {showingGif
+                        ? <Pause className="size-4 fill-white" />
+                        : <Play className="size-4 fill-white" />}
                     </motion.button>
                   ) : null}
                 </>
@@ -200,27 +201,6 @@ export function ExerciseDetailModal({
         ) : null}
       </SheetContent>
     </Sheet>
-
-    {displayExercise?.gifUrl ? (
-      <Dialog open={gifOpen} onOpenChange={setGifOpen}>
-        <DialogContent open={gifOpen}>
-          <DialogTitle className="sr-only">
-            Animación: {displayExercise.name}
-          </DialogTitle>
-          <div className="relative aspect-square w-full overflow-hidden">
-            <Image
-              alt={`Animación de ${displayExercise.name}`}
-              src={displayExercise.gifUrl}
-              fill
-              sizes="min(42rem, calc(100vw - 2rem))"
-              className="object-contain"
-              unoptimized
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
-    ) : null}
-    </>
   );
 }
 

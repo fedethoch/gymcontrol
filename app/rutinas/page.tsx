@@ -104,6 +104,7 @@ export default async function RutinasPage() {
       />
 
       <RutinasOverview
+        savedRoutineId={activeRoutine.id}
         displayName={activeRoutine.displayName}
         imageUrl={activeRoutine.imageUrl}
         objectiveLabel={objectiveLabel}

@@ -3,10 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ComponentType } from "react";
-import { CalendarDays, Clock3, Flame, Play } from "lucide-react";
+import { CalendarDays, Check, Clock3, Flame, Pencil, Play, X } from "lucide-react";
 import { motion } from "framer-motion";
+import { useRef, useState } from "react";
+import { toast } from "sonner";
+
+import { renameSavedRoutineAction } from "@/app/rutinas/actions";
 
 type RutinasOverviewProps = {
+  savedRoutineId: string;
   displayName: string;
   imageUrl: string | null;
   objectiveLabel: string;
@@ -29,7 +34,8 @@ const fadeUp = (delay: number) => ({
 });
 
 export function RutinasOverview({
-  displayName,
+  savedRoutineId,
+  displayName: initialDisplayName,
   imageUrl,
   objectiveLabel,
   difficultyLabel,
@@ -44,6 +50,41 @@ export function RutinasOverview({
   remaining,
 }: RutinasOverviewProps) {
   const weekComplete = totalDays > 0 && completedDayCount >= totalDays;
+
+  const [displayName, setDisplayName] = useState(initialDisplayName);
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(initialDisplayName);
+  const [renaming, setRenaming] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function openEdit() {
+    setDraft(displayName);
+    setEditing(true);
+    setTimeout(() => inputRef.current?.select(), 40);
+  }
+
+  function cancelEdit() {
+    setEditing(false);
+  }
+
+  async function confirmEdit() {
+    const trimmed = draft.trim();
+    if (!trimmed || trimmed === displayName) {
+      setEditing(false);
+      return;
+    }
+
+    setRenaming(true);
+    const result = await renameSavedRoutineAction(savedRoutineId, trimmed);
+    setRenaming(false);
+
+    if (result.ok) {
+      setDisplayName(result.displayName);
+      setEditing(false);
+    } else {
+      toast.error(result.message);
+    }
+  }
 
   const contextText = weekComplete
     ? "¡Semana completa! 💪"
@@ -85,9 +126,60 @@ export function RutinasOverview({
           <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#b985ff]">
             Rutina activa
           </p>
-          <h2 className="font-display mt-0.5 text-lg font-semibold leading-tight text-white sm:text-xl">
-            {displayName}
-          </h2>
+
+          {/* Editable name row */}
+          {editing ? (
+            <div className="mt-0.5 flex items-center gap-1.5">
+              <input
+                ref={inputRef}
+                className="min-w-0 flex-1 rounded-md border border-[#7e35ff] bg-[#1a0f36] px-2 py-0.5 font-display text-lg font-semibold leading-tight text-white outline-none sm:text-xl"
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") void confirmEdit();
+                  if (e.key === "Escape") cancelEdit();
+                }}
+                maxLength={80}
+                disabled={renaming}
+              />
+              <motion.button
+                type="button"
+                onClick={() => void confirmEdit()}
+                disabled={renaming}
+                aria-label="Confirmar nombre"
+                whileTap={{ scale: 0.92 }}
+                className="grid size-6 shrink-0 place-items-center rounded-full bg-[#7e35ff] text-white disabled:opacity-50"
+              >
+                <Check className="size-3.5" />
+              </motion.button>
+              <motion.button
+                type="button"
+                onClick={cancelEdit}
+                disabled={renaming}
+                aria-label="Cancelar"
+                whileTap={{ scale: 0.92 }}
+                className="grid size-6 shrink-0 place-items-center rounded-full border border-[#3a2d5c] bg-[#1a0f36] text-[#9a8fc8]"
+              >
+                <X className="size-3.5" />
+              </motion.button>
+            </div>
+          ) : (
+            <div className="mt-0.5 flex items-center gap-1.5">
+              <h2 className="font-display text-lg font-semibold leading-tight text-white sm:text-xl">
+                {displayName}
+              </h2>
+              <motion.button
+                type="button"
+                onClick={openEdit}
+                aria-label="Editar nombre de rutina"
+                whileTap={{ scale: 0.88 }}
+                className="grid size-5 shrink-0 place-items-center rounded text-[#7a6fa8] hover:text-[#c4b8ff] transition-colors"
+              >
+                <Pencil className="size-3" />
+              </motion.button>
+            </div>
+          )}
+
           <div className="mt-2 flex flex-wrap gap-1.5">
             {[objectiveLabel, difficultyLabel, `${totalDays} días/sem`].map((chip) => (
               <span
