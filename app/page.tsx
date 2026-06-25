@@ -8,8 +8,10 @@ import {
   Flame,
   ListChecks,
   Plus,
+  Star,
   TrendingUp,
   UtensilsCrossed,
+  Utensils,
   Zap,
 } from "lucide-react";
 
@@ -255,12 +257,12 @@ export default async function Home() {
           {/* Violet glow at bottom-right */}
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_75%_100%,rgba(124,58,237,0.28),transparent_50%)]" />
 
-          {/* "Hoy toca" pill — inside image, top-left */}
-          <p className="absolute left-3 top-3 z-10 rounded-full bg-black/40 px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-widest text-[#9b8aff] backdrop-blur-sm">
+          {/* "Hoy toca" badge — inside image, top-left */}
+          <span className="absolute left-3 top-3 z-10 rounded-full border border-[#7c3aed]/40 bg-[#2a1d4d] px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-widest text-[#b995ff]">
             Hoy toca
-          </p>
+          </span>
 
-          <div className="relative z-10 flex h-full flex-col justify-end gap-2.5 p-4 pb-4 pt-14">
+          <div className="relative z-10 flex h-full flex-col justify-end gap-2 p-4 pb-4 pt-10">
             {/* Muscle groups title + subtitle */}
             <div className="flex flex-col gap-0.5">
               <h2 className="font-display text-xl font-bold leading-tight text-white">
@@ -287,20 +289,14 @@ export default async function Home() {
               )}
             </div>
 
-            {/* Stats row — values libres separados por líneas verticales */}
+            {/* Stats row — icono izquierda, valor+desc apilados a la derecha */}
             {nextPendingDay && (
-              <div className="flex items-center flex-wrap">
+              <div className="flex items-center gap-5">
                 {estimatedMinutes > 0 && (
                   <HeroStat icon={Clock} value={`~${estimatedMinutes} min`} label="duración aprox." />
                 )}
-                {estimatedMinutes > 0 && exerciseCount > 0 && (
-                  <span className="mx-2.5 h-3 w-px shrink-0 bg-white/20" />
-                )}
                 {exerciseCount > 0 && (
                   <HeroStat icon={Dumbbell} value={`${exerciseCount}`} label="ejercicios" />
-                )}
-                {(estimatedMinutes > 0 || exerciseCount > 0) && (
-                  <span className="mx-2.5 h-3 w-px shrink-0 bg-white/20" />
                 )}
                 <HeroStat
                   icon={ListChecks}
@@ -371,7 +367,7 @@ export default async function Home() {
             label="Nutrición"
             progress={{
               pct: kcalPercent,
-              text: `/ ${plan.targetKcal}`,
+              text: `Objetivo: ${plan.targetKcal} kcal`,
             }}
             href="/nutricion/registro"
           />
@@ -385,7 +381,7 @@ export default async function Home() {
             label="Constancia"
             progress={{
               pct: Math.min(100, streak * 14),
-              text: streak > 0 ? "racha actual" : "Iniciá tu racha",
+              text: streak > 0 ? `¡${streak} días seguidos!` : "Iniciá tu racha hoy",
             }}
           />
         </MotionDiv>
@@ -434,8 +430,8 @@ export default async function Home() {
         className="grid grid-cols-2 gap-2"
       >
         <MotionDiv variants={fadeUp} whileTap={tapFeedback} className="h-full">
-          <div className="flex h-full flex-col gap-2 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-2.5 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
-            <CardLabel icon={CalendarRange} label="Constancia semanal" />
+          <div className="flex h-full flex-col gap-2 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]" style={{ minHeight: 120 }}>
+            <CardLabel icon={CalendarRange} label="Constancia semanal" small />
             <p className="text-[9px] text-[#4a5368] -mt-0.5">Entrenamientos esta semana</p>
             <div className="flex flex-1 items-center justify-center">
               <TrainingCalendarCard completedDates={completedTrainingDates} variant="weekly" bare />
@@ -448,8 +444,8 @@ export default async function Home() {
         </MotionDiv>
 
         <MotionDiv variants={fadeUp} whileTap={tapFeedback} className="h-full">
-          <div className="flex h-full flex-col gap-2 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-2.5 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
-            <CardLabel icon={UtensilsCrossed} label="Registro nutricional" />
+          <div className="flex h-full flex-col gap-2 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]" style={{ minHeight: 120 }}>
+            <CardLabel icon={UtensilsCrossed} label="Registro nutricional" small />
             <p className="text-[9px] text-[#4a5368] -mt-0.5">Días con comidas registradas</p>
             <div className="flex flex-1 items-center justify-center">
               <NutritionCalendarCard loggedDates={nutritionDatesSet} variant="weekly" bare />
@@ -472,21 +468,23 @@ export default async function Home() {
 function CardLabel({
   icon: Icon,
   label,
+  small = false,
 }: {
   icon: typeof Flame;
   label: string;
+  small?: boolean;
 }) {
   return (
     <div className="flex items-center gap-1.5">
-      <Icon className="size-3.5 text-[#9a63ff]" />
-      <span className="truncate text-[10px] font-bold uppercase tracking-[0.1em] text-[#7887a6]">
+      <Icon className={small ? "size-3 text-[#9a63ff]" : "size-3.5 text-[#9a63ff]"} />
+      <span className={`truncate font-bold uppercase tracking-[0.1em] text-[#7887a6] ${small ? "text-[8px]" : "text-[10px]"}`}>
         {label}
       </span>
     </div>
   );
 }
 
-/** Icon + value libre (sin badge) para la fila de stats del hero. */
+/** Icon + value/label apilados para la fila de stats del hero. */
 function HeroStat({
   icon: Icon,
   value,
@@ -497,10 +495,12 @@ function HeroStat({
   label?: string;
 }) {
   return (
-    <div className="flex items-center gap-1">
-      <Icon className="size-3 shrink-0 text-[#7c5bdf]" />
-      <span className="text-[11px] font-semibold text-white">{value}</span>
-      {label && <span className="text-[10px] text-[#8a96ae]">{label}</span>}
+    <div className="flex items-center gap-1.5">
+      <Icon className="size-3.5 shrink-0 text-[#7c5bdf]" />
+      <div className="flex flex-col leading-none">
+        <span className="text-[12px] font-semibold text-white">{value}</span>
+        {label && <span className="text-[9px] text-[#8a96ae] mt-0.5">{label}</span>}
+      </div>
     </div>
   );
 }
@@ -540,13 +540,13 @@ function SummaryStatCard({
           {label}
         </span>
       </div>
-      {/* Counter: valor grande + unidad chiquita */}
+      {/* Counter: valor + unidad chiquita */}
       <div className="flex items-baseline gap-1 min-w-0">
-        <span className="font-display text-xl font-bold leading-none text-white truncate">
+        <span className="font-display text-base font-bold leading-none text-white truncate">
           {value}
         </span>
         {unit && (
-          <span className="shrink-0 text-[8px] text-[#7887a6]">{unit}</span>
+          <span className="shrink-0 text-[9px] text-[#7887a6]">{unit}</span>
         )}
       </div>
       {/* Barra de progreso + texto */}
@@ -612,7 +612,7 @@ function NutricionTodayCard({
   ];
 
   return (
-    <div className="flex h-full flex-col gap-2 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
+    <div className="flex h-full flex-col gap-3 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
       {/* Header */}
       <CardLabel icon={Flame} label="Nutrición de hoy" />
 
@@ -622,18 +622,18 @@ function NutricionTodayCard({
         <div className="shrink-0 flex flex-col items-center gap-0.5">
           <AnimatedProgressRing
             value={kcalPercent}
-            size={64}
-            strokeWidth={6}
+            size={84}
+            strokeWidth={7}
             progressColor="var(--accent-bright)"
           >
             <div className="flex flex-col items-center">
-              <span className="font-display text-xs font-bold leading-none text-white">
+              <span className="font-display text-sm font-bold leading-none text-white">
                 {totalKcal}
               </span>
-              <span className="text-[7px] text-[#7887a6]">kcal</span>
+              <span className="text-[8px] text-[#7887a6]">kcal</span>
             </div>
           </AnimatedProgressRing>
-          <p className="text-[7px] text-[#4a5368]">/ {targetKcal}</p>
+          <p className="text-[8px] text-[#4a5368]">/ {targetKcal}</p>
         </div>
 
         {/* Macro bars derecha */}
@@ -702,16 +702,18 @@ function CargaMuscularCard({
         </div>
       ) : (
         <div className="flex flex-1 flex-col gap-1">
-          <GlowPulseWrapper active className="flex justify-center py-0">
-            <div className="scale-[0.72] origin-top">
-              <BodyMuscleFigure
-                muscleLoad={hasStrengthData ? {} : muscleLoad}
-                maxCount={maxCount}
-                muscleColors={muscleColors}
-              />
-            </div>
-          </GlowPulseWrapper>
-          <div className="mt-auto grid gap-0.5">
+          <div className="flex justify-center overflow-hidden" style={{ height: 140 }}>
+            <GlowPulseWrapper active className="flex justify-center">
+              <div className="scale-[0.72] origin-top -mb-8">
+                <BodyMuscleFigure
+                  muscleLoad={hasStrengthData ? {} : muscleLoad}
+                  maxCount={maxCount}
+                  muscleColors={muscleColors}
+                />
+              </div>
+            </GlowPulseWrapper>
+          </div>
+          <div className="grid gap-0.5">
             <div className="h-1 rounded-full" style={{ background: STRENGTH_LEGEND_GRADIENT }} />
             <div className="flex items-center justify-between text-[7px] font-semibold text-[#6e7788]">
               <span>Base</span>
@@ -789,11 +791,15 @@ function ComidasHoyCard({
           </div>
           {/* Divisor + sugerencia derecha */}
           <div className="w-px shrink-0 bg-white/[0.06]" />
-          <div className="flex w-14 shrink-0 flex-col items-center justify-center gap-1.5 text-center">
-            <Flame className="size-4 text-[#fb923c]/50" />
+          <div className="flex w-20 shrink-0 flex-col justify-center gap-1.5">
+            <div className="flex items-center gap-1">
+              <Star className="size-3 shrink-0 text-[#fbbf24]" />
+              <span className="text-[9px] font-bold uppercase tracking-wide text-[#7887a6]">Sugerencia</span>
+            </div>
             <p className="text-[8px] leading-tight text-[#404e66]">
-              Registrá tu primera comida del día
+              Registrá tu primera comida para empezar a alcanzar tus objetivos diarios
             </p>
+            <Utensils className="size-6 text-[#1c2b44] mt-0.5" />
           </div>
         </div>
       ) : (
