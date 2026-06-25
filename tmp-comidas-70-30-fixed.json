@@ -1,0 +1,48 @@
+{
+  "card": {
+    "left": 16,
+    "right": 359,
+    "top": 667.5,
+    "bottom": 844,
+    "width": 343,
+    "height": 176.5
+  },
+  "separator": {
+    "left": 250.1875,
+    "right": 251.1875,
+    "top": 741.75,
+    "bottom": 805.75,
+    "width": 1,
+    "height": 64
+  },
+  "leftBody": {
+    "left": 89,
+    "right": 234.1875,
+    "top": 749.75,
+    "bottom": 772.25,
+    "width": 145.1875,
+    "height": 22.5
+  },
+  "rightBody": {
+    "left": 267.1875,
+    "right": 339.1875,
+    "top": 740,
+    "bottom": 773,
+    "width": 72,
+    "height": 33
+  },
+  "smoothie": {
+    "left": 298,
+    "right": 346,
+    "top": 777,
+    "bottom": 825,
+    "width": 48,
+    "height": 48
+  },
+  "leftWidthPct": 68.27623906705539,
+  "rightWidthPct": 31.432215743440235,
+  "gapLeftToSeparator": 16,
+  "gapSeparatorToRight": 16,
+  "overlapRightTextSmoothie": false,
+  "overflow": false
+}

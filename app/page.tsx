@@ -777,8 +777,8 @@ function ComidasHoyCard({
 
       {preview.length === 0 ? (
         /* Empty state: icono izq | texto+CTA centro | divisor | sugerencia+dibujo der */
-        <div className="grid grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)] items-center gap-x-4 py-1.5">
-          <div className="relative min-h-24 pl-[60px] pr-3">
+        <div className="grid grid-cols-[minmax(0,7fr)_1px_minmax(0,3fr)] items-center py-1.5">
+          <div className="relative min-h-24 pl-[60px] pr-4">
             <div className="absolute left-0 top-1/2 -translate-y-1/2">
               <UtensilsCrossed className="size-12 text-[#1c2b44]" strokeWidth={1.7} />
             </div>
@@ -801,18 +801,18 @@ function ComidasHoyCard({
             </div>
           </div>
           <div className="mx-auto h-16 w-px bg-white/[0.08]" />
-          <div className="relative min-h-24 pl-3 pr-[60px]">
-            <div className="absolute right-0 top-1/2 -translate-y-1/2">
-              <CupSoda className="size-12 shrink-0 text-[#1c2b44]" strokeWidth={1.8} />
-            </div>
-            <div className="flex min-h-24 w-[64px] flex-col justify-center gap-1">
+          <div className="flex min-h-24 min-w-0 flex-col gap-1 pl-4">
+            <div className="flex min-w-0 flex-col gap-1">
               <div className="flex items-center gap-1">
                 <Star className="size-3 shrink-0 text-[#a970ff] fill-current" />
                 <span className="text-[9px] font-medium text-[#9ea8ba]">Sugerencia</span>
               </div>
-              <p className="w-full text-[8px] leading-snug text-[#8c96ac]">
+              <p className="max-w-[72px] text-[8px] leading-snug text-[#8c96ac]">
                 Registrá comidas para alcanzar tus objetivos
               </p>
+            </div>
+            <div className="mt-auto flex justify-end">
+              <CupSoda className="size-12 shrink-0 text-[#1c2b44]" strokeWidth={1.8} />
             </div>
           </div>
         </div>
