@@ -7,6 +7,7 @@ import {
   Dumbbell,
   Flame,
   ListChecks,
+  Play,
   Plus,
   Star,
   TrendingUp,
@@ -262,9 +263,9 @@ export default async function Home() {
             Hoy toca
           </span>
 
-          <div className="relative z-10 flex h-full flex-col justify-end gap-2 p-4 pb-4 pt-10">
+          <div className="relative z-10 flex h-full flex-col justify-end gap-3 p-4 pb-4 pt-10">
             {/* Muscle groups title + subtitle */}
-            <div className="flex flex-col gap-0.5">
+            <div className="flex flex-col gap-1.5">
               <h2 className="font-display text-xl font-bold leading-tight text-white">
                 {muscleGroups.length > 0 ? (
                   muscleGroups.map((g, i) => (
@@ -312,9 +313,10 @@ export default async function Home() {
                 <Button
                   asChild
                   size="sm"
-                  className="justify-center px-4 normal-case tracking-normal shadow-[0_6px_20px_rgba(124,58,237,0.38)]"
+                  className="justify-center gap-1.5 px-4 normal-case tracking-normal bg-[linear-gradient(135deg,#8b5cf6_0%,#6d28d9_100%)] hover:bg-[linear-gradient(135deg,#9d72ff_0%,#7c3aed_100%)] shadow-[0_6px_20px_rgba(124,58,237,0.38)]"
                 >
                   <Link href={primaryHref}>
+                    {nextPendingDay && <Play className="size-3 fill-current" />}
                     {nextPendingDay
                       ? "Comenzar entrenamiento"
                       : activeRoutine
@@ -327,7 +329,7 @@ export default async function Home() {
               {activeRoutine && (
                 <Link
                   href="/rutinas"
-                  className="inline-flex h-7 items-center rounded-lg border border-white/20 bg-white/[0.07] px-3 text-xs font-semibold text-[#c5cad8] backdrop-blur-sm transition-colors hover:bg-white/[0.12] hover:text-white"
+                  className="inline-flex h-9 items-center rounded-lg border border-white/20 bg-white/[0.07] px-3 text-xs font-semibold text-[#c5cad8] backdrop-blur-sm transition-colors hover:bg-white/[0.12] hover:text-white"
                 >
                   Ver rutina
                 </Link>
@@ -436,7 +438,7 @@ export default async function Home() {
             <div className="flex flex-1 items-center justify-center">
               <TrainingCalendarCard completedDates={completedTrainingDates} variant="weekly" bare />
             </div>
-            <p className="text-[10px] font-semibold text-[#7887a6]">
+            <p className="text-[10px] font-semibold tracking-wide text-[#7887a6]">
               <span className="text-white">{weeklyTrainingCount}</span>
               {" de 7 días"}
             </p>
@@ -534,7 +536,7 @@ function SummaryStatCard({
           <Icon className="size-3" style={{ color: accent }} />
         </div>
         <span
-          className="truncate text-[9px] font-bold uppercase tracking-[0.06em]"
+          className="text-[7.5px] font-bold uppercase tracking-[0.02em] leading-none whitespace-nowrap"
           style={{ color: accent }}
         >
           {label}
@@ -616,28 +618,27 @@ function NutricionTodayCard({
       {/* Header */}
       <CardLabel icon={Flame} label="Nutrición de hoy" />
 
-      {/* Horizontal: ring izquierda + macros derecha */}
-      <div className="flex items-center gap-3">
+      {/* Vertical: ring centrado + macros abajo */}
+      <div className="flex flex-col items-center gap-2">
         {/* Ring */}
-        <div className="shrink-0 flex flex-col items-center gap-0.5">
-          <AnimatedProgressRing
-            value={kcalPercent}
-            size={84}
-            strokeWidth={7}
-            progressColor="var(--accent-bright)"
-          >
-            <div className="flex flex-col items-center">
-              <span className="font-display text-sm font-bold leading-none text-white">
-                {totalKcal}
-              </span>
-              <span className="text-[8px] text-[#7887a6]">kcal</span>
-            </div>
-          </AnimatedProgressRing>
-          <p className="text-[8px] text-[#4a5368]">/ {targetKcal}</p>
-        </div>
+        <AnimatedProgressRing
+          value={kcalPercent}
+          size={110}
+          strokeWidth={8}
+          progressColor="var(--accent-bright)"
+        >
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="font-display text-sm font-bold leading-none text-white">
+              {totalKcal}
+            </span>
+            <span className="text-[8px] leading-tight text-center text-[#b995ff]">
+              kcal de {targetKcal}
+            </span>
+          </div>
+        </AnimatedProgressRing>
 
-        {/* Macro bars derecha */}
-        <div className="flex flex-1 flex-col gap-1.5">
+        {/* Macro bars — ancho completo */}
+        <div className="flex w-full flex-col gap-1.5">
           {macros.map(({ label, value, target, color }) => {
             const pct = target > 0 ? Math.min(100, Math.round((value / target) * 100)) : 0;
             return (
@@ -765,11 +766,11 @@ function ComidasHoyCard({
       </div>
 
       {preview.length === 0 ? (
-        /* Empty state: icono izq | texto+CTA centro | divisor | sugerencia der */
+        /* Empty state: icono izq | texto+CTA centro | divisor | sugerencia+dibujo der */
         <div className="flex items-stretch gap-3 py-2">
-          {/* Icono izquierda */}
+          {/* Icono izquierda — más chico */}
           <div className="flex shrink-0 items-center">
-            <UtensilsCrossed className="size-8 text-[#1c2b44]" />
+            <UtensilsCrossed className="size-6 text-[#1c2b44]" />
           </div>
           {/* Centro: texto + CTA */}
           <div className="flex flex-1 flex-col justify-center gap-2 min-w-0">
@@ -791,15 +792,18 @@ function ComidasHoyCard({
           </div>
           {/* Divisor + sugerencia derecha */}
           <div className="w-px shrink-0 bg-white/[0.06]" />
-          <div className="flex w-20 shrink-0 flex-col justify-center gap-1.5">
+          <div className="flex w-24 shrink-0 flex-col justify-center gap-1">
             <div className="flex items-center gap-1">
-              <Star className="size-3 shrink-0 text-[#fbbf24]" />
-              <span className="text-[9px] font-bold uppercase tracking-wide text-[#7887a6]">Sugerencia</span>
+              <Star className="size-2.5 shrink-0 text-[#fbbf24]" />
+              <span className="text-[8px] font-bold uppercase tracking-wide text-[#7887a6]">Sugerencia</span>
             </div>
-            <p className="text-[8px] leading-tight text-[#404e66]">
-              Registrá tu primera comida para empezar a alcanzar tus objetivos diarios
-            </p>
-            <Utensils className="size-6 text-[#1c2b44] mt-0.5" />
+            {/* Texto + dibujo en fila */}
+            <div className="flex items-center gap-1">
+              <p className="flex-1 text-[7px] leading-tight text-[#404e66]">
+                Registrá tu primera comida para empezar a alcanzar tus objetivos diarios
+              </p>
+              <Utensils className="size-9 shrink-0 text-[#1c2b44]" />
+            </div>
           </div>
         </div>
       ) : (

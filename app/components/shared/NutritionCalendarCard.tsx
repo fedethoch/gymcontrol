@@ -43,7 +43,7 @@ export function NutritionCalendarCard({
           <div key={day.key} className="flex flex-1 flex-col items-center gap-1.5">
             <span className="text-[10px] font-semibold text-[#4a5368]">{day.label}</span>
             <span
-              className={`size-5 rounded-full ${
+              className={`size-4 rounded-full ${
                 day.logged
                   ? "bg-[#7c3aed]"
                   : day.isToday
