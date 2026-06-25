@@ -1,0 +1,36 @@
+{
+  "card": {
+    "left": 16,
+    "right": 359,
+    "top": 656.5,
+    "bottom": 843.75,
+    "width": 343,
+    "height": 187.25
+  },
+  "utensil": {
+    "left": 29,
+    "right": 77,
+    "top": 744.125,
+    "bottom": 792.125,
+    "width": 48,
+    "height": 48
+  },
+  "smoothie": {
+    "left": 298,
+    "right": 346,
+    "top": 744.125,
+    "bottom": 792.125,
+    "width": 48,
+    "height": 48
+  },
+  "separator": {
+    "left": 187,
+    "right": 188,
+    "top": 736.125,
+    "bottom": 800.125,
+    "width": 1,
+    "height": 64
+  },
+  "overflow": false,
+  "body": "Comidas de hoy\n\nTodavía no registraste comidas\n\nLlevá el control de lo que comés hoy\n\nAgregar primera comida\nSugerencia\n\nRegistrá comidas para alcanzar tus objetivos"
+}

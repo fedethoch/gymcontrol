@@ -1,0 +1,53 @@
+{
+  "leftTitle": {
+    "left": 89,
+    "right": 159,
+    "top": 725.5,
+    "bottom": 763,
+    "width": 70,
+    "height": 37.5
+  },
+  "leftBody": {
+    "left": 89,
+    "right": 159,
+    "top": 765,
+    "bottom": 798.75,
+    "width": 70,
+    "height": 33.75
+  },
+  "rightBody": {
+    "left": 216,
+    "right": 280,
+    "top": 774.375,
+    "bottom": 807.375,
+    "width": 64,
+    "height": 33
+  },
+  "cta": {
+    "left": 89,
+    "right": 159,
+    "top": 806.75,
+    "bottom": 838.75,
+    "width": 70,
+    "height": 32
+  },
+  "smoothie": {
+    "left": 298,
+    "right": 346,
+    "top": 758.125,
+    "bottom": 806.125,
+    "width": 48,
+    "height": 48
+  },
+  "suggestion": {
+    "left": 232,
+    "right": 277.921875,
+    "top": 756.875,
+    "bottom": 770.375,
+    "width": 45.921875,
+    "height": 13.5
+  },
+  "overlapRightTextSmoothie": false,
+  "overlapLeftCtaSmoothie": false,
+  "overlapLeftTitleSeparator": false
+}

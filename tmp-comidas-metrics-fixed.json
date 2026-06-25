@@ -1,0 +1,51 @@
+{
+  "card": {
+    "left": 16,
+    "right": 359,
+    "top": 670.5,
+    "bottom": 810.25,
+    "width": 343,
+    "height": 139.75
+  },
+  "utensil": {
+    "left": 29,
+    "right": 77,
+    "top": 734.375,
+    "bottom": 782.375,
+    "width": 48,
+    "height": 48
+  },
+  "smoothie": {
+    "left": 298,
+    "right": 346,
+    "top": 734.375,
+    "bottom": 782.375,
+    "width": 48,
+    "height": 48
+  },
+  "separator": {
+    "left": 209,
+    "right": 210,
+    "top": 726.375,
+    "bottom": 790.375,
+    "width": 1,
+    "height": 64
+  },
+  "suggestion": {
+    "left": 242,
+    "right": 287.921875,
+    "top": 727.625,
+    "bottom": 741.125,
+    "width": 45.921875,
+    "height": 13.5
+  },
+  "suggestionText": {
+    "left": 226,
+    "right": 282,
+    "top": 745.125,
+    "bottom": 789.125,
+    "width": 56,
+    "height": 44
+  },
+  "overflow": false
+}

@@ -777,44 +777,43 @@ function ComidasHoyCard({
 
       {preview.length === 0 ? (
         /* Empty state: icono izq | texto+CTA centro | divisor | sugerencia+dibujo der */
-        <div className="grid grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)] gap-0 py-1.5">
-          {/* Icono izquierda — grande */}
-          <div className="flex items-center justify-start pr-4">
-            <UtensilsCrossed className="size-12 text-[#1c2b44]" strokeWidth={1.7} />
-          </div>
-          {/* Centro: texto + CTA */}
-          <div className="flex min-w-0 flex-col justify-center gap-2 px-4">
-            <div className="space-y-0.5">
-              <p className="whitespace-nowrap text-[10px] font-semibold leading-tight text-[#cfd4df]">
-                Todavía no registraste comidas
-              </p>
-              <p className="whitespace-nowrap text-[9px] leading-tight text-[#8c96ac]">
-                Llevá el control de lo que comés hoy
-              </p>
+        <div className="grid grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)] items-center gap-x-4 py-1.5">
+          <div className="relative min-h-24 pl-[60px] pr-3">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2">
+              <UtensilsCrossed className="size-12 text-[#1c2b44]" strokeWidth={1.7} />
             </div>
-            <Link
-              href="/nutricion/registro"
-              className="inline-flex h-8 w-fit max-w-full items-center justify-center gap-1 rounded-lg bg-[linear-gradient(135deg,#9b5cff_0%,#7c3aed_100%)] px-3 text-[10px] font-semibold text-white whitespace-nowrap shadow-[0_6px_20px_rgba(124,58,237,0.38)] transition-all hover:bg-[linear-gradient(135deg,#a970ff_0%,#8b5cf6_100%)]"
-            >
-              <Plus className="size-3" />
-              Agregar primera comida
-            </Link>
+            <div className="flex min-h-24 min-w-0 flex-col justify-center gap-2">
+              <div className="space-y-0.5">
+                <p className="text-[10px] font-semibold leading-tight text-[#cfd4df]">
+                  Todavía no registraste comidas
+                </p>
+                <p className="text-[9px] leading-tight text-[#8c96ac]">
+                  Llevá el control de lo que comés hoy
+                </p>
+              </div>
+              <Link
+                href="/nutricion/registro"
+                className="inline-flex h-8 w-fit max-w-full items-center justify-center gap-1 rounded-lg bg-[linear-gradient(135deg,#9b5cff_0%,#7c3aed_100%)] px-3 text-[10px] font-semibold text-white whitespace-nowrap shadow-[0_6px_20px_rgba(124,58,237,0.38)] transition-all hover:bg-[linear-gradient(135deg,#a970ff_0%,#8b5cf6_100%)]"
+              >
+                <Plus className="size-3" />
+                Agregar primera comida
+              </Link>
+            </div>
           </div>
-          {/* Divisor + sugerencia derecha */}
-          <div className="h-16 w-px bg-white/[0.08]" />
-          <div className="flex min-w-0 items-center justify-between gap-2 pl-4">
-            {/* Columna: label + texto */}
-            <div className="flex min-w-0 flex-1 max-w-[72px] flex-col justify-center gap-1">
+          <div className="mx-auto h-16 w-px bg-white/[0.08]" />
+          <div className="relative min-h-24 pl-3 pr-[60px]">
+            <div className="absolute right-0 top-1/2 -translate-y-1/2">
+              <CupSoda className="size-12 shrink-0 text-[#1c2b44]" strokeWidth={1.8} />
+            </div>
+            <div className="flex min-h-24 w-[64px] flex-col justify-center gap-1">
               <div className="flex items-center gap-1">
                 <Star className="size-3 shrink-0 text-[#a970ff] fill-current" />
                 <span className="text-[9px] font-medium text-[#9ea8ba]">Sugerencia</span>
               </div>
-              <p className="text-[8px] leading-snug text-[#8c96ac]">
+              <p className="w-full text-[8px] leading-snug text-[#8c96ac]">
                 Registrá comidas para alcanzar tus objetivos
               </p>
             </div>
-            {/* Ícono batido a la derecha */}
-            <CupSoda className="size-12 shrink-0 text-[#1c2b44]" strokeWidth={1.8} />
           </div>
         </div>
       ) : (
