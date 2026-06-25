@@ -777,24 +777,24 @@ function ComidasHoyCard({
 
       {preview.length === 0 ? (
         /* Empty state: icono izq | texto+CTA centro | divisor | sugerencia+dibujo der */
-        <div className="grid grid-cols-[72px_minmax(0,1fr)_1px_132px] items-center gap-2 py-1.5">
+        <div className="grid grid-cols-[48px_minmax(0,1fr)_1px_104px] items-center gap-2 py-1.5">
           {/* Icono izquierda — grande */}
           <div className="flex items-center justify-center">
-            <UtensilsCrossed className="size-14 text-[#1c2b44]" strokeWidth={1.7} />
+            <UtensilsCrossed className="size-12 text-[#1c2b44]" strokeWidth={1.7} />
           </div>
           {/* Centro: texto + CTA */}
           <div className="flex min-w-0 flex-col justify-center gap-2">
             <div className="space-y-0.5">
-              <p className="text-[11px] font-semibold leading-tight text-[#cfd4df]">
+              <p className="whitespace-nowrap text-[10px] font-semibold leading-tight text-[#cfd4df]">
                 Todavía no registraste comidas
               </p>
-              <p className="truncate text-[9px] text-[#8c96ac]">
+              <p className="whitespace-nowrap text-[9px] leading-tight text-[#8c96ac]">
                 Llevá el control de lo que comés hoy
               </p>
             </div>
             <Link
               href="/nutricion/registro"
-              className="inline-flex h-8 w-fit max-w-full items-center justify-center gap-1 rounded-lg bg-[linear-gradient(135deg,#9b5cff_0%,#7c3aed_100%)] px-3.5 text-[10px] font-semibold text-white whitespace-nowrap shadow-[0_6px_20px_rgba(124,58,237,0.38)] transition-all hover:bg-[linear-gradient(135deg,#a970ff_0%,#8b5cf6_100%)]"
+              className="inline-flex h-8 w-fit max-w-full items-center justify-center gap-1 rounded-lg bg-[linear-gradient(135deg,#9b5cff_0%,#7c3aed_100%)] px-3 text-[10px] font-semibold text-white whitespace-nowrap shadow-[0_6px_20px_rgba(124,58,237,0.38)] transition-all hover:bg-[linear-gradient(135deg,#a970ff_0%,#8b5cf6_100%)]"
             >
               <Plus className="size-3" />
               Agregar primera comida
@@ -814,7 +814,7 @@ function ComidasHoyCard({
               </p>
             </div>
             {/* Ícono batido a la derecha */}
-            <CupSoda className="size-11 shrink-0 text-[#1c2b44]" strokeWidth={1.8} />
+            <CupSoda className="size-12 shrink-0 text-[#1c2b44]" strokeWidth={1.8} />
           </div>
         </div>
       ) : (
