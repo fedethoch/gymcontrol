@@ -717,7 +717,7 @@ function CargaMuscularCard({
                 </div>
               </GlowPulseWrapper>
             </div>
-            <div className="mt-4 flex">
+            <div className="mt-[19px] flex">
               <div className="grid w-full gap-0.5">
                 <div className="h-1 rounded-full" style={{ background: STRENGTH_LEGEND_GRADIENT }} />
                 <div className="flex items-center justify-between text-[7px] font-semibold text-[#6e7788]">
