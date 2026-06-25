@@ -693,7 +693,7 @@ function CargaMuscularCard({
   );
 
     return (
-      <div className="flex h-full flex-col rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
+      <div className="flex h-full flex-col gap-2 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
         <CardLabel icon={Zap} label="Carga muscular" />
 
         {isEmpty ? (
@@ -733,7 +733,7 @@ function CargaMuscularCard({
       {/* Botón "Ver detalle muscular" → rutina */}
       <Link
         href={href}
-        className="mt-4 flex w-full items-center justify-center gap-1 rounded-xl bg-[#161d2f] py-1.5 text-[10px] font-semibold text-[#b995ff] transition-colors hover:bg-[#1e2840] hover:text-white"
+        className="mt-auto flex w-full items-center justify-center gap-1 rounded-xl bg-[#161d2f] py-1.5 text-[10px] font-semibold text-[#b995ff] transition-colors hover:bg-[#1e2840] hover:text-white"
       >
         Ver detalle muscular
       </Link>
