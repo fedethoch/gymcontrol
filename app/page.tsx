@@ -243,7 +243,7 @@ export default async function Home() {
         animate="visible"
       >
 
-        <div className="relative overflow-hidden rounded-2xl bg-[#11151f]" style={{ minHeight: 196 }}>
+        <div className="relative min-h-[167px] overflow-hidden rounded-2xl bg-[#11151f] sm:min-h-[196px]">
           {/* Fixed hero image */}
           <Image
             alt="Entrenamiento de hoy"
@@ -263,7 +263,7 @@ export default async function Home() {
             Hoy toca
           </span>
 
-          <div className="relative z-10 flex h-full flex-col justify-end gap-5 p-4 pb-4 pt-12">
+          <div className="relative z-10 flex h-full flex-col justify-end gap-3 p-3 pb-3 pt-8 sm:gap-5 sm:p-4 sm:pb-4 sm:pt-12">
             {/* Muscle groups title + subtitle */}
             <div className="flex flex-col gap-2.5">
               <h2 className="font-display text-xl font-bold leading-tight text-white">
@@ -805,9 +805,9 @@ function ComidasHoyCard({
             <div className="flex min-h-24 min-w-0 flex-col justify-center gap-0.5">
               <div className="flex items-center gap-1">
                 <Star className="size-3 shrink-0 text-[#a970ff] fill-current" />
-                <span className="text-[9px] font-medium text-[#9ea8ba]">Sugerencia</span>
+                <span className="inline-block w-[10ch] text-[9px] font-medium text-[#9ea8ba]">Sugerencia</span>
               </div>
-              <p className="max-w-[96px] text-[7.5px] leading-snug text-[#8c96ac]">
+              <p className="w-[10ch] text-[7.5px] leading-snug text-[#8c96ac]">
                 Registrá comidas para alcanzar tus objetivos
               </p>
             </div>
