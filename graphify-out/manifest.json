@@ -25,8 +25,8 @@
     "semantic_hash": ""
   },
   "app/admin/ejercicios/actions.ts": {
-    "mtime": 1781366646.9950259,
-    "ast_hash": "2334ede242331d55dc99dead2071184b",
+    "mtime": 1782012983.7455463,
+    "ast_hash": "d0bc7ba1ebb9ad2bd5d73222457a74a5",
     "semantic_hash": ""
   },
   "app/admin/ejercicios/page.tsx": {
@@ -50,8 +50,8 @@
     "semantic_hash": ""
   },
   "app/admin/rutinas/actions.ts": {
-    "mtime": 1781292416.2744856,
-    "ast_hash": "920f74a81ea9dae606fa44ade35e9351",
+    "mtime": 1782012982.9634962,
+    "ast_hash": "bc3500132091f0d41d4815075a559552",
     "semantic_hash": ""
   },
   "app/admin/rutinas/page.tsx": {
@@ -80,13 +80,13 @@
     "semantic_hash": "001fe8f5bc9e4459948720f3a2d5c877"
   },
   "app/auth/login/OtpLoginFlow.tsx": {
-    "mtime": 1781749729.3094597,
-    "ast_hash": "bb9b3e7e43f00099ef76a52473b9941c",
+    "mtime": 1782158579.8715198,
+    "ast_hash": "97985fa7e2018c74f969da5d93c79630",
     "semantic_hash": ""
   },
   "app/auth/login/page.tsx": {
-    "mtime": 1781723868.9435935,
-    "ast_hash": "3f0648d62769b14cdc3c6d0ad2cfc4f2",
+    "mtime": 1782157693.2998068,
+    "ast_hash": "f3e6656bb32048992cd1138f2d152a99",
     "semantic_hash": ""
   },
   "app/auth/signout/route.ts": {
@@ -95,18 +95,18 @@
     "semantic_hash": "28f26cc26c7d3176739ca4d59ed05bb6"
   },
   "app/catalogo/RoutineCatalogClient.tsx": {
-    "mtime": 1781903607.5637338,
-    "ast_hash": "bbd6142fb4106018e174c5c2a6688bf3",
+    "mtime": 1782093207.9969306,
+    "ast_hash": "3a8ca7e2353d3446b87a5d2d6bd4d60c",
     "semantic_hash": ""
   },
   "app/catalogo/page.tsx": {
-    "mtime": 1781723405.6161022,
-    "ast_hash": "a8734c2b908ed644e934d759ef15135b",
+    "mtime": 1782092933.545312,
+    "ast_hash": "669bab44429c8e266d8077d5cd298329",
     "semantic_hash": ""
   },
   "app/catalogo/rutinas/[id]/RoutineDetailClient.tsx": {
-    "mtime": 1781654112.9684,
-    "ast_hash": "77eeba8632039959aa29e48846aa0fae",
+    "mtime": 1782067936.6331065,
+    "ast_hash": "1a65029d87ee53d1fbec630d52ec6413",
     "semantic_hash": ""
   },
   "app/catalogo/rutinas/[id]/actions.ts": {
@@ -125,8 +125,8 @@
     "semantic_hash": "34ab8345b7662fbc78040abce29b4250"
   },
   "app/components/shared/ExerciseDetailModal.tsx": {
-    "mtime": 1781973672.2411385,
-    "ast_hash": "6cec60cb6b0f8f414fd570a41b85f292",
+    "mtime": 1782157868.5688221,
+    "ast_hash": "58a98307107a5f4f12a814e7b33c32ec",
     "semantic_hash": ""
   },
   "app/components/shared/PlaceholderPanel.tsx": {
@@ -160,8 +160,8 @@
     "semantic_hash": ""
   },
   "app/components/ui/AppShell.tsx": {
-    "mtime": 1781749317.3188307,
-    "ast_hash": "55bec8ff1b16f2fe0af2ce02f1a0399e",
+    "mtime": 1782012817.2460227,
+    "ast_hash": "1c4871858f753b9a55200323780f7467",
     "semantic_hash": ""
   },
   "app/components/ui/Badge.tsx": {
@@ -250,8 +250,8 @@
     "semantic_hash": ""
   },
   "app/layout.tsx": {
-    "mtime": 1781878077.7029374,
-    "ast_hash": "d04b1597d7b02d4eac7131cc690c4543",
+    "mtime": 1782012712.3882313,
+    "ast_hash": "92a2067c2c3388a1eb9ba0677dde26b4",
     "semantic_hash": ""
   },
   "app/lib/auth-input.ts": {
@@ -280,8 +280,8 @@
     "semantic_hash": ""
   },
   "app/lib/exercises.ts": {
-    "mtime": 1781973659.238537,
-    "ast_hash": "9c954a5cac7e6c76721bd285f7a3645b",
+    "mtime": 1782055233.0952804,
+    "ast_hash": "4e6775d0dcea78510f892270abb2729b",
     "semantic_hash": ""
   },
   "app/lib/otp-rate-limit.ts": {
@@ -310,13 +310,13 @@
     "semantic_hash": "06e2201313f1c032589dfa64d6eb9dfc"
   },
   "app/lib/routines.ts": {
-    "mtime": 1781973822.1351507,
-    "ast_hash": "ca8799ad0a4b16c4dd8272356d4597df",
+    "mtime": 1782055250.3313003,
+    "ast_hash": "b2eed272a02371de1cc2587095ef517a",
     "semantic_hash": ""
   },
   "app/lib/saved-routines.ts": {
-    "mtime": 1781973860.898655,
-    "ast_hash": "8b807f6a78e69f35f17154a5aaa9dc79",
+    "mtime": 1782055277.7280302,
+    "ast_hash": "78bb0b7a3f84fd79065264c9aa9c449b",
     "semantic_hash": ""
   },
   "app/lib/supabase/browser.ts": {
@@ -350,8 +350,8 @@
     "semantic_hash": ""
   },
   "app/page.tsx": {
-    "mtime": 1781903981.543783,
-    "ast_hash": "a6ff400ebfc8760d0ea647ec51897f0a",
+    "mtime": 1782362080.710801,
+    "ast_hash": "48cd809c602c26bcd409301f2fe405da",
     "semantic_hash": ""
   },
   "components.json": {
@@ -365,13 +365,13 @@
     "semantic_hash": "dfa1f5f6a7037bf39dc510f30b180002"
   },
   "next.config.ts": {
-    "mtime": 1781796862.8078942,
+    "mtime": 1782014155.067784,
     "ast_hash": "a4579bd4990e76b783e261b7559c655e",
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1781973735.2639117,
-    "ast_hash": "e72e7ee750966a71406b615653d5805c",
+    "mtime": 1782003389.6233273,
+    "ast_hash": "5156f5f842dc1dc2043c7fc67b0aa6f5",
     "semantic_hash": ""
   },
   "postcss.config.mjs": {
@@ -485,8 +485,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1781711561.9366636,
-    "ast_hash": "e25aed48cad50588855a7b7177229f9b",
+    "mtime": 1781974181.5653088,
+    "ast_hash": "79be1660287a1f68cb2e37ac9801ca23",
     "semantic_hash": ""
   },
   "PLAN.md": {
@@ -505,8 +505,8 @@
     "semantic_hash": "0092992cf9d418966e69f88c24090e53"
   },
   "docs/DATABASE.md": {
-    "mtime": 1781973755.4767587,
-    "ast_hash": "61dab54000fe77c8cd3433b0e67484e6",
+    "mtime": 1782055362.4931805,
+    "ast_hash": "b0db88fda89076bade5951fab2e918c7",
     "semantic_hash": ""
   },
   "docs/DOCUMENTATION_ROADMAP.md": {
@@ -1509,36 +1509,6 @@
     "ast_hash": "d79936359a31aa953ba1b7184a269713",
     "semantic_hash": "d79936359a31aa953ba1b7184a269713"
   },
-  "public/bugs/bug1.png": {
-    "mtime": 1781221921.2721646,
-    "ast_hash": "87ada0bd2f3c357ddb9daa32e6df19b8",
-    "semantic_hash": ""
-  },
-  "public/bugs/bug2.png": {
-    "mtime": 1781038653.110228,
-    "ast_hash": "bdad9a0cdd07d11dc032c3bf660c980f",
-    "semantic_hash": "bdad9a0cdd07d11dc032c3bf660c980f"
-  },
-  "public/bugs/bug3.png": {
-    "mtime": 1781039432.9147165,
-    "ast_hash": "26cca5677aba9e0d96ff2b1a248f1cb2",
-    "semantic_hash": "26cca5677aba9e0d96ff2b1a248f1cb2"
-  },
-  "public/bugs/bug4.png": {
-    "mtime": 1781039857.6346965,
-    "ast_hash": "1f22d469486cd618b2f53988737b5e1b",
-    "semantic_hash": "1f22d469486cd618b2f53988737b5e1b"
-  },
-  "public/bugs/bug5.png": {
-    "mtime": 1781042021.0525866,
-    "ast_hash": "a993a9f601fbf48907c3234cb39dfa55",
-    "semantic_hash": "a993a9f601fbf48907c3234cb39dfa55"
-  },
-  "public/bugs/bug6.png": {
-    "mtime": 1781064385.2046742,
-    "ast_hash": "5943d50b12f1e721d29226b7128305d7",
-    "semantic_hash": "5943d50b12f1e721d29226b7128305d7"
-  },
   "public/file.svg": {
     "mtime": 1780325483.054372,
     "ast_hash": "d09f95206c3fa0bb9bd9fefabfd0ea71",
@@ -1553,31 +1523,6 @@
     "mtime": 1780325483.055889,
     "ast_hash": "8e061864f388b47f33a1c3780831193e",
     "semantic_hash": "8e061864f388b47f33a1c3780831193e"
-  },
-  "public/references/finished/catalogo.png": {
-    "mtime": 1781024777.8997512,
-    "ast_hash": "99dd616e7d9b596085bd8e93ea26443e",
-    "semantic_hash": "99dd616e7d9b596085bd8e93ea26443e"
-  },
-  "public/references/finished/catalogo_rutinas_[id].png": {
-    "mtime": 1781028515.9653096,
-    "ast_hash": "aab4995c24689b0eab07efba95038a4e",
-    "semantic_hash": "aab4995c24689b0eab07efba95038a4e"
-  },
-  "public/references/finished/dashboard_rutinas_dia.png": {
-    "mtime": 1781035763.3664944,
-    "ast_hash": "4e9b7034aaed5c1788053a589f5320d0",
-    "semantic_hash": "4e9b7034aaed5c1788053a589f5320d0"
-  },
-  "public/references/finished/home.png": {
-    "mtime": 1781065408.06992,
-    "ast_hash": "b739f2a6c7818740efed5a11031efb80",
-    "semantic_hash": "b739f2a6c7818740efed5a11031efb80"
-  },
-  "public/references/finished/navbar.png": {
-    "mtime": 1781022313.5773573,
-    "ast_hash": "0cf050eafcd3a3adc6500bef4cdd890d",
-    "semantic_hash": "0cf050eafcd3a3adc6500bef4cdd890d"
   },
   "public/vercel.svg": {
     "mtime": 1780325483.058919,
@@ -1604,24 +1549,14 @@
     "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
     "semantic_hash": ""
   },
-  "public/references/finished/dashboard.png": {
-    "mtime": 1781034055.426074,
-    "ast_hash": "cd70376447ac447ae035098893a8bf5a",
-    "semantic_hash": ""
-  },
-  "public/references/finished/dashboard_rutinas.png": {
-    "mtime": 1781035784.2338865,
-    "ast_hash": "1cf16c993bfa9736d75bb30e89acd662",
-    "semantic_hash": ""
-  },
   "app/components/ui/ProgressRing.tsx": {
     "mtime": 1781220769.1675317,
     "ast_hash": "abc03ba9beef08cf6f36fc3bade81e28",
     "semantic_hash": ""
   },
   "app/components/ui/motion.tsx": {
-    "mtime": 1781749790.6933362,
-    "ast_hash": "2f4dd9dfed61f347507a1bbec7af50bf",
+    "mtime": 1782138481.0913024,
+    "ast_hash": "109d176fa14f64899b00a6e7d815bac6",
     "semantic_hash": ""
   },
   "app/lib/admin-stats.ts": {
@@ -1639,19 +1574,9 @@
     "ast_hash": "8513057be60bddd07ad20dc791b78c2c",
     "semantic_hash": ""
   },
-  "public/references/to_do/admin-dashboard.png": {
-    "mtime": 1781236673.3833413,
-    "ast_hash": "ce5465e57438461e54bcd9fdf6548a9d",
-    "semantic_hash": ""
-  },
   ".claude/plans/genera-un-plan-para-transient-ladybug.md": {
     "mtime": 1781290277.5795312,
     "ast_hash": "49ff351b8b593f9d9c72fe3602be2435",
-    "semantic_hash": ""
-  },
-  "public/bugs/bug_lupita.png": {
-    "mtime": 1781270630.8951602,
-    "ast_hash": "599cf3351a4530d6a35308d3829e3905",
     "semantic_hash": ""
   },
   "app/components/shared/StatusToast.tsx": {
@@ -1675,8 +1600,8 @@
     "semantic_hash": ""
   },
   "app/components/shared/TrainingCalendarCard.tsx": {
-    "mtime": 1781622247.8216896,
-    "ast_hash": "67eaef2baee96452265a5b1d578c63c3",
+    "mtime": 1782354654.249585,
+    "ast_hash": "ecaed11dc9002a83c9f3dda60bf60922",
     "semantic_hash": ""
   },
   "app/components/shared/WeeklyAttendanceCard.tsx": {
@@ -1719,21 +1644,6 @@
     "ast_hash": "271b38d92ff2ff16c376a2b33409c758",
     "semantic_hash": ""
   },
-  "public/bugs/bug-alineacion.png": {
-    "mtime": 1781315502.485513,
-    "ast_hash": "87746f64df8d185a96d4654a48f11ed7",
-    "semantic_hash": ""
-  },
-  "public/bugs/bug-espacios.png": {
-    "mtime": 1781315410.609833,
-    "ast_hash": "a4f2730b7ad232e2daf16f94d35d8198",
-    "semantic_hash": ""
-  },
-  "public/references/to_do/calendar.png": {
-    "mtime": 1781318965.7673647,
-    "ast_hash": "d32ae57df7dfb6cc94da63067c21e3aa",
-    "semantic_hash": ""
-  },
   "app/admin/RecentExercisesTable.tsx": {
     "mtime": 1781558240.5656953,
     "ast_hash": "be52d384a4bd20d702e7a4fdcd380ebd",
@@ -1745,8 +1655,8 @@
     "semantic_hash": ""
   },
   "app/admin/alimentos/actions.ts": {
-    "mtime": 1781453574.308413,
-    "ast_hash": "2674e76f3b6c6dbda8202530a209ecf0",
+    "mtime": 1782012984.5341792,
+    "ast_hash": "b6de8baff762961f3ec0020dcac88559",
     "semantic_hash": ""
   },
   "app/admin/alimentos/page.tsx": {
@@ -1770,8 +1680,8 @@
     "semantic_hash": ""
   },
   "app/lib/foods.ts": {
-    "mtime": 1781410929.2725525,
-    "ast_hash": "5f22ca1dc49d970e5dbe577665956d65",
+    "mtime": 1782012755.1242895,
+    "ast_hash": "a7b37c93542195fd7ea0a4c8b7b9a3a5",
     "semantic_hash": ""
   },
   "app/lib/meal-logs.ts": {
@@ -1795,8 +1705,8 @@
     "semantic_hash": ""
   },
   "app/lib/nutrition-style.ts": {
-    "mtime": 1781566860.765949,
-    "ast_hash": "a78bb6e4525a7f7584143408570aa403",
+    "mtime": 1782138472.8971994,
+    "ast_hash": "0090052a8a5062cbd11d4b0f473c92b6",
     "semantic_hash": ""
   },
   "app/lib/nutrition-types.ts": {
@@ -1805,8 +1715,8 @@
     "semantic_hash": ""
   },
   "app/nutricion/registro/RegistroClient.tsx": {
-    "mtime": 1781882517.6791184,
-    "ast_hash": "7f2314495c1ccc470ac1374eaa79c76e",
+    "mtime": 1782138584.5194461,
+    "ast_hash": "50fe9a94e1af95bdc9d2bd83b15e094e",
     "semantic_hash": ""
   },
   "app/nutricion/registro/actions.ts": {
@@ -1845,13 +1755,13 @@
     "semantic_hash": ""
   },
   "app/components/shared/BodyFatFigure.tsx": {
-    "mtime": 1781411231.6473455,
-    "ast_hash": "00865484cd92022270cf04f80ab8e60c",
+    "mtime": 1782068648.2274654,
+    "ast_hash": "0828a9ef33d1bf2203d3377b3710ae5f",
     "semantic_hash": ""
   },
   "app/configuracion/ConfiguracionClient.tsx": {
-    "mtime": 1781877666.120571,
-    "ast_hash": "bd5edfad0001cd6d559f14266a3dbda2",
+    "mtime": 1782157778.3717415,
+    "ast_hash": "cf1f86aee9281ecba0158abb8d99aaea",
     "semantic_hash": ""
   },
   "app/configuracion/actions.ts": {
@@ -1860,8 +1770,8 @@
     "semantic_hash": ""
   },
   "app/configuracion/page.tsx": {
-    "mtime": 1781454120.209558,
-    "ast_hash": "6ecb4e0b0a9f362166b052b0a65288ab",
+    "mtime": 1782140632.96671,
+    "ast_hash": "c1f55c454772f87544350fd6e7e51093",
     "semantic_hash": ""
   },
   "supabase/migrations/20260614_g22_foods_measure.sql": {
@@ -1905,8 +1815,8 @@
     "semantic_hash": ""
   },
   "app/alimentos/NutritionCatalogClient.tsx": {
-    "mtime": 1781749533.8441522,
-    "ast_hash": "5d0b80c724a0c9550a44e6607c44ac21",
+    "mtime": 1782137075.3854284,
+    "ast_hash": "53eafcfdf17845ee47354e03d71c390a",
     "semantic_hash": ""
   },
   "app/alimentos/page.tsx": {
@@ -1935,8 +1845,8 @@
     "semantic_hash": ""
   },
   "app/recetas/RecipeCatalogClient.tsx": {
-    "mtime": 1781903705.9592469,
-    "ast_hash": "68946966d9492e2cd44dc0bf65a64555",
+    "mtime": 1782070030.030393,
+    "ast_hash": "41128500a3a63c03b3d370129728f643",
     "semantic_hash": ""
   },
   "app/recetas/page.tsx": {
@@ -2000,8 +1910,8 @@
     "semantic_hash": ""
   },
   "app/components/shared/MobileTabBar.tsx": {
-    "mtime": 1781788222.402539,
-    "ast_hash": "0913463b0766e134b2f7fc9d9089f445",
+    "mtime": 1782101305.9352477,
+    "ast_hash": "d75507a82557e400c2818022987fd407",
     "semantic_hash": ""
   },
   "app/components/ui/Accordion.tsx": {
@@ -2055,8 +1965,8 @@
     "semantic_hash": ""
   },
   "app/components/shared/NutritionCalendarCard.tsx": {
-    "mtime": 1781653721.4047456,
-    "ast_hash": "24925ed45f80a52e581545104d3f6db3",
+    "mtime": 1782354658.652988,
+    "ast_hash": "a615842a1a1cd3dffbc1b4eb9c021716",
     "semantic_hash": ""
   },
   ".claude/plans/playwright-cli-frontend-design-generara-piped-music.md": {
@@ -2125,8 +2035,8 @@
     "semantic_hash": ""
   },
   "app/components/shared/MobileHeader.tsx": {
-    "mtime": 1781749485.6659584,
-    "ast_hash": "8599327bded35b90e20a6f54e18df603",
+    "mtime": 1782361582.4624882,
+    "ast_hash": "231144776023d0d3ece90d3292c4b9b5",
     "semantic_hash": ""
   },
   ".claude/plans/genera-un-plan-para-dazzling-dahl.md": {
@@ -2485,18 +2395,18 @@
     "semantic_hash": ""
   },
   "app/rutinas/WeekDaysList.tsx": {
-    "mtime": 1781724582.2065887,
-    "ast_hash": "99d255a69f7740c0a9b1b440a575844e",
+    "mtime": 1782096483.1024923,
+    "ast_hash": "57169558580207176da30e6bdc01554c",
     "semantic_hash": ""
   },
   "app/rutinas/dia/DayWorkoutClient.tsx": {
-    "mtime": 1781724582.510151,
-    "ast_hash": "d930b06d55958372ac637d4511ea2c31",
+    "mtime": 1782101298.655184,
+    "ast_hash": "92e8db7f5a09cc19751ded4dece5724b",
     "semantic_hash": ""
   },
   "app/rutinas/dia/actions.ts": {
-    "mtime": 1781724582.6478596,
-    "ast_hash": "6839e392480d60103a87074ec725c3be",
+    "mtime": 1782157704.3373678,
+    "ast_hash": "1239be03efbe5df25f07ef5dd929dfd8",
     "semantic_hash": ""
   },
   "app/rutinas/dia/page.tsx": {
@@ -2505,13 +2415,13 @@
     "semantic_hash": ""
   },
   "app/rutinas/page.tsx": {
-    "mtime": 1781903705.9587293,
-    "ast_hash": "ee924badc1ce6025385c28a6189eaaa4",
+    "mtime": 1782157789.81488,
+    "ast_hash": "82042525216c68f169bc7972a3e60c84",
     "semantic_hash": ""
   },
   "public/sw.js": {
-    "mtime": 1781733401.637367,
-    "ast_hash": "69bd08abbe841fcf318be82931482659",
+    "mtime": 1782012811.8307588,
+    "ast_hash": "106622c14cdbdecd53fe0c5507ea272c",
     "semantic_hash": ""
   },
   "public/logo/apple-touch-icon.png": {
@@ -2560,13 +2470,13 @@
     "semantic_hash": ""
   },
   "scripts/media-manifest.mjs": {
-    "mtime": 1781972439.0229838,
-    "ast_hash": "4b75bcba476d9152f1dcb65434a5c165",
+    "mtime": 1782068668.7273195,
+    "ast_hash": "41c1be6e6215c0dadcde7205e16e76b8",
     "semantic_hash": ""
   },
   "scripts/media/generated-image-manifest.json": {
-    "mtime": 1781973154.1982996,
-    "ast_hash": "5c3894d366d23890150bb3566c9fd5f7",
+    "mtime": 1782069909.8196485,
+    "ast_hash": "516568f90f1d9503613eccab7f459065",
     "semantic_hash": ""
   },
   "scripts/render-generated-images.ps1": {
@@ -2575,8 +2485,8 @@
     "semantic_hash": ""
   },
   "scripts/upload-generated-images.mjs": {
-    "mtime": 1781972557.5030787,
-    "ast_hash": "2ba9e49c6574ccadcf9081b5f3f60477",
+    "mtime": 1782068674.763546,
+    "ast_hash": "857744379b481c01f2d35722a2eeb3ce",
     "semantic_hash": ""
   },
   "supabase/migrations/20260619_g29_generated_content_images.sql": {
@@ -2615,128 +2525,128 @@
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/081faf16-54fd-4eef-a475-a5e9f0439777-yogur-con-nueces.png": {
-    "mtime": 1781904227.8196454,
-    "ast_hash": "f326494446d1ef4a2479a38b963b1089",
+    "mtime": 1782069227.6998615,
+    "ast_hash": "755c6e98d65b3ed47ede4e008231d7b4",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/0c78dde9-5c90-43ec-9c2f-ccd4bb6ee230-atun-con-arroz-y-vegetales.png": {
-    "mtime": 1781904221.6399682,
-    "ast_hash": "4fd4dee6b28e87a80f16d5ace5e636c8",
+    "mtime": 1782069677.5820875,
+    "ast_hash": "dc9d1b0e3f812f9dda2b4d8ecc5206e3",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/133138a2-405e-44b6-8a21-f531fa229a92-ensalada-completa-de-garbanzos.png": {
-    "mtime": 1781904223.1969264,
-    "ast_hash": "cc056d277353f6ef73efeb99bc89b028",
+    "mtime": 1782069684.2449074,
+    "ast_hash": "a5ed11f266bb9138ae20c5061318ffac",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/163e0871-0009-4314-9aba-d74eededa64b-smoothie-proteico.png": {
-    "mtime": 1781904226.2770715,
-    "ast_hash": "e4dc894aa50476901517141196343516",
+    "mtime": 1782069693.3080401,
+    "ast_hash": "a12ab399fa43d421c2b7cecd46bfb15f",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/17fd0627-026c-4268-8c17-6a7fc50cffca-pasta-integral-con-pollo.png": {
-    "mtime": 1781904223.994371,
-    "ast_hash": "056c267c2f2c5bfbb335acc62b537cdd",
+    "mtime": 1782069206.160771,
+    "ast_hash": "c570ec33283aac38bc1f67c3cc871b0d",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/49843778-3f47-4fe9-bc7d-4c81e6280091-wok-de-tofu-y-arroz.png": {
-    "mtime": 1781904225.052601,
-    "ast_hash": "0223b6227a72c07f64cce044ac27f7c8",
+    "mtime": 1782069689.452802,
+    "ast_hash": "c74eee4e2f2ed4bef57371ce6a4b2c02",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/4fcc5490-aff4-4725-9b3d-7fc88ff11c9d-salmon-con-batata.png": {
-    "mtime": 1781904224.2534122,
-    "ast_hash": "c3c7650f699d88213edc145e076abab9",
+    "mtime": 1782069208.3691335,
+    "ast_hash": "ee97c4e8259def46af8391fd8e09a37f",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/5a1deaa7-bccb-4f06-b09a-c2c1cb15e853-ensalada-de-atun.png": {
-    "mtime": 1781904223.4426022,
-    "ast_hash": "dea785041ff97de2efe5642bc0521aaf",
+    "mtime": 1782069686.1212268,
+    "ast_hash": "bb72ebcc4c16f23051298fc20b92ded4",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/5cdc2141-0151-4c34-90bf-66132df601f5-bowl-de-pollo-arroz-y-brocoli.png": {
-    "mtime": 1781904222.1489255,
-    "ast_hash": "51dd50aee3e391b907627c506aa5b608",
+    "mtime": 1782069196.7861607,
+    "ast_hash": "a687f8832c7c049c750e5091262a4d3a",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/5e6baca8-a32a-471e-b747-cd15f098c7eb-panqueques-de-avena-y-clara.png": {
-    "mtime": 1781904226.0389256,
-    "ast_hash": "53bbdf588eacf300ba39feb6cabc2fbe",
+    "mtime": 1782069691.6548097,
+    "ast_hash": "d665faba25164886266677be29971803",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/66ddb8d6-c649-40bf-a2e0-e751c6c44bfa-bowl-de-pollo-y-arroz.png": {
-    "mtime": 1781904222.4140036,
-    "ast_hash": "f778f6e5ca655c429852fc025a67499c",
+    "mtime": 1782069197.8953342,
+    "ast_hash": "a687f8832c7c049c750e5091262a4d3a",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/69a5ce8c-bdfa-4aa0-b194-ce54b7484364-avena-con-banana-y-mani.png": {
-    "mtime": 1781904221.8837416,
-    "ast_hash": "74a99e743f85308d3e567dfca77debaa",
+    "mtime": 1782069679.252886,
+    "ast_hash": "a12ab399fa43d421c2b7cecd46bfb15f",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/706a07e2-013d-49c5-a7d0-0e950aa0c091-omelette-de-espinaca-y-queso.png": {
-    "mtime": 1781904225.7772388,
-    "ast_hash": "afd4c8ece2b9ee1429ed5b4568b57552",
+    "mtime": 1782069217.2394848,
+    "ast_hash": "122646f64f6e165b7dcabea2149ee2f5",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/7de9ba93-650d-4ff3-8393-4866c9ae95e9-milanesa-saludable.png": {
-    "mtime": 1781904223.7184262,
-    "ast_hash": "5bb22170a927d4c7ee225ab7dea0a401",
+    "mtime": 1782069204.8381677,
+    "ast_hash": "1e3dabacdd494544ee7345ce265f93da",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/7f382185-0a74-4258-a250-587b63a63a24-tacos-de-carne-magra.png": {
-    "mtime": 1781904224.5264902,
-    "ast_hash": "5cd76c1f67e9d68037f74f2dcce98610",
+    "mtime": 1782069209.709794,
+    "ast_hash": "b643f6a5211f4a8a4b98fa55edc30bdb",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/83dbe079-fd97-4116-84e1-21fb0b553a96-carne-magra-con-papa-y-ensalada.png": {
-    "mtime": 1781904222.9337888,
-    "ast_hash": "bb1f2064e334216dbfa0d9e4c09d457b",
+    "mtime": 1782069682.5905313,
+    "ast_hash": "5ab5e442645299492771f8e83a3f3a28",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/897d2d4c-96b6-4332-b1c1-5f5ef9764e9a-sandwich-proteico.png": {
-    "mtime": 1781904227.2996788,
-    "ast_hash": "2c0df8e7e164867516f10ffdff6f96e7",
+    "mtime": 1782069225.198194,
+    "ast_hash": "a96fdb70c8403bc51602841c8b904014",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/902b1270-9faf-4c58-9bb0-defd4d608b8f-tostada-con-manteca-de-mani.png": {
-    "mtime": 1781904227.5589876,
-    "ast_hash": "1769ee9e88a9c606a3371683bc410bd1",
+    "mtime": 1782069696.6298616,
+    "ast_hash": "f9dcf66c9974ec98e880ed6e318e22cf",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/9d21ea7d-8c41-4482-b929-7a4511699c49-burrito-de-pollo.png": {
-    "mtime": 1781904222.6807475,
-    "ast_hash": "5fb1133465a18daeb1b073a56237c4e3",
+    "mtime": 1782069680.925402,
+    "ast_hash": "53acb27ad3ec6333f48dd84f3f792df6",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/aaefe215-58ac-462e-9988-ae189a1f4962-avena-proteica-con-banana.png": {
-    "mtime": 1781904225.5463238,
-    "ast_hash": "daac4cf4f5e208e6fc3471feea05227a",
+    "mtime": 1782069691.0981007,
+    "ast_hash": "a12ab399fa43d421c2b7cecd46bfb15f",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/ced9bf7d-9dc9-42e2-a7cd-9249eeab1a5b-tostadas-con-huevo-y-palta.png": {
-    "mtime": 1781904224.7827375,
-    "ast_hash": "17e231a6bc2dea14b9d318d087eb1a70",
+    "mtime": 1782069687.7869215,
+    "ast_hash": "c9f5d03cb285883ad6e7462af89601bd",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/e326bf24-407f-4e12-b269-c43ff85d01e4-tostadas-integrales-con-huevo-y-palta.png": {
-    "mtime": 1781904226.5343933,
-    "ast_hash": "ee2744235b64ea0745fd1debe086aa32",
+    "mtime": 1782069694.966174,
+    "ast_hash": "c9f5d03cb285883ad6e7462af89601bd",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/e3b8ec06-23b1-49e5-abe3-1580a8ca8a41-yogur-con-almendras.png": {
-    "mtime": 1781904225.2869813,
-    "ast_hash": "ffaf6a01f5460b9aaa49a5b74eaf5953",
+    "mtime": 1782069214.084101,
+    "ast_hash": "755c6e98d65b3ed47ede4e008231d7b4",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/f25e5e11-3399-4acb-aa73-416a8c77eb33-hummus-con-zanahoria.png": {
-    "mtime": 1781904227.0426,
-    "ast_hash": "cfe1003bd04aa24309d1fc0da86cc2f3",
+    "mtime": 1782069223.6475453,
+    "ast_hash": "a5daeb51f39c76f8994421e637ff8f74",
     "semantic_hash": ""
   },
   "scripts/media/generated/recipes/fcda9e32-bd0a-402a-bc0b-f14926fec3a9-yogur-griego-con-frutas-y-almendras.png": {
-    "mtime": 1781904226.796821,
-    "ast_hash": "3ad94602efcaf32d3111974ab1dc5aa4",
+    "mtime": 1782069222.5366309,
+    "ast_hash": "755c6e98d65b3ed47ede4e008231d7b4",
     "semantic_hash": ""
   },
   "scripts/media/generated/routines/02ab6a77-7f66-4db0-bc19-d36a681faee5-fuerza-5x5-adaptada.png": {
@@ -2829,54 +2739,19 @@
     "ast_hash": "de886e285575085c2141ea9e96e3dae5",
     "semantic_hash": ""
   },
-  "public/rutinas/arnold-split.png": {
-    "mtime": 1781973084.5311325,
-    "ast_hash": "60b4e145f2b2acd7d302b0eabf4f6f08",
-    "semantic_hash": ""
-  },
-  "public/rutinas/full-body-mantenimiento.png": {
-    "mtime": 1781970875.3402932,
-    "ast_hash": "a6b27fe4239af879d7a3ac12f8c7c2f3",
-    "semantic_hash": ""
-  },
-  "public/rutinas/full-body.png": {
-    "mtime": 1781968594.4946759,
-    "ast_hash": "aa1044a5dbcc265c8f275309956f3bbd",
-    "semantic_hash": ""
-  },
-  "public/rutinas/pplxarnoldslpit.png": {
-    "mtime": 1781970975.906163,
-    "ast_hash": "03032b48995245ee133a25090d91483d",
-    "semantic_hash": ""
-  },
-  "public/rutinas/prio-legs.png": {
-    "mtime": 1781971115.2400396,
-    "ast_hash": "a9f3983031a0e494ea6efb225b7a59fc",
-    "semantic_hash": ""
-  },
-  "public/rutinas/push-pull-legs.png": {
-    "mtime": 1781971211.2884767,
-    "ast_hash": "156752f356451a489d788c65fa0302cb",
-    "semantic_hash": ""
-  },
-  "public/rutinas/upper-lower.png": {
-    "mtime": 1781971426.5314865,
-    "ast_hash": "0fae7e1ccd57cc4a466751b9735b97bd",
-    "semantic_hash": ""
-  },
   "app/api/exercises/[id]/demo/route.ts": {
     "mtime": 1781972353.9713686,
     "ast_hash": "079578a21f96435791df212471e2705f",
     "semantic_hash": ""
   },
   "app/api/exercises/demo-image/route.ts": {
-    "mtime": 1781972363.1900003,
-    "ast_hash": "b83fc11cad7d9e68d8a53e4bc71ed0eb",
+    "mtime": 1781999716.3597367,
+    "ast_hash": "396f6ca46ef7cf4a05e8638f3b126cf8",
     "semantic_hash": ""
   },
   "app/lib/exercise-demo.ts": {
-    "mtime": 1781973672.2396202,
-    "ast_hash": "e3f8eb1c840493abc31cf1fbdf71e863",
+    "mtime": 1782008215.750197,
+    "ast_hash": "5cdfbeacf5e78c821e5b5310aee82668",
     "semantic_hash": ""
   },
   "scripts/media/generated/exercises/00bf503b-3fca-4222-be4e-dbd48eb3bf0e-remo-sentado-en-polea.png": {
@@ -3187,6 +3062,1256 @@
   "supabase/migrations/20260620_g33_exercise_demo_provider_ids.sql": {
     "mtime": 1781973649.6826577,
     "ast_hash": "c103c7670733642c3a1009e7aad59b1a",
+    "semantic_hash": ""
+  },
+  "app/lib/exercise-image.ts": {
+    "mtime": 1782002344.7533257,
+    "ast_hash": "95a051764afa8751e691daddadac21e9",
+    "semantic_hash": ""
+  },
+  "app/rutinas/RutinasOverview.tsx": {
+    "mtime": 1782157835.3115518,
+    "ast_hash": "a734cc4db30baaa3e18d937fbad78caa",
+    "semantic_hash": ""
+  },
+  "app/rutinas/actions.ts": {
+    "mtime": 1782157785.7772412,
+    "ast_hash": "7eee46b589cf52ab41ee6e12c01d804d",
+    "semantic_hash": ""
+  },
+  "auth.json": {
+    "mtime": 1782353261.825704,
+    "ast_hash": "9858f3328998fa2e4acf2b40d02a8bcb",
+    "semantic_hash": ""
+  },
+  "scripts/_find-missing.mjs": {
+    "mtime": 1782006161.870343,
+    "ast_hash": "ab260bfe6edd19ed76825758bb6ffc9f",
+    "semantic_hash": ""
+  },
+  "scripts/backfill-exercise-static-frames.mjs": {
+    "mtime": 1782055349.583158,
+    "ast_hash": "32ebf206003223a7c78f93aeb561ec10",
+    "semantic_hash": ""
+  },
+  "scripts/clear-exercise-images.mjs": {
+    "mtime": 1782002402.3297317,
+    "ast_hash": "9befded0db23e8527a2fef6efd92ad4f",
+    "semantic_hash": ""
+  },
+  "scripts/fetch-dataset-images.mjs": {
+    "mtime": 1782069670.9882317,
+    "ast_hash": "caca211275c7f190984f33393224f70a",
+    "semantic_hash": ""
+  },
+  "scripts/media/fetch-misses.json": {
+    "mtime": 1782069743.6214685,
+    "ast_hash": "dc2977724610ff36c3acfafc151dc98a",
+    "semantic_hash": ""
+  },
+  "scripts/media/food-name-map.json": {
+    "mtime": 1782069326.6414535,
+    "ast_hash": "6a42265ff0c9b8eeb2fbb61b41a5807f",
+    "semantic_hash": ""
+  },
+  "scripts/sync-exercise-images.mjs": {
+    "mtime": 1782005735.9718015,
+    "ast_hash": "b0c5d6a42ac3b93e5deb6c78d9d3bfee",
+    "semantic_hash": ""
+  },
+  "scripts/sync-fitnessprogramer-images.mjs": {
+    "mtime": 1782013071.1499927,
+    "ast_hash": "999339c2c420f9b1ec737e8d991d6230",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-eventual-fox.md": {
+    "mtime": 1782000439.9387436,
+    "ast_hash": "156eb8b4be7672022fbb552b66d8e132",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-gentle-simon.md": {
+    "mtime": 1782157574.3621252,
+    "ast_hash": "b5c369f73168a6ce1c2980725357c28c",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-piped-raven.md": {
+    "mtime": 1782067840.8095038,
+    "ast_hash": "64f40ea6cfb5a1f44f6a9c5c013d8469",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-validated-dewdrop.md": {
+    "mtime": 1782055095.7935915,
+    "ast_hash": "9e4883e4c8bdda4724a2fb586ac83c00",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-wiggly-pixel.md": {
+    "mtime": 1782068569.954248,
+    "ast_hash": "ae4bf509a60313a15117c3604bf681ad",
+    "semantic_hash": ""
+  },
+  ".claude/plans/glowing-jumping-cupcake.md": {
+    "mtime": 1782011705.4088244,
+    "ast_hash": "ddebac64cd984a908d3727d0e31a584e",
+    "semantic_hash": ""
+  },
+  ".claude/plans/goal-get-a-tender-squid.md": {
+    "mtime": 1782002213.6166205,
+    "ast_hash": "f3f5350555299406913f537cf029e25c",
+    "semantic_hash": ""
+  },
+  ".claude/plans/necesito-que-revises-nuevamente-bright-kahn.md": {
+    "mtime": 1782360079.6413229,
+    "ast_hash": "791d969fff50f8e1ae10cba95a0803f9",
+    "semantic_hash": ""
+  },
+  ".claude/plans/necesito-que-revises-nuevamente-eventual-treasure.md": {
+    "mtime": 1782356123.7829127,
+    "ast_hash": "4b7cc2ee1d33e4ecbfb6791d768bfcee",
+    "semantic_hash": ""
+  },
+  ".claude/plans/necesito-que-revises-nuevamente-peaceful-nest.md": {
+    "mtime": 1782354183.3791518,
+    "ast_hash": "b55d47b93735c3bd9f3d0f5f7fcfc526",
+    "semantic_hash": ""
+  },
+  ".claude/plans/necesito-que-revises-nuevamente-twinkly-hummingbird.md": {
+    "mtime": 1782359124.5549154,
+    "ast_hash": "baabd8ebe78b1768c21fd6609b4224d8",
+    "semantic_hash": ""
+  },
+  ".claude/plans/necesito-que-revises-nuevamente-twinkly-willow.md": {
+    "mtime": 1782352739.8384745,
+    "ast_hash": "8d601f700d1c10061b925e09afa747d1",
+    "semantic_hash": ""
+  },
+  ".claude/plans/necesito-que-revises-nuevamente-vast-thompson.md": {
+    "mtime": 1782340217.7663705,
+    "ast_hash": "3df9aaccce7c33931b6a0cf854dac3fc",
+    "semantic_hash": ""
+  },
+  ".claude/plans/necesito-que-revises-nuevamente-warm-diffie.md": {
+    "mtime": 1782358319.6948035,
+    "ast_hash": "10c7293f075b69ccc464d28677c23664",
+    "semantic_hash": ""
+  },
+  ".claude/plans/para-pwa-quiero-mejorar-hashed-wilkinson.md": {
+    "mtime": 1782140361.5950553,
+    "ast_hash": "a66ed77a54f385adf2aa9911d200c9f8",
+    "semantic_hash": ""
+  },
+  ".claude/plans/quiero-implementar-un-redise-o-structured-river.md": {
+    "mtime": 1782338443.2519534,
+    "ast_hash": "afd341de465ddeafb236db4833787bb4",
+    "semantic_hash": ""
+  },
+  ".claude/plans/quiero-mejorar-la-pantalla-atomic-cocoa.md": {
+    "mtime": 1782070668.7924366,
+    "ast_hash": "207584a95b96454ff113ebb3dc92d52a",
+    "semantic_hash": ""
+  },
+  ".claude/plans/quiero-mejorar-la-pantalla-sequential-kahan.md": {
+    "mtime": 1782091075.029169,
+    "ast_hash": "3109192e5457490b000a4bac3bef57ad",
+    "semantic_hash": ""
+  },
+  ".claude/plans/quiero-mejorar-la-secci-n-prancy-backus.md": {
+    "mtime": 1782138184.7386503,
+    "ast_hash": "407f819f7837953bc088d29c3bb264ae",
+    "semantic_hash": ""
+  },
+  ".claude/plans/quiero-mejorar-la-secci-n-tranquil-fern.md": {
+    "mtime": 1782096106.507759,
+    "ast_hash": "b1e6547917a0db8e7c7f6105e5e1e999",
+    "semantic_hash": ""
+  },
+  ".claude/plans/quiero-mejorar-la-secci-n-velvety-flame.md": {
+    "mtime": 1782100489.641638,
+    "ast_hash": "b348ff4ed0a6029a0ba8ff306cc60b3a",
+    "semantic_hash": ""
+  },
+  ".claude/plans/tender-orbiting-babbage.md": {
+    "mtime": 1782012438.532088,
+    "ast_hash": "f696f2d1ed58401f44eb6b29795d61db",
+    "semantic_hash": ""
+  },
+  "public/references/body-fat/README.md": {
+    "mtime": 1782068817.3257527,
+    "ast_hash": "ce560a8e95a96aa39b23b5e9d0ade681",
+    "semantic_hash": ""
+  },
+  "catalogo-desktop.png": {
+    "mtime": 1782093376.5778072,
+    "ast_hash": "4bd2053e02f402e7549d61b6b8e84bbe",
+    "semantic_hash": ""
+  },
+  "catalogo-mobile.png": {
+    "mtime": 1782093355.413626,
+    "ast_hash": "bc53911002d45e2bcd382ac4192f9dbd",
+    "semantic_hash": ""
+  },
+  "catalogo-search.png": {
+    "mtime": 1782093390.257753,
+    "ast_hash": "149223e276e4beef45c57f982fe7009d",
+    "semantic_hash": ""
+  },
+  "docs/design-references/dashboard-principal-redesign-v1.png": {
+    "mtime": 1782334753.907797,
+    "ast_hash": "8507ee959d0509638d7b90a8a7f8b2de",
+    "semantic_hash": ""
+  },
+  "public/images/hero.png": {
+    "mtime": 1782072676.4831429,
+    "ast_hash": "38ae6bd0cc2344eaa98d090f1c1142e6",
+    "semantic_hash": ""
+  },
+  "public/rutinas/arnoldsplit.png": {
+    "mtime": 1781973084.5311325,
+    "ast_hash": "60b4e145f2b2acd7d302b0eabf4f6f08",
+    "semantic_hash": ""
+  },
+  "public/rutinas/fullbody-mantenimiento.png": {
+    "mtime": 1781970875.3402932,
+    "ast_hash": "a6b27fe4239af879d7a3ac12f8c7c2f3",
+    "semantic_hash": ""
+  },
+  "public/rutinas/fullbody.png": {
+    "mtime": 1781968594.4946759,
+    "ast_hash": "aa1044a5dbcc265c8f275309956f3bbd",
+    "semantic_hash": ""
+  },
+  "public/rutinas/ppl-arnoldslpit.png": {
+    "mtime": 1781970975.906163,
+    "ast_hash": "03032b48995245ee133a25090d91483d",
+    "semantic_hash": ""
+  },
+  "public/rutinas/priolegs.png": {
+    "mtime": 1781971115.2400396,
+    "ast_hash": "a9f3983031a0e494ea6efb225b7a59fc",
+    "semantic_hash": ""
+  },
+  "public/rutinas/pushpulllegs.png": {
+    "mtime": 1781971211.2884767,
+    "ast_hash": "156752f356451a489d788c65fa0302cb",
+    "semantic_hash": ""
+  },
+  "public/rutinas/upperlower.png": {
+    "mtime": 1781971426.5314865,
+    "ast_hash": "0fae7e1ccd57cc4a466751b9735b97bd",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/01e01119-eaaf-4cdc-85e5-c9dbba60e1c9-tarta-de-atun.png": {
+    "mtime": 1782069735.6354759,
+    "ast_hash": "bb72ebcc4c16f23051298fc20b92ded4",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/05a0b6db-1063-4201-82d4-d535612f2438-quinoa-cocida.png": {
+    "mtime": 1782069105.1795335,
+    "ast_hash": "d3256ea34896112f269ee257ade3f4af",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/05e1ce79-7afc-4294-848a-8133e0462895-harina-de-avena.png": {
+    "mtime": 1782069444.1311176,
+    "ast_hash": "fbfb784bcbfecfaa35c3c0c07267bda5",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/0628dcea-ce40-4ea4-b957-270601913d0f-merluza.png": {
+    "mtime": 1782069713.5100129,
+    "ast_hash": "034c7cc869b525d77bb8b2b10122f036",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/06cf0978-e97e-4b8f-be79-fb477ffc2982-tomate.png": {
+    "mtime": 1782069141.1350317,
+    "ast_hash": "3d4e0630c64ee6916b7d93aa9a081972",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/07c312d3-38f7-488d-bdce-578d5026162d-bowl-mediterraneo.png": {
+    "mtime": 1782069685.2990637,
+    "ast_hash": "bfe6e95b979be833b9da2c5e095714c3",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/08284054-a8e1-49c7-9192-aa04c667c374-cereal-de-maiz.png": {
+    "mtime": 1782068969.4049494,
+    "ast_hash": "e215f2811d1ca7f0bf4f854566acc791",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/085d7d50-5193-454c-a390-ee889dc63283-acelga.png": {
+    "mtime": 1782068902.416423,
+    "ast_hash": "f7e6cc67065b27e7a2c0e7cbf7d2401c",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/0acd23ee-3f68-4281-8dc7-acf42e792c89-brocoli.png": {
+    "mtime": 1782068953.982728,
+    "ast_hash": "3bf7db1f0ca69547fc29e803b0e389a7",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/0acfebc6-c5dc-4138-9e2a-043e787f39a7-arvejas-cocidas.png": {
+    "mtime": 1782069391.365986,
+    "ast_hash": "10eb1b32b1aafc5b232d6688b1fe5f44",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/0b3ef7aa-4741-4e69-9fb5-38695b63c2f2-sopa-crema-de-calabaza.png": {
+    "mtime": 1782069501.2428093,
+    "ast_hash": "89d47ef56c9a1a586f6576508e11a411",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/0df23fd1-617f-4339-a763-6989b6c9d187-garbanzos-cocidos.png": {
+    "mtime": 1782069011.675754,
+    "ast_hash": "a5ed11f266bb9138ae20c5061318ffac",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/0e2e5efa-77c1-4b17-b045-93ef7216dae2-ricota-magra.png": {
+    "mtime": 1782069111.8497517,
+    "ast_hash": "9dc23a658937f7a17d6c020a805f04f2",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/0eec369f-b38b-402d-a214-e0e855efda15-mandioca-hervida.png": {
+    "mtime": 1782069449.936957,
+    "ast_hash": "006a4cda967fe5604c4d369614949eba",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/10ba3db9-5ce1-45ee-abab-cba9884b703a-choclo-cocido.png": {
+    "mtime": 1782068974.359873,
+    "ast_hash": "1a6bcbf988e5b554a073c432a829b593",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/10cebd6c-002e-41c1-982e-5265754f0672-castanas-de-caju.png": {
+    "mtime": 1782068964.7540998,
+    "ast_hash": "7904f40ff7bd41b6716b3be5abd06a2d",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/110126ac-5777-4ed2-b947-e7aa7279d3a1-caballa.png": {
+    "mtime": 1782068957.3157547,
+    "ast_hash": "593bea0f932d213c34081af301b6ee17",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/11b082cc-ce42-4c78-aa85-ff5261cab4fa-manzana.png": {
+    "mtime": 1782069047.9560416,
+    "ast_hash": "9e3475ee5a28e7da11cd5ad77ef76c8c",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/131a365f-0a90-47c5-9d2c-ff2bc185cac7-sandwich-de-atun-integral.png": {
+    "mtime": 1782069727.9650478,
+    "ast_hash": "bb72ebcc4c16f23051298fc20b92ded4",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/14f2e6d9-3fbd-4cb3-8d0a-ee73314e6261-tortilla-de-trigo.png": {
+    "mtime": 1782069146.6983633,
+    "ast_hash": "53acb27ad3ec6333f48dd84f3f792df6",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/185782cc-0026-4772-9100-cb0d20d25425-nalga-vacuna.png": {
+    "mtime": 1782069717.6206923,
+    "ast_hash": "5ab5e442645299492771f8e83a3f3a28",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/18fbf686-08c8-41e0-b4c3-d0efb99b4c8a-tofu-firme.png": {
+    "mtime": 1782069140.3683722,
+    "ast_hash": "6700ce4f5e22c088e2add7502e9c6cae",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/1b278a64-162b-43ae-8255-301f88ed70d6-aceitunas-verdes.png": {
+    "mtime": 1782069385.8052726,
+    "ast_hash": "29d20d4ee90a27f660781cb435ab43f8",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/1c22d8e9-27f4-43da-bb5f-b4b73f916ec7-edamame.png": {
+    "mtime": 1782069696.908295,
+    "ast_hash": "d31f8ba9b163a67e6603f39f685e25e5",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/1c41f7fb-eff5-4bbb-a1d9-88344e89dfbe-arvejas-frescas.png": {
+    "mtime": 1782069391.6910827,
+    "ast_hash": "10eb1b32b1aafc5b232d6688b1fe5f44",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/1c9b6abc-af6e-4903-bcf6-b7d0bc77ecd0-apio.png": {
+    "mtime": 1782068924.8303895,
+    "ast_hash": "0f384d3098bc62d6119db9e452ea7cc2",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/1e0469e3-c34b-4e40-9492-a2d732224903-cilantro.png": {
+    "mtime": 1782068977.2045023,
+    "ast_hash": "7ddf09f2bcb359dd00849484dba759ab",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/1feec923-2482-4e09-b62b-ef4bc7f57daf-brotes-de-soja.png": {
+    "mtime": 1782068956.0112197,
+    "ast_hash": "82293db4afae4310d156f463ca5955df",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/20afc270-a48f-4482-aa8c-607594e87648-kale.png": {
+    "mtime": 1782069026.1988518,
+    "ast_hash": "3bc1bddf9cfcae91eee5091d9a5b7992",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/234352f6-3631-48fd-a2cc-7d6bef608861-palta.png": {
+    "mtime": 1782069068.334435,
+    "ast_hash": "c9f5d03cb285883ad6e7462af89601bd",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/250be64a-d8f4-4675-b52e-7e86f7f6b221-arroz-integral-cocido.png": {
+    "mtime": 1782068931.580436,
+    "ast_hash": "e6a31c952ffae23f2239dfb126b3ef6c",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/25e38e2f-8cbe-4f1e-a4a1-865f27572949-galletas-de-arroz.png": {
+    "mtime": 1782069705.9205067,
+    "ast_hash": "f79bbae660a6f9775acc2884d1990615",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/272f25bb-f3bf-443b-9aef-0073ea62a869-arroz-basmati-cocido.png": {
+    "mtime": 1782068929.5828898,
+    "ast_hash": "8f84e351a842065423e9731de1feef95",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/290e8317-21f1-4117-98f0-65ec70907ad3-mayonesa-light.png": {
+    "mtime": 1782069049.2080612,
+    "ast_hash": "9bbbbf5ce9b925dfd792054fa20219a5",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/2922ecd4-e5a8-449f-acd2-86e133ccaec6-queso-port-salut-light.png": {
+    "mtime": 1782069482.5565643,
+    "ast_hash": "b1b1887491cf2e6c6b758aeb71b8edf7",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/2ec47873-fbb0-4cf2-9b89-4cd08c92cb6c-pepinillos.png": {
+    "mtime": 1782069082.7241518,
+    "ast_hash": "348f636651afe35405bac30947e22185",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/314db8e0-2d0e-4c10-a08f-af8e916901f5-milanesa-de-carne-al-horno.png": {
+    "mtime": 1782069456.0813546,
+    "ast_hash": "1e3dabacdd494544ee7345ce265f93da",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/31e18e81-cc4b-4804-8726-da1924150d9a-tostadas-integrales.png": {
+    "mtime": 1782069505.364542,
+    "ast_hash": "bc5697bbf496dba97bd6c433f27ad537",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/35f2d32d-ac78-449f-b976-fc41f9614bdd-higado-vacuno.png": {
+    "mtime": 1782069445.1582973,
+    "ast_hash": "5c40febda804c466fb5b9c74a78525ef",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/37aee83e-c102-4e05-be6c-05e29d02cd6a-tortilla-de-papa-al-horno.png": {
+    "mtime": 1782069737.21537,
+    "ast_hash": "48c803226320042e1154f95b214ca686",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/3a8a70de-a1a0-4c4e-add2-edb08a32da22-mozzarella-light.png": {
+    "mtime": 1782069062.281291,
+    "ast_hash": "cc1100bba58abfda23c945afc3c2e0dd",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/3a9cdee5-2c35-441c-98d0-fc8ce50c4027-wrap-vegetariano.png": {
+    "mtime": 1782069743.619923,
+    "ast_hash": "53acb27ad3ec6333f48dd84f3f792df6",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/3da6c6fb-107c-49e6-9d5a-d93dca3cfa07-tempeh.png": {
+    "mtime": 1782069137.3250997,
+    "ast_hash": "1dd607f79c0306b8e769f744db2659b2",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/3f1f9118-2ad4-4938-8080-7f208a5c8bad-cuadril-magro.png": {
+    "mtime": 1782069692.3035367,
+    "ast_hash": "5ab5e442645299492771f8e83a3f3a28",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/4355555c-a273-4980-ae73-057c00ef67b0-huevo-entero.png": {
+    "mtime": 1782069023.767929,
+    "ast_hash": "1e9110afc1d20c139a88a55b6070dd74",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/457d7994-f738-433a-aa6f-ab700358af8f-palmitos.png": {
+    "mtime": 1782069461.7167659,
+    "ast_hash": "a687f8832c7c049c750e5091262a4d3a",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/476cf60b-e0f8-43f6-b57b-92ed49e17873-endivia.png": {
+    "mtime": 1782069426.9069767,
+    "ast_hash": "75f91f89139c086f7491fae7c4b631fd",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/479e1c61-d5f6-4239-a883-172f128e24c7-vegetales-grillados.png": {
+    "mtime": 1782069740.679958,
+    "ast_hash": "ac5d5d736f6b0a468ad38a57b339729d",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/47faecc6-27e5-4476-8e57-ff25554e7706-morron-verde.png": {
+    "mtime": 1782069060.3382761,
+    "ast_hash": "226605b0767bd66c2f5acaa150bf4910",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/4932d908-b4f5-4f55-b235-db37708bf656-pepino.png": {
+    "mtime": 1782069083.307395,
+    "ast_hash": "4b9d785f01629cc1b6db2c8d9c5d8eef",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/494c3cf4-cbfe-4d74-8dd6-2a3cc2a07e90-fideos-de-trigo-cocidos.png": {
+    "mtime": 1782069433.804499,
+    "ast_hash": "1954cb3e5156419a5e0dd5e30ed0e5b7",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/4a996197-5786-4530-88d7-c76feea7aabe-porotos-blancos.png": {
+    "mtime": 1782069096.9600499,
+    "ast_hash": "7dc6f261b3a3beae57fc06467cd62f9f",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/4b40edd3-981a-40c2-bb1d-112bd2f6c836-hamburguesa-casera-magra.png": {
+    "mtime": 1782069709.2883368,
+    "ast_hash": "5ab5e442645299492771f8e83a3f3a28",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/4b4a6367-c4cd-4d41-8c24-0c6936b18d86-granola-simple.png": {
+    "mtime": 1782069708.29108,
+    "ast_hash": "ce5c63531467fa22ac535913fb6f7f5f",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/4bf63752-3471-4afc-b61d-a57914373564-kiwi.png": {
+    "mtime": 1782069028.675844,
+    "ast_hash": "1884de54e0b059c836418353041509d5",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/4d35080d-783f-493d-a109-23eb2064b6df-manteca-de-mani.png": {
+    "mtime": 1782069047.159753,
+    "ast_hash": "f9dcf66c9974ec98e880ed6e318e22cf",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/4d74e473-e1a9-4c20-be4c-959e769b1a01-papa-al-horno.png": {
+    "mtime": 1782069074.1164484,
+    "ast_hash": "48c803226320042e1154f95b214ca686",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/4f41acda-452f-40e5-a2bb-5ecec6e8178a-semillas-de-chia.png": {
+    "mtime": 1782069123.477484,
+    "ast_hash": "d0bf82e6b4a57d1ec2e60eeec3a6d2d5",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/4f50391d-bd23-4702-ae3b-90e9f5711c20-lenguado.png": {
+    "mtime": 1782069712.5167994,
+    "ast_hash": "95bd01c6dfaede8ffbd399a0d45813fc",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/5004f825-1f10-4240-8591-fbb8d965d756-pan-de-centeno.png": {
+    "mtime": 1782069071.4376943,
+    "ast_hash": "ce684c8cb4c0d45c5cb64b2fd4bcaa50",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/5220dbb3-5981-42f3-8756-2ec68367070c-test.png": {
+    "mtime": 1782069138.7108579,
+    "ast_hash": "8fa8e7768f07245b9e589c33a5290940",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/52a03376-44a7-48a8-b2d5-987367906cb8-mix-de-ensalada.png": {
+    "mtime": 1782069716.380495,
+    "ast_hash": "646969f9ca2e86384e78979e66c21d41",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/53648b5b-5f21-4ce1-9e6b-acb8d8d294c2-pan-integral.png": {
+    "mtime": 1782069073.2963946,
+    "ast_hash": "c131bc9b4dbf87b67fe975e9aa91b5f7",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/541f1e5d-52a1-4d10-942e-43015b61e546-arandanos.png": {
+    "mtime": 1782068926.5128615,
+    "ast_hash": "900e8a9ac76798711869b5ab81bd3715",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/59072d28-5426-4abc-b822-667cfed40399-peceto.png": {
+    "mtime": 1782069721.1449938,
+    "ast_hash": "5f961e6898c407b03f5047ebe1740003",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/5a24909a-7d90-4cb7-9118-a2c56a7eba97-almendras.png": {
+    "mtime": 1782068921.1890376,
+    "ast_hash": "b181ece6eabedcf39c80de069f901061",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/5b3eb3db-6b25-46e8-a08d-3d2c54f4e749-papa-hervida.png": {
+    "mtime": 1782069074.4381254,
+    "ast_hash": "48c803226320042e1154f95b214ca686",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/5c5776e8-10e8-49f3-a95d-e115d6f0b5aa-arroz-blanco-cocido.png": {
+    "mtime": 1782068929.906785,
+    "ast_hash": "8f84e351a842065423e9731de1feef95",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/5cb09603-407b-4d5d-a5de-83be5f3f5168-sandwich-de-pollo-integral.png": {
+    "mtime": 1782069729.4265325,
+    "ast_hash": "f03860620242234641f466359fe34868",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/5cc73286-e95d-435a-be6e-1036c2192f50-alcaucil.png": {
+    "mtime": 1782069679.9645996,
+    "ast_hash": "0db005a13830b1775b4e5416fe2f6840",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/5d8a4748-7786-47fa-8778-990ff0d39cfc-atun-al-natural.png": {
+    "mtime": 1782068936.406564,
+    "ast_hash": "bb72ebcc4c16f23051298fc20b92ded4",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/5e00aeba-a2d4-493b-b16c-05dd1d20b3a9-nueces.png": {
+    "mtime": 1782069066.1441038,
+    "ast_hash": "2c6d4bac0a0e4f09e8fa14a4bc88eef8",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/5e70f01e-7bdb-4423-8636-af4fc944725d-cebolla-morada.png": {
+    "mtime": 1782068966.945861,
+    "ast_hash": "ef150571876079b2d30d131b89ccc331",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/5ee54afb-a6cf-4341-9ff4-d44a39276d24-trigo-burgol-cocido.png": {
+    "mtime": 1782069149.9454677,
+    "ast_hash": "41c4b0f6a70c869ac4512398a95fd636",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/5f9ee5d2-c88b-4dc4-8e3d-6caa2d51a35f-porotos-negros.png": {
+    "mtime": 1782069097.5242276,
+    "ast_hash": "6ff3d13ebbac47b986c86a23f4f9ffc9",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/5fe491b7-86b4-4d37-87e0-2c6f637f61fc-pizza-integral-de-muzzarella.png": {
+    "mtime": 1782069472.097543,
+    "ast_hash": "006a4cda967fe5604c4d369614949eba",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/60610b95-c9cf-469a-9caa-ecd901de8f71-chocolate-amargo-70.png": {
+    "mtime": 1782068975.5573857,
+    "ast_hash": "7778b4829840491887120cc814cf4a73",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/6198500d-1153-43f8-9316-a910ebae76de-hinojo.png": {
+    "mtime": 1782069023.1195726,
+    "ast_hash": "dc9646b0a85f549c517bb744c393c64f",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/620de80b-c6ee-43f6-9d47-8935a6e8b97e-mijo-cocido.png": {
+    "mtime": 1782069455.5278094,
+    "ast_hash": "1aafa7bd552ed40f5cc15986253716a5",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/62a18578-7e96-449d-ac93-5cc3a4af7546-proteina-whey.png": {
+    "mtime": 1782069478.052925,
+    "ast_hash": "78e45976fdc9b7f7bfa2bd969b23c2c8",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/62dd5b5c-6885-49c8-8593-915ca7082739-bowl-de-quinoa-y-pollo.png": {
+    "mtime": 1782069402.1690545,
+    "ast_hash": "1b39f7dbc45c86c4024c4b4a2df67d52",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/6408fdcd-7654-40b3-9d72-902fade9a444-albondigas-magras.png": {
+    "mtime": 1782069386.811172,
+    "ast_hash": "8541e8102fdfe4c0e31d4ac338f0e561",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/645892cc-9c12-4d3d-8fc4-7a8854329223-leche-parcialmente-descremada.png": {
+    "mtime": 1782069030.901039,
+    "ast_hash": "66616f9b9e9695aef13d6a56c1c1c454",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/653a32f2-c4fa-458b-bdda-d992bfbcd71b-brocoli.png": {
+    "mtime": 1782068954.302652,
+    "ast_hash": "3bf7db1f0ca69547fc29e803b0e389a7",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/678f20e0-c41c-48da-bfb6-ab7d53a9118d-pure-de-papa.png": {
+    "mtime": 1782069479.2768545,
+    "ast_hash": "d54a4ff5f0922a9c3d3906b70b0214c7",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/67d9fcc1-1f6c-4f0d-82e4-c1a92e44a146-lasagna-de-carne-magra.png": {
+    "mtime": 1782069446.9381847,
+    "ast_hash": "4a9da3a66543f93555bcb36d02376395",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/69cf8985-a357-4018-b962-86bc8bc16501-seitan.png": {
+    "mtime": 1782069494.755202,
+    "ast_hash": "d21e9bbf831220e22129d07ef0394e52",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/6b1cf8a0-d317-4d95-9494-dfb20c7b88dd-crackers-integrales.png": {
+    "mtime": 1782069415.3953211,
+    "ast_hash": "7c108dc15352dc40b1175856777b7ca2",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/6d807500-8b57-4a53-bc98-94a2f5ad162f-harina-integral.png": {
+    "mtime": 1782069021.3118725,
+    "ast_hash": "b95357e55109441c252b0b8805e9e154",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/6e2bc529-1ce6-4726-bf73-32f27be8c0e5-semillas-de-girasol.png": {
+    "mtime": 1782069496.6850114,
+    "ast_hash": "9035824449c773ab68e2effb284ae128",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/70e77fbf-4a0e-4f45-9e3e-4e81a020c55e-lechuga.png": {
+    "mtime": 1782069031.673304,
+    "ast_hash": "646969f9ca2e86384e78979e66c21d41",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/73994fbc-81a2-44a0-8558-ea2fa51e1891-pickles.png": {
+    "mtime": 1782069471.5399845,
+    "ast_hash": "348f636651afe35405bac30947e22185",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/73fb9285-d954-46bd-87ee-f17f00a1ed95-arepa.png": {
+    "mtime": 1782069389.6942725,
+    "ast_hash": "acb812865c5d2391f6549287ffb53411",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/74b8458e-146f-43c9-ad35-a504c650c796-locro-liviano.png": {
+    "mtime": 1782069448.4643307,
+    "ast_hash": "db88441ecf30d846dd972f4c2589a5b2",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/77c230f3-a468-4dcf-a45c-c3abc34a8fbb-miel.png": {
+    "mtime": 1782069054.160968,
+    "ast_hash": "d15e5933a1440b175ca3721e1298bea4",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/7964aec5-66f4-4ecc-a084-88b28eda49c6-sardinas.png": {
+    "mtime": 1782069118.9629745,
+    "ast_hash": "e243cce4b3ec97bdfe5951ecc58db70a",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/7bcbabd0-68b0-4493-9b0e-a466a769c6ce-polenta-cocida.png": {
+    "mtime": 1782069474.5744345,
+    "ast_hash": "27f22a4b89be982817ad309e204bd3d7",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/7d988c22-19dd-435a-954b-f3f68390d930-repollo-blanco.png": {
+    "mtime": 1782069109.1874206,
+    "ast_hash": "ff80c658de016127f90843ca76459f60",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/7f3a0183-d3f8-4507-aedb-9e0e8fb41976-crema-de-leche-light.png": {
+    "mtime": 1782068986.07109,
+    "ast_hash": "11def213ea98e994bce90908c72843ab",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/7f6815cf-8b83-4cf9-a696-c325d09d4fbc-manteca-de-mani.png": {
+    "mtime": 1782069046.8422186,
+    "ast_hash": "f9dcf66c9974ec98e880ed6e318e22cf",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/8006658d-643c-4ff3-9959-a7efae4bc762-queso-crema-light.png": {
+    "mtime": 1782069102.4373317,
+    "ast_hash": "a30fba4159482164305e15361e648e53",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/83bb2585-3a5b-4652-8c97-8411651d6a18-risotto-simple.png": {
+    "mtime": 1782069485.4468668,
+    "ast_hash": "0dd00e6e6d211086f333fb2b9713073d",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/83c6a2a6-4735-489a-a990-2f92ddce76ec-queso-cottage.png": {
+    "mtime": 1782069481.7675438,
+    "ast_hash": "d81956ccfb8e70261c4c46977e778df5",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/84a1c29c-f2e4-4bb6-a535-893c90d5510b-bagel-integral.png": {
+    "mtime": 1782069395.732901,
+    "ast_hash": "644190f58c9124d1ef329d908f597815",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/86d1aefd-4336-4c72-9e02-91ecb0a51069-repollo-morado.png": {
+    "mtime": 1782069109.968007,
+    "ast_hash": "1cbc06fed8bad9f991b500c813d017ea",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/86f3203a-559d-4564-a967-302bc081ece2-tarta-de-verduras.png": {
+    "mtime": 1782069135.6806946,
+    "ast_hash": "cbfe9f173fab5503d0f7b30849ce0d47",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/870cc095-8fff-4c2e-97d9-3c74f27f2723-remolacha.png": {
+    "mtime": 1782069108.418219,
+    "ast_hash": "a2bbc384a947071065b1fc50d211e478",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/8725086f-c4a2-401f-a248-37e2a1d41c4c-berro.png": {
+    "mtime": 1782069682.8629107,
+    "ast_hash": "635bf52443ac0aee9cb145c96ec1c8e1",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/894870e1-52f8-47b6-8917-db2b66ead893-lentejas-cocidas.png": {
+    "mtime": 1782069034.4347277,
+    "ast_hash": "344408b6b2c31694808cf11b26ebc4c2",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/89525d4f-3212-492a-a594-931814fc6791-frutilla.png": {
+    "mtime": 1782069010.2243412,
+    "ast_hash": "9b18fb5da06e1a3c7f07d19c91946b42",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/8953b0a4-e523-45e0-b430-14194538fa6d-tortilla-de-maiz.png": {
+    "mtime": 1782069145.1814787,
+    "ast_hash": "7bcc7f047864b15e7989ce1527486415",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/8a146f16-4d20-409b-ad30-5a98c1acc903-muslo-de-pollo-sin-piel.png": {
+    "mtime": 1782069062.8696616,
+    "ast_hash": "770327003dd74301c41e676a00bbb8d0",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/8c9a0d0a-cc10-43f9-819f-55a14491e562-puerro.png": {
+    "mtime": 1782069099.3912108,
+    "ast_hash": "420f6bf6c83b39fa83089fb9221c6977",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/8fbd12cf-f4fb-4ca3-a121-306833c1a422-pera.png": {
+    "mtime": 1782069085.4496167,
+    "ast_hash": "430766907c597c8ec355da329aeab140",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/91bdcaa8-8728-4fab-84bd-7327154ef3cf-chauchas.png": {
+    "mtime": 1782068972.901367,
+    "ast_hash": "94a72564d5a3d80408bc04bed351205a",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/93106457-a29b-4fe5-ba86-6d7b696fa01b-mani-tostado.png": {
+    "mtime": 1782069044.5175853,
+    "ast_hash": "d5fb4753e6b3a77f1ee6724f93c37fa4",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/93a1cea9-679c-453a-8581-75af1f3813a0-kefir-natural.png": {
+    "mtime": 1782069445.9514112,
+    "ast_hash": "839f16d9cb16e5830afac4b0a6617746",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/943b900e-5ffa-4059-9e57-a4cdf54fe596-mango.png": {
+    "mtime": 1782069043.496595,
+    "ast_hash": "f8ded703a7335c91d843905e40a6bc44",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/94c695e0-2977-4350-9491-e1d720189b4e-aceite-de-girasol.png": {
+    "mtime": 1782068891.8282485,
+    "ast_hash": "e07fbe04f0a5febeeeb6f57db0e0b8e4",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/983ef8f1-aedf-43ac-8067-2b438670178d-mejillones.png": {
+    "mtime": 1782069049.786608,
+    "ast_hash": "e94ec2fe24d31f7f109602718e7c8204",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/98b9bf02-1ec1-4781-8c1a-320ef7d5252c-banana.png": {
+    "mtime": 1782068942.0245006,
+    "ast_hash": "a12ab399fa43d421c2b7cecd46bfb15f",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/99519698-7eb4-4fca-8d02-04ba242a51d5-empanada-de-carne-al-horno.png": {
+    "mtime": 1782069422.7705796,
+    "ast_hash": "11d1d7e4e7ba68e958c4c8ffcd9bb496",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/9966ed60-de51-4bc9-9eee-5823b657aeb2-carne-picada-magra.png": {
+    "mtime": 1782069687.859,
+    "ast_hash": "5ab5e442645299492771f8e83a3f3a28",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/9a437712-a4db-4e85-9085-d9952546b094-esparragos.png": {
+    "mtime": 1782069001.486694,
+    "ast_hash": "cdf8527c0d09e02c0cecde14fc99d9d8",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/9b598480-3b8c-4b44-87ff-cedc00bc1bf5-espinaca.png": {
+    "mtime": 1782069002.07125,
+    "ast_hash": "635bf52443ac0aee9cb145c96ec1c8e1",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/9bf041db-a27b-4c50-b9ee-a67574518b56-manteca.png": {
+    "mtime": 1782069045.3857503,
+    "ast_hash": "ee455965fc0e8ec4d197dcc2004fdb6e",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/9bf3fe5a-4a2d-4cf5-b6ce-db0fd797a263-calamar.png": {
+    "mtime": 1782068959.8082283,
+    "ast_hash": "53acfb7ec3b64316672f16088ecb3481",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/9c5c3372-8557-4a3e-a12a-3f4493d89aed-cebolla.png": {
+    "mtime": 1782068966.177925,
+    "ast_hash": "ea321d22818aa2256d7a31d9789d0472",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/9c641152-52d2-4211-a214-94b253a59cab-hongos-portobello.png": {
+    "mtime": 1782069023.4412315,
+    "ast_hash": "ed8f6162cc0eebc2540f5c93eeafd9f2",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/9fdc3063-b0d5-4795-a311-941e4d8f7884-ensalada-completa-de-garbanzos.png": {
+    "mtime": 1782069700.5779102,
+    "ast_hash": "a5ed11f266bb9138ae20c5061318ffac",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/a2c24faa-326f-44d8-b371-3592b052f39c-pistachos.png": {
+    "mtime": 1782069092.551195,
+    "ast_hash": "00b3bef5e511df8f09fdf940103debb3",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/a49f1571-ffa4-43b8-bbbc-48d46ac86a4e-zapallito.png": {
+    "mtime": 1782069160.2393148,
+    "ast_hash": "ac5d5d736f6b0a468ad38a57b339729d",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/a4c5cdd4-99e7-4033-817e-5e6c6abd632f-mermelada-reducida.png": {
+    "mtime": 1782069452.6052654,
+    "ast_hash": "20520cd5feeaaba8e2a1e3850d6d9dbd",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/a5f413f1-8de5-47a1-ba69-ef2a955f6d11-datiles.png": {
+    "mtime": 1782069418.6791787,
+    "ast_hash": "87a30879ae30813bf160deb48d3d6e50",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/a7b2e185-e5b3-4078-9916-2e97fe4a8d25-roast-beef-magro.png": {
+    "mtime": 1782069726.5366197,
+    "ast_hash": "5ab5e442645299492771f8e83a3f3a28",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/a8116fd9-c88b-42e2-8e16-b4eaf687d6fb-coliflor.png": {
+    "mtime": 1782069691.298215,
+    "ast_hash": "91837bf0037614cd1c94dcd6feeb7850",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/a9203b64-6bd8-4de2-ab2b-eb09bbe21cbc-anana.png": {
+    "mtime": 1782068923.1227067,
+    "ast_hash": "f4ba5ad7dc3bde9a2cc8c4e63e21265c",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/a92d035b-c72d-4237-b96c-160673598ab4-carne-vacuna-magra.png": {
+    "mtime": 1782068963.1160958,
+    "ast_hash": "5ab5e442645299492771f8e83a3f3a28",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/a9ec410b-324b-420e-a2c1-ee490241689d-berenjena.png": {
+    "mtime": 1782068946.7973454,
+    "ast_hash": "1d4b503a227f7f9c0041c73254c5b23e",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/aa6b38ed-b94c-42f7-b6ac-510cf9f0e786-yogur-griego-descremado.png": {
+    "mtime": 1782069158.2434964,
+    "ast_hash": "5fa8aa0db7792b467c31c8372a114791",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/ab9b3c1d-c23f-4717-aa9a-e098db9883d9-pan-arabe-integral.png": {
+    "mtime": 1782069464.779667,
+    "ast_hash": "6a0774f87466dad3605bdf6db9707bd0",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/adf3b93a-5195-43c8-ba2b-9b7bf3f3d76b-bife-angosto-magro.png": {
+    "mtime": 1782068949.3612797,
+    "ast_hash": "5ab5e442645299492771f8e83a3f3a28",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/ae87d762-6d88-4718-abe5-cb394434deee-uvas.png": {
+    "mtime": 1782069739.6920807,
+    "ast_hash": "9512c6982353c816d9cbbc5b7e934f69",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/ae9307f8-0eb6-4e66-b060-ccee7c3d4179-hamburguesa-completa-casera.png": {
+    "mtime": 1782069710.7190585,
+    "ast_hash": "5ab5e442645299492771f8e83a3f3a28",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/af077c27-aef6-4bcb-8b4a-a19160855439-ajo.png": {
+    "mtime": 1782068904.1261647,
+    "ast_hash": "2a970b2148a9231c049c1c0bfa7e3299",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/af7c626b-9202-4e1b-a15f-18d27b33d25b-pechuga-de-pavo.png": {
+    "mtime": 1782069077.253453,
+    "ast_hash": "66c4732813bbd9f7e390e0345c39a5b1",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/b12a7150-c5a8-4be1-9822-31235baa4753-solomillo-de-cerdo.png": {
+    "mtime": 1782069127.8795862,
+    "ast_hash": "2f5607049ea94415c7f21c575633ce4d",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/b1448b28-4ddb-496b-b676-0919370cb871-camaron.png": {
+    "mtime": 1782068961.5042741,
+    "ast_hash": "62d33c5d57df266f2e3cf263d1c7f317",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/b482d042-7251-46d9-8a42-d8ce7da53e65-pollo-desmenuzado.png": {
+    "mtime": 1782069095.0694394,
+    "ast_hash": "f03860620242234641f466359fe34868",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/b748e20e-d236-4741-96b9-59b97cb990dd-harina-de-maiz.png": {
+    "mtime": 1782069019.4427118,
+    "ast_hash": "9b6499651070a93b79d7592ac7506aa5",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/b8982811-2a75-4725-94b2-65d4e8190763-ciruela.png": {
+    "mtime": 1782069411.958156,
+    "ast_hash": "a3963c65341cec05a56c5308cef445fa",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/bc11d176-ca7f-4540-abb4-6c955153082e-rucula.png": {
+    "mtime": 1782069113.3548532,
+    "ast_hash": "50ffff04cf3718eb5ff2a643c151a1d4",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/bca627d7-5055-40f1-8090-b19f0b19b9f5-leche-descremada.png": {
+    "mtime": 1782069030.5843048,
+    "ast_hash": "66616f9b9e9695aef13d6a56c1c1c454",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/bfffe34e-922a-46b9-bbd0-533c713e364a-empanada-de-pollo-al-horno.png": {
+    "mtime": 1782069697.906613,
+    "ast_hash": "f03860620242234641f466359fe34868",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/c19b06f8-42e8-4cb0-8419-9483434c6d51-salsa-de-tomate-natural.png": {
+    "mtime": 1782069489.466548,
+    "ast_hash": "e9185715342ab860bd0da27fea639ba7",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/c20a4263-816a-40b6-a78d-40a5cab26e7e-pechuga-de-pollo.png": {
+    "mtime": 1782069079.1492264,
+    "ast_hash": "7c9d5bbf228810a481cfba14dc9d6b80",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/c475a9c9-0166-4dd9-b9ff-13e7d1308a88-avellanas.png": {
+    "mtime": 1782069681.1944785,
+    "ast_hash": "2c6d4bac0a0e4f09e8fa14a4bc88eef8",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/c6a217d1-bb96-4fc4-bc9c-1c5345a62842-burrito-de-pollo.png": {
+    "mtime": 1782069687.0690024,
+    "ast_hash": "8c901db304479510d82f9231e0ff68da",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/ca4ed27b-1ac2-48be-90cc-43894450b4c5-guiso-de-lentejas.png": {
+    "mtime": 1782069440.2066455,
+    "ast_hash": "ebd0ffabdc0f312ea30cef42e86ed5a7",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/cc111a51-9cd1-40f4-8769-861cc8350c92-trucha.png": {
+    "mtime": 1782069150.5105267,
+    "ast_hash": "6a1f461404faf2eff568e6691e64377e",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/ccba49b1-ad08-4190-a836-2146523d646a-albahaca.png": {
+    "mtime": 1782068905.5538661,
+    "ast_hash": "2fc5ea717767d1dda208ccee57d02c05",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/ccd1c322-8d25-4fcc-ba29-db997cbead5a-zapallo-cabutia.png": {
+    "mtime": 1782069160.5604906,
+    "ast_hash": "7948ee95d477a42def510a88f83c07e2",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/cd281a2b-6f32-413f-be9b-6f6b9d07aa93-fideos-integrales-cocidos.png": {
+    "mtime": 1782069704.907503,
+    "ast_hash": "1954cb3e5156419a5e0dd5e30ed0e5b7",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/d349b622-e3ea-412e-b076-ee9ddbdc095e-batata-al-horno.png": {
+    "mtime": 1782069399.984751,
+    "ast_hash": "99ad16a461a5291ccd3c8e0a8ccaa964",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/d501f774-7cb0-4eac-a645-2da17a00d905-barra-de-cereal.png": {
+    "mtime": 1782069397.5311513,
+    "ast_hash": "60e257987c9fb3b47f8043b677f2f1f8",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/d5b0cccc-41a2-4b9d-8187-ee25896e3d09-lomo-de-cerdo.png": {
+    "mtime": 1782069036.7457447,
+    "ast_hash": "2f5607049ea94415c7f21c575633ce4d",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/d9819869-0a7b-45ca-8896-d10345942903-naranja.png": {
+    "mtime": 1782069064.5079024,
+    "ast_hash": "b406eea7fb529dd5bb96f659ef91123d",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/d9dc2f47-817a-4a60-822c-1300ac264757-wok-de-pollo-y-vegetales.png": {
+    "mtime": 1782069741.6854973,
+    "ast_hash": "f03860620242234641f466359fe34868",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/da9ee362-680b-462c-94ac-355b8e2f6ef5-semillas-de-zapallo.png": {
+    "mtime": 1782069734.6473346,
+    "ast_hash": "005577f7a37c141d847ab34728401472",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/daa9d098-7e5f-42fa-a7fd-f89a49775b77-ensalada-caesar-con-pollo.png": {
+    "mtime": 1782069699.3529625,
+    "ast_hash": "f03860620242234641f466359fe34868",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/dd13c039-b1da-4dc0-bff1-909f933eb579-aceite-de-oliva.png": {
+    "mtime": 1782068893.3375566,
+    "ast_hash": "3cc500a9dba56ce46f9444d723de0736",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/dd59ceae-0677-429f-88b5-576c1a8c3a64-rabanito.png": {
+    "mtime": 1782069725.0975745,
+    "ast_hash": "3d4e0630c64ee6916b7d93aa9a081972",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/dd843463-3717-4e4c-abf4-f301d98fc541-omelette-de-verduras.png": {
+    "mtime": 1782069461.1512358,
+    "ast_hash": "122646f64f6e165b7dcabea2149ee2f5",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/e0c9b44c-becb-46e2-a369-55c043d2b8ac-morron-rojo.png": {
+    "mtime": 1782069059.7766707,
+    "ast_hash": "a491eb6608bc00162a1e4038d138ea98",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/e1133942-51eb-48a3-a5c7-091de21d73da-escarola.png": {
+    "mtime": 1782069702.4454217,
+    "ast_hash": "db7db0b2719f0e4083f513796935b05b",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/e51f005d-a690-47d7-bbea-98e17e954529-salmon.png": {
+    "mtime": 1782069113.9781792,
+    "ast_hash": "034c7cc869b525d77bb8b2b10122f036",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/e52e1c07-bddf-4726-b7da-6413bc0e5056-durazno.png": {
+    "mtime": 1782069693.9526134,
+    "ast_hash": "f8ded703a7335c91d843905e40a6bc44",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/e6b40816-a1be-41b5-ac7f-8b24c98aa3f9-jamon-cocido-magro.png": {
+    "mtime": 1782069025.20041,
+    "ast_hash": "5f6f984f416e892cb803f34039978c53",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/e74b6fcc-4460-46f0-86c8-3fcd58b87bc8-perejil.png": {
+    "mtime": 1782069086.265993,
+    "ast_hash": "f900cbeb34ae6d68d420c05016488b27",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/e871ff46-2ed8-4f42-b223-e6e3e7b411b5-lomo-vacuno.png": {
+    "mtime": 1782069037.068285,
+    "ast_hash": "5ab5e442645299492771f8e83a3f3a28",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/ea7477c7-152c-45cb-8875-6724b72856d7-pasas-de-uva.png": {
+    "mtime": 1782069075.0843558,
+    "ast_hash": "f398712c2a2c0474f0dd038c3a6ab464",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/ebb954ef-5ac3-4c04-8cdf-e6e21ade84a0-zucchini.png": {
+    "mtime": 1782069160.886644,
+    "ast_hash": "ac5d5d736f6b0a468ad38a57b339729d",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/ec79e3b5-1b9a-4eb7-bfd1-a6947ec00f62-milanesa-de-pollo-al-horno.png": {
+    "mtime": 1782069714.946703,
+    "ast_hash": "7c9d5bbf228810a481cfba14dc9d6b80",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/ed2bfa96-aa0f-44bf-98a7-58c825fa27c3-clara-de-huevo.png": {
+    "mtime": 1782068978.739766,
+    "ast_hash": "1e9110afc1d20c139a88a55b6070dd74",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/ee54291e-52b9-4171-a043-a023351e97e2-coco-rallado.png": {
+    "mtime": 1782068980.3764966,
+    "ast_hash": "99e6ceccefd8959974a72b8a356952b4",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/efe1361f-a5dd-4697-8e78-e0edd82f3241-cebada-cocida.png": {
+    "mtime": 1782069689.0646725,
+    "ast_hash": "f79bbae660a6f9775acc2884d1990615",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/efe66e2c-5c3b-4121-9628-206af0759dde-calabaza-al-horno.png": {
+    "mtime": 1782068958.121761,
+    "ast_hash": "7948ee95d477a42def510a88f83c07e2",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/f3606548-15da-4dd0-9eef-9dd20e065f9a-mandarina.png": {
+    "mtime": 1782069040.3478444,
+    "ast_hash": "fff31adbaadc2192db97b4dbf750904a",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/f41f29b0-2a87-41ec-ab28-861cc5f1378b-cuscus-cocido.png": {
+    "mtime": 1782068988.73633,
+    "ast_hash": "8eee6cf6f0cee4ac81cb9aff2825942e",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/f58ecac3-24cb-47e2-b836-55fef99a7163-aceite-de-coco.png": {
+    "mtime": 1782068889.8958454,
+    "ast_hash": "ce5035fa38241db1a3a638923dced5df",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/f696b0a9-0f34-45c3-96f5-905429df906d-aceitunas-negras.png": {
+    "mtime": 1782068895.3463273,
+    "ast_hash": "9a78f36109c65f77f1c2506135890208",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/f7e6537f-511f-404a-970b-db3bcfe63d2e-atun-al-natural.png": {
+    "mtime": 1782068936.0918841,
+    "ast_hash": "bb72ebcc4c16f23051298fc20b92ded4",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/f82d4e26-8884-481c-baaa-5f0016fe7f3d-avena.png": {
+    "mtime": 1782068939.1011863,
+    "ast_hash": "f79bbae660a6f9775acc2884d1990615",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/f8ab41a2-aa35-4d27-bf4b-1fafb3e25fac-nioquis-de-papa.png": {
+    "mtime": 1782069718.6306145,
+    "ast_hash": "48c803226320042e1154f95b214ca686",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/fa7c9512-414d-4d13-899f-c3d780c76449-tahini.png": {
+    "mtime": 1782069132.7679732,
+    "ast_hash": "d4b7bdca8b2ad32e44f9bc522869e5bf",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/fabd7ab1-2db2-4f27-b416-b04d68bd68b5-champinones.png": {
+    "mtime": 1782068971.2633061,
+    "ast_hash": "ed8f6162cc0eebc2540f5c93eeafd9f2",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/fb13b5cc-3f10-402f-8724-9ea6247bdaf7-pejerrey.png": {
+    "mtime": 1782069721.9388487,
+    "ast_hash": "6a1f461404faf2eff568e6691e64377e",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/fc0ecb8b-3fc4-4cae-a8af-dc42f6f2f92f-wok-de-tofu-y-arroz.png": {
+    "mtime": 1782069742.615198,
+    "ast_hash": "6700ce4f5e22c088e2add7502e9c6cae",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/fc85cbbd-99d4-4293-844e-82e2350fa8b9-pavo-molido.png": {
+    "mtime": 1782069075.6857483,
+    "ast_hash": "66c4732813bbd9f7e390e0345c39a5b1",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/fce06f91-bc4e-4a61-9de9-c61f8fb984c5-zanahoria.png": {
+    "mtime": 1782069159.6662397,
+    "ast_hash": "cd744209d8d562755b63b7023a2604ea",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/fe0fc49a-b0a4-4dd9-8a44-a786780d6df8-pesto-casero.png": {
+    "mtime": 1782069723.1913788,
+    "ast_hash": "2fc5ea717767d1dda208ccee57d02c05",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/ff80214a-56d2-4320-8fc6-c3eca2c2d4d6-tomate-cherry.png": {
+    "mtime": 1782069142.3645508,
+    "ast_hash": "11fb85ac32d5d0743c9dacb51bf89f41",
+    "semantic_hash": ""
+  },
+  "scripts/media/generated/foods/ffa3d00c-c929-44e8-97a9-282908d4dd06-sushi-salmon-avocado.png": {
+    "mtime": 1782069131.539114,
+    "ast_hash": "06ad2e06be981ddeac0e96a31d19575d",
     "semantic_hash": ""
   }
 }

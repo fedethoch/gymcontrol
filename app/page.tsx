@@ -224,7 +224,10 @@ export default async function Home() {
   const weeklyNutritionCount = countDatesInWindow(nutritionDatesSet, 7);
 
   return (
-    <section className="page-frame auto-rows-max content-start bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
+    <section
+      className="page-frame auto-rows-max content-start bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]"
+      style={{ gap: 12 }}
+    >
       <MobileHeaderBadgeSync
         badge={{
           label: streak > 0 ? `${streak} día${streak === 1 ? "" : "s"}` : "Sin racha",
@@ -243,30 +246,30 @@ export default async function Home() {
         animate="visible"
       >
 
-        <div className="relative overflow-hidden rounded-2xl bg-[#11151f]" style={{ minHeight: 196 }}>
+        <div className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-[#11151f] shadow-[0_2px_18px_rgba(0,0,0,0.38)]" style={{ minHeight: 184 }}>
           {/* Fixed hero image */}
           <Image
             alt="Entrenamiento de hoy"
-            className="object-cover"
+            className="object-cover object-[68%_center]"
             fill
             priority
             sizes="100vw"
             src="/images/hero.png"
           />
           {/* Dark gradient from bottom — lighter at top so photo shows */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/92 via-black/40 to-transparent" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(3,5,12,0.96)_0%,rgba(3,5,12,0.78)_38%,rgba(3,5,12,0.18)_72%),linear-gradient(0deg,rgba(0,0,0,0.72),rgba(0,0,0,0.04))]" />
           {/* Violet glow at bottom-right */}
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_75%_100%,rgba(124,58,237,0.28),transparent_50%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_45%,rgba(124,58,237,0.32),transparent_48%)]" />
 
           {/* "Hoy toca" badge — inside image, top-left */}
-          <span className="absolute left-3 top-3 z-10 rounded-full border border-[#7c3aed]/40 bg-[#2a1d4d] px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-widest text-[#b995ff]">
+          <span className="absolute left-3 top-3 z-10 rounded-lg border border-[#8b5cf6]/45 bg-[#4c1d95]/70 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-[#c4a5ff] shadow-[0_0_18px_rgba(124,58,237,0.18)]">
             Hoy toca
           </span>
 
-          <div className="relative z-10 flex h-full flex-col justify-end gap-5 p-4 pb-4 pt-12">
+          <div className="relative z-10 flex h-full flex-col justify-end gap-3 p-4 pb-4 pt-12">
             {/* Muscle groups title + subtitle */}
-            <div className="flex flex-col gap-2.5">
-              <h2 className="font-display text-xl font-bold leading-tight text-white">
+            <div className="flex flex-col gap-2">
+              <h2 className="font-display text-[22px] font-bold leading-tight text-white">
                 {muscleGroups.length > 0 ? (
                   muscleGroups.map((g, i) => (
                     <span key={g}>
@@ -283,7 +286,7 @@ export default async function Home() {
                 )}
               </h2>
               {nextPendingDay && (
-                <p className="text-[11px] font-medium text-[#7887a6]">
+                <p className="text-[12px] font-medium text-[#9ca6bc]">
                   <span className="text-[#b995ff]">Día {nextPendingDay.dayOrder}</span>
                   {" de tu rutina semanal"}
                 </p>
@@ -292,7 +295,7 @@ export default async function Home() {
 
             {/* Stats row — icono izquierda, valor+desc apilados a la derecha */}
             {nextPendingDay && (
-              <div className="flex items-center gap-5">
+              <div className="flex items-center gap-3.5">
                 {estimatedMinutes > 0 && (
                   <HeroStat icon={Clock} value={`~${estimatedMinutes} min`} label="duración aprox." />
                 )}
@@ -313,7 +316,7 @@ export default async function Home() {
                 <Button
                   asChild
                   size="sm"
-                  className="justify-center gap-1.5 px-4 normal-case tracking-normal bg-[linear-gradient(135deg,#8b5cf6_0%,#6d28d9_100%)] hover:bg-[linear-gradient(135deg,#9d72ff_0%,#7c3aed_100%)] shadow-[0_6px_20px_rgba(124,58,237,0.38)]"
+                  className="h-8 justify-center gap-1.5 rounded-xl px-4 text-[12px] normal-case tracking-normal bg-[linear-gradient(135deg,#9b5cff_0%,#7c3aed_100%)] hover:bg-[linear-gradient(135deg,#a970ff_0%,#8b5cf6_100%)] shadow-[0_6px_20px_rgba(124,58,237,0.38)]"
                 >
                   <Link href={primaryHref}>
                     {nextPendingDay && <Play className="size-3 fill-current" />}
@@ -329,7 +332,7 @@ export default async function Home() {
               {activeRoutine && (
                 <Link
                   href="/rutinas"
-                  className="inline-flex h-9 items-center rounded-lg border border-white/20 bg-white/[0.07] px-3 text-xs font-semibold text-[#c5cad8] backdrop-blur-sm transition-colors hover:bg-white/[0.12] hover:text-white"
+                  className="inline-flex h-8 items-center rounded-xl border border-white/20 bg-white/[0.07] px-4 text-xs font-semibold text-[#f0f2f8] backdrop-blur-sm transition-colors hover:bg-white/[0.12] hover:text-white"
                 >
                   Ver rutina
                 </Link>
@@ -479,7 +482,7 @@ function CardLabel({
   return (
     <div className="flex items-center gap-1.5">
       <Icon className={small ? "size-3 text-[#9a63ff]" : "size-3.5 text-[#9a63ff]"} />
-      <span className={`truncate font-bold uppercase tracking-[0.1em] text-[#7887a6] ${small ? "text-[8px]" : "text-[10px]"}`}>
+      <span className={`truncate font-display font-semibold tracking-normal text-white ${small ? "text-[11px]" : "text-[14px]"}`}>
         {label}
       </span>
     </div>
@@ -526,17 +529,17 @@ function SummaryStatCard({
   href?: string;
 }) {
   const inner = (
-    <div className="flex h-full flex-col gap-2 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)] transition-colors hover:border-white/[0.1]">
+    <div className="flex h-full min-h-[104px] flex-col gap-2 rounded-2xl border border-white/[0.07] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)] transition-colors hover:border-white/[0.1]">
       {/* Top: icono + label lado a lado */}
       <div className="flex items-center gap-1.5">
         <div
-          className="flex size-6 shrink-0 items-center justify-center rounded-lg"
+          className="flex size-7 shrink-0 items-center justify-center rounded-xl"
           style={{ background: `${accent}22` }}
         >
-          <Icon className="size-3" style={{ color: accent }} />
+          <Icon className="size-3.5" style={{ color: accent }} />
         </div>
         <span
-          className="text-[7.5px] font-bold uppercase tracking-[0.02em] leading-none whitespace-nowrap"
+          className="text-[8px] font-bold leading-none whitespace-nowrap"
           style={{ color: accent }}
         >
           {label}
@@ -544,11 +547,11 @@ function SummaryStatCard({
       </div>
       {/* Counter: valor + unidad chiquita */}
       <div className="flex items-baseline gap-1 min-w-0">
-        <span className="font-display text-base font-bold leading-none text-white truncate">
+        <span className="font-display text-[20px] font-bold leading-none text-white truncate">
           {value}
         </span>
         {unit && (
-          <span className="shrink-0 text-[9px] text-[#7887a6]">{unit}</span>
+          <span className="shrink-0 text-[10px] text-[#9aa4bb]">{unit}</span>
         )}
       </div>
       {/* Barra de progreso + texto */}
@@ -560,7 +563,7 @@ function SummaryStatCard({
               style={{ width: `${Math.min(100, Math.max(0, progress.pct))}%`, background: accent }}
             />
           </div>
-          <span className="text-[8px] text-[#4a5368] truncate">{progress.text}</span>
+          <span className="text-[9px] text-[#66728a] truncate">{progress.text}</span>
         </div>
       )}
     </div>
@@ -614,17 +617,17 @@ function NutricionTodayCard({
   ];
 
   return (
-    <div className="flex h-full flex-col gap-2 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
+    <div className="flex h-full flex-col gap-2.5 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
       {/* Header */}
       <CardLabel icon={Flame} label="Nutrición de hoy" />
 
-      {/* Vertical: ring centrado + macros abajo */}
-      <div className="flex flex-col items-center gap-1.5">
+      {/* Ring + macros, matching the compact two-column reference card. */}
+      <div className="flex flex-1 items-center gap-3">
         {/* Ring */}
         <AnimatedProgressRing
           value={kcalPercent}
-          size={90}
-          strokeWidth={7}
+          size={76}
+          strokeWidth={8}
           progressColor="var(--accent-bright)"
         >
           <div className="flex flex-col items-center gap-0.5">
@@ -641,17 +644,17 @@ function NutricionTodayCard({
         </AnimatedProgressRing>
 
         {/* Macro bars — ancho completo */}
-        <div className="flex w-full flex-col gap-1.5">
+        <div className="flex min-w-0 flex-1 flex-col gap-2.5">
           {macros.map(({ label, value, target, color }) => {
             const pct = target > 0 ? Math.min(100, Math.round((value / target) * 100)) : 0;
             return (
-              <div key={label} className="grid gap-0.5">
+              <div key={label} className="grid gap-1">
                 <div className="flex items-center justify-between gap-1">
-                  <span className="text-[8px] font-bold" style={{ color }}>
+                  <span className="text-[9px] font-bold" style={{ color }}>
                     {label}
                   </span>
-                  <span className="shrink-0 text-[7px] text-[#7887a6]">
-                    {Math.round(value)}g
+                  <span className="shrink-0 text-[8px] text-[#7887a6]">
+                    {Math.round(value)} / {Math.round(target)}g
                   </span>
                 </div>
                 <div className="h-1 overflow-hidden rounded-full bg-[#1a2235]">
@@ -706,9 +709,9 @@ function CargaMuscularCard({
         </div>
       ) : (
         <div className="flex flex-1 flex-col gap-0">
-          <div className="flex justify-center overflow-hidden" style={{ height: 120 }}>
+          <div className="flex justify-center overflow-hidden" style={{ height: 98 }}>
             <GlowPulseWrapper active className="flex justify-center">
-              <div className="scale-[0.72] origin-top -mb-6">
+              <div className="scale-[0.62] origin-top -mb-8">
                 <BodyMuscleFigure
                   muscleLoad={hasStrengthData ? {} : muscleLoad}
                   maxCount={maxCount}
@@ -721,9 +724,9 @@ function CargaMuscularCard({
             <div className="grid w-full gap-0.5">
               <div className="h-1 rounded-full" style={{ background: STRENGTH_LEGEND_GRADIENT }} />
               <div className="flex items-center justify-between text-[7px] font-semibold text-[#6e7788]">
-                <span>Base</span>
-                <span>Intensidad</span>
-                <span>Elite</span>
+                <span>Baja</span>
+                <span>Media</span>
+                <span>Alta</span>
               </div>
             </div>
           </div>
@@ -751,15 +754,20 @@ function ComidasHoyCard({
   const preview = meals.slice(0, 2);
 
   return (
-    <div className="flex flex-col rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
-      <div className="mb-2.5 flex items-center justify-between gap-2">
-        <div className="min-w-0">
+    <div className="flex flex-col rounded-2xl border border-white/[0.07] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <div className="flex min-w-0 items-center gap-2">
+          <UtensilsCrossed className="size-4 shrink-0 text-[#9a63ff]" />
+          <div className="min-w-0">
           <h2 className="font-display text-sm font-semibold text-white">Comidas de hoy</h2>
+          {meals.length > 0 && (
           <p className="mt-0.5 truncate text-[10px] text-[#7887a6]">
             {meals.length > 0
               ? `${meals.length} comida${meals.length === 1 ? "" : "s"} · ${totalKcal} kcal`
               : "Nada registrado aún"}
           </p>
+          )}
+          </div>
         </div>
         <Link
           href="/nutricion/registro"
@@ -772,44 +780,44 @@ function ComidasHoyCard({
 
       {preview.length === 0 ? (
         /* Empty state: icono izq | texto+CTA centro | divisor | sugerencia+dibujo der */
-        <div className="flex items-stretch gap-3 py-2">
+        <div className="grid grid-cols-[72px_minmax(0,1fr)_1px_132px] items-center gap-2 py-1.5">
           {/* Icono izquierda — grande */}
-          <div className="flex shrink-0 items-center">
-            <UtensilsCrossed className="size-10 text-[#1c2b44]" />
+          <div className="flex items-center justify-center">
+            <UtensilsCrossed className="size-14 text-[#1c2b44]" strokeWidth={1.7} />
           </div>
           {/* Centro: texto + CTA */}
-          <div className="flex flex-1 flex-col justify-center gap-2 min-w-0">
+          <div className="flex min-w-0 flex-col justify-center gap-2">
             <div className="space-y-0.5">
-              <p className="whitespace-nowrap text-[11px] font-semibold text-[#6b7590]">
+              <p className="text-[11px] font-semibold leading-tight text-[#cfd4df]">
                 Todavía no registraste comidas
               </p>
-              <p className="whitespace-nowrap text-[9px] text-[#404e66]">
+              <p className="truncate text-[9px] text-[#8c96ac]">
                 Llevá el control de lo que comés hoy
               </p>
             </div>
             <Link
               href="/nutricion/registro"
-              className="inline-flex w-full justify-center items-center gap-1 rounded-lg bg-[linear-gradient(135deg,#8b5cf6_0%,#6d28d9_100%)] px-3 py-1 text-[10px] font-semibold text-white whitespace-nowrap shadow-[0_6px_20px_rgba(124,58,237,0.38)] transition-all hover:bg-[linear-gradient(135deg,#9d72ff_0%,#7c3aed_100%)]"
+              className="inline-flex h-8 w-fit max-w-full items-center justify-center gap-1 rounded-lg bg-[linear-gradient(135deg,#9b5cff_0%,#7c3aed_100%)] px-3.5 text-[10px] font-semibold text-white whitespace-nowrap shadow-[0_6px_20px_rgba(124,58,237,0.38)] transition-all hover:bg-[linear-gradient(135deg,#a970ff_0%,#8b5cf6_100%)]"
             >
               <Plus className="size-3" />
               Agregar primera comida
             </Link>
           </div>
           {/* Divisor + sugerencia derecha */}
-          <div className="w-px shrink-0 bg-white/[0.06]" />
-          <div className="flex w-20 shrink-0 items-stretch gap-1.5">
+          <div className="h-16 w-px bg-white/[0.08]" />
+          <div className="flex min-w-0 items-center gap-1.5">
             {/* Columna: label + texto */}
-            <div className="flex flex-col justify-center gap-1">
+            <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
               <div className="flex items-center gap-1">
-                <Star className="size-2.5 shrink-0 text-[#fbbf24]" />
-                <span className="text-[8px] font-bold uppercase tracking-wide text-[#7887a6]">Sugerencia</span>
+                <Star className="size-3 shrink-0 text-[#a970ff] fill-current" />
+                <span className="text-[9px] font-medium text-[#9ea8ba]">Sugerencia</span>
               </div>
-              <p className="text-[8px] leading-tight text-[#404e66]">
+              <p className="text-[8px] leading-snug text-[#8c96ac]">
                 Registrá comidas para alcanzar tus objetivos
               </p>
             </div>
             {/* Ícono batido a la derecha */}
-            <CupSoda className="shrink-0 self-stretch text-[#1c2b44]" style={{ width: 28, height: "auto" }} />
+            <CupSoda className="size-11 shrink-0 text-[#1c2b44]" strokeWidth={1.8} />
           </div>
         </div>
       ) : (

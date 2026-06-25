@@ -17,6 +17,7 @@ import { resolveShellRouteMeta } from "./navigation-config";
 
 export type MobileHeaderBadge = {
   label: string;
+  detail?: string;
   ariaLabel?: string;
   tone?: "default" | "warm";
 };
@@ -77,6 +78,10 @@ type MobileHeaderProps = {
 function resolveMobileArea(pathname: string) {
   const currentRoute = resolveShellRouteMeta(pathname);
 
+  if (pathname === "/") {
+    return "Listo para entrenar hoy";
+  }
+
   if (pathname.startsWith("/rutinas") || pathname.startsWith("/catalogo")) {
     return "Entrenamiento";
   }
@@ -100,6 +105,14 @@ function resolveMobileArea(pathname: string) {
   return currentRoute.eyebrow || currentRoute.label;
 }
 
+function formatDisplayName(displayName: string | null) {
+  if (!displayName) {
+    return null;
+  }
+
+  return displayName.charAt(0).toUpperCase() + displayName.slice(1);
+}
+
 export function MobileHeader({
   isAuthenticated,
   role,
@@ -112,7 +125,8 @@ export function MobileHeader({
     return null;
   }
 
-  const greeting = displayName ? `Hola, ${displayName}` : "Hola";
+  const formattedName = formatDisplayName(displayName);
+  const greeting = formattedName ? `Hola, ${formattedName}` : "Hola";
   const area = resolveMobileArea(pathname);
   const profileLabel =
     role === "admin" ? "Ir a configuración de administrador" : "Ir a configuración";
@@ -121,6 +135,11 @@ export function MobileHeader({
     ariaLabel: "Racha actual",
     tone: "warm" as const,
   };
+  const badgeLabel = streakBadge.label === "Sin racha" ? "0 dias" : streakBadge.label;
+  const badgeDetail =
+    streakBadge.detail ?? (streakBadge.label === "Sin racha" ? "Inicia tu racha" : null);
+  const badgeTone =
+    streakBadge.label === "Sin racha" ? "warm" : streakBadge.tone;
 
   const profileClasses =
     "grid size-10 shrink-0 place-items-center rounded-xl border border-[#2a3348] bg-[#101522]/90 text-[#b2bdd4] transition-[background-color,border-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[#4b348d] hover:text-white active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100";
@@ -159,17 +178,24 @@ export function MobileHeader({
           <span
             aria-label={streakBadge.ariaLabel ?? streakBadge.label}
             className={cn(
-              "inline-flex h-[2.125rem] items-center gap-1 rounded-xl bg-[#131827]/90 px-2 font-display text-xs font-semibold text-[#d8deeb] transition-colors hover:bg-[#171d2f]",
+              "inline-flex min-h-[2.125rem] items-center gap-1 rounded-xl bg-[#131827]/90 px-2.5 py-1 font-display text-xs font-semibold text-[#d8deeb] transition-colors hover:bg-[#171d2f]",
               "duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
             )}
           >
             <Flame
               className={cn(
                 "size-3.5 shrink-0",
-                streakBadge.tone === "warm" ? "text-[#ff9a75]" : "text-[#b995ff]",
+                badgeTone === "warm" ? "text-[#ff9a75]" : "text-[#b995ff]",
               )}
             />
-            <span className="leading-none">{streakBadge.label}</span>
+            <span className="grid gap-0.5 leading-none">
+              <span>{badgeLabel}</span>
+              {badgeDetail && (
+                <span className="text-[9px] font-medium text-[#8f98ad]">
+                  {badgeDetail}
+                </span>
+              )}
+            </span>
           </span>
         </div>
       </div>
