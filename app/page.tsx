@@ -717,7 +717,7 @@ function CargaMuscularCard({
               </div>
             </GlowPulseWrapper>
           </div>
-          <div className="flex flex-1 items-center">
+          <div className="flex flex-1 items-end">
             <div className="grid w-full gap-0.5">
               <div className="h-1 rounded-full" style={{ background: STRENGTH_LEGEND_GRADIENT }} />
               <div className="flex items-center justify-between text-[7px] font-semibold text-[#6e7788]">
@@ -789,7 +789,7 @@ function ComidasHoyCard({
             </div>
             <Link
               href="/nutricion/registro"
-              className="inline-flex w-fit items-center gap-1 rounded-lg bg-[linear-gradient(135deg,#8b5cf6_0%,#6d28d9_100%)] px-3 py-1.5 text-[10px] font-semibold text-white shadow-[0_6px_20px_rgba(124,58,237,0.38)] transition-all hover:bg-[linear-gradient(135deg,#9d72ff_0%,#7c3aed_100%)]"
+              className="inline-flex w-full justify-center items-center gap-1 rounded-lg bg-[linear-gradient(135deg,#8b5cf6_0%,#6d28d9_100%)] px-3 py-1 text-[10px] font-semibold text-white whitespace-nowrap shadow-[0_6px_20px_rgba(124,58,237,0.38)] transition-all hover:bg-[linear-gradient(135deg,#9d72ff_0%,#7c3aed_100%)]"
             >
               <Plus className="size-3" />
               Agregar primera comida
@@ -797,7 +797,7 @@ function ComidasHoyCard({
           </div>
           {/* Divisor + sugerencia derecha */}
           <div className="w-px shrink-0 bg-white/[0.06]" />
-          <div className="flex w-28 shrink-0 items-stretch gap-1.5">
+          <div className="flex w-20 shrink-0 items-stretch gap-1.5">
             {/* Columna: label + texto */}
             <div className="flex flex-col justify-center gap-1">
               <div className="flex items-center gap-1">
