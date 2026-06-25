@@ -12,7 +12,7 @@ import {
   Star,
   TrendingUp,
   UtensilsCrossed,
-  Utensils,
+  CupSoda,
   Zap,
 } from "lucide-react";
 
@@ -717,12 +717,14 @@ function CargaMuscularCard({
               </div>
             </GlowPulseWrapper>
           </div>
-          <div className="grid gap-0.5 mt-1.5">
-            <div className="h-1 rounded-full" style={{ background: STRENGTH_LEGEND_GRADIENT }} />
-            <div className="flex items-center justify-between text-[7px] font-semibold text-[#6e7788]">
-              <span>Base</span>
-              <span>Intensidad</span>
-              <span>Elite</span>
+          <div className="flex flex-1 items-center">
+            <div className="grid w-full gap-0.5">
+              <div className="h-1 rounded-full" style={{ background: STRENGTH_LEGEND_GRADIENT }} />
+              <div className="flex items-center justify-between text-[7px] font-semibold text-[#6e7788]">
+                <span>Base</span>
+                <span>Intensidad</span>
+                <span>Elite</span>
+              </div>
             </div>
           </div>
         </div>
@@ -771,23 +773,23 @@ function ComidasHoyCard({
       {preview.length === 0 ? (
         /* Empty state: icono izq | texto+CTA centro | divisor | sugerencia+dibujo der */
         <div className="flex items-stretch gap-3 py-2">
-          {/* Icono izquierda — más chico */}
+          {/* Icono izquierda — grande */}
           <div className="flex shrink-0 items-center">
-            <UtensilsCrossed className="size-6 text-[#1c2b44]" />
+            <UtensilsCrossed className="size-10 text-[#1c2b44]" />
           </div>
           {/* Centro: texto + CTA */}
           <div className="flex flex-1 flex-col justify-center gap-2 min-w-0">
             <div className="space-y-0.5">
-              <p className="text-xs font-semibold text-[#6b7590]">
+              <p className="whitespace-nowrap text-[11px] font-semibold text-[#6b7590]">
                 Todavía no registraste comidas
               </p>
-              <p className="text-[10px] text-[#404e66]">
+              <p className="whitespace-nowrap text-[9px] text-[#404e66]">
                 Llevá el control de lo que comés hoy
               </p>
             </div>
             <Link
               href="/nutricion/registro"
-              className="inline-flex w-fit items-center gap-1 rounded-lg bg-[#161d2f] px-3 py-1.5 text-[10px] font-semibold text-[#b995ff] transition-colors hover:bg-[#1e2840] hover:text-white"
+              className="inline-flex w-fit items-center gap-1 rounded-lg bg-[linear-gradient(135deg,#8b5cf6_0%,#6d28d9_100%)] px-3 py-1.5 text-[10px] font-semibold text-white shadow-[0_6px_20px_rgba(124,58,237,0.38)] transition-all hover:bg-[linear-gradient(135deg,#9d72ff_0%,#7c3aed_100%)]"
             >
               <Plus className="size-3" />
               Agregar primera comida
@@ -796,8 +798,6 @@ function ComidasHoyCard({
           {/* Divisor + sugerencia derecha */}
           <div className="w-px shrink-0 bg-white/[0.06]" />
           <div className="flex w-28 shrink-0 items-stretch gap-1.5">
-            {/* Ícono ocupa todo el alto del bloque (label + texto) */}
-            <Utensils className="shrink-0 self-stretch text-[#1c2b44]" style={{ width: 28, height: "auto" }} />
             {/* Columna: label + texto */}
             <div className="flex flex-col justify-center gap-1">
               <div className="flex items-center gap-1">
@@ -808,6 +808,8 @@ function ComidasHoyCard({
                 Registrá comidas para alcanzar tus objetivos
               </p>
             </div>
+            {/* Ícono batido a la derecha */}
+            <CupSoda className="shrink-0 self-stretch text-[#1c2b44]" style={{ width: 28, height: "auto" }} />
           </div>
         </div>
       ) : (
