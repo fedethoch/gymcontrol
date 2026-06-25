@@ -344,7 +344,7 @@ export default async function Home() {
         variants={staggerContainer}
         initial="hidden"
         animate="visible"
-        className="grid grid-cols-3 gap-2"
+        className="hidden grid-cols-3 gap-2 sm:grid"
       >
         <MotionDiv variants={fadeUp} whileTap={tapFeedback}>
           <SummaryStatCard
