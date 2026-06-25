@@ -263,9 +263,9 @@ export default async function Home() {
             Hoy toca
           </span>
 
-          <div className="relative z-10 flex h-full flex-col justify-end gap-4 p-4 pb-4 pt-10">
+          <div className="relative z-10 flex h-full flex-col justify-end gap-5 p-4 pb-4 pt-12">
             {/* Muscle groups title + subtitle */}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2.5">
               <h2 className="font-display text-xl font-bold leading-tight text-white">
                 {muscleGroups.length > 0 ? (
                   muscleGroups.map((g, i) => (
@@ -628,11 +628,14 @@ function NutricionTodayCard({
           progressColor="var(--accent-bright)"
         >
           <div className="flex flex-col items-center gap-0.5">
-            <span className="font-display text-sm font-bold leading-none text-white">
+            <span className="font-display text-sm font-bold leading-none text-white/85">
               {totalKcal}
             </span>
-            <span className="text-[8px] leading-tight text-center text-[#b995ff]">
-              kcal de {targetKcal}
+            <span className="text-[8px] leading-none text-center text-white/85">
+              kcal
+            </span>
+            <span className="text-[8px] leading-tight text-center text-white/85">
+              de {targetKcal}
             </span>
           </div>
         </AnimatedProgressRing>
@@ -705,7 +708,7 @@ function CargaMuscularCard({
         <div className="flex flex-1 flex-col gap-0">
           <div className="flex justify-center overflow-hidden" style={{ height: 120 }}>
             <GlowPulseWrapper active className="flex justify-center">
-              <div className="scale-[0.72] origin-top -mb-10">
+              <div className="scale-[0.72] origin-top -mb-6">
                 <BodyMuscleFigure
                   muscleLoad={hasStrengthData ? {} : muscleLoad}
                   maxCount={maxCount}
@@ -714,7 +717,7 @@ function CargaMuscularCard({
               </div>
             </GlowPulseWrapper>
           </div>
-          <div className="grid gap-0.5">
+          <div className="grid gap-0.5 mt-1.5">
             <div className="h-1 rounded-full" style={{ background: STRENGTH_LEGEND_GRADIENT }} />
             <div className="flex items-center justify-between text-[7px] font-semibold text-[#6e7788]">
               <span>Base</span>
@@ -792,17 +795,18 @@ function ComidasHoyCard({
           </div>
           {/* Divisor + sugerencia derecha */}
           <div className="w-px shrink-0 bg-white/[0.06]" />
-          <div className="flex w-32 shrink-0 flex-col justify-center gap-1.5">
-            <div className="flex items-center gap-1.5">
-              <Star className="size-3 shrink-0 text-[#fbbf24]" />
-              <span className="text-[10px] font-bold uppercase tracking-wide text-[#7887a6]">Sugerencia</span>
-            </div>
-            {/* Texto + dibujo en fila */}
-            <div className="flex items-center gap-1.5">
-              <p className="flex-1 text-[9px] leading-snug text-[#404e66]">
-                Registrá tu primera comida para empezar a alcanzar tus objetivos diarios
+          <div className="flex w-28 shrink-0 items-stretch gap-1.5">
+            {/* Ícono ocupa todo el alto del bloque (label + texto) */}
+            <Utensils className="shrink-0 self-stretch text-[#1c2b44]" style={{ width: 28, height: "auto" }} />
+            {/* Columna: label + texto */}
+            <div className="flex flex-col justify-center gap-1">
+              <div className="flex items-center gap-1">
+                <Star className="size-2.5 shrink-0 text-[#fbbf24]" />
+                <span className="text-[8px] font-bold uppercase tracking-wide text-[#7887a6]">Sugerencia</span>
+              </div>
+              <p className="text-[8px] leading-tight text-[#404e66]">
+                Registrá comidas para alcanzar tus objetivos
               </p>
-              <Utensils className="size-11 shrink-0 text-[#1c2b44]" />
             </div>
           </div>
         </div>
