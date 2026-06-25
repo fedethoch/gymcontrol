@@ -783,31 +783,31 @@ function ComidasHoyCard({
               <UtensilsCrossed className="size-12 text-[#1c2b44]" strokeWidth={1.7} />
             </div>
             <div className="flex min-h-24 min-w-0 flex-col justify-center gap-2">
-              <div className="space-y-0.5">
-                <p className="text-[10px] font-semibold leading-tight text-[#cfd4df]">
+              <div className="space-y-0">
+                <p className="whitespace-nowrap text-[9px] font-semibold leading-tight text-[#cfd4df]">
                   Todavía no registraste comidas
                 </p>
-                <p className="text-[9px] leading-tight text-[#8c96ac]">
+                <p className="whitespace-nowrap text-[8px] leading-tight text-[#8c96ac]">
                   Llevá el control de lo que comés hoy
                 </p>
               </div>
               <Link
                 href="/nutricion/registro"
-                className="inline-flex h-8 w-fit max-w-full items-center justify-center gap-1 rounded-lg bg-[linear-gradient(135deg,#9b5cff_0%,#7c3aed_100%)] px-3 text-[10px] font-semibold text-white whitespace-nowrap shadow-[0_6px_20px_rgba(124,58,237,0.38)] transition-all hover:bg-[linear-gradient(135deg,#a970ff_0%,#8b5cf6_100%)]"
+                className="inline-flex h-7 w-fit max-w-full items-center justify-center gap-1 rounded-lg bg-[linear-gradient(135deg,#9b5cff_0%,#7c3aed_100%)] px-2.5 text-[9px] font-semibold text-white whitespace-nowrap shadow-[0_6px_20px_rgba(124,58,237,0.38)] transition-all hover:bg-[linear-gradient(135deg,#a970ff_0%,#8b5cf6_100%)]"
               >
                 <Plus className="size-3" />
-                Agregar primera comida
+                Agregar comida
               </Link>
             </div>
           </div>
           <div className="mx-auto h-16 w-px bg-white/[0.08]" />
           <div className="relative min-h-24 pl-4 pr-[60px]">
-            <div className="flex min-h-24 min-w-0 flex-col justify-center gap-1">
+            <div className="flex min-h-24 min-w-0 flex-col justify-center gap-0.5">
               <div className="flex items-center gap-1">
                 <Star className="size-3 shrink-0 text-[#a970ff] fill-current" />
                 <span className="text-[9px] font-medium text-[#9ea8ba]">Sugerencia</span>
               </div>
-              <p className="max-w-[96px] text-[8px] leading-snug text-[#8c96ac]">
+              <p className="max-w-[96px] text-[7.5px] leading-snug text-[#8c96ac]">
                 Registrá comidas para alcanzar tus objetivos
               </p>
             </div>

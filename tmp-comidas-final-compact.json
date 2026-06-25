@@ -1,0 +1,36 @@
+{
+  "title": {
+    "left": 89,
+    "right": 202.59375,
+    "top": 744.875,
+    "bottom": 756.125,
+    "width": 113.59375,
+    "height": 11.25
+  },
+  "subtitle": {
+    "left": 89,
+    "right": 202.59375,
+    "top": 756.125,
+    "bottom": 766.125,
+    "width": 113.59375,
+    "height": 10
+  },
+  "suggestion": {
+    "left": 251.59375,
+    "right": 297.515625,
+    "top": 745.125,
+    "bottom": 758.625,
+    "width": 45.921875,
+    "height": 13.5
+  },
+  "cta": {
+    "left": 89,
+    "right": 190.578125,
+    "top": 774.125,
+    "bottom": 802.125,
+    "width": 101.578125,
+    "height": 28
+  },
+  "alignedTopDelta": 0.25,
+  "overflow": false
+}
