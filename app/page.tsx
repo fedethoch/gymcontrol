@@ -705,7 +705,7 @@ function CargaMuscularCard({
           </p>
         </div>
       ) : (
-          <div className="flex flex-1 flex-col">
+          <div className="flex flex-col">
             <div className="flex justify-center overflow-hidden" style={{ height: 120 }}>
               <GlowPulseWrapper active className="flex justify-center">
                 <div className="scale-[0.72] origin-top">
