@@ -692,38 +692,38 @@ function CargaMuscularCard({
     strengthSummaries.map((s) => [s.muscleGroup, s.color]),
   );
 
-  return (
-    <div className="flex h-full flex-col gap-2 rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
-      <CardLabel icon={Zap} label="Carga muscular" />
+    return (
+      <div className="flex h-full flex-col rounded-2xl border border-white/[0.06] bg-[#0e131e] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
+        <CardLabel icon={Zap} label="Carga muscular" />
 
-      {isEmpty ? (
-        <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4">
-          <Zap className="size-6 text-[#1e2840]" />
+        {isEmpty ? (
+          <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4">
+            <Zap className="size-6 text-[#1e2840]" />
           <p className="text-center text-[9px] font-semibold text-[#6b7590]">Sin rutina activa</p>
           <p className="text-center text-[8px] leading-relaxed text-[#404e66]">
             Activá una rutina para ver tu carga muscular
           </p>
         </div>
       ) : (
-        <div className="flex flex-1 flex-col gap-0">
-          <div className="flex justify-center overflow-hidden" style={{ height: 120 }}>
-            <GlowPulseWrapper active className="flex justify-center">
-              <div className="scale-[0.72] origin-top -mb-6">
-                <BodyMuscleFigure
-                  muscleLoad={hasStrengthData ? {} : muscleLoad}
-                  maxCount={maxCount}
-                  muscleColors={muscleColors}
-                />
-              </div>
-            </GlowPulseWrapper>
-          </div>
-          <div className="flex flex-1 items-end">
-            <div className="grid w-full gap-0.5">
-              <div className="h-1 rounded-full" style={{ background: STRENGTH_LEGEND_GRADIENT }} />
-              <div className="flex items-center justify-between text-[7px] font-semibold text-[#6e7788]">
-                <span>Base</span>
-                <span>Intensidad</span>
-                <span>Elite</span>
+          <div className="flex flex-1 flex-col">
+            <div className="flex justify-center overflow-hidden" style={{ height: 120 }}>
+              <GlowPulseWrapper active className="flex justify-center">
+                <div className="scale-[0.72] origin-top">
+                  <BodyMuscleFigure
+                    muscleLoad={hasStrengthData ? {} : muscleLoad}
+                    maxCount={maxCount}
+                    muscleColors={muscleColors}
+                  />
+                </div>
+              </GlowPulseWrapper>
+            </div>
+            <div className="mt-4 flex">
+              <div className="grid w-full gap-0.5">
+                <div className="h-1 rounded-full" style={{ background: STRENGTH_LEGEND_GRADIENT }} />
+                <div className="flex items-center justify-between text-[7px] font-semibold text-[#6e7788]">
+                  <span>Base</span>
+                  <span>Intensidad</span>
+                  <span>Elite</span>
               </div>
             </div>
           </div>
@@ -733,7 +733,7 @@ function CargaMuscularCard({
       {/* Botón "Ver detalle muscular" → rutina */}
       <Link
         href={href}
-        className="flex w-full items-center justify-center gap-1 rounded-xl bg-[#161d2f] py-1.5 text-[10px] font-semibold text-[#b995ff] transition-colors hover:bg-[#1e2840] hover:text-white"
+        className="mt-4 flex w-full items-center justify-center gap-1 rounded-xl bg-[#161d2f] py-1.5 text-[10px] font-semibold text-[#b995ff] transition-colors hover:bg-[#1e2840] hover:text-white"
       >
         Ver detalle muscular
       </Link>
@@ -777,13 +777,13 @@ function ComidasHoyCard({
 
       {preview.length === 0 ? (
         /* Empty state: icono izq | texto+CTA centro | divisor | sugerencia+dibujo der */
-        <div className="grid grid-cols-[48px_minmax(0,1fr)_1px_104px] items-center gap-2 py-1.5">
+        <div className="grid grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)] gap-0 py-1.5">
           {/* Icono izquierda — grande */}
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-start pr-4">
             <UtensilsCrossed className="size-12 text-[#1c2b44]" strokeWidth={1.7} />
           </div>
           {/* Centro: texto + CTA */}
-          <div className="flex min-w-0 flex-col justify-center gap-2">
+          <div className="flex min-w-0 flex-col justify-center gap-2 px-4">
             <div className="space-y-0.5">
               <p className="whitespace-nowrap text-[10px] font-semibold leading-tight text-[#cfd4df]">
                 Todavía no registraste comidas
@@ -802,9 +802,9 @@ function ComidasHoyCard({
           </div>
           {/* Divisor + sugerencia derecha */}
           <div className="h-16 w-px bg-white/[0.08]" />
-          <div className="flex min-w-0 items-center gap-1.5">
+          <div className="flex min-w-0 items-center justify-between gap-2 pl-4">
             {/* Columna: label + texto */}
-            <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
+            <div className="flex min-w-0 flex-1 max-w-[72px] flex-col justify-center gap-1">
               <div className="flex items-center gap-1">
                 <Star className="size-3 shrink-0 text-[#a970ff] fill-current" />
                 <span className="text-[9px] font-medium text-[#9ea8ba]">Sugerencia</span>
