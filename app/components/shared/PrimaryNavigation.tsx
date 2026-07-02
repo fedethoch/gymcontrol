@@ -52,24 +52,25 @@ function NavigationLink({
     <Link
       href={item.href}
       onClick={onNavigate}
+      aria-current={active ? "page" : undefined}
       className={cn(
         "group relative flex items-center gap-3 rounded-xl border px-3 py-2 transition-[background-color,border-color,color,box-shadow,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.985] motion-reduce:transition-none motion-reduce:active:scale-100",
         active
-          ? "border-[#4b348d] bg-[#231846] text-white shadow-[0_8px_24px_rgba(58,31,119,0.18)]"
-          : "border-transparent bg-transparent text-[#b6bfd2] hover:border-[#25203f] hover:bg-[#121423] hover:text-white lg:hover:translate-x-0.5",
+          ? "border-[var(--accent)]/40 bg-[var(--accent)]/12 text-white"
+          : "border-transparent bg-transparent text-[var(--foreground-muted)] hover:border-[var(--border)] hover:bg-[var(--card)] hover:text-white lg:hover:translate-x-0.5",
         collapsed &&
-          "justify-center rounded-xl px-0 py-2 hover:border-[#25203f]",
+          "justify-center rounded-xl px-0 py-2 hover:border-[var(--border)]",
       )}
     >
       {active && !collapsed ? (
-        <span className="absolute inset-y-2.5 left-0 w-0.5 rounded-r-full bg-[#8f63ff]" />
+        <span className="absolute inset-y-2.5 left-0 w-0.5 rounded-r-full bg-[var(--accent)]" />
       ) : null}
       <span
         className={cn(
           "relative z-10 grid size-8 shrink-0 place-items-center rounded-lg border transition-[border-color,color,background-color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100",
           active
-            ? "border-[#5430a9] bg-[#171026] text-[#9b73ff]"
-            : "border-[#20263a] bg-[#101320] text-[#aeb8cf] group-hover:border-[#2b3250] group-hover:text-white",
+            ? "border-[var(--accent)]/40 bg-[var(--accent)]/15 text-[var(--accent-bright)]"
+            : "border-[var(--border)] bg-[var(--card)] text-[var(--foreground-muted)] group-hover:border-[var(--border-strong)] group-hover:text-white",
         )}
       >
         <Icon className="size-4" />
@@ -91,7 +92,7 @@ function NavigationLink({
       <TooltipTrigger asChild>{link}</TooltipTrigger>
       <TooltipContent side="right">
         <p className="font-semibold">{item.label}</p>
-        <p className="mt-1 text-[11px] text-[#a8b1c6]">{item.description}</p>
+        <p className="mt-1 text-[11px] text-[var(--foreground-muted)]">{item.description}</p>
       </TooltipContent>
     </Tooltip>
   );
@@ -174,7 +175,7 @@ export function NavigationPanel({
         {visibleNavigationGroups.map((group, index) => (
           <section key={group.title}>
             {collapsed ? null : (
-              <p className="px-3 text-[10px] font-semibold uppercase tracking-[0.26em] text-[#8a64ee]">
+              <p className="px-3 text-[10px] font-semibold uppercase tracking-[0.26em] text-[var(--foreground-subtle)]">
                 {group.title}
               </p>
             )}

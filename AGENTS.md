@@ -45,23 +45,41 @@ Si cambia una decision, actualizar primero su fuente de verdad.
 
 Si la tarea toca Supabase, usar solo `supabase_gymcontrol` y contrastar con `docs/DATABASE.md`. Configuracion: `.codex/config.toml`, `.mcp.json`, `docs/MCP_SUPABASE_SETUP.md`.
 
-## Skills and subagents routing
+## Skills
 
-Default:
-- tareas chicas: Codex normal + `docs/codex/`
-- tareas medianas o especializadas: una skill
-- subagents solo para tareas grandes, riesgosas o especializadas
-- no usar subagents para ediciones chicas de un archivo
+- `graphify`: arquitectura, relaciones entre archivos, dudas sobre el codigo y updates del grafo.
+- `frontend-design` / `impeccable`: UI nueva, redisenos, polish visual, responsive y accesibilidad.
+- `ui-ux-pro-max`: planificar o implementar UI/UX con stack, paletas, patrones, tablas, forms y dashboards.
+- `web-design-guidelines`: auditoria de accesibilidad, UX, responsive y buenas practicas web.
+- `micro-interactions`: estados hover/press/loading, toggles, validacion, badges y feedback fino.
+- `playwright-cli`: validar pantallas, flujos auth, responsive, overflow e interacciones.
+- `browser:control-in-app-browser`: abrir e inspeccionar localhost o sitios en el browser integrado.
+- `shadcn-ui`: componentes shadcn, formularios, dialogs, tablas, menus y patrones accesibles.
+- `openai-docs`: solo para dudas sobre OpenAI/Codex/API con docs oficiales.
+- `github:github`: contexto general de issues, repos y PRs.
+- `github:gh-address-comments`: resolver comentarios accionables de review en un PR.
+- `github:gh-fix-ci`: investigar y arreglar checks fallidos de GitHub Actions.
+- `github:yeet`: commit, push y draft PR cuando el usuario pida publicar cambios.
+- `notion:*`: specs, documentacion, decisiones, research o tareas que vivan en Notion.
+- `pdf:pdf`: leer, crear, renderizar o verificar PDFs.
+- `documents:documents`: crear/editar `.docx` con verificacion visual.
+- `presentations:Presentations`: crear o editar PowerPoint/Slides.
+- `spreadsheets:Spreadsheets`: crear, analizar o modificar `.xlsx`, `.csv` o Google Sheets.
+- `imagegen`: generar o editar imagenes bitmap cuando haga falta un asset visual.
+- `skill-creator` / `plugin-creator` / `skill-installer`: crear, actualizar o instalar skills/plugins de Codex.
+- Regla: usar la skill minima necesaria; no cargar skills no relacionadas.
 
-Atajos:
-- UI visual -> `frontend-design`
-- web testing -> `webapp-testing`
-- Next.js -> `next-best-practices`
-- Supabase/Postgres/RLS -> `supabase-postgres-best-practices`
-- bug desconocido -> `debugger`
-- review final -> `code-reviewer`
+## Agentes
 
-Detalle tactico: `docs/codex/SKILL_ROUTING.md`
+- `ui-designer`: decisiones UX/layout en tareas UI no triviales.
+- `frontend-developer`: implementacion React/Tailwind/shadcn.
+- `ui-ux-tester`: revision visual/responsive final.
+- `nextjs-developer`: rutas App Router, server/client boundaries, middleware y API routes.
+- `typescript-pro`: errores TS complejos o tipos compartidos.
+- `backend-developer`: server logic, endpoints y acciones de dominio.
+- `database-administrator` / `postgres-pro`: schema, migraciones, SQL, RLS y Supabase/Postgres.
+- `security-auditor`: auth, roles, RLS, secrets o datos sensibles.
+- `code-reviewer`: despues de cambios relevantes o para reviews.
 
 ## Formato de salida
 
@@ -102,7 +120,6 @@ Rules:
 - After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
 
 ## Frontend
-- For any frontend/UI task, use `ui-ux-pro-max` for UX/layout, `context7` for current docs, `shadcn` for components/patterns, `magic` for premium UI generation/refinement, and `$playwright-cli` to inspect desktop/mobile after meaningful visual changes.
 - Do not finish only because it compiles: open the changed screen, check layout/overflow/responsiveness/navigation, then make one visual refinement pass if needed.
 - Stack: React + Tailwind. Base components: shadcn/ui. Icons: `lucide-react` only.
 - Prefer existing components and shadcn primitives. Do not create custom components when a project/shadcn component already fits.
@@ -112,6 +129,12 @@ Rules:
 - Always mobile-first, but do not just stack desktop sections vertically; design a thoughtful mobile layout.
 - Do not modify mobile/PWA bottom navbar size, position, or behavior unless explicitly requested.
 - Keep changes surgical unless the user explicitly asks for a redesign.
+
+
+## Plan mode
+- siempre que te ejecute en plan mode y me devuelvas el plan dime que skills usaras y para que cada una.
+- siempre que te ejecute en plan mode y me devuelvas el plan dime que mcp usaras, considera que tienen costo de tokens asi que solo usalo si son necesarios y garantizar una considerable mejora del resultado. dime para que cada uno
+- siempre que te ejecute en plan mode y me devuelvas el plan dime que subagentes desplegaras, considera que tienen costo de tokens asi que solo usalo si son necesarios y garantizar una considerable mejora del resultado. dime para que cada uno
 
 
 

@@ -38,6 +38,7 @@ Do not read all files. Pick only the relevant source from this map.
 - base de datos: `docs/DATABASE.md`
 - skills/agentes: `docs/SKILLS_AND_AGENTS.md`
 - plan y specs: `PLAN.md`, `specs/`
+- diseño / UI (tokens, tipografía, spacing, motion, PWA, a11y): `DESIGN.md`
 
 Si cambia una decision, actualizar primero su fuente de verdad.
 
@@ -102,12 +103,13 @@ Rules:
 - After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
 
 ## Frontend
+- **Fuente de verdad de diseño: `DESIGN.md`.** Leerlo antes de cualquier tarea de UI. Dirección cerrada: dark-only, app-native first, mobile primario, acento **emerald `#10b981`**, fuentes Sora (display) + Geist Sans (body) + Geist Mono, spacing airy, tap ≥44px. Si cambia una decisión de diseño, actualizar `DESIGN.md` primero.
 - For any frontend/UI task, use `ui-ux-pro-max` for UX/layout, `context7` for current docs, `shadcn` for components/patterns, `magic` for premium UI generation/refinement, and `$playwright-cli` to inspect desktop/mobile after meaningful visual changes.
 - Do not finish only because it compiles: open the changed screen, check layout/overflow/responsiveness/navigation, then make one visual refinement pass if needed.
 - Stack: React + Tailwind. Base components: shadcn/ui. Icons: `lucide-react` only.
 - Prefer existing components and shadcn primitives. Do not create custom components when a project/shadcn component already fits.
 - Use Framer Motion for subtle microinteractions when useful: hover, press, selection changes, tabs, loading, drawers/modals, and icon transitions.
-- Keep UI premium/minimal: clear hierarchy, balanced spacing, restrained violet accents, consistent radius/shadows, readable contrast.
+- Keep UI premium/minimal: clear hierarchy, balanced spacing, restrained emerald accents (≤10% surface, one primary CTA per view), consistent radius/shadows, readable contrast.
 - Avoid generic AI UI: excessive gradients, random glows, cheap glassmorphism, oversized cards, inconsistent spacing, and decorative noise.
 - Always mobile-first, but do not just stack desktop sections vertically; design a thoughtful mobile layout.
 - Do not modify mobile/PWA bottom navbar size, position, or behavior unless explicitly requested.

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans, Sora } from "next/font/google";
+import { Geist, Geist_Mono, Sora } from "next/font/google";
 
 import { Toaster } from "sonner";
 
@@ -12,6 +12,7 @@ import {
 import { MobileTabBar } from "./components/shared/MobileTabBar";
 import { PrimaryNavigation } from "./components/shared/PrimaryNavigation";
 import { AppShell } from "./components/ui/AppShell";
+import { MotionProvider } from "./components/ui/MotionProvider";
 import { PwaRuntime } from "./components/pwa/PwaRuntime";
 import "./globals.css";
 
@@ -21,13 +22,13 @@ const displayFont = Sora({
   weight: ["500", "600", "700"],
 });
 
-const bodyFont = IBM_Plex_Sans({
+const bodyFont = Geist({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
 });
 
-const monoFont = IBM_Plex_Mono({
+const monoFont = Geist_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
   weight: ["400", "500"],
@@ -77,6 +78,7 @@ export default async function RootLayout({
       className={`${displayFont.variable} ${bodyFont.variable} ${monoFont.variable} h-full antialiased`}
     >
       <body className="min-h-full">
+        <MotionProvider>
         <AppShell>
           <PrimaryNavigation
             isAuthenticated={Boolean(auth)}
@@ -97,6 +99,7 @@ export default async function RootLayout({
             role={auth?.profile.role ?? null}
           />
         </AppShell>
+        </MotionProvider>
         <PwaRuntime />
         <Toaster
           richColors

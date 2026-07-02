@@ -2,16 +2,17 @@
 
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight, KeyRound, Mail } from "lucide-react";
+import { ArrowLeft, ArrowRight, CircleCheck, KeyRound, Mail } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
+import { InputOtp } from "@/app/components/ui/InputOtp";
 import { LoadingDots } from "@/app/components/ui/LoadingDots";
 import { fadeUp, motion } from "@/app/components/ui/motion";
 import { isValidEmail, normalizeEmail, normalizeOtpToken } from "@/app/lib/auth-input";
 
-const INPUT_WITH_ICON_CLASS = "pl-10 focus:ring-4 focus:ring-[rgba(124,58,237,0.18)]";
+const INPUT_WITH_ICON_CLASS = "pl-10";
 
 const requestErrorCopy: Record<string, string> = {
   "missing-email": "Ingresa un email valido.",
@@ -42,6 +43,7 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
   const [token, setToken] = useState("");
   const [step, setStep] = useState<"email" | "token">("email");
   const [busyState, setBusyState] = useState<BusyState>(null);
+  const [verified, setVerified] = useState(false);
 
   async function requestOtp(mode: "request" | "resend") {
     const normalizedEmail = normalizeEmail(email);
@@ -134,7 +136,11 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
       }
 
       toast.success("Sesion iniciada. Redirigiendo...");
-      window.location.assign(payload.redirectTo);
+      const target = payload.redirectTo;
+      setVerified(true);
+      window.setTimeout(() => {
+        window.location.assign(target);
+      }, 550);
     } catch {
       toast.error(verifyErrorCopy["otp-verify-failed"]);
     } finally {
@@ -158,10 +164,13 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
               void requestOtp("request");
             }}
           >
-          <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+          <label className="grid gap-1.5 text-xs font-semibold text-[var(--foreground-muted)]">
             Email
             <span className="relative flex items-center">
-              <Mail className="pointer-events-none absolute left-3 size-4 text-[#6e7788]" />
+              <Mail
+                aria-hidden="true"
+                className="pointer-events-none absolute left-3 size-4 text-[var(--foreground-muted)]"
+              />
               <Input
                 value={email}
                 onChange={(event) => setEmail(event.currentTarget.value)}
@@ -177,7 +186,7 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
           <Button type="submit" className="w-full" disabled={busyState !== null}>
             {busyState === "request" ? <LoadingDots /> : null}
             {busyState === "request" ? "Enviando codigo" : "Enviar codigo"}
-            <ArrowRight className="size-4" />
+            <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
           </motion.form>
         ) : (
@@ -195,61 +204,71 @@ export function OtpLoginFlow({ initialEmail }: OtpLoginFlowProps) {
           >
           <button
             type="button"
-            disabled={busyState !== null}
+            disabled={busyState !== null || verified}
             onClick={() => {
               setStep("email");
               setToken("");
             }}
-            className="flex w-fit items-center gap-1.5 rounded-lg px-1 py-1 text-xs font-medium text-[#8b94a8] transition-colors hover:text-white disabled:pointer-events-none disabled:opacity-40"
+            className="-ml-2 flex min-h-[44px] w-fit items-center gap-1.5 rounded-lg px-2 text-xs font-medium text-[var(--foreground-muted)] outline-none transition-[color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-[var(--foreground)] focus-visible:shadow-[var(--focus-glow)] active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40 motion-reduce:active:scale-100"
             aria-label="Volver a ingresar email"
           >
-            <ArrowLeft className="size-3.5" />
+            <ArrowLeft aria-hidden="true" className="size-3.5" />
             Volver
           </button>
 
-          <div className="rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] px-4 py-3">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8b94a8]">
+          <div className="rounded-xl border border-[var(--border)] bg-[var(--card-alt)] px-4 py-3">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--foreground-muted)]">
               Codigo enviado a
             </p>
-            <p className="mt-1 text-sm text-white">{normalizeEmail(email)}</p>
+            <p className="mt-1 text-sm text-[var(--foreground)]">{normalizeEmail(email)}</p>
           </div>
 
-          <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
-            Codigo de 6 digitos
-            <span className="relative flex items-center">
-              <KeyRound className="pointer-events-none absolute left-3 size-4 text-[#6e7788]" />
-              <Input
-                value={token}
-                onChange={(event) => setToken(event.currentTarget.value.replace(/\D/g, "").slice(0, 6))}
-                placeholder="123456"
-                type="text"
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                maxLength={6}
-                required
-                className={`${INPUT_WITH_ICON_CLASS} text-center font-mono text-lg tracking-[0.35em]`}
-              />
+          <label className="grid gap-2 text-xs font-semibold text-[var(--foreground-muted)]">
+            <span className="flex items-center gap-1.5">
+              <KeyRound aria-hidden="true" className="size-4 text-[var(--foreground-muted)]" />
+              Codigo de 6 digitos
             </span>
+            <InputOtp
+              value={token}
+              onChange={(next) => setToken(next.replace(/\D/g, "").slice(0, 6))}
+              disabled={busyState !== null || verified}
+              success={verified}
+              autoFocus
+              onComplete={() => void verifyOtp()}
+              aria-label="Codigo de 6 digitos"
+            />
           </label>
 
-          <Button type="submit" className="w-full" disabled={busyState !== null}>
-            {busyState === "verify" ? <LoadingDots /> : null}
-            {busyState === "verify" ? "Verificando codigo" : "Verificar codigo"}
-            <ArrowRight className="size-4" />
-          </Button>
+          {verified ? (
+            <div
+              role="status"
+              aria-live="polite"
+              className="motion-pop-in flex items-center justify-center gap-2 rounded-xl border border-[var(--success)] bg-[var(--card-alt)] py-3 text-sm font-semibold text-[var(--success)]"
+            >
+              <CircleCheck aria-hidden="true" className="size-4" />
+              Codigo verificado
+            </div>
+          ) : (
+            <>
+              <Button type="submit" className="w-full" disabled={busyState !== null}>
+                {busyState === "verify" ? <LoadingDots /> : null}
+                {busyState === "verify" ? "Verificando codigo" : "Verificar codigo"}
+                <ArrowRight aria-hidden="true" className="size-4" />
+              </Button>
 
-          <Button
-            type="button"
-            variant="secondary"
-            className="w-full"
-            disabled={busyState !== null}
-            onClick={() => {
-              void requestOtp("resend");
-            }}
-          >
-            {busyState === "resend" ? <LoadingDots /> : null}
-            {busyState === "resend" ? "Reenviando" : "Reenviar codigo"}
-          </Button>
+              <button
+                type="button"
+                disabled={busyState !== null}
+                onClick={() => {
+                  void requestOtp("resend");
+                }}
+                className="mx-auto flex min-h-[44px] items-center justify-center gap-1.5 rounded-lg px-3 text-xs font-semibold text-[var(--foreground-muted)] outline-none transition-[color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-[var(--foreground)] focus-visible:shadow-[var(--focus-glow)] active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40 motion-reduce:active:scale-100"
+              >
+                {busyState === "resend" ? <LoadingDots /> : null}
+                {busyState === "resend" ? "Reenviando codigo" : "Reenviar codigo"}
+              </button>
+            </>
+          )}
           </motion.form>
         )}
       </AnimatePresence>

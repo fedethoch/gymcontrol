@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
@@ -44,78 +45,60 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const email = params.email ?? "";
 
   return (
-    <div className="grid min-h-[100svh] w-full lg:grid-cols-[1fr_minmax(420px,520px)]">
-      {/* Left panel: brand */}
-      <div
-        className="relative hidden flex-col justify-between overflow-hidden p-12 lg:flex"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 18% 12%, rgba(124,58,237,0.55), transparent 45%), radial-gradient(circle at 82% 88%, rgba(91,33,182,0.6), transparent 50%), linear-gradient(165deg, rgba(21,17,38,0.85) 0%, rgba(12,15,26,0.9) 52%, rgba(5,7,11,0.95) 100%), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1600&auto=format&fit=crop')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="flex items-center gap-3">
-          <span className="grid size-14 place-items-center overflow-hidden rounded-2xl">
+    <div
+      className="grid min-h-[100dvh] place-items-center bg-[var(--workspace)] px-6 py-10"
+      style={
+        {
+          "--accent": "#10b981",
+          "--accent-strong": "#34d399",
+          "--accent-bright": "#6ee7b7",
+          "--accent-foreground": "#04150d",
+          paddingTop: "max(2.5rem, env(safe-area-inset-top))",
+          paddingBottom: "max(2.5rem, env(safe-area-inset-bottom))",
+        } as CSSProperties
+      }
+    >
+      <div className="grid w-full max-w-[400px] gap-8">
+        {/* Brand + heading */}
+        <div className="grid justify-items-center gap-5 text-center">
+          <span className="grid size-16 place-items-center overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)]">
             <Image
               src="/logo/logo.png"
               alt="GymControl"
-              width={56}
-              height={56}
-              className="size-full object-contain p-1.5"
+              width={64}
+              height={64}
+              className="size-full object-contain p-2"
               priority
               unoptimized
             />
           </span>
-          <div>
-            <p className="font-display text-2xl font-semibold tracking-[-0.06em] text-white">
-              GymControl
-            </p>
-            <p className="text-sm text-[var(--foreground-muted)]">mejora cada dia</p>
-          </div>
-        </div>
-
-        <div className="max-w-md">
-          <h1 className="font-display text-5xl font-semibold leading-[1.1] tracking-[-0.05em] text-white sm:text-6xl">
-            Tu mejor
-            <br />
-            version empieza
-            <br />
-            <span className="text-[var(--accent-bright)]">hoy.</span>
-          </h1>
-        </div>
-      </div>
-
-      {/* Right panel: login form */}
-      <div className="grid place-items-center bg-[var(--workspace)] p-6 sm:p-10">
-        <div className="grid w-full max-w-[380px] gap-6">
-          <div>
+          <div className="grid gap-2">
             <SectionEyebrow>Bienvenido de vuelta</SectionEyebrow>
-            <h2 className="font-display mt-2 text-2xl font-semibold tracking-[-0.05em] text-white">
+            <h1 className="font-display text-3xl font-semibold tracking-[-0.025em] text-white">
               Iniciar sesion
-            </h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)]">
-              Ingresa tus credenciales para entrar a tu cuenta.
+            </h1>
+            <p className="mx-auto max-w-[300px] text-sm leading-6 text-[var(--foreground-muted)]">
+              Te enviamos un codigo a tu email para entrar sin contrasena.
             </p>
           </div>
-
-          <StatusToast message={statusMessage} clearParams={["status"]} />
-          <StatusToast message={errorMessage} isError clearParams={["error"]} />
-
-          <OtpLoginFlow initialEmail={email} />
-
-          <div className="flex items-center gap-3 text-xs uppercase tracking-[0.18em] text-[#6e7788]">
-            <span className="h-px flex-1 bg-[var(--border)]" />
-            o continua con
-            <span className="h-px flex-1 bg-[var(--border)]" />
-          </div>
-
-          <form action="/auth/google/start" method="post">
-            <Button type="submit" variant="outline" className="w-full">
-              Entrar con Google
-            </Button>
-          </form>
         </div>
+
+        <StatusToast message={statusMessage} clearParams={["status"]} />
+        <StatusToast message={errorMessage} isError clearParams={["error"]} />
+
+        <OtpLoginFlow initialEmail={email} />
+
+        <div className="flex items-center gap-3 text-xs uppercase tracking-[0.18em] text-[var(--foreground-muted)]">
+          <span className="h-px flex-1 bg-[var(--border)]" />
+          o continua con
+          <span className="h-px flex-1 bg-[var(--border)]" />
+        </div>
+
+        <form action="/auth/google/start" method="post">
+          <Button type="submit" variant="outline" className="w-full">
+            Entrar con Google
+          </Button>
+        </form>
       </div>
     </div>
   );

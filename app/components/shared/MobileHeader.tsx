@@ -122,7 +122,7 @@ export function MobileHeader({
     tone: "warm" as const,
   };
   const profileClasses =
-    "grid size-10 shrink-0 place-items-center rounded-xl border border-[#2a3348] bg-[#101522]/90 text-[#b2bdd4] transition-[background-color,border-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[#4b348d] hover:text-white active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100";
+    "grid size-11 shrink-0 place-items-center rounded-xl border border-[var(--border)] bg-[var(--card)]/90 text-[var(--foreground-muted)] transition-[background-color,border-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[var(--accent)] hover:text-white active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100";
 
   return (
     <header className="pointer-events-none absolute inset-x-0 top-0 z-30 bg-[var(--workspace)] px-4 pb-2.5 pt-[calc(0.625rem+env(safe-area-inset-top))] lg:hidden">
@@ -144,28 +144,28 @@ export function MobileHeader({
           <p className="truncate font-display text-sm font-semibold leading-tight text-white">
             {greeting}
           </p>
-          <p className="truncate text-xs leading-tight text-[#96a1bc]">{area}</p>
+          <p className="truncate text-xs leading-tight text-[var(--foreground-muted)]">{area}</p>
         </div>
 
         <div className="flex shrink-0 items-center gap-1.5">
           <button
             type="button"
             aria-label="Notificaciones"
-            className="grid size-[2.125rem] place-items-center rounded-xl bg-[#131827]/90 text-[#b2bdd4] transition-[background-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[#171d2f] hover:text-white active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100"
+            className="grid size-11 place-items-center rounded-xl bg-[var(--card)]/90 text-[var(--foreground-muted)] transition-[background-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[var(--card-hover)] hover:text-white active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100"
           >
             <Bell className="size-3.5" />
           </button>
           <span
             aria-label={streakBadge.ariaLabel ?? streakBadge.label}
             className={cn(
-              "inline-flex h-[2.125rem] items-center gap-1 rounded-xl bg-[#131827]/90 px-2 font-display text-xs font-semibold text-[#d8deeb] transition-colors hover:bg-[#171d2f]",
+              "inline-flex h-11 items-center gap-1 rounded-xl bg-[var(--card)]/90 px-2.5 font-display text-xs font-semibold text-[var(--foreground)] transition-colors hover:bg-[var(--card-hover)]",
               "duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
             )}
           >
             <Flame
               className={cn(
                 "size-3.5 shrink-0",
-                streakBadge.tone === "warm" ? "text-[#ff9a75]" : "text-[#b995ff]",
+                streakBadge.tone === "warm" ? "text-[#ff9a75]" : "text-[var(--accent-bright)]",
               )}
             />
             <span className="leading-none">{streakBadge.label}</span>

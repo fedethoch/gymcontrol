@@ -79,7 +79,7 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
               className={cn(
                 "mobile-tab-bar-item group flex flex-col items-center justify-end px-1 text-[10px] font-semibold leading-none transition-colors",
                 "duration-200 motion-reduce:duration-0",
-                active ? "text-[#b995ff]" : "text-[#8a93ad]",
+                active ? "text-[var(--accent-bright)]" : "text-[#8a93ad]",
               )}
             >
               <span
@@ -111,7 +111,7 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
               className={cn(
                 "mobile-tab-bar-item group flex flex-col items-center justify-end px-1 text-[10px] font-semibold leading-none transition-colors",
                 "duration-200 motion-reduce:duration-0",
-                moreOpen ? "text-[#b995ff]" : "text-[#8a93ad]",
+                moreOpen ? "text-[var(--accent-bright)]" : "text-[#8a93ad]",
               )}
             >
               <span

@@ -1,6 +1,6 @@
 "use client";
 
-import { animate } from "framer-motion";
+import { animate, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { cn } from "@/app/lib/utils";
@@ -10,7 +10,7 @@ export function AnimatedProgressRing({
   size = 144,
   strokeWidth = 16,
   trackColor = "rgba(39,47,66,0.9)",
-  progressColor = "#7c3aed",
+  progressColor = "var(--accent)",
   className,
   children,
 }: {
@@ -24,10 +24,11 @@ export function AnimatedProgressRing({
 }) {
   const [display, setDisplay] = useState(0);
   const previousRef = useRef(0);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     const controls = animate(previousRef.current, value, {
-      duration: 0.6,
+      duration: reduceMotion ? 0 : 0.6,
       ease: "easeOut",
       onUpdate: (latest) => {
         previousRef.current = latest;
@@ -36,7 +37,7 @@ export function AnimatedProgressRing({
     });
 
     return () => controls.stop();
-  }, [value]);
+  }, [value, reduceMotion]);
 
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;

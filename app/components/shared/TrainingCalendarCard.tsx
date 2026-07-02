@@ -51,14 +51,16 @@ export function TrainingCalendarCard({
       <div className="flex w-full items-end justify-between gap-0.5">
         {weekDays.map((day) => (
           <div key={day.key} className="flex flex-1 flex-col items-center gap-1.5">
-            <span className="text-[10px] font-semibold text-[#4a5368]">{day.label}</span>
+            <span aria-hidden="true" className="text-[10px] font-semibold text-[var(--foreground-muted)]">{day.label}</span>
             <span
+              role="img"
+              aria-label={dayLabel(day.key, day.completed, day.isToday)}
               className={`size-4 rounded-full ${
                 day.completed
-                  ? "bg-[#7c3aed]"
+                  ? "bg-[var(--accent)]"
                   : day.isToday
-                    ? "border border-[#6d40ef] bg-transparent"
-                    : "bg-[#1c2333]"
+                    ? "border border-[var(--accent)] bg-transparent"
+                    : "bg-[var(--card-alt)]"
               }`}
             />
           </div>
@@ -69,10 +71,10 @@ export function TrainingCalendarCard({
     if (bare) return weekCalendar;
 
     return (
-      <Card className="flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(13,19,34,0.96)_0%,rgba(8,12,20,0.98)_100%)] shadow-[0_18px_48px_rgba(0,0,0,0.24)]">
+      <Card className="flex h-full flex-col overflow-hidden border-[var(--border)] bg-[var(--card)]">
         <CardContent className="flex-1 p-3">
           <div className="flex items-center gap-2">
-            <span aria-hidden="true" className="grid size-7 shrink-0 place-items-center rounded-lg border border-[#34245b] bg-[#251640] text-[#b987ff]">
+            <span aria-hidden="true" className="grid size-7 shrink-0 place-items-center rounded-lg border border-[var(--border)] bg-[var(--card-alt)] text-[var(--accent-bright)]">
               <Icon className="size-4" />
             </span>
             <h2 className="font-display text-sm font-semibold leading-tight text-white">{title}</h2>
@@ -103,7 +105,7 @@ export function TrainingCalendarCard({
     <div className="relative w-full overflow-hidden">
       {hoveredKey && hoverPos ? (
         <div
-          className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md border border-[#34245b] bg-[#15102a] px-2 py-1 text-xs font-medium text-white shadow-[0_8px_20px_rgba(0,0,0,0.35)]"
+          className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md border border-[var(--border)] bg-[var(--card-alt)] px-2 py-1 text-xs font-medium text-white shadow-[0_8px_20px_rgba(0,0,0,0.35)]"
           style={{ left: hoverPos.x, top: hoverPos.y - 8 }}
         >
           {formatDateLabel(hoveredKey)}
@@ -131,12 +133,14 @@ export function TrainingCalendarCard({
                 });
               }}
               onMouseLeave={() => setHoveredKey((current) => (current === day.key ? null : current))}
+              role="img"
+              aria-label={dayLabel(day.key, day.completed, day.isToday)}
               className={`size-3 rounded-[3px] ${
                 day.completed
-                  ? "bg-[#7c3aed]"
+                  ? "bg-[var(--accent)]"
                   : day.isToday
-                    ? "border border-[#6d40ef] bg-transparent"
-                    : "bg-[#1c2333]"
+                    ? "border border-[var(--accent)] bg-transparent"
+                    : "bg-[var(--card-alt)]"
               }`}
             />
           ) : (
@@ -152,12 +156,12 @@ export function TrainingCalendarCard({
   }
 
   return (
-    <Card className="flex h-full flex-col overflow-hidden border-[#27304a] bg-[linear-gradient(145deg,rgba(13,19,34,0.96)_0%,rgba(8,12,20,0.98)_100%)] shadow-[0_18px_48px_rgba(0,0,0,0.24)]">
+    <Card className="flex h-full flex-col overflow-hidden border-[var(--border)] bg-[var(--card)]">
       <CardContent className="flex-1 p-3">
         <div className="flex items-center gap-2">
           <span
             aria-hidden="true"
-            className="grid size-7 shrink-0 place-items-center rounded-lg border border-[#34245b] bg-[#251640] text-[#b987ff]"
+            className="grid size-7 shrink-0 place-items-center rounded-lg border border-[var(--border)] bg-[var(--card-alt)] text-[var(--accent-bright)]"
           >
             <Icon className="size-4" />
           </span>
@@ -178,6 +182,11 @@ function formatDateOnly(value: Date) {
   const day = String(value.getDate()).padStart(2, "0");
 
   return `${year}-${month}-${day}`;
+}
+
+function dayLabel(key: string, completed: boolean, isToday: boolean) {
+  const state = completed ? "entrenado" : "sin entrenamiento";
+  return `${formatDateLabel(key)}: ${state}${isToday ? " (hoy)" : ""}`;
 }
 
 function formatDateLabel(key: string) {
