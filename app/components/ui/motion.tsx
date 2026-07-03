@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ComponentProps, type ReactNode } from "react";
-import { animate, motion, type Variants } from "framer-motion";
+import { animate, motion, useReducedMotion, type Variants } from "framer-motion";
 
 export const premiumEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -117,10 +117,18 @@ export function AnimatedMacroBar({ pct, color, delay = 0.05 }: { pct: number; co
 
 /** Contador animado que tween-ea desde el valor anterior hasta el nuevo. */
 export function AnimatedNumber({ value, className }: { value: number; className?: string }) {
-  const [display, setDisplay] = useState(0);
-  const previousRef = useRef(0);
+  const reduceMotion = useReducedMotion();
+  const [display, setDisplay] = useState(reduceMotion ? value : 0);
+  const previousRef = useRef(reduceMotion ? value : 0);
 
   useEffect(() => {
+    // Respeta prefers-reduced-motion: sin count-up, muestra el valor final directo.
+    if (reduceMotion) {
+      previousRef.current = value;
+      setDisplay(value);
+      return;
+    }
+
     const controls = animate(previousRef.current, value, {
       duration: 0.6,
       ease: "easeOut",
@@ -130,7 +138,7 @@ export function AnimatedNumber({ value, className }: { value: number; className?
       },
     });
     return () => controls.stop();
-  }, [value]);
+  }, [value, reduceMotion]);
 
   return <span className={className}>{Math.round(display)}</span>;
 }

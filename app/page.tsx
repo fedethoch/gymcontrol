@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import {
-  CalendarRange,
   ChevronRight,
   Clock,
   Dumbbell,
@@ -16,18 +15,15 @@ import {
 
 import { BodyMuscleFigure } from "@/app/components/shared/BodyMuscleFigure";
 import { MobileHeaderBadgeSync } from "@/app/components/shared/MobileHeader";
-import { NutritionCalendarCard } from "@/app/components/shared/NutritionCalendarCard";
-import { TrainingCalendarCard } from "@/app/components/shared/TrainingCalendarCard";
-import { WeekStripCard } from "@/app/components/shared/WeekStripCard";
+import { WeekCombinedCard } from "@/app/components/shared/WeekCombinedCard";
 import { Button } from "@/app/components/ui/Button";
 import {
   AnimatedMacroBar,
+  AnimatedNumber,
   fadeUp,
-  listItemHover,
   MotionDiv,
   MotionSection,
   staggerContainer,
-  tapFeedback,
 } from "@/app/components/ui/motion";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
 import { requireUser } from "@/app/lib/auth";
@@ -237,14 +233,15 @@ export default async function Home() {
 
       <h1 className="sr-only">Panel principal</h1>
 
-      {/* ── Hero ── */}
-      <MotionDiv
-        variants={fadeUp}
+      {/* ── Z1 Hero (focal) + Z2 KPI strip ── */}
+      <MotionSection
+        variants={staggerContainer}
         initial="hidden"
         animate="visible"
+        className="grid grid-cols-1 gap-4 lg:grid-cols-3"
       >
-
-        <div className="relative min-h-[167px] overflow-hidden rounded-[14px] border border-[var(--border)] bg-[var(--card)] sm:min-h-[196px]">
+        <MotionDiv variants={fadeUp} className="lg:col-span-2">
+        <div className="relative h-full min-h-[167px] overflow-hidden rounded-[14px] border border-[var(--border)] bg-[var(--card)] sm:min-h-[196px]">
           {/* Fixed hero image */}
           <Image
             alt="Entrenamiento de hoy"
@@ -265,7 +262,7 @@ export default async function Home() {
           <div className="relative z-10 flex h-full flex-col justify-end gap-3 p-3 pb-3 pt-8 sm:gap-5 sm:p-4 sm:pb-4 sm:pt-12">
             {/* Muscle groups title + subtitle */}
             <div className="flex flex-col gap-2.5">
-              <h2 className="font-display text-xl font-bold leading-tight text-white">
+              <h2 className="font-display text-xl font-bold leading-tight tracking-[-0.01em] text-white">
                 {muscleGroups.length > 0 ? (
                   muscleGroups.map((g, i) => (
                     <span key={g}>
@@ -310,11 +307,11 @@ export default async function Home() {
             <div className="flex items-center gap-2 flex-wrap">
               <Button
                 asChild
-                size="sm"
+                size="default"
                 className="justify-center gap-1.5 px-4 normal-case tracking-normal shadow-[0_6px_20px_rgba(16,185,129,0.32)]"
               >
                 <Link href={primaryHref}>
-                  {nextPendingDay && <Play className="size-3 fill-current" />}
+                  {nextPendingDay && <Play aria-hidden="true" className="size-3 fill-current" />}
                   {nextPendingDay
                     ? "Comenzar entrenamiento"
                     : activeRoutine
@@ -334,120 +331,65 @@ export default async function Home() {
             </div>
           </div>
         </div>
-      </MotionDiv>
+        </MotionDiv>
 
-      {/* ── 3-card summary row ── */}
+        <MotionDiv variants={fadeUp} className="lg:col-span-1">
+          <KpiStrip
+            kcal={totalKcal}
+            targetKcal={plan.targetKcal}
+            completedDays={completedDaysCount}
+            totalDays={totalDaysCount}
+            streak={streak}
+            primaryHref={primaryHref}
+          />
+        </MotionDiv>
+      </MotionSection>
+
+      {/* ── Z3 Nutrición (feature) + Z4 Carga muscular + Z5 Semana combinada ── */}
       <MotionSection
         variants={staggerContainer}
         initial="hidden"
-        animate="visible"
-        className="hidden grid-cols-3 gap-3 sm:grid"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3"
       >
-        <MotionDiv variants={fadeUp} whileHover={listItemHover} whileTap={tapFeedback}>
-          <SummaryStatCard
-            icon={Dumbbell}
-            accent="#10b981"
-            value={nextPendingDay ? `0/${exerciseCount}` : completedDaysCount > 0 ? "✓" : "—"}
-            unit={nextPendingDay ? "ejercicios" : undefined}
-            label="Entrenamiento"
-            progress={{
-              pct: totalDaysCount > 0 ? Math.round((completedDaysCount / totalDaysCount) * 100) : 0,
-              text: nextPendingDay ? "Pendiente" : completedDaysCount > 0 ? "Completado" : "Sin rutina",
-            }}
+        <MotionDiv variants={fadeUp} className="col-span-2 lg:col-span-1">
+          <NutricionTodayCard
+            totalKcal={totalKcal}
+            targetKcal={plan.targetKcal}
+            kcalPercent={kcalPercent}
+            kcalRemaining={kcalRemaining}
+            totalMacros={totalMacros}
+            targetMacros={plan.macros}
+          />
+        </MotionDiv>
+        <MotionDiv variants={fadeUp} className="col-span-1">
+          <CargaMuscularCard
+            muscleLoad={muscleLoad}
+            maxCount={maxMuscleCount}
+            strengthSummaries={muscleStrengthSummaries}
             href={primaryHref}
           />
         </MotionDiv>
-        <MotionDiv variants={fadeUp} whileHover={listItemHover} whileTap={tapFeedback}>
-          <SummaryStatCard
-            icon={Flame}
-            accent="#f59e0b"
-            value={String(totalKcal)}
-            unit="kcal"
-            label="Nutrición"
-            progress={{
-              pct: kcalPercent,
-              text: `Objetivo: ${plan.targetKcal} kcal`,
-            }}
-            href="/nutricion/registro"
-          />
-        </MotionDiv>
-        <MotionDiv variants={fadeUp} whileHover={listItemHover} whileTap={tapFeedback}>
-          <SummaryStatCard
-            icon={TrendingUp}
-            accent="#a3e635"
-            value={String(streak)}
-            unit={streak === 1 ? "día" : "días"}
-            label="Constancia"
-            progress={{
-              pct: Math.min(100, streak * 14),
-              text: streak > 0 ? `¡${streak} días seguidos!` : "Iniciá tu racha hoy",
-            }}
+        <MotionDiv variants={fadeUp} className="col-span-1">
+          <WeekCombinedCard
+            completedDates={completedTrainingDates}
+            loggedDates={nutritionDatesSet}
+            trainingCount={weeklyTrainingCount}
+            nutritionCount={weeklyNutritionCount}
           />
         </MotionDiv>
       </MotionSection>
 
-      {/* ── Nutrición + Carga muscular (2-col) + Comidas (full-width) ── */}
+      {/* ── Z6 Comidas de hoy ── */}
       <MotionSection
         variants={staggerContainer}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-60px" }}
-        className="flex flex-col gap-3"
       >
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <MotionDiv variants={fadeUp} className="h-full">
-            <NutricionTodayCard
-              totalKcal={totalKcal}
-              targetKcal={plan.targetKcal}
-              kcalPercent={kcalPercent}
-              kcalRemaining={kcalRemaining}
-              totalMacros={totalMacros}
-              targetMacros={plan.macros}
-            />
-          </MotionDiv>
-          <MotionDiv variants={fadeUp} className="h-full">
-            <CargaMuscularCard
-              muscleLoad={muscleLoad}
-              maxCount={maxMuscleCount}
-              strengthSummaries={muscleStrengthSummaries}
-              href={primaryHref}
-            />
-          </MotionDiv>
-        </div>
-
         <MotionDiv variants={fadeUp}>
           <ComidasHoyCard meals={meals} totalKcal={totalKcal} />
-        </MotionDiv>
-      </MotionSection>
-
-      {/* ── Calendarios semanales — full-width apilado en mobile, 2-col en sm+ ── */}
-      <MotionSection
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        className="grid grid-cols-1 gap-3 sm:grid-cols-2"
-      >
-        <MotionDiv variants={fadeUp} className="h-full">
-          <WeekStripCard
-            icon={CalendarRange}
-            label="Constancia semanal"
-            subtitle="Entrenamientos esta semana"
-            count={weeklyTrainingCount}
-          >
-            <TrainingCalendarCard completedDates={completedTrainingDates} variant="weekly" bare />
-          </WeekStripCard>
-        </MotionDiv>
-
-        <MotionDiv variants={fadeUp} className="h-full">
-          <WeekStripCard
-            icon={UtensilsCrossed}
-            label="Registro nutricional"
-            subtitle="Días con comidas registradas"
-            count={weeklyNutritionCount}
-          >
-            <NutritionCalendarCard loggedDates={nutritionDatesSet} variant="weekly" bare />
-          </WeekStripCard>
         </MotionDiv>
       </MotionSection>
     </section>
@@ -491,7 +433,7 @@ function HeroStat({
 }) {
   return (
     <div className="flex items-center gap-1.5">
-      <Icon className="size-3.5 shrink-0 text-[var(--accent-bright)]" />
+      <Icon aria-hidden="true" className="size-3.5 shrink-0 text-[var(--accent-bright)]" />
       <div className="flex flex-col leading-none">
         <span className="text-sm font-semibold text-white">{value}</span>
         {label && <span className="mt-0.5 text-xs text-white/70">{label}</span>}
@@ -500,68 +442,93 @@ function HeroStat({
   );
 }
 
-/** Una de las 3 cards resumen debajo del hero. */
-function SummaryStatCard({
-  icon: Icon,
-  accent,
-  value,
-  unit,
-  label,
-  progress,
-  href,
+/**
+ * Strip de 3 KPIs de scan rápido. Horizontal (3-col) en mobile, vertical en desktop.
+ * Divisores tonales en vez de 3 cards separadas. Acento único: sin hues decorativos.
+ */
+function KpiStrip({
+  kcal,
+  targetKcal,
+  completedDays,
+  totalDays,
+  streak,
+  primaryHref,
 }: {
-  icon: typeof Flame;
-  accent: string;
-  value: string;
-  unit?: string;
-  label: string;
-  progress?: { pct: number; text: string };
-  href?: string;
+  kcal: number;
+  targetKcal: number;
+  completedDays: number;
+  totalDays: number;
+  streak: number;
+  primaryHref: string;
 }) {
-  const inner = (
-    <div className="flex h-full flex-col gap-3 rounded-[14px] border border-[var(--border)] bg-[var(--card)] p-4 transition-colors hover:border-[var(--border-strong)]">
-      {/* Top: icono + label lado a lado */}
-      <div className="flex items-center gap-2">
-        <div
-          className="flex size-7 shrink-0 items-center justify-center rounded-lg"
-          style={{ background: `${accent}1f` }}
-        >
-          <Icon className="size-3.5" style={{ color: accent }} />
-        </div>
-        <span className="truncate text-xs font-bold uppercase tracking-[0.08em] text-[var(--foreground-muted)]">
-          {label}
-        </span>
-      </div>
-      {/* Counter: valor + unidad chiquita */}
-      <div className="flex items-baseline gap-1 min-w-0">
-        <span className="truncate font-display text-xl font-bold leading-none tabular-nums text-[var(--foreground)]">
-          {value}
-        </span>
-        {unit && (
-          <span className="shrink-0 text-xs text-[var(--foreground-muted)]">{unit}</span>
-        )}
-      </div>
-      {/* Barra de progreso + texto */}
-      {progress && (
-        <div className="mt-auto flex flex-col gap-1">
-          <div className="h-1.5 overflow-hidden rounded-full bg-[var(--card-alt)]">
-            <div
-              className="h-full rounded-full transition-all duration-700"
-              style={{ width: `${Math.min(100, Math.max(0, progress.pct))}%`, background: accent }}
-            />
-          </div>
-          <span className="truncate text-xs text-[var(--foreground-muted)]">{progress.text}</span>
-        </div>
-      )}
-    </div>
-  );
+  const items = [
+    {
+      icon: Flame,
+      label: "Nutrición",
+      numeric: kcal,
+      display: String(kcal),
+      sub: `de ${targetKcal} kcal`,
+      href: "/nutricion/registro",
+    },
+    {
+      icon: Dumbbell,
+      label: "Entreno",
+      numeric: undefined as number | undefined,
+      display: `${completedDays}/${totalDays}`,
+      sub: totalDays > 0 ? "días completados" : "sin rutina",
+      href: primaryHref,
+    },
+    {
+      icon: TrendingUp,
+      label: "Racha",
+      numeric: streak,
+      display: String(streak),
+      sub: streak === 1 ? "día seguido" : "días seguidos",
+      href: undefined as string | undefined,
+    },
+  ];
 
-  return href ? (
-    <Link href={href} className="block h-full">
-      {inner}
-    </Link>
-  ) : (
-    inner
+  const divider =
+    "border-[var(--border)] [&:not(:first-child)]:border-l lg:[&:not(:first-child)]:border-l-0 lg:[&:not(:first-child)]:border-t";
+
+  return (
+    <section aria-labelledby="kpi-heading" className="h-full">
+      <h2 id="kpi-heading" className="sr-only">
+        Resumen de hoy
+      </h2>
+      <div className="grid h-full grid-cols-3 overflow-hidden rounded-[14px] border border-[var(--border)] bg-[var(--card)] lg:grid-cols-1">
+        {items.map(({ icon: Icon, label, numeric, display, sub, href }) => {
+          const inner = (
+            <div className="flex h-full flex-col gap-1.5 p-3 sm:p-4">
+              <div className="flex items-center gap-1.5">
+                <Icon aria-hidden="true" className="size-3.5 shrink-0 text-[var(--foreground-muted)]" />
+                <span className="truncate text-[10px] font-bold uppercase tracking-[0.06em] text-[var(--foreground-muted)]">
+                  {label}
+                </span>
+              </div>
+              <span className="font-display text-2xl font-bold leading-none tracking-[-0.01em] tabular-nums text-[var(--foreground)]">
+                {numeric != null ? <AnimatedNumber value={numeric} /> : display}
+              </span>
+              <span className="truncate text-[11px] text-[var(--foreground-muted)]">{sub}</span>
+            </div>
+          );
+
+          return href ? (
+            <Link
+              key={label}
+              href={href}
+              className={`pressable block ${divider} transition-colors hover:bg-[var(--card-hover)]`}
+            >
+              {inner}
+            </Link>
+          ) : (
+            <div key={label} className={divider}>
+              {inner}
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -619,7 +586,7 @@ function NutricionTodayCard({
             progressColor="var(--accent)"
           >
             <div className="flex flex-col items-center gap-0.5">
-              <span className="font-display text-2xl font-bold leading-none tabular-nums text-[var(--foreground)]">
+              <span className="font-display text-2xl font-bold leading-none tracking-[-0.01em] tabular-nums text-[var(--foreground)]">
                 {totalKcal}
               </span>
               <span className="text-center text-[10px] font-medium leading-tight text-[var(--foreground-muted)]">
@@ -657,7 +624,7 @@ function NutricionTodayCard({
         href="/nutricion/registro"
         className="pressable mt-auto flex h-11 w-full items-center justify-center gap-1.5 rounded-lg bg-[var(--card-alt)] text-xs font-semibold text-[var(--accent-bright)] hover:bg-[var(--card-hover)] hover:text-white"
       >
-        <Plus className="size-3" />
+        <Plus aria-hidden="true" className="size-3" />
         Agregar comida
       </Link>
     </div>
@@ -687,9 +654,9 @@ function CargaMuscularCard({
 
         {isEmpty ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4">
-            <Zap className="size-7 text-[var(--foreground-subtle)]" />
+            <Zap aria-hidden="true" className="size-7 text-[var(--foreground-muted)]" />
           <p className="text-center text-sm font-semibold text-[var(--foreground-muted)]">Sin rutina activa</p>
-          <p className="text-center text-xs leading-relaxed text-[var(--foreground-subtle)]">
+          <p className="text-center text-xs leading-relaxed text-[var(--foreground-muted)]">
             Activá una rutina para ver tu carga muscular
           </p>
         </div>
@@ -739,9 +706,9 @@ function ComidasHoyCard({
     <div className="flex flex-col rounded-[14px] border border-[var(--border)] bg-[var(--card)] p-4">
       <div className="mb-3 flex items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-2">
-          <UtensilsCrossed className="size-4 shrink-0 text-[var(--accent-bright)]" />
+          <UtensilsCrossed aria-hidden="true" className="size-4 shrink-0 text-[var(--accent-bright)]" />
           <div className="min-w-0">
-          <h2 className="font-display text-sm font-semibold text-white">Comidas de hoy</h2>
+          <h3 className="font-display text-sm font-semibold text-white">Comidas de hoy</h3>
           {meals.length > 0 && (
           <p className="mt-0.5 truncate text-xs text-[var(--foreground-muted)]">
             {meals.length > 0
@@ -756,7 +723,7 @@ function ComidasHoyCard({
           aria-label="Ver registro de nutrición"
           className="group pressable grid size-11 shrink-0 place-items-center text-[var(--foreground-muted)] hover:text-white"
         >
-          <ChevronRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+          <ChevronRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-0.5 group-active:translate-x-0.5" />
         </Link>
       </div>
 
@@ -764,7 +731,7 @@ function ComidasHoyCard({
         /* Empty state: columna centrada, mensaje + CTA */
         <div className="flex flex-col items-center gap-3 py-6 text-center">
           <span className="grid size-11 place-items-center rounded-xl border border-[var(--border)] bg-[var(--card-alt)]">
-            <UtensilsCrossed className="size-5 text-[var(--foreground-subtle)]" strokeWidth={1.8} />
+            <UtensilsCrossed aria-hidden="true" className="size-5 text-[var(--foreground-muted)]" strokeWidth={1.8} />
           </span>
           <div className="space-y-1">
             <p className="text-sm font-semibold text-[var(--foreground)]">
@@ -778,7 +745,7 @@ function ComidasHoyCard({
             href="/nutricion/registro"
             className="pressable inline-flex h-11 items-center justify-center gap-1.5 rounded-lg bg-[var(--accent)] px-4 text-xs font-semibold text-[var(--accent-foreground)] hover:bg-[var(--accent-strong)]"
           >
-            <Plus className="size-3.5" />
+            <Plus aria-hidden="true" className="size-3.5" />
             Agregar comida
           </Link>
         </div>

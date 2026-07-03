@@ -31,7 +31,7 @@ Públicas / auth
 ├─────┼──────────────────────┼─────────────┼────────────────────────────────────────────┤
 │ 1   │ Home / landing       │ /           │ app/page.tsx                               │
 ├─────┼──────────────────────┼─────────────┼────────────────────────────────────────────┤
-│ 2   │ Login (OTP + Google) │ /auth/login │ app/auth/login/page.tsx + OtpLoginFlow.tsx │ INPROCESS
+│ 2   │ Login (OTP + Google) │ /auth/login │ app/auth/login/page.tsx + OtpLoginFlow.tsx │ CHECK
 └─────┴──────────────────────┴─────────────┴────────────────────────────────────────────┘
 
 Usuario — Entrenamiento
@@ -39,7 +39,7 @@ Usuario — Entrenamiento
 ┌─────┬────────────────────┬────────────────────────┬───────────────────────────────────────────┐
 │  #  │      Sección       │          Ruta          │                  Archivo                  │
 ├─────┼────────────────────┼────────────────────────┼───────────────────────────────────────────┤
-│ 3   │ Dashboard          │ /dashboard             │ app/dashboard/page.tsx (recién trabajado  │
+│ 3   │ Dashboard          │ /dashboard             │ app/dashboard/page.tsx (recién trabajado  │ INPROCESS
 │     │ principal          │                        │ en commits)                               │
 ├─────┼────────────────────┼────────────────────────┼───────────────────────────────────────────┤
 │ 4   │ Mis rutinas        │ /dashboard/rutinas     │ app/dashboard/rutinas/page.tsx            │
@@ -59,7 +59,7 @@ Usuario — Entrenamiento
 │     │ principal          │                        │ en commits)                               │
 ├─────┼────────────────────┼────────────────────────┼───────────────────────────────────────────┤
 │ 4   │ Mis rutinas        │ /dashboard/rutinas
-
+└─────┴──────────────────────┴─────────────┴────────────────────────────────────────────┘
 Usuario — Catálogo
 
 ┌─────┬──────────────────┬────────────────────────┬───────────────────────────────┐
@@ -104,31 +104,29 @@ Reemplaza el prompt único de 7 etapas. Ciclo: auditar → ejecutar → auditar 
 
 ### Prompt A — AUDITAR
 
-Auditoría de sección: [SECCIÓN] — archivo(s): [ARCHIVO(S)]
+/interface-design /styleseed-design-review /design-scout audita [sección]. design-scout trae referencia visual real (Awwwards/Dribbble/21st.dev) vía Playwright, no solo crítica — da benchmark concreto pre-plan. todo para PWA
 
-Solo auditar, NO tocar código. Lee DESIGN.md primero.
+### Prompt B - AUDITAR segundo run
 
-Si es la primera auditoría de esta sección (ronda 1):
-Skills: /interface-design /styleseed-design-review /design-scout
-design-scout trae referencia visual real (Awwwards/Dribbble/21st.dev) vía Playwright — benchmark concreto. Foco PWA: app-native, mobile primario.
+/interface-design /styleseed-design-review /design-scout segundo audit. design-scout trae referencia visual real (Awwwards/Dribbble/21st.dev) vía Playwright, no solo crítica — da benchmark concreto pre-plan. todo para PWA
 
-Si ya hubo una ejecución previa en esta sección (ronda 2+), auditar lo último implementado:
-Skills: /playwright-cli /styleseed-design-review + agent a11y-architect + /frontend-a11y
-Revisar mobile + desktop real en browser. ¿Qué no es premium? ¿Qué rompe WCAG 2.2 (foco, contraste, targets ≥44px, semántica)? ¿Qué es inconsistente contra otras secciones ya rediseñadas?
+### Prompt A — AUDITAR
 
-Salida: lista priorizada de hallazgos (qué cambiar y por qué), sin implementar nada. Cerrar con "Auditoría completa — N hallazgos" y esperar el prompt de ejecución.
+/interface-design /styleseed-design-review /design-scout audita [sección]. design-scout trae referencia visual real (Awwwards/Dribbble/21st.dev) vía Playwright, no solo crítica — da benchmark concreto pre-plan. todo para PWA
 
 ### Prompt B — EJECUTAR
 
-Ejecución de sección: [SECCIÓN] — archivo(s): [ARCHIVO(S)]
-
-Tomar los hallazgos de la última auditoría (mensaje anterior). No agregar cambios que no salieron de esa auditoría.
-
-Skills: /redesign-existing-projects /minimalist-ui /high-end-visual-design /micro-interactions /playwright-cli
-Implementar los hallazgos. Mobile-first real (viewport mobile antes que desktop, PWA no es desktop stackeado). Micro-interacciones: priorizar feedback táctil (active states) sobre hover — mobile no tiene hover real.
-Al terminar: skill /verify — correr flujo real end-to-end en la sección (no solo compila/typecheck). Confirmar nada roto.
-
-Cerrar con resumen de 3-5 líneas de qué cambió + "Ejecución completa" y esperar el próximo prompt de auditoría.
+genera un plan para ir haciendo estas fases una a una y comenzara la proxima solamente cuando la anterior este terminada y verificada
+- Fase 1 - resolver audit
+/redesign-existing-projects /minimalist-ui /high-end-visual-design /styleseed-design-review /playwright-cli Resolve todo el audit. Lee DESIGN.md. Playwright chequea viewport mobile primero (PWA = mobile-first real, no desktop stackeado).
+- Fase 2 — Revisión
+/playwright-cli /minimalist-ui /styleseed-design-review /high-end-visual-design abre browser, revisa mobile + desktop. ¿Qué no es premium?
+- Fase 3 — Accesibilidad (nueva, antes de micro-interacciones) 
+agent a11y-architect + /frontend-a11y audita WCAG 2.2 sección: foco, contraste, targets táctiles ≥44px, semántica. PWA instalada = usuario la trata como app nativa, a11y no es opcional.
+- Fase 4 — Micro-interacciones
+/micro-interactions /minimalist-ui /styleseed-design-review /high-end-visual-design agrega hover/press/transition con criterio. Priorizar feedback táctil (active states) sobre hover — mobile no tiene hover real.
+- Fase 5 — Verificación funcional
+skill /verify — corre flujo real end-to-end en la sección (no solo compila/typecheck). Confirma nada roto tras cambios visuales.
 
 ### Cierre de sección
 
