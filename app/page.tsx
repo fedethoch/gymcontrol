@@ -51,7 +51,7 @@ import {
 } from "@/app/lib/workout-tracking";
 
 const STRENGTH_LEGEND_GRADIENT =
-  "linear-gradient(90deg,#22c55e 0%,#eab308 33%,#f97316 66%,#ef4444 100%)";
+  "linear-gradient(90deg,var(--strength-1) 0%,var(--strength-2) 33%,var(--strength-3) 66%,var(--strength-4) 100%)";
 
 /** Días de entrenamiento consecutivos hasta hoy (o ayer si hoy aún no entrenó). */
 function computeStreak(completedDates: Set<string>, today: string): number {
@@ -187,7 +187,6 @@ export default async function Home() {
     plan.targetKcal > 0
       ? Math.min(100, Math.round((totalKcal / plan.targetKcal) * 100))
       : 0;
-  const kcalRemaining = Math.max(0, plan.targetKcal - totalKcal);
 
   const muscleLoad = activeRoutine
     ? activeRoutine.days
@@ -308,7 +307,7 @@ export default async function Home() {
               <Button
                 asChild
                 size="default"
-                className="justify-center gap-1.5 px-4 normal-case tracking-normal shadow-[0_6px_20px_rgba(16,185,129,0.32)]"
+                className="justify-center gap-1.5 px-4 normal-case tracking-normal"
               >
                 <Link href={primaryHref}>
                   {nextPendingDay && <Play aria-hidden="true" className="size-3 fill-current" />}
@@ -333,7 +332,7 @@ export default async function Home() {
         </div>
         </MotionDiv>
 
-        <MotionDiv variants={fadeUp} className="lg:col-span-1">
+        <MotionDiv variants={fadeUp} className="hidden lg:col-span-1 lg:block">
           <KpiStrip
             kcal={totalKcal}
             targetKcal={plan.targetKcal}
@@ -358,7 +357,6 @@ export default async function Home() {
             totalKcal={totalKcal}
             targetKcal={plan.targetKcal}
             kcalPercent={kcalPercent}
-            kcalRemaining={kcalRemaining}
             totalMacros={totalMacros}
             targetMacros={plan.macros}
           />
@@ -414,7 +412,7 @@ function CardLabel({
   return (
     <Tag className="flex items-center gap-1.5">
       <Icon aria-hidden="true" className={small ? "size-3 text-[var(--accent-bright)]" : "size-3.5 text-[var(--accent-bright)]"} />
-      <span className={`truncate font-bold uppercase tracking-[0.04em] text-[var(--foreground-muted)] ${small ? "text-[11px]" : "text-[11px]"}`}>
+      <span className={`min-w-0 font-bold uppercase tracking-[0.02em] text-[var(--foreground-muted)] ${small ? "text-[11px]" : "text-[11px]"}`}>
         {label}
       </span>
     </Tag>
@@ -502,14 +500,14 @@ function KpiStrip({
             <div className="flex h-full flex-col gap-1.5 p-3 sm:p-4">
               <div className="flex items-center gap-1.5">
                 <Icon aria-hidden="true" className="size-3.5 shrink-0 text-[var(--foreground-muted)]" />
-                <span className="truncate text-[10px] font-bold uppercase tracking-[0.06em] text-[var(--foreground-muted)]">
+                <span className="truncate text-[11px] font-bold uppercase tracking-[0.03em] text-[var(--foreground-muted)]">
                   {label}
                 </span>
               </div>
               <span className="font-display text-2xl font-bold leading-none tracking-[-0.01em] tabular-nums text-[var(--foreground)]">
                 {numeric != null ? <AnimatedNumber value={numeric} /> : display}
               </span>
-              <span className="truncate text-[11px] text-[var(--foreground-muted)]">{sub}</span>
+              <span className="text-[11px] text-[var(--foreground-muted)]">{sub}</span>
             </div>
           );
 
@@ -537,14 +535,12 @@ function NutricionTodayCard({
   totalKcal,
   targetKcal,
   kcalPercent,
-  kcalRemaining,
   totalMacros,
   targetMacros,
 }: {
   totalKcal: number;
   targetKcal: number;
   kcalPercent: number;
-  kcalRemaining: number;
   totalMacros: Macros;
   targetMacros: Macros;
 }) {
@@ -575,7 +571,19 @@ function NutricionTodayCard({
       {/* Header */}
       <CardLabel icon={Flame} label="Nutrición" />
 
-      {/* Mobile: ring izq + macros der (usa el ancho). lg: apilado vertical */}
+      {isEmpty ? (
+        /* Empty: fila compacta kcal + hint, sin ring ni barras */
+        <div className="flex flex-1 flex-col items-center justify-center gap-1 py-3 text-center">
+          <span className="font-display text-2xl font-bold leading-none tracking-[-0.01em] tabular-nums text-[var(--foreground)]">
+            0
+            <span className="ml-1 text-sm font-medium text-[var(--foreground-muted)]">
+              / {targetKcal} kcal
+            </span>
+          </span>
+          <p className="text-xs text-[var(--foreground-muted)]">Sin comidas registradas hoy</p>
+        </div>
+      ) : (
+      /* Mobile: ring izq + macros der (usa el ancho). lg: apilado vertical */
       <div className="flex flex-1 flex-row items-center gap-4 lg:flex-col lg:items-center">
         {/* Ring */}
         <div className="shrink-0">
@@ -618,6 +626,7 @@ function NutricionTodayCard({
           })}
         </div>
       </div>
+      )}
 
       {/* CTA */}
       <Link
@@ -708,7 +717,7 @@ function ComidasHoyCard({
         <div className="flex min-w-0 items-center gap-2">
           <UtensilsCrossed aria-hidden="true" className="size-4 shrink-0 text-[var(--accent-bright)]" />
           <div className="min-w-0">
-          <h3 className="font-display text-sm font-semibold text-white">Comidas de hoy</h3>
+          <h3 className="font-display text-sm font-semibold text-[var(--foreground)]">Comidas de hoy</h3>
           {meals.length > 0 && (
           <p className="mt-0.5 truncate text-xs text-[var(--foreground-muted)]">
             {meals.length > 0
@@ -731,7 +740,7 @@ function ComidasHoyCard({
         /* Empty state: columna centrada, mensaje + CTA */
         <div className="flex flex-col items-center gap-3 py-6 text-center">
           <span className="grid size-11 place-items-center rounded-xl border border-[var(--border)] bg-[var(--card-alt)]">
-            <UtensilsCrossed aria-hidden="true" className="size-5 text-[var(--foreground-muted)]" strokeWidth={1.8} />
+            <UtensilsCrossed aria-hidden="true" className="size-5 text-[var(--foreground-muted)]" />
           </span>
           <div className="space-y-1">
             <p className="text-sm font-semibold text-[var(--foreground)]">
@@ -743,7 +752,7 @@ function ComidasHoyCard({
           </div>
           <Link
             href="/nutricion/registro"
-            className="pressable inline-flex h-11 items-center justify-center gap-1.5 rounded-lg bg-[var(--accent)] px-4 text-xs font-semibold text-[var(--accent-foreground)] hover:bg-[var(--accent-strong)]"
+            className="pressable inline-flex h-11 items-center justify-center gap-1.5 rounded-lg bg-[var(--card-alt)] px-4 text-xs font-semibold text-[var(--accent-bright)] hover:bg-[var(--card-hover)] hover:text-white"
           >
             <Plus aria-hidden="true" className="size-3.5" />
             Agregar comida
@@ -766,10 +775,10 @@ function ComidasHoyCard({
                 />
               </span>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--accent-bright)]">
+                <p className="truncate text-[11px] font-bold uppercase tracking-[0.06em] text-[var(--accent-bright)]">
                   {MEAL_TYPE_LABELS[meal.type]}
                 </p>
-                <p className="mt-0.5 truncate font-display text-xs font-semibold leading-tight text-white">
+                <p className="mt-0.5 truncate font-display text-xs font-semibold leading-tight text-[var(--foreground)]">
                   {meal.name}
                 </p>
                 <p className="mt-0.5 line-clamp-1 text-xs leading-4 text-[var(--foreground-muted)]">
@@ -781,7 +790,7 @@ function ComidasHoyCard({
                   <MealMacro label="G" value={meal.macros.fatG} color={MACRO_COLORS.fat} />
                 </div>
               </div>
-              <span className="self-start whitespace-nowrap rounded-full bg-[rgba(255,255,255,0.05)] px-1.5 py-0.5 text-[10px] font-bold text-white">
+              <span className="self-start whitespace-nowrap rounded-full bg-[var(--card-alt)] px-1.5 py-0.5 text-[10px] font-bold text-[var(--foreground)]">
                 {meal.kcal} kcal
               </span>
             </div>

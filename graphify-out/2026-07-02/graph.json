@@ -738,7 +738,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "alimentos_foodadminclient",
-      "community": 207,
+      "community": 275,
       "norm_label": "foodadminclient.tsx"
     },
     {
@@ -748,7 +748,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "alimentos_foodadminclient_foodadminclientprops",
-      "community": 207,
+      "community": 275,
       "norm_label": "foodadminclientprops"
     },
     {
@@ -758,7 +758,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "alimentos_foodadminclient_sortcolumn",
-      "community": 207,
+      "community": 275,
       "norm_label": "sortcolumn"
     },
     {
@@ -768,7 +768,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "alimentos_foodadminclient_sortdirection",
-      "community": 207,
+      "community": 275,
       "norm_label": "sortdirection"
     },
     {
@@ -788,7 +788,7 @@
       "source_location": "L426",
       "_origin": "ast",
       "id": "alimentos_foodadminclient_sortheader",
-      "community": 207,
+      "community": 275,
       "norm_label": "sortheader()"
     },
     {
@@ -798,7 +798,7 @@
       "source_location": "L458",
       "_origin": "ast",
       "id": "alimentos_foodadminclient_foodformsheetprops",
-      "community": 207,
+      "community": 275,
       "norm_label": "foodformsheetprops"
     },
     {
@@ -808,7 +808,7 @@
       "source_location": "L465",
       "_origin": "ast",
       "id": "alimentos_foodadminclient_foodformsheet",
-      "community": 207,
+      "community": 275,
       "norm_label": "foodformsheet()"
     },
     {
@@ -1588,7 +1588,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "demo_image_route",
-      "community": 390,
+      "community": 44,
       "norm_label": "route.ts"
     },
     {
@@ -1598,7 +1598,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "demo_image_route_get",
-      "community": 390,
+      "community": 44,
       "norm_label": "get()"
     },
     {
@@ -1608,7 +1608,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "demo_image_route_nostoreheaders",
-      "community": 390,
+      "community": 44,
       "norm_label": "nostoreheaders()"
     },
     {
@@ -1648,7 +1648,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "start_route",
-      "community": 209,
+      "community": 287,
       "norm_label": "route.ts"
     },
     {
@@ -1658,7 +1658,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "start_route_redirecttologin",
-      "community": 209,
+      "community": 287,
       "norm_label": "redirecttologin()"
     },
     {
@@ -1668,7 +1668,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "start_route_post",
-      "community": 209,
+      "community": 287,
       "norm_label": "post()"
     },
     {
@@ -1678,7 +1678,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "login_otploginflow",
-      "community": 32,
+      "community": 105,
       "norm_label": "otploginflow.tsx"
     },
     {
@@ -1688,7 +1688,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "login_otploginflow_requesterrorcopy",
-      "community": 32,
+      "community": 105,
       "norm_label": "requesterrorcopy"
     },
     {
@@ -1698,7 +1698,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "login_otploginflow_verifyerrorcopy",
-      "community": 32,
+      "community": 105,
       "norm_label": "verifyerrorcopy"
     },
     {
@@ -1708,7 +1708,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "login_otploginflow_otploginflowprops",
-      "community": 32,
+      "community": 105,
       "norm_label": "otploginflowprops"
     },
     {
@@ -1718,7 +1718,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "login_otploginflow_busystate",
-      "community": 32,
+      "community": 105,
       "norm_label": "busystate"
     },
     {
@@ -1728,7 +1728,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "login_otploginflow_otploginflow",
-      "community": 32,
+      "community": 105,
       "norm_label": "otploginflow()"
     },
     {
@@ -1738,7 +1738,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "login_page",
-      "community": 32,
+      "community": 387,
       "norm_label": "page.tsx"
     },
     {
@@ -1748,7 +1748,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "login_page_statuscopy",
-      "community": 32,
+      "community": 387,
       "norm_label": "statuscopy"
     },
     {
@@ -1758,7 +1758,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "login_page_errorcopy",
-      "community": 32,
+      "community": 387,
       "norm_label": "errorcopy"
     },
     {
@@ -1768,7 +1768,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "login_page_loginpageprops",
-      "community": 32,
+      "community": 387,
       "norm_label": "loginpageprops"
     },
     {
@@ -1888,7 +1888,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "catalogo_page",
-      "community": 32,
+      "community": 387,
       "norm_label": "page.tsx"
     },
     {
@@ -1938,7 +1938,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "id_routinedetailclient_routinedetailclient",
-      "community": 30,
+      "community": 387,
       "norm_label": "routinedetailclient()"
     },
     {
@@ -1978,7 +1978,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "id_page",
-      "community": 30,
+      "community": 387,
       "norm_label": "page.tsx"
     },
     {
@@ -1988,7 +1988,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "id_page_catalogroutinedetailpageprops",
-      "community": 30,
+      "community": 387,
       "norm_label": "catalogroutinedetailpageprops"
     },
     {
@@ -1998,7 +1998,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "id_page_catalogroutinedetailpage",
-      "community": 30,
+      "community": 67,
       "norm_label": "catalogroutinedetailpage()"
     },
     {
@@ -2008,7 +2008,7 @@
       "source_location": "L343",
       "_origin": "ast",
       "id": "id_page_statpillprops",
-      "community": 30,
+      "community": 387,
       "norm_label": "statpillprops"
     },
     {
@@ -2018,7 +2018,7 @@
       "source_location": "L348",
       "_origin": "ast",
       "id": "id_page_statpill",
-      "community": 30,
+      "community": 387,
       "norm_label": "statpill()"
     },
     {
@@ -2028,7 +2028,7 @@
       "source_location": "L357",
       "_origin": "ast",
       "id": "id_page_infotile",
-      "community": 30,
+      "community": 387,
       "norm_label": "infotile()"
     },
     {
@@ -2338,7 +2338,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_filterpanel",
-      "community": 207,
+      "community": 387,
       "norm_label": "filterpanel.tsx"
     },
     {
@@ -2348,7 +2348,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "shared_filterpanel_filtergroup",
-      "community": 207,
+      "community": 387,
       "norm_label": "filtergroup"
     },
     {
@@ -2358,7 +2358,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "shared_filterpanel_filterpanelprops",
-      "community": 207,
+      "community": 387,
       "norm_label": "filterpanelprops"
     },
     {
@@ -2378,7 +2378,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_filtersheet",
-      "community": 207,
+      "community": 390,
       "norm_label": "filtersheet.tsx"
     },
     {
@@ -2388,7 +2388,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "shared_filtersheet_filtersheetprops",
-      "community": 207,
+      "community": 390,
       "norm_label": "filtersheetprops"
     },
     {
@@ -2398,7 +2398,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "shared_filtersheet_filtersheet",
-      "community": 207,
+      "community": 390,
       "norm_label": "filtersheet()"
     },
     {
@@ -2488,7 +2488,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "shared_mobileheader_mobileheaderbadgesync",
-      "community": 387,
+      "community": 366,
       "norm_label": "mobileheaderbadgesync()"
     },
     {
@@ -2528,7 +2528,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_mobiletabbar",
-      "community": 366,
+      "community": 390,
       "norm_label": "mobiletabbar.tsx"
     },
     {
@@ -2538,7 +2538,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "shared_mobiletabbar_tabitem",
-      "community": 366,
+      "community": 390,
       "norm_label": "tabitem"
     },
     {
@@ -2548,7 +2548,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "shared_mobiletabbar_user_tabs",
-      "community": 366,
+      "community": 390,
       "norm_label": "user_tabs"
     },
     {
@@ -2558,7 +2558,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "shared_mobiletabbar_admin_tabs",
-      "community": 366,
+      "community": 390,
       "norm_label": "admin_tabs"
     },
     {
@@ -2568,7 +2568,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "shared_mobiletabbar_guest_tabs",
-      "community": 366,
+      "community": 390,
       "norm_label": "guest_tabs"
     },
     {
@@ -2578,7 +2578,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "shared_mobiletabbar_mobiletabbarprops",
-      "community": 366,
+      "community": 390,
       "norm_label": "mobiletabbarprops"
     },
     {
@@ -2688,7 +2688,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_primarynavigation",
-      "community": 366,
+      "community": 390,
       "norm_label": "primarynavigation.tsx"
     },
     {
@@ -2698,7 +2698,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "shared_primarynavigation_primarynavigationprops",
-      "community": 366,
+      "community": 390,
       "norm_label": "primarynavigationprops"
     },
     {
@@ -2708,7 +2708,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "shared_primarynavigation_isactivepath",
-      "community": 366,
+      "community": 390,
       "norm_label": "isactivepath()"
     },
     {
@@ -2718,7 +2718,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "shared_primarynavigation_navigationlinkprops",
-      "community": 366,
+      "community": 390,
       "norm_label": "navigationlinkprops"
     },
     {
@@ -2728,7 +2728,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "shared_primarynavigation_navigationlink",
-      "community": 366,
+      "community": 390,
       "norm_label": "navigationlink()"
     },
     {
@@ -2738,7 +2738,7 @@
       "source_location": "L101",
       "_origin": "ast",
       "id": "shared_primarynavigation_navigationpanelprops",
-      "community": 366,
+      "community": 390,
       "norm_label": "navigationpanelprops"
     },
     {
@@ -2748,7 +2748,7 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "shared_primarynavigation_navigationpanel",
-      "community": 366,
+      "community": 390,
       "norm_label": "navigationpanel()"
     },
     {
@@ -2868,7 +2868,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_trainingcalendarcard",
-      "community": 387,
+      "community": 33,
       "norm_label": "trainingcalendarcard.tsx"
     },
     {
@@ -2878,7 +2878,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "shared_trainingcalendarcard_week_labels",
-      "community": 387,
+      "community": 33,
       "norm_label": "week_labels"
     },
     {
@@ -2888,7 +2888,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "shared_trainingcalendarcard_trainingcalendarcardprops",
-      "community": 387,
+      "community": 33,
       "norm_label": "trainingcalendarcardprops"
     },
     {
@@ -2898,7 +2898,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "shared_trainingcalendarcard_trainingcalendarcard",
-      "community": 387,
+      "community": 33,
       "norm_label": "trainingcalendarcard()"
     },
     {
@@ -2908,7 +2908,7 @@
       "source_location": "L179",
       "_origin": "ast",
       "id": "shared_trainingcalendarcard_formatdateonly",
-      "community": 387,
+      "community": 33,
       "norm_label": "formatdateonly()"
     },
     {
@@ -2918,7 +2918,7 @@
       "source_location": "L187",
       "_origin": "ast",
       "id": "shared_trainingcalendarcard_daylabel",
-      "community": 387,
+      "community": 33,
       "norm_label": "daylabel()"
     },
     {
@@ -2928,7 +2928,7 @@
       "source_location": "L192",
       "_origin": "ast",
       "id": "shared_trainingcalendarcard_formatdatelabel",
-      "community": 387,
+      "community": 33,
       "norm_label": "formatdatelabel()"
     },
     {
@@ -2972,13 +2972,43 @@
       "norm_label": "weekschedulepreview()"
     },
     {
+      "label": "WeekStripCard.tsx",
+      "file_type": "code",
+      "source_file": "app/components/shared/WeekStripCard.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "shared_weekstripcard",
+      "community": 33,
+      "norm_label": "weekstripcard.tsx"
+    },
+    {
+      "label": "WeekStripCardProps",
+      "file_type": "code",
+      "source_file": "app/components/shared/WeekStripCard.tsx",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "shared_weekstripcard_weekstripcardprops",
+      "community": 33,
+      "norm_label": "weekstripcardprops"
+    },
+    {
+      "label": "WeekStripCard()",
+      "file_type": "code",
+      "source_file": "app/components/shared/WeekStripCard.tsx",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "shared_weekstripcard_weekstripcard",
+      "community": 33,
+      "norm_label": "weekstripcard()"
+    },
+    {
       "label": "WeeklyAttendanceCard.tsx",
       "file_type": "code",
       "source_file": "app/components/shared/WeeklyAttendanceCard.tsx",
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_weeklyattendancecard",
-      "community": 33,
+      "community": 387,
       "norm_label": "weeklyattendancecard.tsx"
     },
     {
@@ -2988,7 +3018,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "shared_weeklyattendancecard_weeklyattendancecardprops",
-      "community": 33,
+      "community": 387,
       "norm_label": "weeklyattendancecardprops"
     },
     {
@@ -2998,7 +3028,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "shared_weeklyattendancecard_weeklyattendancecard",
-      "community": 33,
+      "community": 387,
       "norm_label": "weeklyattendancecard()"
     },
     {
@@ -3008,7 +3038,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "shared_weeklyattendancecard_getmotivationalmessage",
-      "community": 33,
+      "community": 387,
       "norm_label": "getmotivationalmessage()"
     },
     {
@@ -3018,7 +3048,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_navigation_config",
-      "community": 366,
+      "community": 390,
       "norm_label": "navigation-config.ts"
     },
     {
@@ -3028,7 +3058,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "shared_navigation_config_shellroutemeta",
-      "community": 366,
+      "community": 390,
       "norm_label": "shellroutemeta"
     },
     {
@@ -3038,7 +3068,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "shared_navigation_config_navigationgroup",
-      "community": 366,
+      "community": 390,
       "norm_label": "navigationgroup"
     },
     {
@@ -3048,7 +3078,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "shared_navigation_config_shellnavigationgroups",
-      "community": 366,
+      "community": 390,
       "norm_label": "shellnavigationgroups"
     },
     {
@@ -3058,7 +3088,7 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "shared_navigation_config_shellutilitylinks",
-      "community": 366,
+      "community": 390,
       "norm_label": "shellutilitylinks"
     },
     {
@@ -3068,7 +3098,7 @@
       "source_location": "L139",
       "_origin": "ast",
       "id": "shared_navigation_config_shellsecondarylinks",
-      "community": 366,
+      "community": 390,
       "norm_label": "shellsecondarylinks"
     },
     {
@@ -3078,7 +3108,7 @@
       "source_location": "L150",
       "_origin": "ast",
       "id": "shared_navigation_config_shellroutemetas",
-      "community": 366,
+      "community": 390,
       "norm_label": "shellroutemetas"
     },
     {
@@ -3088,7 +3118,7 @@
       "source_location": "L164",
       "_origin": "ast",
       "id": "shared_navigation_config_matchespath",
-      "community": 366,
+      "community": 390,
       "norm_label": "matchespath()"
     },
     {
@@ -3188,7 +3218,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_badge",
-      "community": 32,
+      "community": 387,
       "norm_label": "badge.tsx"
     },
     {
@@ -3198,7 +3228,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "ui_badge_badgevariants",
-      "community": 32,
+      "community": 387,
       "norm_label": "badgevariants"
     },
     {
@@ -3208,7 +3238,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "ui_badge_badgeprops",
-      "community": 32,
+      "community": 387,
       "norm_label": "badgeprops"
     },
     {
@@ -3218,7 +3248,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "ui_badge_badge",
-      "community": 32,
+      "community": 387,
       "norm_label": "badge()"
     },
     {
@@ -3228,7 +3258,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_button",
-      "community": 32,
+      "community": 387,
       "norm_label": "button.tsx"
     },
     {
@@ -3238,7 +3268,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "ui_button_buttonvariants",
-      "community": 32,
+      "community": 387,
       "norm_label": "buttonvariants"
     },
     {
@@ -3248,7 +3278,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "ui_button_buttonprops",
-      "community": 32,
+      "community": 387,
       "norm_label": "buttonprops"
     },
     {
@@ -3258,7 +3288,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "ui_button_button",
-      "community": 32,
+      "community": 387,
       "norm_label": "button()"
     },
     {
@@ -3288,7 +3318,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "ui_card_cardheader",
-      "community": 32,
+      "community": 387,
       "norm_label": "cardheader()"
     },
     {
@@ -3298,7 +3328,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "ui_card_cardtitle",
-      "community": 32,
+      "community": 387,
       "norm_label": "cardtitle()"
     },
     {
@@ -3308,7 +3338,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "ui_card_carddescription",
-      "community": 32,
+      "community": 387,
       "norm_label": "carddescription()"
     },
     {
@@ -3598,7 +3628,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_input",
-      "community": 275,
+      "community": 105,
       "norm_label": "input.tsx"
     },
     {
@@ -3608,7 +3638,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "ui_input_input",
-      "community": 275,
+      "community": 105,
       "norm_label": "input()"
     },
     {
@@ -3728,7 +3758,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_sectioneyebrow",
-      "community": 207,
+      "community": 387,
       "norm_label": "sectioneyebrow.tsx"
     },
     {
@@ -3738,7 +3768,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "ui_sectioneyebrow_sectioneyebrowprops",
-      "community": 207,
+      "community": 387,
       "norm_label": "sectioneyebrowprops"
     },
     {
@@ -3748,7 +3778,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "ui_sectioneyebrow_sectioneyebrow",
-      "community": 207,
+      "community": 387,
       "norm_label": "sectioneyebrow()"
     },
     {
@@ -3868,7 +3898,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_sheet",
-      "community": 207,
+      "community": 390,
       "norm_label": "sheet.tsx"
     },
     {
@@ -3878,7 +3908,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "ui_sheet_sheet",
-      "community": 207,
+      "community": 390,
       "norm_label": "sheet()"
     },
     {
@@ -3888,7 +3918,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "ui_sheet_sheettrigger",
-      "community": 366,
+      "community": 390,
       "norm_label": "sheettrigger()"
     },
     {
@@ -3898,7 +3928,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "ui_sheet_sheetclose",
-      "community": 207,
+      "community": 390,
       "norm_label": "sheetclose()"
     },
     {
@@ -3908,7 +3938,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "ui_sheet_sheetportal",
-      "community": 207,
+      "community": 390,
       "norm_label": "sheetportal()"
     },
     {
@@ -3918,7 +3948,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "ui_sheet_sheetoverlay",
-      "community": 207,
+      "community": 390,
       "norm_label": "sheetoverlay()"
     },
     {
@@ -3928,7 +3958,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "ui_sheet_sheetcontent",
-      "community": 207,
+      "community": 390,
       "norm_label": "sheetcontent()"
     },
     {
@@ -3938,7 +3968,7 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "ui_sheet_sheetheader",
-      "community": 207,
+      "community": 390,
       "norm_label": "sheetheader()"
     },
     {
@@ -3948,7 +3978,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "ui_sheet_sheetfooter",
-      "community": 207,
+      "community": 390,
       "norm_label": "sheetfooter()"
     },
     {
@@ -3958,7 +3988,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "ui_sheet_sheettitle",
-      "community": 207,
+      "community": 390,
       "norm_label": "sheettitle()"
     },
     {
@@ -3968,7 +3998,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "ui_sheet_sheetdescription",
-      "community": 275,
+      "community": 390,
       "norm_label": "sheetdescription()"
     },
     {
@@ -4168,7 +4198,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_tooltip",
-      "community": 366,
+      "community": 390,
       "norm_label": "tooltip.tsx"
     },
     {
@@ -4178,7 +4208,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "ui_tooltip_tooltipprovider",
-      "community": 366,
+      "community": 390,
       "norm_label": "tooltipprovider()"
     },
     {
@@ -4188,7 +4218,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "ui_tooltip_tooltip",
-      "community": 366,
+      "community": 390,
       "norm_label": "tooltip()"
     },
     {
@@ -4198,7 +4228,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "ui_tooltip_tooltiptrigger",
-      "community": 366,
+      "community": 390,
       "norm_label": "tooltiptrigger()"
     },
     {
@@ -4208,7 +4238,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "ui_tooltip_tooltipcontent",
-      "community": 366,
+      "community": 390,
       "norm_label": "tooltipcontent()"
     },
     {
@@ -4248,7 +4278,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "ui_motion_fadeup",
-      "community": 275,
+      "community": 105,
       "norm_label": "fadeup"
     },
     {
@@ -4268,7 +4298,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "ui_motion_staggercontainer",
-      "community": 275,
+      "community": 387,
       "norm_label": "staggercontainer"
     },
     {
@@ -4278,7 +4308,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "ui_motion_listitemhover",
-      "community": 275,
+      "community": 33,
       "norm_label": "listitemhover"
     },
     {
@@ -4288,7 +4318,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "ui_motion_tapfeedback",
-      "community": 275,
+      "community": 33,
       "norm_label": "tapfeedback"
     },
     {
@@ -4308,7 +4338,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "ui_motion_motiondiv",
-      "community": 33,
+      "community": 387,
       "norm_label": "motiondiv()"
     },
     {
@@ -4398,7 +4428,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "configuracion_actions",
-      "community": 380,
+      "community": 209,
       "norm_label": "actions.ts"
     },
     {
@@ -4408,7 +4438,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "configuracion_actions_savenutritionprofileaction",
-      "community": 380,
+      "community": 209,
       "norm_label": "savenutritionprofileaction()"
     },
     {
@@ -4418,7 +4448,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "configuracion_actions_saveprofilenameaction",
-      "community": 380,
+      "community": 209,
       "norm_label": "saveprofilenameaction()"
     },
     {
@@ -4428,7 +4458,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "configuracion_actions_deleteaccountaction",
-      "community": 380,
+      "community": 209,
       "norm_label": "deleteaccountaction()"
     },
     {
@@ -4458,7 +4488,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "dashboard_layout",
-      "community": 380,
+      "community": 360,
       "norm_label": "layout.tsx"
     },
     {
@@ -4468,7 +4498,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "dashboard_layout_dashboardlayout",
-      "community": 380,
+      "community": 360,
       "norm_label": "dashboardlayout()"
     },
     {
@@ -4888,7 +4918,7 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "lib_auth_requireuser",
-      "community": 380,
+      "community": 360,
       "norm_label": "requireuser()"
     },
     {
@@ -5018,7 +5048,7 @@
       "source_location": "L189",
       "_origin": "ast",
       "id": "lib_exercise_demo_fetchexercisedbimage",
-      "community": 390,
+      "community": 44,
       "norm_label": "fetchexercisedbimage()"
     },
     {
@@ -5028,7 +5058,7 @@
       "source_location": "L207",
       "_origin": "ast",
       "id": "lib_exercise_demo_fetchexercisedbgif",
-      "community": 390,
+      "community": 44,
       "norm_label": "fetchexercisedbgif()"
     },
     {
@@ -5038,7 +5068,7 @@
       "source_location": "L225",
       "_origin": "ast",
       "id": "lib_exercise_demo_getexercisedbapikey",
-      "community": 390,
+      "community": 44,
       "norm_label": "getexercisedbapikey()"
     },
     {
@@ -5078,7 +5108,7 @@
       "source_location": "L254",
       "_origin": "ast",
       "id": "lib_exercise_demo_exercisedbheaders",
-      "community": 390,
+      "community": 44,
       "norm_label": "exercisedbheaders()"
     },
     {
@@ -5198,7 +5228,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "lib_exercise_form_exerciseformpayload",
-      "community": 304,
+      "community": 182,
       "norm_label": "exerciseformpayload"
     },
     {
@@ -6048,7 +6078,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "lib_nutrition_calc_calculatebmr",
-      "community": 248,
+      "community": 211,
       "norm_label": "calculatebmr()"
     },
     {
@@ -6058,7 +6088,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "lib_nutrition_calc_calculatenutritionplan",
-      "community": 248,
+      "community": 211,
       "norm_label": "calculatenutritionplan()"
     },
     {
@@ -6068,7 +6098,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "lib_nutrition_calc_calculatemacros",
-      "community": 248,
+      "community": 211,
       "norm_label": "calculatemacros()"
     },
     {
@@ -6118,7 +6148,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_nutrition_profile",
-      "community": 248,
+      "community": 211,
       "norm_label": "nutrition-profile.ts"
     },
     {
@@ -6128,7 +6158,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "lib_nutrition_profile_nutritionprofile",
-      "community": 248,
+      "community": 211,
       "norm_label": "nutritionprofile"
     },
     {
@@ -6138,7 +6168,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_nutrition_profile_nutritionprofilerow",
-      "community": 248,
+      "community": 211,
       "norm_label": "nutritionprofilerow"
     },
     {
@@ -6158,7 +6188,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "lib_nutrition_profile_savenutritionprofile",
-      "community": 380,
+      "community": 209,
       "norm_label": "savenutritionprofile()"
     },
     {
@@ -6338,7 +6368,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "lib_nutrition_types_food_measures",
-      "community": 81,
+      "community": 275,
       "norm_label": "food_measures"
     },
     {
@@ -6348,7 +6378,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "lib_nutrition_types_foodmeasure",
-      "community": 81,
+      "community": 360,
       "norm_label": "foodmeasure"
     },
     {
@@ -6358,7 +6388,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "lib_nutrition_types_food_measure_labels",
-      "community": 207,
+      "community": 275,
       "norm_label": "food_measure_labels"
     },
     {
@@ -6428,7 +6458,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "lib_nutrition_types_recipeingredient",
-      "community": 29,
+      "community": 275,
       "norm_label": "recipeingredient"
     },
     {
@@ -6438,7 +6468,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "lib_nutrition_types_recipe",
-      "community": 29,
+      "community": 275,
       "norm_label": "recipe"
     },
     {
@@ -6878,7 +6908,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_request",
-      "community": 209,
+      "community": 287,
       "norm_label": "request.ts"
     },
     {
@@ -6888,7 +6918,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_request_getrequestorigin",
-      "community": 209,
+      "community": 287,
       "norm_label": "getrequestorigin()"
     },
     {
@@ -7588,7 +7618,7 @@
       "source_location": "L226",
       "_origin": "ast",
       "id": "lib_saved_routines_getsavedroutinebyidforuser",
-      "community": 387,
+      "community": 30,
       "norm_label": "getsavedroutinebyidforuser()"
     },
     {
@@ -7758,7 +7788,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "supabase_admin",
-      "community": 380,
+      "community": 209,
       "norm_label": "admin.ts"
     },
     {
@@ -7768,7 +7798,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "supabase_admin_createsupabaseadminclient",
-      "community": 380,
+      "community": 209,
       "norm_label": "createsupabaseadminclient()"
     },
     {
@@ -8585,7 +8615,7 @@
       "label": "computeStreak()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L60",
+      "source_location": "L61",
       "_origin": "ast",
       "id": "app_page_computestreak",
       "community": 211,
@@ -8595,7 +8625,7 @@
       "label": "parseRestSeconds()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L77",
+      "source_location": "L78",
       "_origin": "ast",
       "id": "app_page_parserestseconds",
       "community": 33,
@@ -8605,7 +8635,7 @@
       "label": "estimateDayMinutes()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L89",
+      "source_location": "L90",
       "_origin": "ast",
       "id": "app_page_estimatedayminutes",
       "community": 211,
@@ -8615,7 +8645,7 @@
       "label": "dayMuscleGroups()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L100",
+      "source_location": "L101",
       "_origin": "ast",
       "id": "app_page_daymusclegroups",
       "community": 211,
@@ -8625,7 +8655,7 @@
       "label": "countDatesInWindow()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L114",
+      "source_location": "L115",
       "_origin": "ast",
       "id": "app_page_countdatesinwindow",
       "community": 211,
@@ -8635,7 +8665,7 @@
       "label": "Home()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L127",
+      "source_location": "L128",
       "_origin": "ast",
       "id": "app_page_home",
       "community": 211,
@@ -8645,7 +8675,7 @@
       "label": "CardLabel()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L466",
+      "source_location": "L461",
       "_origin": "ast",
       "id": "app_page_cardlabel",
       "community": 33,
@@ -8655,7 +8685,7 @@
       "label": "HeroStat()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L488",
+      "source_location": "L483",
       "_origin": "ast",
       "id": "app_page_herostat",
       "community": 33,
@@ -8665,7 +8695,7 @@
       "label": "SummaryStatCard()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L509",
+      "source_location": "L504",
       "_origin": "ast",
       "id": "app_page_summarystatcard",
       "community": 33,
@@ -8675,7 +8705,7 @@
       "label": "NutricionTodayCard()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L574",
+      "source_location": "L569",
       "_origin": "ast",
       "id": "app_page_nutriciontodaycard",
       "community": 33,
@@ -8685,7 +8715,7 @@
       "label": "CargaMuscularCard()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L670",
+      "source_location": "L667",
       "_origin": "ast",
       "id": "app_page_cargamuscularcard",
       "community": 33,
@@ -8695,7 +8725,7 @@
       "label": "ComidasHoyCard()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L734",
+      "source_location": "L729",
       "_origin": "ast",
       "id": "app_page_comidashoycard",
       "community": 33,
@@ -8705,7 +8735,7 @@
       "label": "formatMealFoods()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L838",
+      "source_location": "L833",
       "_origin": "ast",
       "id": "app_page_formatmealfoods",
       "community": 33,
@@ -8715,7 +8745,7 @@
       "label": "MealMacro()",
       "file_type": "code",
       "source_file": "app/page.tsx",
-      "source_location": "L845",
+      "source_location": "L840",
       "_origin": "ast",
       "id": "app_page_mealmacro",
       "community": 33,
@@ -10998,7 +11028,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "scripts_sync_fitnessprogramer_images_headers",
-      "community": 209,
+      "community": 287,
       "norm_label": "headers"
     },
     {
@@ -36428,7 +36458,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_11_disenar_pantalla_ejercicio_con_organigrama_semanal",
-      "community": 210,
+      "community": 3,
       "norm_label": "11-disenar-pantalla-ejercicio-con-organigrama-semanal.md"
     },
     {
@@ -36528,7 +36558,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_12_disenar_pantalla_de_detalle_diario_de_rutina",
-      "community": 415,
+      "community": 3,
       "norm_label": "12-disenar-pantalla-de-detalle-diario-de-rutina.md"
     },
     {
@@ -36728,7 +36758,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general",
-      "community": 359,
+      "community": 420,
       "norm_label": "14-integrar-acceso-admin-en-el-shell-general.md"
     },
     {
@@ -36738,7 +36768,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_integrar_acceso_admin_en_el_shell_general_unificar_la_entrada_administrativa_sin_duplicar_la_experiencia_base",
-      "community": 359,
+      "community": 420,
       "norm_label": "integrar acceso admin en el shell general: unificar la entrada administrativa sin duplicar la experiencia base"
     },
     {
@@ -36748,7 +36778,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_objetivo",
-      "community": 359,
+      "community": 420,
       "norm_label": "objetivo"
     },
     {
@@ -36758,7 +36788,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_estado",
-      "community": 359,
+      "community": 420,
       "norm_label": "estado"
     },
     {
@@ -36768,7 +36798,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_archivos",
-      "community": 359,
+      "community": 420,
       "norm_label": "archivos"
     },
     {
@@ -36778,7 +36808,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_pasos",
-      "community": 359,
+      "community": 420,
       "norm_label": "pasos"
     },
     {
@@ -36788,7 +36818,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_criterios_de_aceptacion",
-      "community": 359,
+      "community": 420,
       "norm_label": "criterios de aceptacion"
     },
     {
@@ -36798,7 +36828,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_resolucion",
-      "community": 359,
+      "community": 420,
       "norm_label": "resolucion"
     },
     {
@@ -36808,7 +36838,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_validacion",
-      "community": 359,
+      "community": 420,
       "norm_label": "validacion"
     },
     {
@@ -36818,7 +36848,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general_estado_final",
-      "community": 359,
+      "community": 420,
       "norm_label": "estado final"
     },
     {
@@ -36928,7 +36958,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_16_disenar_entradas_para_gestion_de_ejercicios_y_rutinas",
-      "community": 3,
+      "community": 74,
       "norm_label": "16-disenar-entradas-para-gestion-de-ejercicios-y-rutinas.md"
     },
     {
@@ -37128,7 +37158,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_18_implementar_vistas_base_y_placeholders_del_nuevo_flujo",
-      "community": 3,
+      "community": 58,
       "norm_label": "18-implementar-vistas-base-y-placeholders-del-nuevo-flujo.md"
     },
     {
@@ -37238,7 +37268,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_validar_navegacion_responsive_y_smoke_tecnico_del_frontend_base_asegurar_que_la_nueva_base_frontend_funcione_en_uso_real",
-      "community": 206,
+      "community": 421,
       "norm_label": "validar navegacion, responsive y smoke tecnico del frontend base: asegurar que la nueva base frontend funcione en uso real"
     },
     {
@@ -37248,7 +37278,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_objetivo",
-      "community": 206,
+      "community": 421,
       "norm_label": "objetivo"
     },
     {
@@ -37258,7 +37288,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_estado",
-      "community": 206,
+      "community": 421,
       "norm_label": "estado"
     },
     {
@@ -37268,7 +37298,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_archivos",
-      "community": 206,
+      "community": 421,
       "norm_label": "archivos"
     },
     {
@@ -37278,7 +37308,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_pasos",
-      "community": 206,
+      "community": 421,
       "norm_label": "pasos"
     },
     {
@@ -37288,7 +37318,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_criterios_de_aceptacion",
-      "community": 206,
+      "community": 421,
       "norm_label": "criterios de aceptacion"
     },
     {
@@ -37298,7 +37328,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_resolucion",
-      "community": 206,
+      "community": 421,
       "norm_label": "resolucion"
     },
     {
@@ -37308,7 +37338,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_validacion",
-      "community": 206,
+      "community": 421,
       "norm_label": "validacion"
     },
     {
@@ -37318,7 +37348,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "g4_5_frontend_base_and_experience_19_validar_navegacion_responsive_panel_y_modal_con_playwright_estado_final",
-      "community": 206,
+      "community": 421,
       "norm_label": "estado final"
     },
     {
@@ -46915,7 +46945,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 58,
       "norm_label": "fronteras funcionales entre modulos (agregar rutinas, mis rutinas, ejercicio, admin)",
       "id": "frontend_experience_fronteras_modulos"
     },
@@ -46980,7 +47010,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 58,
       "norm_label": "pantalla agregar rutinas (catalogo)",
       "id": "frontend_experience_pantalla_agregar_rutinas"
     },
@@ -46993,7 +47023,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 58,
       "norm_label": "pantalla mis rutinas con rutina activa",
       "id": "frontend_experience_pantalla_mis_rutinas"
     },
@@ -47006,7 +47036,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 58,
       "norm_label": "pantalla ejercicio con organigrama semanal",
       "id": "frontend_experience_pantalla_ejercicio_organigrama"
     },
@@ -47019,7 +47049,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 58,
       "norm_label": "pantalla de detalle diario de rutina",
       "id": "frontend_experience_pantalla_detalle_diario"
     },
@@ -47045,7 +47075,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 420,
       "norm_label": "acceso admin integrado en shell general",
       "id": "frontend_experience_acceso_admin_shell"
     },
@@ -47058,7 +47088,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 74,
       "norm_label": "base visual de admin dashboard (rutinas y ejercicios)",
       "id": "frontend_experience_admin_dashboard_base_visual"
     },
@@ -47071,7 +47101,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 74,
       "norm_label": "entradas administrativas gestion de rutinas / gestion de ejercicios",
       "id": "frontend_experience_entradas_gestion_admin"
     },
@@ -59170,6 +59200,48 @@
       "confidence_score": 1.0,
       "source": "shared_weekschedulepreview",
       "target": "ui_card_cardheader"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "app_page",
+      "target": "shared_weekstripcard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/components/shared/WeekStripCard.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "shared_weekstripcard",
+      "target": "shared_weekstripcard_weekstripcard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/components/shared/WeekStripCard.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "shared_weekstripcard",
+      "target": "shared_weekstripcard_weekstripcardprops",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "app_page",
+      "target": "shared_weekstripcard_weekstripcard",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -83711,9 +83783,9 @@
       "source_file": ".claude/plans/styleseed-design-review-design-scout-au-jolly-sun.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_styleseed_design_review_design_scout_au_jolly_sun",
-      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_dashboard_principal_audit_redesign_plan",
-      "confidence_score": 1.0
+      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_dashboard_principal_audit_redesign_plan"
     },
     {
       "relation": "contains",
@@ -83721,9 +83793,9 @@
       "source_file": ".claude/plans/styleseed-design-review-design-scout-au-jolly-sun.md",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_styleseed_design_review_design_scout_au_jolly_sun_dashboard_principal_audit_redesign_plan",
-      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_context",
-      "confidence_score": 1.0
+      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_context"
     },
     {
       "relation": "contains",
@@ -83731,9 +83803,9 @@
       "source_file": ".claude/plans/styleseed-design-review-design-scout-au-jolly-sun.md",
       "source_location": "L85",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_styleseed_design_review_design_scout_au_jolly_sun_dashboard_principal_audit_redesign_plan",
-      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_decisi\u00f3n_pendiente_del_usuario_asumida",
-      "confidence_score": 1.0
+      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_decisi\u00f3n_pendiente_del_usuario_asumida"
     },
     {
       "relation": "contains",
@@ -83741,9 +83813,9 @@
       "source_file": ".claude/plans/styleseed-design-review-design-scout-au-jolly-sun.md",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_styleseed_design_review_design_scout_au_jolly_sun_dashboard_principal_audit_redesign_plan",
-      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_enfoque_recomendado_2_fases",
-      "confidence_score": 1.0
+      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_enfoque_recomendado_2_fases"
     },
     {
       "relation": "contains",
@@ -83751,9 +83823,9 @@
       "source_file": ".claude/plans/styleseed-design-review-design-scout-au-jolly-sun.md",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_styleseed_design_review_design_scout_au_jolly_sun_dashboard_principal_audit_redesign_plan",
-      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_hallazgos_del_audit_evidencia_con_file_line",
-      "confidence_score": 1.0
+      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_hallazgos_del_audit_evidencia_con_file_line"
     },
     {
       "relation": "contains",
@@ -83761,9 +83833,9 @@
       "source_file": ".claude/plans/styleseed-design-review-design-scout-au-jolly-sun.md",
       "source_location": "L70",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_styleseed_design_review_design_scout_au_jolly_sun_dashboard_principal_audit_redesign_plan",
-      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_no_tocar",
-      "confidence_score": 1.0
+      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_no_tocar"
     },
     {
       "relation": "contains",
@@ -83771,9 +83843,9 @@
       "source_file": ".claude/plans/styleseed-design-review-design-scout-au-jolly-sun.md",
       "source_location": "L63",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_styleseed_design_review_design_scout_au_jolly_sun_dashboard_principal_audit_redesign_plan",
-      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_reutilizar_lo_que_ya_existe_no_hand_roll",
-      "confidence_score": 1.0
+      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_reutilizar_lo_que_ya_existe_no_hand_roll"
     },
     {
       "relation": "contains",
@@ -83781,9 +83853,9 @@
       "source_file": ".claude/plans/styleseed-design-review-design-scout-au-jolly-sun.md",
       "source_location": "L77",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_styleseed_design_review_design_scout_au_jolly_sun_dashboard_principal_audit_redesign_plan",
-      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_verificaci\u00f3n_end_to_end",
-      "confidence_score": 1.0
+      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_verificaci\u00f3n_end_to_end"
     },
     {
       "relation": "contains",
@@ -83791,9 +83863,9 @@
       "source_file": ".claude/plans/styleseed-design-review-design-scout-au-jolly-sun.md",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_styleseed_design_review_design_scout_au_jolly_sun_context",
-      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_benchmark_referencia_real_capturada",
-      "confidence_score": 1.0
+      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_benchmark_referencia_real_capturada"
     },
     {
       "relation": "contains",
@@ -83801,9 +83873,9 @@
       "source_file": ".claude/plans/styleseed-design-review-design-scout-au-jolly-sun.md",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_styleseed_design_review_design_scout_au_jolly_sun_enfoque_recomendado_2_fases",
-      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_fase_1_de_slop_tokens_legibilidad_contraste_motion",
-      "confidence_score": 1.0
+      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_fase_1_de_slop_tokens_legibilidad_contraste_motion"
     },
     {
       "relation": "contains",
@@ -83811,9 +83883,9 @@
       "source_file": ".claude/plans/styleseed-design-review-design-scout-au-jolly-sun.md",
       "source_location": "L50",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_styleseed_design_review_design_scout_au_jolly_sun_enfoque_recomendado_2_fases",
-      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_fase_2_jerarqu\u00eda_hero_metric_led_mobile_airy_opt_in",
-      "confidence_score": 1.0
+      "target": "plans_styleseed_design_review_design_scout_au_jolly_sun_fase_2_jerarqu\u00eda_hero_metric_led_mobile_airy_opt_in"
     },
     {
       "relation": "contains",

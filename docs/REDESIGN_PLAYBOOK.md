@@ -77,7 +77,7 @@ Entregable: lista priorizada de defectos, cada uno con fix propuesto. NO tocar c
 [REGLAS GLOBALES]
 [EJECUCIÓN ENCADENADA]
 
---- FASE 2: Arquitectura de layout ---
+--- FASE 2: Arquitectura de layout --- seguiremos trabajando con el dashboard principal
 /interface-design lidera (skill de UI de producto/dashboards, no marketing).
 Diseñá el SISTEMA DE DISTRIBUCIÓN ESPACIAL: zonas, grid/bento, jerarquía visual, densidad.
 PROHIBIDO resolver como stack vertical de cards. Definí qué va agrupado, qué es hero, qué es secundario, qué colapsa en mobile.
@@ -97,7 +97,7 @@ Playwright mobile+desktop. Entregable: screenshots antes/después.
 [REGLAS GLOBALES]
 [EJECUCIÓN ENCADENADA]
 
---- FASE 4: Accesibilidad ---
+--- FASE 4: Accesibilidad --- seguiremos trabajando con el dashboard principal
 Agent a11y-architect + /frontend-a11y + /web-design-guidelines.
 Auditá WCAG 2.2 en la sección: foco visible, contraste, targets táctiles ≥44px, semántica, orden de tab.
 PWA instalada = usuario la trata como app nativa, a11y no opcional.

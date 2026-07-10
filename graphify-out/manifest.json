@@ -350,8 +350,8 @@
     "semantic_hash": ""
   },
   "app/page.tsx": {
-    "mtime": 1783027534.139578,
-    "ast_hash": "238cad31b9350757f133ff40b5a5f7e6",
+    "mtime": 1783043105.7109191,
+    "ast_hash": "b7b460a45c9543fb8e78509bad3825ab",
     "semantic_hash": ""
   },
   "components.json": {
@@ -1555,8 +1555,8 @@
     "semantic_hash": ""
   },
   "app/components/ui/motion.tsx": {
-    "mtime": 1782138481.0913024,
-    "ast_hash": "109d176fa14f64899b00a6e7d815bac6",
+    "mtime": 1783036979.6252239,
+    "ast_hash": "de1951a8ad29ee895340646ed7a049ff",
     "semantic_hash": ""
   },
   "app/lib/admin-stats.ts": {
@@ -4385,8 +4385,8 @@
     "semantic_hash": ""
   },
   "plan/prompts.md": {
-    "mtime": 1783020440.5385213,
-    "ast_hash": "cd75c811495ee6dffd0876d939319aa4",
+    "mtime": 1783030897.9012003,
+    "ast_hash": "5f9b40f35c10f5b41392d6c6a840344e",
     "semantic_hash": ""
   },
   "tmp-comidas-card-60-40.png": {
@@ -4462,6 +4462,26 @@
   "app/components/shared/WeekStripCard.tsx": {
     "mtime": 1783027330.7588155,
     "ast_hash": "f21f27ec488dec95321cc68519da8944",
+    "semantic_hash": ""
+  },
+  "app/components/shared/WeekCombinedCard.tsx": {
+    "mtime": 1783037118.3932595,
+    "ast_hash": "dc109324fc7853390eb1691c048a8063",
+    "semantic_hash": ""
+  },
+  ".claude/plans/genera-un-plan-para-fluffy-wall.md": {
+    "mtime": 1783042769.922358,
+    "ast_hash": "1ef9eeb26befef5fb60a6983e6420fb7",
+    "semantic_hash": ""
+  },
+  ".claude/plans/reglas-globales-ejecuci-n-encadenada-encapsulated-pearl.md": {
+    "mtime": 1783036934.102311,
+    "ast_hash": "a7481813c6e8f27fdd94adb1326f35ff",
+    "semantic_hash": ""
+  },
+  "docs/REDESIGN_PLAYBOOK.md": {
+    "mtime": 1783030475.0669742,
+    "ast_hash": "77f66c965323096d0d5c8a31c6f4aa12",
     "semantic_hash": ""
   }
 }
