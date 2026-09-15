@@ -21,27 +21,33 @@ export function StatusToast({ message, isError, clearParams }: StatusToastProps)
       return;
     }
 
-    const toastId = `status-toast:${clearParams.join(",")}:${message}`;
+    // En una carga completa el <Toaster> del layout se suscribe en un efecto que corre después
+    // de este, y sonner descarta los toasts emitidos antes. Diferir a la siguiente tarea evita perderlo.
+    const timer = window.setTimeout(() => {
+      const toastId = `status-toast:${clearParams.join(",")}:${message}`;
 
-    if (isError) {
-      toast.error(message, { id: toastId });
-    } else {
-      toast.success(message, { id: toastId });
-    }
-
-    const nextParams = new URLSearchParams(searchParams.toString());
-    let changed = false;
-    for (const param of clearParams) {
-      if (nextParams.has(param)) {
-        nextParams.delete(param);
-        changed = true;
+      if (isError) {
+        toast.error(message, { id: toastId });
+      } else {
+        toast.success(message, { id: toastId });
       }
-    }
 
-    if (changed) {
-      const query = nextParams.toString();
-      router.replace(query ? `${pathname}?${query}` : pathname);
-    }
+      const nextParams = new URLSearchParams(searchParams.toString());
+      let changed = false;
+      for (const param of clearParams) {
+        if (nextParams.has(param)) {
+          nextParams.delete(param);
+          changed = true;
+        }
+      }
+
+      if (changed) {
+        const query = nextParams.toString();
+        router.replace(query ? `${pathname}?${query}` : pathname);
+      }
+    }, 0);
+
+    return () => window.clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [message]);
 
