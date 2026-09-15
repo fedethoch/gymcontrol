@@ -11,6 +11,7 @@ type WeekDay = {
   dayOrder: number;
   dayName: string;
   itemsCount: number;
+  estimatedMinutes: number;
 };
 
 type WeekDaysListProps = {
@@ -102,7 +103,7 @@ export function WeekDaysList({
                         <span>{day.itemsCount} ej</span>
                         <span className="inline-flex items-center gap-1 whitespace-nowrap text-[#c8d0df]">
                           <Clock3 className="size-3 text-[#b2c7ff]" />
-                          ~60 min
+                          ~{day.estimatedMinutes} min
                         </span>
                       </>
                     )}

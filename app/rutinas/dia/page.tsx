@@ -1,10 +1,18 @@
 import { notFound } from "next/navigation";
 
-import { DayWorkoutClient } from "@/app/rutinas/dia/DayWorkoutClient";
+import { DayWorkoutClient, type DayExercise } from "@/app/rutinas/dia/DayWorkoutClient";
 import { requireUser } from "@/app/lib/auth";
-import { ROUTINE_DIFFICULTY_LABELS } from "@/app/lib/routine-metadata";
 import { getSavedRoutineByIdForUser } from "@/app/lib/saved-routines";
-import { getExerciseHistoryByRoutineItem, getWorkoutSessionForWeek } from "@/app/lib/workout-tracking";
+import {
+  estimateDayMinutes,
+  parsePlanTarget,
+  resolveExerciseKind,
+} from "@/app/lib/workout-progression";
+import {
+  getOpenSessionForDay,
+  getTrainingOverview,
+  listExerciseHistory,
+} from "@/app/lib/workout-tracking";
 
 type DayPageProps = {
   searchParams: Promise<{
@@ -23,51 +31,67 @@ export default async function RutinaDiaPage({ searchParams }: DayPageProps) {
   }
 
   const routine = await getSavedRoutineByIdForUser({ savedRoutineId, userId: auth.user.id });
+  const selectedDay = routine?.days.find((day) => day.dayOrder === dayOrder);
 
-  if (!routine) {
+  if (!routine || !selectedDay) {
     notFound();
   }
 
-  const selectedDay = routine.days.find((day) => day.dayOrder === dayOrder);
+  const openSession = await getOpenSessionForDay({
+    userId: auth.user.id,
+    savedRoutineId,
+    routineDayId: selectedDay.id,
+  });
 
-  if (!selectedDay) {
-    notFound();
-  }
-
-  const [session, historyByRoutineItemId] = await Promise.all([
-    getWorkoutSessionForWeek({
-      savedRoutineId,
-      routineDayId: selectedDay.id,
+  const [historyByExerciseId, overview] = await Promise.all([
+    listExerciseHistory({
       userId: auth.user.id,
+      exerciseIds: selectedDay.items.map((item) => item.exerciseId),
+      excludeSessionId: openSession?.id ?? null,
     }),
-    getExerciseHistoryByRoutineItem({
+    getTrainingOverview({
       userId: auth.user.id,
       savedRoutineId,
-      routineItemIds: selectedDay.items.map((item) => item.id),
+      plannedDays: routine.days.length,
     }),
   ]);
 
+  const exercises: DayExercise[] = selectedDay.items.map((item, index) => {
+    const saved = openSession?.itemsByRoutineItemId[item.id] ?? null;
+
+    return {
+      routineItemId: item.id,
+      number: index + 1,
+      exercise: {
+        ...item.exercise,
+        series: item.series,
+        repsTarget: item.repetitions,
+        rir: item.rir,
+        rest: item.rest,
+      },
+      equipment: item.exercise.equipment,
+      series: item.series,
+      target: item.repetitions,
+      rir: item.rir,
+      rest: item.rest,
+      kind: saved?.kind ?? resolveExerciseKind(parsePlanTarget(item.repetitions), item.exercise.equipment),
+      saved: saved ? { id: saved.id, sets: saved.sets, rev: saved.rev } : null,
+      history: historyByExerciseId[item.exerciseId] ?? [],
+    };
+  });
+
   return (
     <DayWorkoutClient
+      userId={auth.user.id}
       savedRoutineId={routine.id}
       routineDayId={selectedDay.id}
       routineName={routine.displayName}
-      difficultyLabel={ROUTINE_DIFFICULTY_LABELS[routine.difficulty]}
       dayOrder={selectedDay.dayOrder}
       dayName={selectedDay.dayName}
-      rows={selectedDay.items.map((item, index) => ({
-        id: item.id,
-        number: index + 1,
-        exercise: { ...item.exercise, history: historyByRoutineItemId[item.id] ?? [] },
-        series: item.series,
-        repsTarget: item.repetitions,
-        rir: String(item.rir),
-        rest: item.rest,
-        performedReps: session?.itemsByRoutineItemId[item.id]?.performedReps ?? null,
-        usedWeight: session?.itemsByRoutineItemId[item.id]?.usedWeight ?? null,
-        isCompleted: session?.itemsByRoutineItemId[item.id]?.isCompleted ?? false,
-      }))}
-      sessionStatus={session?.status ?? null}
+      openSessionId={openSession?.id ?? null}
+      completedThisWeek={overview.completedRoutineDayIds.includes(selectedDay.id)}
+      estimatedMinutes={estimateDayMinutes(selectedDay.items)}
+      exercises={exercises}
     />
   );
 }

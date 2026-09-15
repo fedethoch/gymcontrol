@@ -189,10 +189,17 @@ export function ExerciseDetailModal({
                   <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
                     <SpecChip label="Grupo muscular" value={muscleLabel(muscleGroup) ?? "Sin definir"} />
                     <SpecChip label="Equipamiento" value={equipmentLabel(equipment) ?? "Sin definir"} />
-                    <SpecChip
-                      label="Rango ideal"
-                      value={hasIdealRange ? `${displayExercise.minReps}-${displayExercise.maxReps} reps` : "Sin definir"}
-                    />
+                    {displayExercise.repsTarget ? (
+                      <SpecChip
+                        label="Objetivo del plan"
+                        value={`${displayExercise.series ? `${displayExercise.series} × ` : ""}${displayExercise.repsTarget}`}
+                      />
+                    ) : (
+                      <SpecChip
+                        label="Rango ideal"
+                        value={hasIdealRange ? `${displayExercise.minReps}-${displayExercise.maxReps} reps` : "Sin definir"}
+                      />
+                    )}
                   </div>
                 </div>
               </div>

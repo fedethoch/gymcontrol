@@ -23,6 +23,7 @@ type RutinasOverviewProps = {
   hasRealData: boolean;
   nextPendingDayOrder: number | null;
   nextPendingDayName: string | null;
+  nextPendingDayMinutes: number | null;
   startHref: string | null;
   remaining: number;
 };
@@ -46,6 +47,7 @@ export function RutinasOverview({
   hasRealData,
   nextPendingDayOrder,
   nextPendingDayName,
+  nextPendingDayMinutes,
   startHref,
   remaining,
 }: RutinasOverviewProps) {
@@ -102,8 +104,11 @@ export function RutinasOverview({
   const proximoValue =
     nextPendingDayOrder != null ? `Día ${nextPendingDayOrder}` : weekComplete ? "Completa" : "—";
 
-  const rachaSubtext =
-    !hasRealData ? "Completá tu primer entreno para iniciarla." : undefined;
+  const rachaSubtext = !hasRealData
+    ? "Cumplí tu primera semana para iniciarla."
+    : currentStreak === 1
+      ? "semana cumplida"
+      : "semanas cumplidas";
 
   return (
     <>
@@ -251,11 +256,16 @@ export function RutinasOverview({
         <MiniCard
           icon={Flame}
           label="Racha"
-          value={`${currentStreak} días`}
+          value={`${currentStreak} sem`}
           subtext={rachaSubtext}
           accent="warm"
         />
-        <MiniCard icon={Clock3} label="Duración" value="~60 min" subtext="por sesión" />
+        <MiniCard
+          icon={Clock3}
+          label="Duración"
+          value={nextPendingDayMinutes ? `~${nextPendingDayMinutes} min` : "—"}
+          subtext={nextPendingDayMinutes ? "próximo día" : undefined}
+        />
         <MiniCard icon={CalendarDays} label="Próximo" value={proximoValue} />
       </motion.div>
     </>

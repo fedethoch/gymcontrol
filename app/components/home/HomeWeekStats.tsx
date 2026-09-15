@@ -14,7 +14,7 @@ export function HomeWeekStats({
 }) {
   const stats = [
     { label: "Entrenos", value: completedDays, unit: `/${totalDays}` },
-    { label: "Racha", value: streak, unit: streak === 1 ? " día" : " días" },
+    { label: "Racha", value: streak, unit: " sem" },
     { label: "Comidas", value: nutritionDays, unit: "/7 días" },
   ];
 

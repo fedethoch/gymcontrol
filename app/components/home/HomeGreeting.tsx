@@ -45,7 +45,9 @@ export function HomeGreeting({ displayName, streak }: { displayName: string | nu
           <span className="inline-flex h-11 items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card)] px-3.5 font-display text-sm font-bold tabular-nums text-[var(--foreground)]">
             <Flame aria-hidden="true" className="size-4 text-[#ff9a75]" />
             {streak}
-            <span className="sr-only">{streak === 1 ? "día de racha" : "días de racha"}</span>
+            <span className="sr-only">
+              {streak === 1 ? "semana seguida cumpliendo tu rutina" : "semanas seguidas cumpliendo tu rutina"}
+            </span>
           </span>
         ) : null}
       </div>

@@ -13,7 +13,8 @@
     "media:upload": "node scripts/upload-generated-images.mjs",
     "exercisedb:audit": "node scripts/map-exercisedb-demos.mjs",
     "validate:mobile": "node scripts/validate-mobile.mjs",
-    "check:ui": "pnpm build && pnpm validate:mobile"
+    "check:ui": "pnpm build && pnpm validate:mobile",
+    "test:unit": "node --test --experimental-strip-types \"tests/unit/**/*.test.mjs\""
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.16",

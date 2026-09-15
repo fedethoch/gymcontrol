@@ -1,7 +1,8 @@
 import type { MealGroup } from "@/app/lib/meal-logs";
 import { MEAL_TYPE_LABELS, type MealType } from "@/app/lib/nutrition-types";
 import type { RoutineItem } from "@/app/lib/routines";
-import type { WorkoutSession } from "@/app/lib/workout-tracking";
+import { isValidSet } from "@/app/lib/workout-progression";
+import type { OpenWorkoutSession } from "@/app/lib/workout-tracking";
 
 export type HeroState = "ready" | "in_progress" | "done_today" | "week_done" | "no_routine";
 
@@ -17,11 +18,11 @@ export function resolveHeroState(args: {
   hasActiveRoutine: boolean;
   hasPendingDay: boolean;
   trainedToday: boolean;
-  todaySessionStatus: WorkoutSession["status"] | null;
+  hasOpenSession: boolean;
 }): HeroState {
   if (!args.hasActiveRoutine) return "no_routine";
+  if (args.hasOpenSession) return "in_progress";
   if (!args.hasPendingDay) return "week_done";
-  if (args.todaySessionStatus === "in_progress") return "in_progress";
   if (args.trainedToday) return "done_today";
   return "ready";
 }
@@ -32,8 +33,13 @@ export type SessionProgress = {
   nextExerciseName: string | null;
 };
 
-export function getSessionProgress(items: RoutineItem[], session: WorkoutSession): SessionProgress {
-  const isDone = (item: RoutineItem) => session.itemsByRoutineItemId[item.id]?.isCompleted === true;
+/** Ejercicio hecho = todas sus series del plan marcadas como hechas. */
+export function getSessionProgress(items: RoutineItem[], session: OpenWorkoutSession): SessionProgress {
+  const isDone = (item: RoutineItem) => {
+    const sets = session.itemsByRoutineItemId[item.id]?.sets ?? [];
+    return sets.filter(isValidSet).length >= item.series;
+  };
+
   return {
     done: items.filter(isDone).length,
     total: items.length,

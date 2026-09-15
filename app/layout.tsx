@@ -11,6 +11,7 @@ import {
 } from "./components/shared/MobileHeader";
 import { MobileTabBar } from "./components/shared/MobileTabBar";
 import { PrimaryNavigation } from "./components/shared/PrimaryNavigation";
+import { WorkoutSyncRunner } from "./components/shared/WorkoutSyncRunner";
 import { AppShell } from "./components/ui/AppShell";
 import { MotionProvider } from "./components/ui/MotionProvider";
 import { PwaRuntime } from "./components/pwa/PwaRuntime";
@@ -101,6 +102,7 @@ export default async function RootLayout({
         </AppShell>
         </MotionProvider>
         <PwaRuntime />
+        {auth ? <WorkoutSyncRunner userId={auth.user.id} /> : null}
         <Toaster
           richColors
           position="top-center"
