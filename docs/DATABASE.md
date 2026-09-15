@@ -801,7 +801,7 @@ Fuentes y decision por alimento: `docs/CATALOGO_ALIMENTOS_AR.md` (SARA 2 / ARGEN
 | Migracion | Cuando | Que hace |
 | --- | --- | --- |
 | `20260915_nutrition_catalog_ar` | aplicada 2026-09-15 | reemplaza valores de los 200 existentes, nombres con estado ("Pechuga de pollo a la plancha"), unifica duplicados por tilde re-apuntando `recipe_items`/`meal_log_items`, pasa "test" a privado de la unica cuenta que lo uso, agrega 269 alimentos sin bebidas; todo con `measure = 'g'` |
-| `20260915_nutrition_catalog_ar_units_drinks` | solo con el codigo nuevo en produccion | 116 alimentos pasan a `measure = 'unit'` y agrega 36 bebidas (`category = 'drink'`); total global 505 |
+| `20260915_nutrition_catalog_ar_units_drinks` | aplicada 2026-09-15, con el codigo nuevo ya en produccion (deploy `6248b26`) | 116 alimentos pasan a `measure = 'unit'` y agrega 36 bebidas (`category = 'drink'`); total global 505 |
 
 - por que dos fases: el codigo anterior rompe `/alimentos` y `/admin/alimentos` con `category = 'drink'` (icono inexistente) y arranca en 100 unidades los alimentos `unit`
 - backup previo: `private.foods_backup_20260915` (204 filas, schema no expuesto por la API)
