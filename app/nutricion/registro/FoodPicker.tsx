@@ -50,12 +50,13 @@ export function parseQuantity(value: string) {
 export function previewNutrition(option: PickerOption, measure: FoodMeasure, quantity: number) {
   if (option.kind === "recipe") {
     const { recipe } = option;
+    const grams = measure === "unit" ? quantity * recipe.servingG : quantity;
 
     return {
-      kcal: Math.round(recipe.kcalPerServing * quantity),
-      proteinG: Math.round(recipe.macrosPerServing.proteinG * quantity),
-      carbsG: Math.round(recipe.macrosPerServing.carbsG * quantity),
-      fatG: Math.round(recipe.macrosPerServing.fatG * quantity),
+      kcal: Math.round(recipe.kcalPerG * grams),
+      proteinG: Math.round(recipe.macrosPerG.proteinG * grams),
+      carbsG: Math.round(recipe.macrosPerG.carbsG * grams),
+      fatG: Math.round(recipe.macrosPerG.fatG * grams),
     };
   }
 
@@ -143,11 +144,13 @@ export function FoodPicker({
   }, []);
 
   const selectedFood = selected?.kind === "food" ? selected.food : null;
-  const gramsPerUnit = selectedFood ? getFoodGramsPerUnit(selectedFood) : null;
+  const isRecipe = selected?.kind === "recipe";
+  // En recetas la "unidad" es la porción que definió el creador.
+  const gramsPerUnit = selected?.kind === "recipe" ? selected.recipe.servingG : selectedFood ? getFoodGramsPerUnit(selectedFood) : null;
   const amountUnit = selectedFood ? getAmountUnitLabel(selectedFood.category) : "g";
   const amountLabel = amountUnit === "ml" ? "Mililitros" : "Gramos";
-  const isRecipe = selected?.kind === "recipe";
-  const isUnit = isRecipe || (gramsPerUnit != null && measure === "unit");
+  const unitLabel = isRecipe ? "Porciones" : "Unidades";
+  const isUnit = gramsPerUnit != null && measure === "unit";
   const parsedQuantity = parseQuantity(quantity);
   const hasValidQuantity = Number.isFinite(parsedQuantity) && parsedQuantity > 0;
   const preview = selected && hasValidQuantity ? previewNutrition(selected, isUnit ? "unit" : "g", parsedQuantity) : null;
@@ -167,8 +170,9 @@ export function FoodPicker({
     setIsOpen(false);
 
     if (option.kind === "recipe") {
-      setMeasure("unit");
-      setQuantity(formatQuantity(frequent?.lastQuantity ?? 1));
+      const nextMeasure: FoodMeasure = frequent?.lastMeasure ?? "unit";
+      setMeasure(nextMeasure);
+      setQuantity(formatQuantity(frequent?.lastQuantity ?? (nextMeasure === "unit" ? 1 : option.recipe.servingG)));
       return;
     }
 
@@ -198,7 +202,7 @@ export function FoodPicker({
 
     const input: MealItemInput =
       selected.kind === "recipe"
-        ? { kind: "recipe", recipeId: selected.id, quantity: parsedQuantity }
+        ? { kind: "recipe", recipeId: selected.id, measure: isUnit ? "unit" : "g", quantity: parsedQuantity }
         : { kind: "food", foodId: selected.id, measure: isUnit ? "unit" : "g", quantity: parsedQuantity };
 
     setIsAdding(true);
@@ -337,37 +341,30 @@ export function FoodPicker({
       {selected ? (
         <div className="grid gap-3 rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-3">
           <div className="grid grid-cols-2 gap-2">
-            {isRecipe ? (
-              <div className="grid gap-1.5 text-[13px] font-medium text-[var(--foreground-muted)]">
-                Medida
-                <p className="flex h-11 items-center rounded-xl border border-[var(--border)] bg-[var(--card)] px-3 text-sm text-[var(--foreground)]">
-                  Porciones
-                </p>
-              </div>
-            ) : (
-              <label className="grid gap-1.5 text-[13px] font-medium text-[var(--foreground-muted)]">
-                Medida
-                <Select
-                  value={isUnit ? "unit" : "g"}
-                  disabled={gramsPerUnit == null}
-                  onValueChange={(value) => handleMeasureChange(value as FoodMeasure)}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="g">{amountLabel}</SelectItem>
-                    {gramsPerUnit != null ? (
-                      <SelectItem value="unit">
-                        Unidades (1 u ≈ {formatQuantity(gramsPerUnit)} {amountUnit})
-                      </SelectItem>
-                    ) : null}
-                  </SelectContent>
-                </Select>
-              </label>
-            )}
             <label className="grid gap-1.5 text-[13px] font-medium text-[var(--foreground-muted)]">
-              {isRecipe ? "Porciones" : isUnit ? "Unidades" : amountLabel}
+              Medida
+              <Select
+                value={isUnit ? "unit" : "g"}
+                disabled={gramsPerUnit == null}
+                onValueChange={(value) => handleMeasureChange(value as FoodMeasure)}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="g">{amountLabel}</SelectItem>
+                  {gramsPerUnit != null ? (
+                    <SelectItem value="unit">
+                      {isRecipe
+                        ? `Porciones (1 = ${formatQuantity(gramsPerUnit)} g)`
+                        : `Unidades (1 u ≈ ${formatQuantity(gramsPerUnit)} ${amountUnit})`}
+                    </SelectItem>
+                  ) : null}
+                </SelectContent>
+              </Select>
+            </label>
+            <label className="grid gap-1.5 text-[13px] font-medium text-[var(--foreground-muted)]">
+              {isUnit ? unitLabel : amountLabel}
               <Input
                 inputMode="decimal"
                 value={quantity}
@@ -399,7 +396,7 @@ export function FoodPicker({
 function describeOption(option: PickerOption, isFrequent: boolean) {
   const parts =
     option.kind === "recipe"
-      ? ["Receta", `1 porción ≈ ${Math.round(option.recipe.gramsPerServing)} g`]
+      ? ["Receta", `1 porción = ${formatQuantity(option.recipe.servingG)} g`]
       : [option.food.ownerUserId ? "Tuyo" : null, FOOD_CATEGORY_LABELS[option.food.category]];
 
   if (isFrequent) {
@@ -411,7 +408,7 @@ function describeOption(option: PickerOption, isFrequent: boolean) {
 
 function optionKcalLabel(option: PickerOption) {
   if (option.kind === "recipe") {
-    return `${Math.round(option.recipe.kcalPerServing)} kcal/porción`;
+    return `${Math.round(option.recipe.kcalPerG * option.recipe.servingG)} kcal/porción`;
   }
 
   return `${option.food.calories} kcal/${option.food.servingG} ${getAmountUnitLabel(option.food.category)}`;

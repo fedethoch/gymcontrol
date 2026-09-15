@@ -48,14 +48,22 @@ export function parseRecipePayload(
     category = normalizedCategory as ParsedRecipePayload["category"];
   }
 
-  const rawServings = payload.servings.trim();
-  const servingsValue = Number(rawServings);
-  let servings: number | null = null;
+  const servingValue = parseGrams(payload.servingG);
+  let servingG: number | null = null;
 
-  if (!rawServings || !Number.isFinite(servingsValue) || servingsValue <= 0) {
-    fieldErrors.servings = "Ingresa un numero de porciones valido.";
+  if (servingValue == null || servingValue <= 0 || servingValue > 10_000) {
+    fieldErrors.servingG = "Indicá cuántos gramos tiene una porción.";
   } else {
-    servings = Math.round(servingsValue);
+    servingG = roundOneDecimal(servingValue);
+  }
+
+  const totalWeightValue = payload.totalWeightG.trim() ? parseGrams(payload.totalWeightG) : null;
+  let totalWeightG: number | null = null;
+
+  if (payload.totalWeightG.trim() && (totalWeightValue == null || totalWeightValue <= 0 || totalWeightValue > 100_000)) {
+    fieldErrors.totalWeightG = "Ingresá un peso final válido o dejalo vacío.";
+  } else if (totalWeightValue != null) {
+    totalWeightG = roundOneDecimal(totalWeightValue);
   }
 
   const ingredients: ParsedRecipePayload["ingredients"] = [];
@@ -65,15 +73,21 @@ export function parseRecipePayload(
   } else {
     for (const ingredient of payload.ingredients) {
       const foodId = ingredient.foodId.trim();
-      const gramsValue = Number(ingredient.grams.trim());
+      const gramsValue = parseGrams(ingredient.grams);
 
-      if (!foodId || !Number.isFinite(gramsValue) || gramsValue <= 0) {
+      if (!foodId || gramsValue == null || gramsValue <= 0) {
         fieldErrors.ingredients = "Revisa los ingredientes: cada uno necesita un alimento y gramos validos.";
         break;
       }
 
-      ingredients.push({ foodId, grams: gramsValue });
+      ingredients.push({ foodId, grams: roundOneDecimal(gramsValue) });
     }
+  }
+
+  const baseGrams = totalWeightG ?? ingredients.reduce((sum, ingredient) => sum + ingredient.grams, 0);
+
+  if (servingG != null && !fieldErrors.ingredients && !fieldErrors.totalWeightG && servingG > baseGrams) {
+    fieldErrors.servingG = "La porción no puede pesar más que la receta completa.";
   }
 
   if (Object.keys(fieldErrors).length > 0) {
@@ -93,8 +107,21 @@ export function parseRecipePayload(
       name: name!,
       description,
       category: category!,
-      servings: servings!,
+      servingG: servingG!,
+      totalWeightG,
       ingredients,
     },
   };
+}
+
+/** Acepta coma decimal ("250,5"). */
+function parseGrams(value: string): number | null {
+  const normalized = value.trim().replace(",", ".");
+  const parsed = Number(normalized);
+
+  return normalized && Number.isFinite(parsed) ? parsed : null;
+}
+
+function roundOneDecimal(value: number) {
+  return Math.round(value * 10) / 10;
 }

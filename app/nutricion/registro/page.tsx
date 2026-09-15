@@ -10,12 +10,14 @@ import { listRecipeCatalogItems } from "@/app/lib/recipes";
 export default async function RegistroNutricionPage({
   searchParams,
 }: {
-  searchParams: Promise<{ tipo?: string | string[]; fecha?: string | string[] }>;
+  searchParams: Promise<{ tipo?: string | string[]; fecha?: string | string[]; comida?: string | string[] }>;
 }) {
   const auth = await requireUser();
   const todayKey = getTodayDateKey();
-  const { tipo, fecha } = await searchParams;
+  const { tipo, fecha, comida } = await searchParams;
   const logDate = resolveLogDate(fecha, todayKey);
+  // Fila del home con una comida ya registrada: /nutricion/registro?comida=<id> (siempre hoy)
+  const initialMealId = logDate === todayKey && typeof comida === "string" ? comida : undefined;
   // "+" de cada comida en el home: /nutricion/registro?tipo=almuerzo (siempre hoy)
   const initialMealType =
     logDate === todayKey ? (MEAL_TYPES.find((type) => type === tipo) as MealType | undefined) : undefined;
@@ -29,23 +31,13 @@ export default async function RegistroNutricionPage({
     listFrequentItems({ userId: auth.user.id }),
   ]);
 
-  const recipeOptions: RecipeOption[] = recipes.map((recipe) => {
-    const servings = Math.max(1, recipe.servings);
-    const totalGrams = recipe.ingredients.reduce((sum, ingredient) => sum + ingredient.grams, 0);
-
-    return {
-      id: recipe.id,
-      name: recipe.name,
-      servings,
-      gramsPerServing: totalGrams / servings,
-      kcalPerServing: recipe.calories / servings,
-      macrosPerServing: {
-        proteinG: recipe.proteinG / servings,
-        carbsG: recipe.carbsG / servings,
-        fatG: recipe.fatG / servings,
-      },
-    };
-  });
+  const recipeOptions: RecipeOption[] = recipes.map((recipe) => ({
+    id: recipe.id,
+    name: recipe.name,
+    servingG: recipe.servingG,
+    kcalPerG: recipe.kcalPerG,
+    macrosPerG: recipe.macrosPerG,
+  }));
 
   return (
     <section className="page-frame content-start bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.15),transparent_31%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
@@ -60,6 +52,7 @@ export default async function RegistroNutricionPage({
         target={profile ? { kcal: profile.plan.targetKcal, macros: profile.plan.macros } : null}
         loggedDates={[...loggedDates]}
         initialMealType={initialMealType}
+        initialMealId={initialMealId}
       />
     </section>
   );

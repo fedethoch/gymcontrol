@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  ArrowDown,
+  ArrowUp,
   Beef,
   Check,
   ChevronLeft,
@@ -60,6 +62,7 @@ import {
   createMealAction,
   deleteMealAction,
   deleteMealItemAction,
+  moveMealAction,
   updateMealAction,
   updateMealItemAction,
   type MealLogActionResult,
@@ -75,6 +78,7 @@ import {
 import { addDaysToDateKey, getWeekStartDateKey } from "@/app/lib/local-date";
 import { MACRO_COLORS, MACRO_LABELS } from "@/app/lib/nutrition-style";
 import type { MealGroup, MealLogItem } from "@/app/lib/meal-logs";
+import { suggestAfterMealId } from "@/app/lib/meal-order";
 import {
   getAmountUnitLabel,
   MEAL_LOG_MAX_PAST_DAYS,
@@ -94,6 +98,9 @@ import { cn } from "@/app/lib/utils";
 type DraftItem = MealItemInput & { localId: string };
 
 const compactControlClass = "nutrition-compact-control";
+
+/** Valor del selector "Ubicar después de" para "al principio". */
+const PLACE_AT_START = "start";
 
 const NUTRITION_PHRASES = [
   "Cada comida registrada te acerca a tu objetivo.",
@@ -117,6 +124,7 @@ export function RegistroClient({
   target,
   loggedDates,
   initialMealType,
+  initialMealId,
 }: {
   foods: Food[];
   recipes: RecipeOption[];
@@ -131,16 +139,23 @@ export function RegistroClient({
   loggedDates: string[];
   /** Si viene (desde el home): abre la comida de ese tipo si ya existe, o "Nueva comida" con ese tipo. */
   initialMealType?: MealType;
+  /** Si viene (desde una fila del home): abre esa comida. */
+  initialMealId?: string;
 }) {
   const router = useRouter();
   const [focusMealId] = useState(
-    () => (initialMealType ? [...initialMeals].reverse().find((meal) => meal.type === initialMealType)?.id : undefined) ?? null,
+    () =>
+      initialMeals.find((meal) => meal.id === initialMealId)?.id ??
+      (initialMealType ? [...initialMeals].reverse().find((meal) => meal.type === initialMealType)?.id : undefined) ??
+      null,
   );
   const [meals, setMeals] = useState(initialMeals);
   const [foodList, setFoodList] = useState(foods);
   const [mealType, setMealType] = useState<MealType>(initialMealType ?? "desayuno");
   const [mealName, setMealName] = useState(MEAL_TYPE_LABELS[initialMealType ?? "desayuno"]);
   const [mealNameTouched, setMealNameTouched] = useState(false);
+  /** null = automático según el tipo de comida. */
+  const [placementChoice, setPlacementChoice] = useState<string | null>(null);
   const [draftItems, setDraftItems] = useState<DraftItem[]>([]);
   const [isSavingMeal, setIsSavingMeal] = useState(false);
   const [editingMealId, setEditingMealId] = useState<string | null>(focusMealId);
@@ -181,6 +196,13 @@ export function RegistroClient({
   const kcalPct = target && target.kcal > 0 ? Math.round((totalKcal / target.kcal) * 100) : 0;
   const remainingKcal = target ? target.kcal - totalKcal : 0;
   const isOverTarget = target !== null && remainingKcal < 0;
+  const suggestedAfter = suggestAfterMealId(meals, mealType);
+  const placement =
+    placementChoice && (placementChoice === PLACE_AT_START || meals.some((meal) => meal.id === placementChoice))
+      ? placementChoice
+      : suggestedAfter === null
+        ? PLACE_AT_START
+        : (suggestedAfter ?? meals.at(-1)?.id ?? PLACE_AT_START);
 
   function registroHref(dateKey: string) {
     return dateKey === todayKey ? "/nutricion/registro" : `/nutricion/registro?fecha=${dateKey}`;
@@ -238,6 +260,7 @@ export function RegistroClient({
         logDate,
         name: trimmed,
         type: mealType,
+        afterMealId: meals.length === 0 ? undefined : placement === PLACE_AT_START ? null : placement,
         items: draftItems.map(toMealItemInput),
       });
 
@@ -248,6 +271,7 @@ export function RegistroClient({
       setMealType("desayuno");
       setMealName(MEAL_TYPE_LABELS.desayuno);
       setMealNameTouched(false);
+      setPlacementChoice(null);
       setDraftItems([]);
       setNewMealOpen(false);
       toast.success("Comida guardada.");
@@ -271,6 +295,14 @@ export function RegistroClient({
       toast.success("Comida eliminada.");
     } catch {
       toast.error("No se pudo eliminar la comida.");
+    }
+  }
+
+  async function handleMoveMeal(mealId: string, direction: "up" | "down") {
+    try {
+      applyResult(await moveMealAction({ logDate, mealId, direction }));
+    } catch {
+      toast.error("No se pudo mover la comida.");
     }
   }
 
@@ -361,6 +393,25 @@ export function RegistroClient({
         />
       </label>
 
+      {meals.length > 0 ? (
+        <label className="grid gap-1 text-[11px] font-semibold text-[#c2c8d6]">
+          Ubicar después de
+          <Select value={placement} onValueChange={setPlacementChoice}>
+            <SelectTrigger className={compactControlClass}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={PLACE_AT_START}>Al principio del día</SelectItem>
+              {meals.map((meal) => (
+                <SelectItem key={meal.id} value={meal.id}>
+                  {meal.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </label>
+      ) : null}
+
       <FoodPicker
         foods={foodList}
         recipes={recipes}
@@ -390,7 +441,7 @@ export function RegistroClient({
               return null;
             }
 
-            const preview = previewNutrition(option, item.kind === "food" ? item.measure : "unit", item.quantity);
+            const preview = previewNutrition(option, item.measure, item.quantity);
 
             return (
               <div
@@ -678,10 +729,13 @@ export function RegistroClient({
             </motion.div>
           ) : (
             <div className="grid overflow-hidden rounded-xl border border-[rgba(255,255,255,0.06)] bg-[#111722] sm:grid-cols-2 sm:gap-3 sm:border-0 sm:bg-transparent">
-              {meals.map((meal) => (
+              {meals.map((meal, index) => (
                 <MealCard
                   key={meal.id}
                   meal={meal}
+                  isFirst={index === 0}
+                  isLast={index === meals.length - 1}
+                  onMove={(direction) => handleMoveMeal(meal.id, direction)}
                   foods={foodList}
                   recipes={recipes}
                   frequentItems={frequentItems}
@@ -767,6 +821,9 @@ export function RegistroClient({
 
 function MealCard({
   meal,
+  isFirst,
+  isLast,
+  onMove,
   foods,
   recipes,
   frequentItems,
@@ -780,6 +837,9 @@ function MealCard({
   onFoodCreated,
 }: {
   meal: MealGroup;
+  isFirst: boolean;
+  isLast: boolean;
+  onMove: (direction: "up" | "down") => Promise<void>;
   foods: Food[];
   recipes: RecipeOption[];
   frequentItems: FrequentItem[];
@@ -803,6 +863,17 @@ function MealCard({
   const [isSavingItem, setIsSavingItem] = useState(false);
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const [isDeletingMeal, setIsDeletingMeal] = useState(false);
+  const [isMoving, setIsMoving] = useState(false);
+
+  async function handleMove(direction: "up" | "down") {
+    setIsMoving(true);
+
+    try {
+      await onMove(direction);
+    } finally {
+      setIsMoving(false);
+    }
+  }
 
   useEffect(() => {
     if (!isEditing) {
@@ -883,7 +954,7 @@ function MealCard({
     setIsSavingItem(true);
 
     try {
-      await onUpdateItem(item.id, item.kind === "recipe" ? "unit" : editMeasure, parsedQuantity);
+      await onUpdateItem(item.id, editMeasure, parsedQuantity);
       setEditingItemId(null);
       toast.success("Cantidad actualizada.");
     } catch (error) {
@@ -916,8 +987,9 @@ function MealCard({
     <div className="grid gap-1.5">
       {meal.items.map((item) => {
         const itemFood = item.foodId ? foods.find((food) => food.id === item.foodId) : undefined;
-        const itemGramsPerUnit = itemFood ? getFoodGramsPerUnit(itemFood) : null;
-        const canChooseUnit = item.kind === "food" && itemGramsPerUnit != null;
+        const itemGramsPerUnit = item.kind === "recipe" ? item.servingG : itemFood ? getFoodGramsPerUnit(itemFood) : null;
+        const canChooseUnit = itemGramsPerUnit != null;
+        const unitOptionLabel = item.kind === "recipe" ? "Porciones" : "Unidades";
         const amountLabel = item.category === "drink" ? "Mililitros" : "Gramos";
         const isEditingItem = editingItemId === item.id;
 
@@ -957,13 +1029,13 @@ function MealCard({
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="g">{amountLabel}</SelectItem>
-                      <SelectItem value="unit">Unidades</SelectItem>
+                      <SelectItem value="unit">{unitOptionLabel}</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
                 <Input
                   inputMode="decimal"
-                  aria-label={item.kind === "recipe" ? "Porciones" : editMeasure === "unit" ? "Unidades" : amountLabel}
+                  aria-label={editMeasure === "unit" ? unitOptionLabel : amountLabel}
                   value={editQuantity}
                   onChange={(event) => setEditQuantity(event.target.value)}
                   onKeyDown={(event) => {
@@ -974,9 +1046,6 @@ function MealCard({
                   }}
                   className={cn(compactControlClass, "w-16 sm:w-20")}
                 />
-                {item.kind === "recipe" ? (
-                  <span className="text-xs text-[var(--foreground-muted)]">porciones</span>
-                ) : null}
                 <Button
                   type="button"
                   variant="outline"
@@ -1034,6 +1103,30 @@ function MealCard({
 
   const actionButtons = (
     <div className="flex shrink-0 items-center gap-1.5">
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        className="size-11"
+        onClick={() => handleMove("up")}
+        disabled={isFirst || isMoving}
+        title="Subir comida"
+        aria-label={`Subir ${meal.name}`}
+      >
+        <ArrowUp className="size-4" />
+      </Button>
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        className="size-11"
+        onClick={() => handleMove("down")}
+        disabled={isLast || isMoving}
+        title="Bajar comida"
+        aria-label={`Bajar ${meal.name}`}
+      >
+        <ArrowDown className="size-4" />
+      </Button>
       <Button
         type="button"
         variant="ghost"
@@ -1256,7 +1349,7 @@ function MealCard({
 
 function toMealItemInput(item: DraftItem): MealItemInput {
   return item.kind === "recipe"
-    ? { kind: "recipe", recipeId: item.recipeId, quantity: item.quantity }
+    ? { kind: "recipe", recipeId: item.recipeId, measure: item.measure, quantity: item.quantity }
     : { kind: "food", foodId: item.foodId, measure: item.measure, quantity: item.quantity };
 }
 
@@ -1275,7 +1368,7 @@ function formatServings(quantity: number) {
 }
 
 function formatDraftAmount(item: MealItemInput, option: PickerOption) {
-  if (item.kind === "recipe") {
+  if (item.kind === "recipe" && item.measure === "unit") {
     return formatServings(item.quantity);
   }
 
@@ -1287,7 +1380,7 @@ function formatDraftAmount(item: MealItemInput, option: PickerOption) {
 }
 
 function formatItemAmount(item: MealLogItem) {
-  if (item.kind === "recipe") {
+  if (item.kind === "recipe" && item.measure === "unit") {
     return formatServings(item.quantity);
   }
 

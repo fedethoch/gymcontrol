@@ -76,19 +76,18 @@ export function getAmountUnitLabel(category: FoodCategory) {
 /** Hasta cuántos días atrás se puede cargar o corregir el registro diario. */
 export const MEAL_LOG_MAX_PAST_DAYS = 365;
 
-/** Lo que se agrega a una comida: un alimento (gramos/unidades) o una receta (porciones). */
+/** Lo que se agrega a una comida: un alimento o una receta, en gramos o unidades (en recetas, porciones). */
 export type MealItemInput =
   | { kind: "food"; foodId: string; measure: FoodMeasure; quantity: number }
-  | { kind: "recipe"; recipeId: string; quantity: number };
+  | { kind: "recipe"; recipeId: string; measure: FoodMeasure; quantity: number };
 
-/** Receta lista para registrar: valores por porción. */
+/** Receta lista para registrar: gramos de una porción y valores por gramo. */
 export type RecipeOption = {
   id: string;
   name: string;
-  servings: number;
-  gramsPerServing: number;
-  kcalPerServing: number;
-  macrosPerServing: Macros;
+  servingG: number;
+  kcalPerG: number;
+  macrosPerG: Macros;
 };
 
 /** Alimento o receta que el usuario registra seguido (para cargarlo en 2 taps). */
@@ -112,12 +111,21 @@ export type Recipe = {
   description: string;
   imageUrl: string;
   category: RecipeCategory;
-  servings: number;
+  /** Gramos de una porción (los define el creador). */
+  servingG: number;
+  /** Peso final cocido; null = se usa la suma de ingredientes. */
+  totalWeightG: number | null;
   ingredients: RecipeIngredient[];
+  /** Profile id del creador (null en recetas viejas del seed). */
+  createdBy: string | null;
+  /** Valores de una porción. */
   calories: number;
   proteinG: number;
   carbsG: number;
   fatG: number;
+  /** Por gramo, sin redondear (para registrar). */
+  kcalPerG: number;
+  macrosPerG: Macros;
 };
 
 export const GENDERS = ["male", "female"] as const;

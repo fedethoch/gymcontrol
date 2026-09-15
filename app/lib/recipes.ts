@@ -2,23 +2,20 @@ import "server-only";
 
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 import type { Recipe, RecipeCategory, RecipeIngredient } from "@/app/lib/nutrition-types";
+import { buildRecipeSnapshot, nutritionFromSnapshot, recipeRawGrams } from "@/app/lib/recipe-nutrition";
 
 export type AdminRecipeListItem = Recipe & {
   createdAt: string;
   createdAtLabel: string;
+  authorName: string | null;
 };
+
+type RecipeFoodRow = { name: string; serving_g: number; calories: number; protein_g: number; carbs_g: number; fat_g: number };
 
 type RecipeItemRow = {
   food_id: string;
   grams: number;
-  foods: {
-    name: string;
-    serving_g: number;
-    calories: number;
-    protein_g: number;
-    carbs_g: number;
-    fat_g: number;
-  } | { name: string; serving_g: number; calories: number; protein_g: number; carbs_g: number; fat_g: number }[] | null;
+  foods: RecipeFoodRow | RecipeFoodRow[] | null;
 };
 
 type RecipeRow = {
@@ -27,19 +24,33 @@ type RecipeRow = {
   description: string | null;
   image_url: string | null;
   category: RecipeCategory;
-  servings: number;
+  serving_g: number | null;
+  total_weight_g: number | null;
+  created_by: string | null;
   created_at: string;
   recipe_items: RecipeItemRow[] | null;
+  author?: { display_name: string | null } | { display_name: string | null }[] | null;
 };
 
 const RECIPE_SELECT =
-  "id, name, description, image_url, category, servings, created_at, recipe_items(food_id, grams, foods(name, serving_g, calories, protein_g, carbs_g, fat_g))";
+  "id, name, description, image_url, category, serving_g, total_weight_g, created_by, created_at, recipe_items(food_id, grams, foods(name, serving_g, calories, protein_g, carbs_g, fat_g))";
 
+export type RecipeInput = {
+  name: string;
+  description: string;
+  category: RecipeCategory;
+  servingG: number;
+  totalWeightG: number | null;
+  ingredients: { foodId: string; grams: number }[];
+};
+
+/** Recetas públicas visibles en catálogo y buscador (sin archivadas). */
 export async function listRecipeCatalogItems(): Promise<Recipe[]> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("recipes")
     .select(RECIPE_SELECT)
+    .is("archived_at", null)
     .order("category", { ascending: true })
     .order("name", { ascending: true });
 
@@ -54,23 +65,34 @@ export async function listAdminRecipes(): Promise<AdminRecipeListItem[]> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("recipes")
-    .select(RECIPE_SELECT)
+    .select(`${RECIPE_SELECT}, author:profiles!recipes_created_by_fkey(display_name)`)
+    .is("archived_at", null)
     .order("created_at", { ascending: false });
 
   if (error) {
     throw new Error(`No se pudieron listar las recetas: ${error.message}`);
   }
 
-  return ((data ?? []) as RecipeRow[]).map((recipe) => ({
-    ...mapRecipe(recipe),
-    createdAt: recipe.created_at,
-    createdAtLabel: formatDateLabel(recipe.created_at),
-  }));
+  return ((data ?? []) as unknown as RecipeRow[]).map((recipe) => {
+    const author = Array.isArray(recipe.author) ? recipe.author[0] : recipe.author;
+
+    return {
+      ...mapRecipe(recipe),
+      createdAt: recipe.created_at,
+      createdAtLabel: formatDateLabel(recipe.created_at),
+      authorName: author?.display_name ?? null,
+    };
+  });
 }
 
 export async function getRecipeById(id: string): Promise<Recipe | null> {
   const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.from("recipes").select(RECIPE_SELECT).eq("id", id).maybeSingle();
+  const { data, error } = await supabase
+    .from("recipes")
+    .select(RECIPE_SELECT)
+    .eq("id", id)
+    .is("archived_at", null)
+    .maybeSingle();
 
   if (error) {
     throw new Error(`No se pudo leer la receta: ${error.message}`);
@@ -83,98 +105,50 @@ export async function getRecipeById(id: string): Promise<Recipe | null> {
   return mapRecipe(data as RecipeRow);
 }
 
-type RecipeInput = {
-  name: string;
-  description: string;
-  category: RecipeCategory;
-  servings: number;
-  ingredients: { foodId: string; grams: number }[];
-};
+/** Crea o edita en una transacción (RPC `save_recipe`: valida dueño/admin e ingredientes del catálogo). */
+export async function saveRecipe(input: RecipeInput & { id: string | null }): Promise<string> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("save_recipe", {
+    p_recipe_id: input.id,
+    p_name: input.name,
+    p_description: input.description,
+    p_category: input.category,
+    p_serving_g: input.servingG,
+    p_total_weight_g: input.totalWeightG,
+    p_items: input.ingredients.map((ingredient) => ({ food_id: ingredient.foodId, grams: ingredient.grams })),
+  });
 
-export async function createRecipe(input: RecipeInput & { createdBy: string }): Promise<string> {
+  if (error || !data) {
+    // Los mensajes de validación de la RPC ya están pensados para el usuario.
+    const isValidation = error?.code === "22023" || error?.code === "P0002" || error?.code === "42501";
+    throw new Error(isValidation ? error.message : `No se pudo guardar la receta: ${error?.message ?? "sin id"}`);
+  }
+
+  return data as string;
+}
+
+/** Archiva: deja de verse en catálogo y buscador; las comidas que la usaron quedan intactas. */
+export async function archiveRecipe(id: string) {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("recipes")
-    .insert({
-      name: input.name,
-      description: input.description,
-      image_url: "",
-      category: input.category,
-      servings: input.servings,
-      created_by: input.createdBy,
-    })
-    .select("id")
-    .single();
-
-  if (error || !data) {
-    throw new Error(`No se pudo crear la receta: ${error?.message ?? "sin id"}`);
-  }
-
-  await replaceRecipeItems(data.id, input.ingredients);
-
-  return data.id;
-}
-
-export async function updateRecipe(input: RecipeInput & { id: string }) {
-  const supabase = await createSupabaseServerClient();
-  const { error } = await supabase
-    .from("recipes")
-    .update({
-      name: input.name,
-      description: input.description,
-      category: input.category,
-      servings: input.servings,
-    })
-    .eq("id", input.id);
-
-  if (error) {
-    throw new Error(`No se pudo actualizar la receta: ${error.message}`);
-  }
-
-  await replaceRecipeItems(input.id, input.ingredients);
-}
-
-export async function deleteRecipe(id: string) {
-  const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.from("recipes").delete().eq("id", id);
-
-  if (error?.code === "23503") {
-    throw new Error("Esta receta está usada en comidas registradas, por eso no se puede eliminar.");
-  }
+    .update({ archived_at: new Date().toISOString() })
+    .eq("id", id)
+    .is("archived_at", null)
+    .select("id");
 
   if (error) {
     throw new Error(`No se pudo eliminar la receta: ${error.message}`);
   }
-}
 
-async function replaceRecipeItems(recipeId: string, ingredients: { foodId: string; grams: number }[]) {
-  const supabase = await createSupabaseServerClient();
-
-  const { error: deleteError } = await supabase.from("recipe_items").delete().eq("recipe_id", recipeId);
-
-  if (deleteError) {
-    throw new Error(`No se pudieron actualizar los ingredientes: ${deleteError.message}`);
-  }
-
-  const { error: insertError } = await supabase.from("recipe_items").insert(
-    ingredients.map((ingredient) => ({
-      recipe_id: recipeId,
-      food_id: ingredient.foodId,
-      grams: ingredient.grams,
-    })),
-  );
-
-  if (insertError) {
-    throw new Error(`No se pudieron guardar los ingredientes: ${insertError.message}`);
+  if (!data || data.length === 0) {
+    throw new Error("La receta no existe o no podés eliminarla.");
   }
 }
 
 function mapRecipe(row: RecipeRow): Recipe {
   const ingredients: RecipeIngredient[] = [];
-  let calories = 0;
-  let proteinG = 0;
-  let carbsG = 0;
-  let fatG = 0;
+  const nutritionInput = { servingG: 0, totalWeightG: row.total_weight_g != null ? Number(row.total_weight_g) : null, ingredients: [] as Array<{ grams: number; food: { servingG: number; calories: number; proteinG: number; carbsG: number; fatG: number } | null }> };
 
   for (const item of row.recipe_items ?? []) {
     const food = Array.isArray(item.foods) ? item.foods[0] : item.foods;
@@ -183,19 +157,23 @@ function mapRecipe(row: RecipeRow): Recipe {
       continue;
     }
 
-    const ratio = item.grams / food.serving_g;
-
-    ingredients.push({
-      foodId: item.food_id,
-      foodName: food.name,
-      grams: item.grams,
+    ingredients.push({ foodId: item.food_id, foodName: food.name, grams: Number(item.grams) });
+    nutritionInput.ingredients.push({
+      grams: Number(item.grams),
+      food: {
+        servingG: Number(food.serving_g),
+        calories: Number(food.calories),
+        proteinG: Number(food.protein_g),
+        carbsG: Number(food.carbs_g),
+        fatG: Number(food.fat_g),
+      },
     });
-
-    calories += food.calories * ratio;
-    proteinG += food.protein_g * ratio;
-    carbsG += food.carbs_g * ratio;
-    fatG += food.fat_g * ratio;
   }
+
+  nutritionInput.servingG = row.serving_g != null ? Number(row.serving_g) : recipeRawGrams(nutritionInput);
+
+  const snapshot = buildRecipeSnapshot(nutritionInput);
+  const portion = snapshot ? nutritionFromSnapshot(snapshot, nutritionInput.servingG) : { kcal: 0, proteinG: 0, carbsG: 0, fatG: 0 };
 
   return {
     id: row.id,
@@ -203,12 +181,20 @@ function mapRecipe(row: RecipeRow): Recipe {
     description: row.description ?? "",
     imageUrl: row.image_url ?? "",
     category: row.category,
-    servings: row.servings,
+    servingG: nutritionInput.servingG,
+    totalWeightG: nutritionInput.totalWeightG,
     ingredients,
-    calories: Math.round(calories),
-    proteinG: Math.round(proteinG),
-    carbsG: Math.round(carbsG),
-    fatG: Math.round(fatG),
+    createdBy: row.created_by,
+    calories: Math.round(portion.kcal),
+    proteinG: Math.round(portion.proteinG),
+    carbsG: Math.round(portion.carbsG),
+    fatG: Math.round(portion.fatG),
+    kcalPerG: snapshot?.kcalPerG ?? 0,
+    macrosPerG: {
+      proteinG: snapshot?.proteinPerG ?? 0,
+      carbsG: snapshot?.carbsPerG ?? 0,
+      fatG: snapshot?.fatPerG ?? 0,
+    },
   };
 }
 

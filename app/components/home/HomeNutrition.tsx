@@ -111,7 +111,7 @@ export function HomeNutrition({
       <ul aria-label="Comidas de hoy">
         {mealRows.map((row) => (
           <li
-            key={row.type}
+            key={row.key}
             className="grid min-h-14 grid-cols-[minmax(0,1fr)_auto_2.75rem] items-center gap-3 border-t border-[var(--border)] first:border-t-0"
           >
             <span className="truncate text-base font-semibold text-[var(--foreground)]">{row.label}</span>
@@ -127,8 +127,8 @@ export function HomeNutrition({
               </span>
             )}
             <Link
-              href={`/nutricion/registro?tipo=${row.type}`}
-              aria-label={`Agregar ${row.label.toLowerCase()}`}
+              href={row.href}
+              aria-label={`Agregar a ${row.label}`}
               className="pressable grid size-11 place-items-center rounded-full bg-[var(--card-alt)] text-[var(--accent-bright)] hover:bg-[var(--card-hover)]"
             >
               <Plus aria-hidden="true" className="size-[18px]" />

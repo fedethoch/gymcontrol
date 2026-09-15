@@ -1,6 +1,6 @@
 import type { RecipeCategory } from "@/app/lib/nutrition-types";
 
-export type RecipeFormField = "name" | "description" | "category" | "servings" | "ingredients";
+export type RecipeFormField = "name" | "description" | "category" | "servingG" | "totalWeightG" | "ingredients";
 
 export type RecipeIngredientPayload = {
   foodId: string;
@@ -12,7 +12,10 @@ export type RecipeFormPayload = {
   name: string;
   description: string;
   category: string;
-  servings: string;
+  /** Gramos de una porción (obligatorio). */
+  servingG: string;
+  /** Peso final cocido (opcional). */
+  totalWeightG: string;
   ingredients: RecipeIngredientPayload[];
 };
 
@@ -32,6 +35,7 @@ export type ParsedRecipePayload = {
   name: string;
   description: string;
   category: RecipeCategory;
-  servings: number;
+  servingG: number;
+  totalWeightG: number | null;
   ingredients: { foodId: string; grams: number }[];
 };

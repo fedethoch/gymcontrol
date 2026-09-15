@@ -1,4 +1,5 @@
 import type { MealGroup } from "@/app/lib/meal-logs";
+import { buildDayMealRows } from "@/app/lib/meal-order";
 import { MEAL_TYPE_LABELS, type MealType } from "@/app/lib/nutrition-types";
 import type { RoutineItem } from "@/app/lib/routines";
 import { isValidSet } from "@/app/lib/workout-progression";
@@ -48,24 +49,31 @@ export function getSessionProgress(items: RoutineItem[], session: OpenWorkoutSes
 }
 
 export type MealRow = {
+  key: string;
   type: MealType;
   label: string;
   kcal: number | null;
+  /** A dónde lleva el "+": la comida registrada o una nueva de ese tipo. */
+  href: string;
 };
 
-const HOME_MEAL_TYPES: MealType[] = ["desayuno", "almuerzo", "merienda", "cena"];
-
-/** Desayuno → Cena siempre; Snack solo si se registró alguno. */
+/** Comidas registradas en el orden del usuario + Desayuno → Cena vacíos en su lugar (meal-order.ts). */
 export function buildMealRows(meals: MealGroup[]): MealRow[] {
-  const kcalByType = new Map<MealType, number>();
-  for (const meal of meals) {
-    kcalByType.set(meal.type, (kcalByType.get(meal.type) ?? 0) + meal.kcal);
-  }
-
-  const types = kcalByType.has("snack") ? [...HOME_MEAL_TYPES, "snack" as const] : HOME_MEAL_TYPES;
-  return types.map((type) => ({
-    type,
-    label: MEAL_TYPE_LABELS[type],
-    kcal: kcalByType.has(type) ? Math.round(kcalByType.get(type) ?? 0) : null,
-  }));
+  return buildDayMealRows(meals).map((row) =>
+    row.kind === "meal"
+      ? {
+          key: row.key,
+          type: row.meal.type,
+          label: row.meal.name,
+          kcal: Math.round(row.meal.kcal),
+          href: `/nutricion/registro?comida=${row.meal.id}`,
+        }
+      : {
+          key: row.key,
+          type: row.type as MealType,
+          label: MEAL_TYPE_LABELS[row.type as MealType],
+          kcal: null,
+          href: `/nutricion/registro?tipo=${row.type}`,
+        },
+  );
 }

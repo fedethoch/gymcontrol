@@ -10,6 +10,7 @@ import {
   createMealWithItems,
   deleteMeal,
   deleteMealItem,
+  moveMeal,
   updateMeal,
   updateMealItem,
   type MealLog,
@@ -28,15 +29,19 @@ const mealNameSchema = z.string().trim().min(1, "Ponele un nombre a la comida.")
 
 const itemSchema = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("food"), foodId: z.uuid(), measure: z.enum(FOOD_MEASURES), quantity: quantitySchema }),
-  z.object({ kind: z.literal("recipe"), recipeId: z.uuid(), quantity: quantitySchema.max(50, "Máximo 50 porciones.") }),
+  z.object({ kind: z.literal("recipe"), recipeId: z.uuid(), measure: z.enum(FOOD_MEASURES), quantity: quantitySchema }),
 ]);
 
 const createMealSchema = z.object({
   logDate: logDateSchema,
   name: mealNameSchema,
   type: z.enum(MEAL_TYPES),
+  /** null = al principio; ausente = al final. */
+  afterMealId: z.uuid().nullable().optional(),
   items: z.array(itemSchema).min(1, "Agregá al menos un alimento.").max(50, "Máximo 50 alimentos por comida."),
 });
+
+const moveMealSchema = z.object({ logDate: logDateSchema, mealId: z.uuid(), direction: z.enum(["up", "down"]) });
 
 const updateMealSchema = z
   .object({
@@ -90,6 +95,10 @@ export async function createMealAction(input: z.input<typeof createMealSchema>) 
 
 export async function updateMealAction(input: z.input<typeof updateMealSchema>) {
   return runMealLogAction(updateMealSchema, input, (data, userId) => updateMeal({ userId, ...data }));
+}
+
+export async function moveMealAction(input: z.input<typeof moveMealSchema>) {
+  return runMealLogAction(moveMealSchema, input, (data, userId) => moveMeal({ userId, ...data }));
 }
 
 export async function deleteMealAction(input: z.input<typeof mealRefSchema>) {

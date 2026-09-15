@@ -3,6 +3,14 @@ import "server-only";
 import { addDaysToDateKey, getTodayDateKey } from "@/app/lib/local-date";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 import { getLocalTrainingDate } from "@/app/lib/workout-tracking";
+import { insertAfter, moveInOrder } from "@/app/lib/meal-order";
+import {
+  buildRecipeSnapshot,
+  isRecipeSnapshot,
+  nutritionFromSnapshot,
+  recipeGramsFor,
+  type RecipeSnapshot,
+} from "@/app/lib/recipe-nutrition";
 import {
   MEAL_TYPE_IMAGES,
   MEAL_TYPES,
@@ -22,8 +30,10 @@ export type MealLogItem = {
   name: string;
   /** Categoría del alimento; null en recetas. */
   category: FoodCategory | null;
-  /** En recetas siempre "unit" (= porciones). */
+  /** En recetas "unit" = porciones. */
   measure: FoodMeasure;
+  /** Solo recetas: gramos de una porción congelados al registrar (para convertir g ⇄ porciones). */
+  servingG: number | null;
   quantity: number;
   grams: number;
   kcal: number;
@@ -70,7 +80,9 @@ type FoodRow = NutritionRow & {
 type RecipeRow = {
   id: string;
   name: string;
-  servings: number;
+  serving_g: number | null;
+  total_weight_g: number | null;
+  archived_at?: string | null;
   recipe_items: Array<{ grams: number; food: One<NutritionRow> }> | null;
 };
 
@@ -81,6 +93,7 @@ type MealLogItemRow = {
   grams: number;
   measure: FoodMeasure;
   quantity: number;
+  recipe_snapshot: unknown;
   created_at: string;
   food: One<FoodRow>;
   recipe: One<RecipeRow>;
@@ -113,6 +126,7 @@ type ItemValues = {
   grams: number;
   measure: FoodMeasure;
   quantity: number;
+  recipe_snapshot: RecipeSnapshot | null;
 };
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createSupabaseServerClient>>;
@@ -134,6 +148,7 @@ const MEAL_LOG_SELECT = `
       grams,
       measure,
       quantity,
+      recipe_snapshot,
       created_at,
       food:foods!meal_log_items_food_id_fkey (
         id,
@@ -144,7 +159,8 @@ const MEAL_LOG_SELECT = `
       recipe:recipes!meal_log_items_recipe_id_fkey (
         id,
         name,
-        servings,
+        serving_g,
+        total_weight_g,
         recipe_items (
           grams,
           food:foods!recipe_items_food_id_fkey (${NUTRITION_COLUMNS})
@@ -243,7 +259,7 @@ async function buildItemValues(supabase: SupabaseServerClient, items: MealItemIn
   const foodIds = [...new Set(items.flatMap((item) => (item.kind === "food" ? [item.foodId] : [])))];
   const recipeIds = [...new Set(items.flatMap((item) => (item.kind === "recipe" ? [item.recipeId] : [])))];
   const foodsById = new Map<string, { serving_g: number; grams_per_unit: number | null }>();
-  const recipeGramsPerServing = new Map<string, number>();
+  const recipeSnapshots = new Map<string, RecipeSnapshot>();
 
   if (foodIds.length > 0) {
     const { data, error } = await supabase.from("foods").select("id, serving_g, grams_per_unit").in("id", foodIds);
@@ -258,15 +274,24 @@ async function buildItemValues(supabase: SupabaseServerClient, items: MealItemIn
   }
 
   if (recipeIds.length > 0) {
-    const { data, error } = await supabase.from("recipes").select("id, servings, recipe_items(grams)").in("id", recipeIds);
+    const { data, error } = await supabase
+      .from("recipes")
+      .select(
+        `id, name, serving_g, total_weight_g, archived_at, recipe_items(grams, food:foods!recipe_items_food_id_fkey(${NUTRITION_COLUMNS}))`,
+      )
+      .in("id", recipeIds)
+      .is("archived_at", null);
 
     if (error) {
       throw new Error(`No se pudieron leer las recetas: ${error.message}`);
     }
 
-    for (const row of (data ?? []) as Array<{ id: string; servings: number; recipe_items: Array<{ grams: number }> | null }>) {
-      const totalGrams = (row.recipe_items ?? []).reduce((sum, item) => sum + item.grams, 0);
-      recipeGramsPerServing.set(row.id, totalGrams / Math.max(1, row.servings));
+    for (const row of (data ?? []) as unknown as RecipeRow[]) {
+      const snapshot = buildRecipeSnapshot(toRecipeNutritionInput(row));
+
+      if (snapshot) {
+        recipeSnapshots.set(row.id, snapshot);
+      }
     }
   }
 
@@ -274,18 +299,19 @@ async function buildItemValues(supabase: SupabaseServerClient, items: MealItemIn
     let values: ItemValues;
 
     if (item.kind === "recipe") {
-      const gramsPerServing = recipeGramsPerServing.get(item.recipeId);
+      const snapshot = recipeSnapshots.get(item.recipeId);
 
-      if (!gramsPerServing) {
+      if (!snapshot) {
         throw new Error("La receta ya no está disponible.");
       }
 
       values = {
         food_id: null,
         recipe_id: item.recipeId,
-        grams: roundOneDecimal(gramsPerServing * item.quantity),
-        measure: "unit",
+        grams: roundOneDecimal(recipeGramsFor(snapshot.servingG, item.measure, item.quantity)),
+        measure: item.measure,
         quantity: item.quantity,
+        recipe_snapshot: snapshot,
       };
     } else {
       const food = foodsById.get(item.foodId);
@@ -302,6 +328,7 @@ async function buildItemValues(supabase: SupabaseServerClient, items: MealItemIn
         grams: roundOneDecimal(grams),
         measure: item.measure,
         quantity: item.quantity,
+        recipe_snapshot: null,
       };
     }
 
@@ -350,11 +377,36 @@ async function getMealInLog(supabase: SupabaseServerClient, args: { mealId: stri
   return { id: data.id as string, mealLogId: data.meal_log_id as string };
 }
 
+async function listMealIdsInOrder(supabase: SupabaseServerClient, mealLogId: string): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("meal_log_meals")
+    .select("id")
+    .eq("meal_log_id", mealLogId)
+    .order("position", { ascending: true })
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    throw new Error(`No se pudo leer el orden de las comidas: ${error.message}`);
+  }
+
+  return (data ?? []).map((row) => row.id as string);
+}
+
+async function saveMealOrder(supabase: SupabaseServerClient, mealLogId: string, mealIds: string[]) {
+  const { error } = await supabase.rpc("reorder_meals", { p_meal_log_id: mealLogId, p_meal_ids: mealIds });
+
+  if (error) {
+    throw new Error(error.code === "40001" ? error.message : `No se pudo ordenar las comidas: ${error.message}`);
+  }
+}
+
 export async function createMealWithItems(args: {
   userId: string;
   logDate: string;
   name: string;
   type: MealType;
+  /** Comida después de la cual se ubica; null = al principio; undefined = al final. */
+  afterMealId?: string | null;
   items: MealItemInput[];
 }): Promise<MealLog> {
   const supabase = await createSupabaseServerClient();
@@ -380,6 +432,37 @@ export async function createMealWithItems(args: {
     // Sin comidas a medias: si fallan los items, se descarta la comida.
     await supabase.from("meal_log_meals").delete().eq("id", meal.id);
     throw new Error(`No se pudieron guardar los alimentos de la comida: ${itemsError.message}`);
+  }
+
+  if (args.afterMealId !== undefined) {
+    const order = await listMealIdsInOrder(supabase, mealLogId);
+    const nextOrder = insertAfter(order, meal.id, args.afterMealId);
+
+    if (nextOrder.join() !== order.join()) {
+      try {
+        await saveMealOrder(supabase, mealLogId, nextOrder);
+      } catch {
+        // La comida ya está guardada al final; el usuario puede moverla.
+      }
+    }
+  }
+
+  return getMealLogOrEmpty(args);
+}
+
+export async function moveMeal(args: {
+  userId: string;
+  logDate: string;
+  mealId: string;
+  direction: "up" | "down";
+}): Promise<MealLog> {
+  const supabase = await createSupabaseServerClient();
+  const meal = await getMealInLog(supabase, args);
+  const order = await listMealIdsInOrder(supabase, meal.mealLogId);
+  const nextOrder = moveInOrder(order, meal.id, args.direction);
+
+  if (nextOrder.join() !== order.join()) {
+    await saveMealOrder(supabase, meal.mealLogId, nextOrder);
   }
 
   return getMealLogOrEmpty(args);
@@ -458,7 +541,7 @@ export async function updateMealItem(args: {
   const supabase = await createSupabaseServerClient();
   const { data: item, error: itemError } = await supabase
     .from("meal_log_items")
-    .select("id, food_id, recipe_id")
+    .select("id, food_id, recipe_id, recipe_snapshot")
     .eq("id", args.itemId)
     .maybeSingle();
 
@@ -470,14 +553,35 @@ export async function updateMealItem(args: {
     throw new Error("Ese alimento ya no está en la comida.");
   }
 
-  const input: MealItemInput = item.recipe_id
-    ? { kind: "recipe", recipeId: item.recipe_id, quantity: args.quantity }
-    : { kind: "food", foodId: item.food_id, measure: args.measure, quantity: args.quantity };
-  const [values] = await buildItemValues(supabase, [input]);
+  let values: Pick<ItemValues, "grams" | "measure" | "quantity">;
+
+  if (item.recipe_id && isRecipeSnapshot(item.recipe_snapshot)) {
+    // Receta congelada al registrarla: cambiar la cantidad no toma la versión nueva de la receta.
+    values = {
+      grams: roundOneDecimal(recipeGramsFor(item.recipe_snapshot.servingG, args.measure, args.quantity)),
+      measure: args.measure,
+      quantity: args.quantity,
+    };
+
+    if (values.grams <= 0 || values.grams > MAX_ITEM_GRAMS) {
+      throw new Error("Revisá la cantidad: es demasiado chica o demasiado grande.");
+    }
+  } else {
+    const input: MealItemInput = item.recipe_id
+      ? { kind: "recipe", recipeId: item.recipe_id, measure: args.measure, quantity: args.quantity }
+      : { kind: "food", foodId: item.food_id, measure: args.measure, quantity: args.quantity };
+    const [built] = await buildItemValues(supabase, [input]);
+    values = built;
+  }
 
   const { error: updateError } = await supabase
     .from("meal_log_items")
-    .update({ grams: values.grams, measure: values.measure, quantity: values.quantity })
+    .update({
+      grams: values.grams,
+      measure: values.measure,
+      quantity: values.quantity,
+      ...("recipe_snapshot" in values && values.recipe_snapshot ? { recipe_snapshot: values.recipe_snapshot } : {}),
+    })
     .eq("id", args.itemId);
 
   if (updateError) {
@@ -531,7 +635,9 @@ export async function listFrequentItems(args: { userId: string; days?: number; l
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("meal_logs")
-    .select("log_date, meal_log_meals(meal_log_items(food_id, recipe_id, measure, quantity, created_at))")
+    .select(
+      "log_date, meal_log_meals(meal_log_items(food_id, recipe_id, measure, quantity, created_at, recipe:recipes!meal_log_items_recipe_id_fkey(archived_at)))",
+    )
     .eq("user_id", args.userId)
     .gte("log_date", addDaysToDateKey(today, -((args.days ?? 60) - 1)))
     .lte("log_date", today);
@@ -546,6 +652,7 @@ export async function listFrequentItems(args: { userId: string; days?: number; l
     measure: FoodMeasure;
     quantity: number;
     created_at: string;
+    recipe: One<{ archived_at: string | null }>;
   };
 
   const usage = new Map<string, { item: FrequentItem; lastUsedAt: string }>();
@@ -556,7 +663,7 @@ export async function listFrequentItems(args: { userId: string; days?: number; l
         const kind = logItem.recipe_id ? "recipe" : "food";
         const id = logItem.recipe_id ?? logItem.food_id;
 
-        if (!id) {
+        if (!id || one(logItem.recipe)?.archived_at) {
           continue;
         }
 
@@ -638,7 +745,10 @@ function mapMealLogItem(row: MealLogItemRow): MealLogItem {
       throw new Error(`El item de registro ${row.id} referencia una receta inexistente o inaccesible.`);
     }
 
-    const perServing = recipeNutritionPerServing(recipe);
+    // Congelada al registrar; sin snapshot (items previos al cambio) se usa la receta actual.
+    const snapshot = isRecipeSnapshot(row.recipe_snapshot)
+      ? row.recipe_snapshot
+      : buildRecipeSnapshot(toRecipeNutritionInput(recipe));
 
     return {
       ...base,
@@ -647,13 +757,9 @@ function mapMealLogItem(row: MealLogItemRow): MealLogItem {
       recipeId: row.recipe_id,
       name: recipe.name,
       category: null,
-      measure: "unit",
-      ...roundNutrition({
-        kcal: perServing.kcal * row.quantity,
-        proteinG: perServing.proteinG * row.quantity,
-        carbsG: perServing.carbsG * row.quantity,
-        fatG: perServing.fatG * row.quantity,
-      }),
+      measure: row.measure,
+      servingG: snapshot?.servingG ?? null,
+      ...roundNutrition(snapshot ? nutritionFromSnapshot(snapshot, row.grams) : { kcal: 0, proteinG: 0, carbsG: 0, fatG: 0 }),
     };
   }
 
@@ -671,6 +777,7 @@ function mapMealLogItem(row: MealLogItemRow): MealLogItem {
     name: food.name,
     category: food.category,
     measure: row.measure,
+    servingG: null,
     ...roundNutrition(nutritionForGrams(food, row.grams)),
   };
 }
@@ -686,33 +793,29 @@ function nutritionForGrams(food: NutritionRow, grams: number): ItemNutrition {
   };
 }
 
-function recipeNutritionPerServing(recipe: RecipeRow): ItemNutrition {
-  const servings = Math.max(1, recipe.servings);
-  const total = (recipe.recipe_items ?? []).reduce<ItemNutrition>(
-    (sum, recipeItem) => {
-      const food = one(recipeItem.food);
+function toRecipeNutritionInput(recipe: RecipeRow) {
+  const ingredients = (recipe.recipe_items ?? []).map((recipeItem) => {
+    const food = one(recipeItem.food);
 
-      if (!food) {
-        return sum;
-      }
-
-      const nutrition = nutritionForGrams(food, recipeItem.grams);
-
-      return {
-        kcal: sum.kcal + nutrition.kcal,
-        proteinG: sum.proteinG + nutrition.proteinG,
-        carbsG: sum.carbsG + nutrition.carbsG,
-        fatG: sum.fatG + nutrition.fatG,
-      };
-    },
-    { kcal: 0, proteinG: 0, carbsG: 0, fatG: 0 },
-  );
+    return {
+      grams: Number(recipeItem.grams),
+      food: food
+        ? {
+            servingG: Number(food.serving_g),
+            calories: Number(food.calories),
+            proteinG: Number(food.protein_g),
+            carbsG: Number(food.carbs_g),
+            fatG: Number(food.fat_g),
+          }
+        : null,
+    };
+  });
+  const rawGrams = ingredients.reduce((sum, ingredient) => sum + ingredient.grams, 0);
 
   return {
-    kcal: total.kcal / servings,
-    proteinG: total.proteinG / servings,
-    carbsG: total.carbsG / servings,
-    fatG: total.fatG / servings,
+    servingG: recipe.serving_g != null ? Number(recipe.serving_g) : rawGrams,
+    totalWeightG: recipe.total_weight_g != null ? Number(recipe.total_weight_g) : null,
+    ingredients,
   };
 }
 
