@@ -87,8 +87,8 @@ export function TodayExercisesSheet({
         <DrawerFooter className="px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
           <Button asChild className="h-14 rounded-2xl text-base font-bold">
             <Link href={href}>
-              <Play aria-hidden="true" className="size-4 fill-current text-[var(--accent-foreground)]" />
-              <span className="text-[var(--accent-foreground)]">{ctaLabel}</span>
+              <Play aria-hidden="true" className="size-4 fill-current" />
+              {ctaLabel}
             </Link>
           </Button>
         </DrawerFooter>

@@ -21,10 +21,9 @@ export function HomeSectionHeader({
       {action ? (
         <Link
           href={action.href}
-          className="group pressable -mr-2 inline-flex min-h-11 items-center rounded-lg px-2 text-sm font-semibold"
+          className="pressable -mr-2 inline-flex min-h-11 items-center rounded-lg px-2 text-sm font-semibold text-[var(--accent-bright)] hover:text-[var(--accent-strong)]"
         >
-          {/* color en el span: la regla global `a { color: inherit }` pisa utilidades en el <a> */}
-          <span className="text-[var(--accent-bright)] group-hover:text-[var(--accent-strong)]">{action.label}</span>
+          {action.label}
         </Link>
       ) : null}
     </div>

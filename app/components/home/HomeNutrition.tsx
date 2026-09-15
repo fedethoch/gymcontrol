@@ -102,8 +102,8 @@ export function HomeNutrition({
       {primary ? (
         <Button asChild className="h-14 rounded-2xl text-base font-bold">
           <Link href="/nutricion/registro">
-            <Plus aria-hidden="true" className="size-4 text-[var(--accent-foreground)]" />
-            <span className="text-[var(--accent-foreground)]">Registrar comida</span>
+            <Plus aria-hidden="true" className="size-4" />
+            Registrar comida
           </Link>
         </Button>
       ) : null}
@@ -129,9 +129,9 @@ export function HomeNutrition({
             <Link
               href={`/nutricion/registro?tipo=${row.type}`}
               aria-label={`Agregar ${row.label.toLowerCase()}`}
-              className="pressable grid size-11 place-items-center rounded-full bg-[var(--card-alt)] hover:bg-[var(--card-hover)]"
+              className="pressable grid size-11 place-items-center rounded-full bg-[var(--card-alt)] text-[var(--accent-bright)] hover:bg-[var(--card-hover)]"
             >
-              <Plus aria-hidden="true" className="size-[18px] text-[var(--accent-bright)]" />
+              <Plus aria-hidden="true" className="size-[18px]" />
             </Link>
           </li>
         ))}

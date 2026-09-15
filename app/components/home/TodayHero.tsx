@@ -161,10 +161,8 @@ export function TodayHero({
           <>
             <Button asChild className="h-14 flex-1 rounded-2xl text-base font-bold">
               <Link href={startHref}>
-                <Play aria-hidden="true" className="size-4 fill-current text-[var(--accent-foreground)]" />
-                <span className="text-[var(--accent-foreground)]">
-                  {state === "in_progress" ? "Continuar" : "Empezar"}
-                </span>
+                <Play aria-hidden="true" className="size-4 fill-current" />
+                {state === "in_progress" ? "Continuar" : "Empezar"}
               </Link>
             </Button>
             {exercisesSheet}
@@ -172,8 +170,8 @@ export function TodayHero({
         ) : state === "no_routine" ? (
           <Button asChild className="h-14 flex-1 rounded-2xl text-base font-bold">
             <Link href="/catalogo">
-              <span className="text-[var(--accent-foreground)]">Explorar rutinas</span>
-              <ChevronRight aria-hidden="true" className="size-4 text-[var(--accent-foreground)]" />
+              Explorar rutinas
+              <ChevronRight aria-hidden="true" className="size-4" />
             </Link>
           </Button>
         ) : (
