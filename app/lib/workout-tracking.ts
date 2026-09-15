@@ -1,5 +1,6 @@
 import "server-only";
 
+import { STRENGTH_RANGE_COLORS } from "@/app/lib/strength-colors";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 
 export type WorkoutSessionStatus = "in_progress" | "completed";
@@ -98,14 +99,6 @@ const PRIMARY_STRENGTH_EXERCISES: Record<(typeof STRENGTH_GROUPS)[number], strin
   Biceps: ["curl con barra", "barbell curl"],
   Triceps: ["press cerrado", "close grip press"],
   Core: ["crunch en polea", "cable crunch"],
-};
-
-const STRENGTH_RANGE_COLORS: Record<MuscleStrengthRange, string> = {
-  sin_datos: "#263347",
-  base: "#22c55e",
-  fuerte: "#eab308",
-  avanzado: "#f97316",
-  elite: "#ef4444",
 };
 
 const STRENGTH_THRESHOLDS: Record<(typeof STRENGTH_GROUPS)[number], [number, number, number, number]> = {

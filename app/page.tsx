@@ -13,8 +13,14 @@ import {
   Zap,
 } from "lucide-react";
 
+import { HomeGreeting } from "@/app/components/home/HomeGreeting";
+import { HomeNutrition } from "@/app/components/home/HomeNutrition";
+import { HomeWeekStats } from "@/app/components/home/HomeWeekStats";
+import { HomeWeekStrip } from "@/app/components/home/HomeWeekStrip";
+import { MuscleAnatomy } from "@/app/components/home/MuscleAnatomy";
+import { TodayExercisesSheet } from "@/app/components/home/TodayExercisesSheet";
+import { TodayHero } from "@/app/components/home/TodayHero";
 import { BodyMuscleFigure } from "@/app/components/shared/BodyMuscleFigure";
-import { MobileHeaderBadgeSync } from "@/app/components/shared/MobileHeader";
 import { WeekCombinedCard } from "@/app/components/shared/WeekCombinedCard";
 import { Button } from "@/app/components/ui/Button";
 import {
@@ -27,6 +33,12 @@ import {
 } from "@/app/components/ui/motion";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
 import { requireUser } from "@/app/lib/auth";
+import {
+  buildMealRows,
+  formatMuscleGroup,
+  getSessionProgress,
+  resolveHeroState,
+} from "@/app/lib/home-dashboard";
 import {
   getLoggedDatesForUser,
   getMealLogForDate,
@@ -43,8 +55,10 @@ import {
   getSavedRoutineByIdForUser,
   listSavedRoutinesForUser,
 } from "@/app/lib/saved-routines";
+import { countDatesThisWeek } from "@/app/lib/week";
 import {
   getCompletedTrainingDates,
+  getWorkoutSessionForToday,
   listMuscleStrengthSummariesForSavedRoutine,
   listWorkoutWeeklySummaries,
   type MuscleStrengthSummary,
@@ -217,21 +231,116 @@ export default async function Home() {
   const weeklyTrainingCount = countDatesInWindow(completedTrainingDates, 7);
   const weeklyNutritionCount = countDatesInWindow(nutritionDatesSet, 7);
 
-  return (
-    <section className="page-frame auto-rows-max content-start bg-[linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
-      <MobileHeaderBadgeSync
-        badge={{
-          label: streak > 0 ? `${streak} día${streak === 1 ? "" : "s"}` : "Sin racha",
-          ariaLabel:
-            streak > 0
-              ? `Racha: ${streak} día${streak === 1 ? "" : "s"} consecutivos`
-              : "Sin racha activa",
-          tone: streak > 0 ? "warm" : "default",
-        }}
-      />
+  // ── Home mobile (DESIGN.md §10) ──
+  const todaySession =
+    activeRoutine && nextPendingDay
+      ? await getWorkoutSessionForToday({
+          savedRoutineId: activeRoutine.id,
+          routineDayId: nextPendingDay.id,
+          userId: auth.user.id,
+        })
+      : null;
+  const heroState = resolveHeroState({
+    hasActiveRoutine: Boolean(activeRoutine),
+    hasPendingDay: Boolean(nextPendingDay),
+    trainedToday: completedTrainingDates.has(logDate),
+    todaySessionStatus: todaySession?.status ?? null,
+  });
+  const heroGroups = muscleGroups.slice(0, 2).map(formatMuscleGroup);
+  const heroTitle =
+    heroGroups.length === 2 ? `${heroGroups[0]} & ${heroGroups[1]}` : (heroGroups[0] ?? nextPendingDay?.dayName ?? "");
+  const weekdayName = new Intl.DateTimeFormat("es-AR", { weekday: "long" }).format(
+    new Date(`${logDate}T00:00:00`),
+  );
+  const canStartToday = heroState === "ready" || heroState === "in_progress";
 
+  return (
+    <section className="page-frame home-frame auto-rows-max content-start bg-[linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
       <h1 className="sr-only">Panel principal</h1>
 
+      {/* ── Mobile (<1024) · DESIGN.md §10 ── */}
+      <div className="flex flex-col lg:hidden">
+        <div aria-hidden="true" className="home-safe-top" />
+        <HomeGreeting displayName={auth.profile.displayName} streak={streak} />
+        <div className="mt-5">
+          <HomeWeekStrip completedDates={completedTrainingDates} />
+        </div>
+        <div className="mt-5">
+          <TodayHero
+            state={heroState}
+            weekdayLabel={weekdayName.charAt(0).toUpperCase() + weekdayName.slice(1)}
+            day={
+              nextPendingDay
+                ? {
+                    order: nextPendingDay.dayOrder,
+                    total: totalDaysCount,
+                    name: nextPendingDay.dayName,
+                    groups: heroGroups,
+                    minutes: estimatedMinutes,
+                    exerciseCount,
+                    seriesCount: dayItems.reduce((sum, item) => sum + item.series, 0),
+                  }
+                : null
+            }
+            progress={
+              todaySession?.status === "in_progress" ? getSessionProgress(dayItems, todaySession) : null
+            }
+            startHref={primaryHref}
+            exercisesSheet={
+              canStartToday && dayItems.length > 0 ? (
+                <TodayExercisesSheet
+                  title={heroTitle}
+                  description={`${exerciseCount} ejercicios · ~${estimatedMinutes} min`}
+                  href={primaryHref}
+                  ctaLabel={heroState === "in_progress" ? "Continuar" : "Empezar"}
+                  exercises={dayItems.map((item) => ({
+                    id: item.id,
+                    name: item.exercise.name,
+                    series: item.series,
+                    repetitions: item.repetitions,
+                    done: todaySession?.itemsByRoutineItemId[item.id]?.isCompleted === true,
+                  }))}
+                />
+              ) : undefined
+            }
+          />
+        </div>
+        <div className="mt-9">
+          <HomeNutrition
+            hasProfile={Boolean(nutritionProfile)}
+            totalKcal={totalKcal}
+            targetKcal={plan.targetKcal}
+            totalMacros={totalMacros}
+            targetMacros={plan.macros}
+            mealRows={buildMealRows(meals)}
+            primary={heroState === "done_today" || heroState === "week_done"}
+          />
+        </div>
+        {activeRoutine ? (
+          <>
+            <div className="mt-9">
+              <HomeWeekStats
+                completedDays={completedDaysCount}
+                totalDays={totalDaysCount}
+                streak={streak}
+                nutritionDays={countDatesThisWeek(nutritionDatesSet)}
+              />
+            </div>
+            <div className="mt-9">
+              <MuscleAnatomy
+                points={muscleStrengthSummaries.map(({ muscleGroup, range, bestWeight }) => ({
+                  muscleGroup,
+                  range,
+                  bestWeight,
+                }))}
+              />
+            </div>
+          </>
+        ) : null}
+      </div>
+
+      {/* ── Desktop (≥1024) · layout de cards ── */}
+      <div className="hidden lg:contents">
       {/* ── Z1 Hero (focal) + Z2 KPI strip ── */}
       <MotionSection
         variants={staggerContainer}
@@ -390,6 +499,7 @@ export default async function Home() {
           <ComidasHoyCard meals={meals} totalKcal={totalKcal} />
         </MotionDiv>
       </MotionSection>
+      </div>
     </section>
   );
 }

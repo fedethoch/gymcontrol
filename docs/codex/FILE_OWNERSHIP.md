@@ -5,6 +5,7 @@ Objetivo: abrir el area minima correcta.
 | Responsabilidad | Dueno principal |
 | --- | --- |
 | Rutas publicas | `app/page.tsx`, `app/catalogo/`, `app/auth/` |
+| Home mobile (`/`, <1024) | `app/components/home/`, `app/lib/home-dashboard.ts`; reglas en `DESIGN.md` §10 |
 | Rutas de dashboard | `app/dashboard/` |
 | Rutas admin | `app/admin/` |
 | Shell y navegacion | `app/layout.tsx`, `app/globals.css`, `app/components/ui/AppShell.tsx`, `app/components/shared/PrimaryNavigation.tsx`, `app/components/shared/navigation-config.ts` |

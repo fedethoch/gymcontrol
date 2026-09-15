@@ -98,6 +98,7 @@ export function RegistroClient({
   targetMacros,
   loggedDates,
   avgDailyKcal,
+  initialMealType,
 }: {
   foods: Food[];
   logDate: string;
@@ -106,15 +107,17 @@ export function RegistroClient({
   targetMacros: Macros;
   loggedDates: string[];
   avgDailyKcal: number;
+  /** Si viene (desde el home), abre "Nueva comida" con ese tipo elegido. */
+  initialMealType?: MealType;
 }) {
   const [meals, setMeals] = useState(initialMeals);
-  const [mealType, setMealType] = useState<MealType>("desayuno");
-  const [mealName, setMealName] = useState(MEAL_TYPE_LABELS.desayuno);
+  const [mealType, setMealType] = useState<MealType>(initialMealType ?? "desayuno");
+  const [mealName, setMealName] = useState(MEAL_TYPE_LABELS[initialMealType ?? "desayuno"]);
   const [mealNameTouched, setMealNameTouched] = useState(false);
   const [draftItems, setDraftItems] = useState<DraftItem[]>([]);
   const [isSavingMeal, setIsSavingMeal] = useState(false);
   const [editingMealId, setEditingMealId] = useState<string | null>(null);
-  const [newMealOpen, setNewMealOpen] = useState(false);
+  const [newMealOpen, setNewMealOpen] = useState(Boolean(initialMealType));
 
   const totalKcal = meals.reduce((total, meal) => total + meal.kcal, 0);
   const totalMacros: Macros = meals.reduce<Macros>(

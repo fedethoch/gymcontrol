@@ -82,6 +82,22 @@ Texto sobre relleno de status: usar near-black `#0a0d12` para lime/amber/sky; bl
 - Componentes/íconos no textuales y bordes de foco ≥ **3:1**.
 - Nunca acento sobre acento para texto. Nunca `--foreground-subtle` sobre `--card-alt` para nada legible.
 
+### 1.6 Rampa de fuerza (dato, no estado)
+
+Escala ordinal para el rango de fuerza por grupo muscular (`MuscleStrengthRange`). Lógica **peor → mejor** tipo semáforo: el brillo sube con el nivel, así el orden se lee también en escala de grises y con daltonismo.
+
+| Token | Hex | Rango |
+|---|---|---|
+| `--strength-0` | `#263347` | Sin datos (mismo gris que el cuerpo de `BodyMuscleFigure`) |
+| `--strength-1` | `#f43f5e` | Base |
+| `--strength-2` | `#fb923c` | Fuerte |
+| `--strength-3` | `#fbbf24` | Avanzado |
+| `--strength-4` | `#bef264` | Elite |
+
+- Todos los rangos ≥ 5.4:1 contra `--background`. ΔE mínimo entre rangos contiguos: 31 (normal), 16 (deuteranopia), 15 (protanopia).
+- Es un **dato**, no un estado: no reemplaza `--danger`/`--success` ni se usa para errores. El texto siempre nombra el rango ("Base", nunca "mal").
+- Fuente única en código: `STRENGTH_RANGE_COLORS` (`app/lib/strength-colors.ts`) apunta a estos tokens.
+
 ---
 
 ## 2. Tipografía
@@ -100,7 +116,10 @@ Migración (Fase 1, en `layout.tsx`): quitar `IBM_Plex_Sans` / `IBM_Plex_Mono`, 
 
 | Nombre | Size / line-height | Peso | Fuente | Uso |
 |---|---|---|---|---|
+| Display XXL | 3.625rem / 0.88 | 800 | Sora | Título del hero del home (mayúsculas, tracking −0.05em). Uno por pantalla |
+| Metric L | 3rem / 1 | 700 | Sora | Número principal de una sección (ej. kcal restantes) |
 | Display XL | 2rem / 1.1 | 700 | Sora | Número hero de métrica |
+| Metric M | 1.75rem / 1 | 700 | Sora | Stats en fila (entrenos, racha, comidas) |
 | H1 | 1.5rem / 1.2 | 600 | Sora | Título de pantalla |
 | H2 | 1.25rem / 1.25 | 600 | Sora | Título de sección |
 | H3 | 1.0625rem / 1.3 | 600 | Sora | Título de card |
@@ -141,6 +160,7 @@ Migración (Fase 1, en `layout.tsx`): quitar `IBM_Plex_Sans` / `IBM_Plex_Mono`, 
 | md | 10px (`0.625rem`) | Controles, selects (ya en uso: `.nutrition-compact-control`) |
 | lg | 14px | Cards |
 | xl | 20px | Sheets, contenedores grandes, modales |
+| hero | 28px | Hero con foto del home (única superficie con este radio) |
 | pill | 999px | Badges, avatares, botones redondos |
 
 Consistencia: un mismo tipo de elemento usa siempre el mismo radio.
@@ -208,6 +228,7 @@ La app es **instalable y standalone**. El diseño asume que el usuario la abre c
 - Regiones: `PrimaryNavigation` (sidebar desktop) · `.shell-workspace` (`MobileHeader` + `main.shell-main`) · `MobileTabBar` (bottom nav).
 - `viewport-fit: cover` + `env(safe-area-inset-*)` en todos los bordes (header top, tab bar bottom, toasts). Ver `.page-frame` padding-top/bottom con safe-area.
 - `theme_color` y `background_color` = `#05070b`. `apple-mobile-web-app-status-bar-style: black-translucent`.
+- **Excepción del home (`/`)**: `MobileHeader` no se renderiza en `/`; el home tiene su propio saludo (§10). Para que el scroll no pase por debajo de la barra de estado en standalone, el home fija una franja `env(safe-area-inset-top)` con `--background` (`.home-safe-top`).
 
 ### 6.2 Bottom nav — **NO TOCAR sin pedido explícito**
 
@@ -269,3 +290,37 @@ Detalle: modo browser (`.pwa-browser` / `@media (display-mode: browser)`) usa ba
 | Superficies / spacing / motion / PWA shell | ya alineados | mantener | — |
 
 > Fase 0 (este entregable) = solo documentación. La aplicación real de tokens es Fase 1+, sección por sección, según `plan/prompts.md`.
+
+---
+
+## 10. Home mobile (`/`, <1024px)
+
+Jerarquía de escala fuerte: un solo elemento Display XXL por pantalla, títulos de sección H2 sin kicker en mayúsculas, secciones separadas por espacio y líneas, **no por cards**. Desktop (≥1024) conserva su layout de cards.
+
+### 10.1 Zonas (arriba → abajo)
+
+| Zona | Contenido |
+|---|---|
+| Z1 Saludo | Avatar (link a `/configuracion`), "Hola, {nombre}" (o "Bienvenido a GymControl"), campana y chip de racha (solo si racha > 0) |
+| Z2 Semana | 7 círculos de 38px L–D: emerald con check = entrenado, borde claro = hoy |
+| Z3 Hero "Hoy toca" | Foto grayscale, radio 28px, alto `clamp(380px, 52svh, 470px)`, título Display XXL (máx. 2 grupos musculares), meta en una línea, CTA 56px + botón de lista que abre un bottom sheet con los ejercicios |
+| Z4 Nutrición | Metric L (kcal restantes), 3 barras de macros, filas Desayuno/Almuerzo/Merienda/Cena (Snack solo si hay) con "+" de 44px → `/nutricion/registro?tipo=…` |
+| Z5 Esta semana | 3 stats Metric M (entrenos, racha, comidas) de la semana calendario, separados por líneas |
+| Z6 Tus músculos | `BodyMuscleFigure` sin card: switch Frente/Espalda, figura 150×300, etiquetas con líneas guía (nombre, kg, color del rango; la seleccionada suma el rango) y una fila de escala |
+
+### 10.2 Estados del hero
+
+| Estado | Condición | Hero | CTA emerald |
+|---|---|---|---|
+| `ready` | Día pendiente, sin sesión hoy | "Grupo & Grupo", meta min · ejercicios · series | "Empezar" en el hero |
+| `in_progress` | Sesión `in_progress` hoy | "X de N ejercicios" + barra | "Continuar" en el hero |
+| `done_today` | Hoy entrenado, queda día pendiente | Oscurecido, "Entreno hecho", próximo día | "Registrar comida" en Nutrición |
+| `week_done` | Sin día pendiente | Oscurecido, "Semana cerrada" | "Registrar comida" en Nutrición |
+| `no_routine` | Sin rutina activa | "Elegí tu rutina" | "Explorar rutinas" en el hero |
+
+Reglas: **un solo CTA emerald por pantalla**. "Esta semana" y "Tus músculos" solo con rutina activa. Sin perfil nutricional, Nutrición muestra "Calculá tus kcal y macros" en lugar de números.
+
+### 10.3 Tus músculos sin datos
+
+- **Vacío** (los 7 grupos sin peso): frente y espalda juntos a 104px, sin etiquetas ni switch, mensaje "Todavía sin datos de fuerza" + escala.
+- **Parcial** (≥1 grupo con peso): layout normal + línea "X de 7 grupos con datos".

@@ -1,6 +1,6 @@
 import { CalendarRange, Dumbbell, UtensilsCrossed } from "lucide-react";
 
-const WEEK_LABELS = ["L", "M", "M", "J", "V", "S", "D"] as const;
+import { getCurrentWeekDays, WEEK_DAY_LABELS } from "@/app/lib/week";
 
 type WeekCombinedCardProps = {
   completedDates: Set<string>;
@@ -12,20 +12,12 @@ type WeekCombinedCardProps = {
 type DayCell = { key: string; label: string; active: boolean; isToday: boolean };
 
 function buildWeek(dates: Set<string>): DayCell[] {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const todayKey = formatDateOnly(today);
-  const dayOfWeek = today.getDay(); // 0 = Domingo
-  const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-  const monday = new Date(today);
-  monday.setDate(today.getDate() + mondayOffset);
-
-  return WEEK_LABELS.map((label, i) => {
-    const d = new Date(monday);
-    d.setDate(monday.getDate() + i);
-    const key = formatDateOnly(d);
-    return { key, label, active: dates.has(key), isToday: key === todayKey };
-  });
+  return getCurrentWeekDays().map((day) => ({
+    key: day.key,
+    label: day.label,
+    active: dates.has(day.key),
+    isToday: day.isToday,
+  }));
 }
 
 /**
@@ -55,7 +47,7 @@ export function WeekCombinedCard({
       <div className="flex flex-1 flex-col justify-center gap-2">
         {/* Header de días — compartido por ambas filas */}
         <WeekLine gutter={<span aria-hidden="true" />}>
-          {WEEK_LABELS.map((label, i) => (
+          {WEEK_DAY_LABELS.map((label, i) => (
             <span
               key={i}
               aria-hidden="true"
@@ -117,11 +109,4 @@ function WeekDot({ day, series, stateVerb }: { day: DayCell; series: string; sta
       />
     </span>
   );
-}
-
-function formatDateOnly(value: Date) {
-  const year = value.getFullYear();
-  const month = String(value.getMonth() + 1).padStart(2, "0");
-  const day = String(value.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
 }

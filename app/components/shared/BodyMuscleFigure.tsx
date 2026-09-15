@@ -348,6 +348,7 @@ function toLibraryMuscles(key: string): Muscle[] {
     return ["front-deltoids", "back-deltoids"];
   if (k.includes("bicep")) return ["biceps"];
   if (k.includes("tricep")) return ["triceps"];
+  if (k.includes("core") || k.includes("abdom")) return ["abs", "obliques"];
   return [];
 }
 
@@ -383,16 +384,87 @@ function BodySVG({
           <polygon
             key={`${muscle}-${i}`}
             points={points}
-            fill={
-              muscleColors[muscle] ??
-              fillIntensityColor(muscleMap, HIGHLIGHTED_COLORS, muscle) ??
-              BODY_COLOR
-            }
+            // style (no atributo fill) para aceptar tokens CSS como var(--strength-2)
+            style={{
+              fill:
+                muscleColors[muscle] ??
+                fillIntensityColor(muscleMap, HIGHLIGHTED_COLORS, muscle) ??
+                BODY_COLOR,
+            }}
           />
         )),
       )}
     </svg>
   );
+}
+
+// ── Vista suelta (home mobile) ────────────────────────────────────────────────
+export type MuscleView = "front" | "back";
+
+/**
+ * Una sola vista del cuerpo con color y opacidad por grupo muscular (claves de
+ * `muscle_group`: Pecho, Espalda, Piernas, Hombros, Biceps, Triceps, Core).
+ */
+export function MuscleBodyView({
+  view,
+  width,
+  fills,
+  opacities = {},
+  onSelectGroup,
+}: {
+  view: MuscleView;
+  width: number;
+  fills: Record<string, string>;
+  opacities?: Record<string, number>;
+  onSelectGroup?: (group: string) => void;
+}) {
+  const modelData = view === "front" ? anteriorData : posteriorData;
+  const groupByMuscle = new Map<Muscle, string>();
+  for (const group of Object.keys(fills)) {
+    for (const muscle of toLibraryMuscles(group)) groupByMuscle.set(muscle, group);
+  }
+
+  return (
+    <svg viewBox="0 0 100 200" width={width} height={width * 2} aria-hidden="true" className="block">
+      {modelData.map(({ muscle, svgPoints }) => {
+        const group = groupByMuscle.get(muscle);
+        return svgPoints.map((points, i) => (
+          <polygon
+            key={`${muscle}-${i}`}
+            points={points}
+            onClick={group && onSelectGroup ? () => onSelectGroup(group) : undefined}
+            className={group && onSelectGroup ? "cursor-pointer" : undefined}
+            style={{
+              fill: group ? fills[group] : BODY_COLOR,
+              opacity: group ? (opacities[group] ?? 1) : 1,
+              transition: "opacity 180ms cubic-bezier(0.22, 1, 0.36, 1)",
+            }}
+          />
+        ));
+      })}
+    </svg>
+  );
+}
+
+/** Centro (viewBox 0–100 × 0–200) del polígono de un músculo, del lado pedido. */
+export function getMuscleCentroid(view: MuscleView, muscle: string, side: "left" | "right") {
+  const modelData = view === "front" ? anteriorData : posteriorData;
+  const entry = modelData.find((item) => item.muscle === muscle);
+  if (!entry) return null;
+
+  const centroids = entry.svgPoints.map((points) => {
+    const values = points.trim().split(/\s+/).map(Number);
+    let x = 0;
+    let y = 0;
+    for (let i = 0; i + 1 < values.length; i += 2) {
+      x += values[i];
+      y += values[i + 1];
+    }
+    const count = values.length / 2;
+    return { x: x / count, y: y / count };
+  });
+  centroids.sort((a, b) => a.x - b.x);
+  return side === "left" ? centroids[0] : centroids[centroids.length - 1];
 }
 
 // ── Public component ──────────────────────────────────────────────────────────

@@ -108,7 +108,8 @@ export function MobileHeader({
   const pathname = usePathname();
   const { badge } = useMobileHeaderState();
 
-  if (pathname.startsWith("/auth")) {
+  // El home tiene su propio saludo (DESIGN.md §6.1 / §10).
+  if (pathname.startsWith("/auth") || pathname === "/") {
     return null;
   }
 

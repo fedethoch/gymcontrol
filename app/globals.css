@@ -19,12 +19,13 @@
   --warning: #f59e0b;
   --danger: #f43f5e;
   --info: #38bdf8;
-  /* Rampa de intensidad de fuerza (Base -> Elite). Escala secuencial, no status.
-     Sin greens: no colisiona con el brand emerald ni con --success lime. */
-  --strength-1: #4b5566;
-  --strength-2: #f59e0b;
-  --strength-3: #f97316;
-  --strength-4: #f43f5e;
+  /* Rampa de fuerza peor -> mejor (DESIGN.md §1.6). Dato ordinal, no status.
+     El brillo sube con el rango; 0 = sin datos (mismo gris que el cuerpo). */
+  --strength-0: #263347;
+  --strength-1: #f43f5e;
+  --strength-2: #fb923c;
+  --strength-3: #fbbf24;
+  --strength-4: #bef264;
   --card-hover: #1b2230;
   --focus-glow: 0 0 0 3px rgba(16, 185, 129, 0.35);
 }
@@ -537,6 +538,24 @@ a {
   align-content: start;
   grid-auto-rows: max-content;
   padding-top: calc(4.75rem + env(safe-area-inset-top));
+}
+
+/* Home mobile: sin MobileHeader en "/" (DESIGN.md §6.1), el saludo vive en la página. */
+@media (max-width: 1023px) {
+  .home-frame {
+    padding-top: calc(0.75rem + env(safe-area-inset-top));
+  }
+}
+
+/* Franja fija bajo la barra de estado (standalone black-translucent). Altura 0 en browser. */
+.home-safe-top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  height: env(safe-area-inset-top);
+  margin-top: calc(-0.75rem - env(safe-area-inset-top));
+  margin-bottom: 0.75rem;
+  background: var(--background);
 }
 
 .thumb-fitness {

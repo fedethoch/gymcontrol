@@ -10,10 +10,18 @@ import {
   getMealLogForDate,
 } from "@/app/lib/meal-logs";
 import { getNutritionProfile } from "@/app/lib/nutrition-profile";
+import { MEAL_TYPES, type MealType } from "@/app/lib/nutrition-types";
 
-export default async function RegistroNutricionPage() {
+export default async function RegistroNutricionPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tipo?: string | string[] }>;
+}) {
   const auth = await requireUser();
   const logDate = getLocalTrainingDate();
+  // "+" de cada comida en el home: /nutricion/registro?tipo=almuerzo
+  const { tipo } = await searchParams;
+  const initialMealType = MEAL_TYPES.find((type) => type === tipo) as MealType | undefined;
 
   const [foods, mealLog, profile, loggedDates, avgDailyKcal] = await Promise.all([
     listFoodCatalogItems(),
@@ -35,6 +43,7 @@ export default async function RegistroNutricionPage() {
         targetMacros={plan.macros}
         loggedDates={[...loggedDates]}
         avgDailyKcal={avgDailyKcal}
+        initialMealType={initialMealType}
       />
     </section>
   );
