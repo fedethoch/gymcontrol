@@ -195,7 +195,7 @@ export async function deleteExercise(id: string) {
   if (error) {
     if (error.code === "23503") {
       throw new Error(
-        "No se puede eliminar: el ejercicio esta en uso en una o mas rutinas. Quitalo de esas rutinas antes de borrarlo.",
+        "No se puede eliminar: el ejercicio esta en uso en una o mas rutinas o en el historial de entrenamientos de algun usuario.",
       );
     }
 

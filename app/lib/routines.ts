@@ -4,7 +4,7 @@ import { unstable_cache } from "next/cache";
 import { createClient } from "@supabase/supabase-js";
 
 import type { ExerciseCatalogItem } from "@/app/lib/exercises";
-import type { RoutineDayWriteInput, RoutineWriteInput } from "@/app/lib/routine-form";
+import type { RoutineWriteInput } from "@/app/lib/routine-form";
 import type { RoutineDifficulty, RoutineObjective } from "@/app/lib/routine-metadata";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 
@@ -35,6 +35,7 @@ export type RoutineTemplate = {
   imageUrl: string;
   difficulty: RoutineDifficulty;
   objective: RoutineObjective;
+  archivedAt: string | null;
   days: RoutineDay[];
 };
 
@@ -45,8 +46,6 @@ export type AdminRoutineListItem = RoutineTemplate & {
   itemCount: number;
   usersCount: number;
 };
-
-type SupabaseServerClient = Awaited<ReturnType<typeof createSupabaseServerClient>>;
 
 function createAnonClient() {
   return createClient(
@@ -64,6 +63,7 @@ type RoutineRow = {
   difficulty: RoutineDifficulty;
   objective: RoutineObjective;
   created_at: string;
+  archived_at: string | null;
   routine_days: RoutineDayRow[] | null;
 };
 
@@ -101,13 +101,17 @@ type ExerciseRow = {
   tips: string[];
 };
 
-type CreateRoutineInput = RoutineWriteInput & {
-  createdBy: string;
+type SaveRoutineInput = RoutineWriteInput & {
+  id?: string;
 };
 
-type UpdateRoutineInput = RoutineWriteInput & {
-  id: string;
+type RoutineUsageRow = {
+  routine_template_id: string;
+  saved_count: number;
 };
+
+/** Errores con mensaje propio lanzados por `admin_save_routine`. */
+const SAVE_ROUTINE_USER_ERROR_CODES = new Set(["P0002", "22023", "42501"]);
 
 const ROUTINE_SELECT = `
   id,
@@ -117,6 +121,7 @@ const ROUTINE_SELECT = `
   difficulty,
   objective,
   created_at,
+  archived_at,
   routine_days (
     id,
     day_order,
@@ -159,22 +164,16 @@ export async function listAdminRoutines(): Promise<AdminRoutineListItem[]> {
     throw new Error(`No se pudo listar rutinas: ${error.message}`);
   }
 
-  const { data: savedRoutines, error: savedError } = await supabase
-    .from("saved_routines")
-    .select("routine_template_id");
+  // saved_routines es owner-only: el conteo real sale de una función que solo devuelve agregados.
+  const { data: usage, error: usageError } = await supabase.rpc("routine_template_usage");
 
-  if (savedError) {
-    throw new Error(`No se pudo contar usuarios por rutina: ${savedError.message}`);
+  if (usageError) {
+    throw new Error(`No se pudo contar usuarios por rutina: ${usageError.message}`);
   }
 
-  const usersCountByRoutineId = new Map<string, number>();
-
-  for (const row of (savedRoutines ?? []) as { routine_template_id: string }[]) {
-    usersCountByRoutineId.set(
-      row.routine_template_id,
-      (usersCountByRoutineId.get(row.routine_template_id) ?? 0) + 1,
-    );
-  }
+  const usersCountByRoutineId = new Map(
+    ((usage ?? []) as RoutineUsageRow[]).map((row) => [row.routine_template_id, row.saved_count]),
+  );
 
   return ((data ?? []) as unknown as RoutineRow[]).map((routine) => {
     const mapped = mapRoutineTemplate(routine);
@@ -196,6 +195,7 @@ export const listRoutineTemplates = unstable_cache(
     const { data, error } = await supabase
       .from("routine_templates")
       .select(ROUTINE_SELECT)
+      .is("archived_at", null)
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -227,88 +227,78 @@ export async function getRoutineById(id: string) {
   return mapRoutineTemplate(data as unknown as RoutineRow);
 }
 
-export async function createRoutine(input: CreateRoutineInput) {
+/**
+ * Crea o actualiza plantilla, días y filas en una transacción (`admin_save_routine`).
+ * Los días y filas con `id` existente se actualizan en lugar de recrearse: el historial de los usuarios no se pierde.
+ */
+export async function saveRoutine(input: SaveRoutineInput) {
   const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("routine_templates")
-    .insert({
-      name: input.name,
-      description: input.description || null,
-      image_url: null,
-      difficulty: input.difficulty,
-      objective: input.objective,
-      created_by: input.createdBy,
-    })
-    .select("id")
-    .single();
+  const { error } = await supabase.rpc("admin_save_routine", {
+    p_routine_id: input.id ?? null,
+    p_name: input.name,
+    p_description: input.description,
+    p_difficulty: input.difficulty,
+    p_objective: input.objective,
+    p_days: input.days.map((day) => ({
+      id: day.id ?? null,
+      day_name: day.dayName,
+      items: day.items.map((item) => ({
+        id: item.id ?? null,
+        exercise_id: item.exerciseId,
+        series: item.series,
+        repetitions: item.repetitions,
+        rir: item.rir,
+        rest: item.rest,
+      })),
+    })),
+  });
 
-  if (error || !data) {
-    throw new Error(`No se pudo crear la rutina: ${error?.message ?? "sin id"}`);
-  }
-
-  try {
-    await insertRoutineChildren(supabase, data.id, input.days);
-  } catch (error) {
-    await supabase.from("routine_templates").delete().eq("id", data.id);
-    throw error;
+  if (error) {
+    throw new Error(
+      SAVE_ROUTINE_USER_ERROR_CODES.has(error.code)
+        ? error.message
+        : `No se pudo guardar la rutina: ${error.message}`,
+    );
   }
 }
 
-export async function updateRoutine(input: UpdateRoutineInput) {
-  const supabase = await createSupabaseServerClient();
-  const previousRoutine = await getRoutineById(input.id);
-
-  if (!previousRoutine) {
-    throw new Error("La rutina que intentas editar ya no existe.");
-  }
-
-  try {
-    const { error } = await supabase
-      .from("routine_templates")
-      .update({
-        name: input.name,
-        description: input.description || null,
-        image_url: previousRoutine.imageUrl || null,
-        difficulty: input.difficulty,
-        objective: input.objective,
-      })
-      .eq("id", input.id);
-
-    if (error) {
-      throw new Error(`No se pudo actualizar la rutina: ${error.message}`);
-    }
-
-    await replaceRoutineChildren(supabase, input.id, input.days);
-  } catch (error) {
-    try {
-      await restoreRoutineSnapshot(supabase, previousRoutine);
-    } catch (restoreError) {
-      const originalMessage =
-        error instanceof Error ? error.message : "No se pudo actualizar la rutina.";
-      const restoreMessage =
-        restoreError instanceof Error
-          ? restoreError.message
-          : "No se pudo restaurar la rutina.";
-
-      throw new Error(`${originalMessage} Ademas, fallo la restauracion: ${restoreMessage}`);
-    }
-
-    throw error;
-  }
-}
-
-export async function deleteRoutine(id: string) {
+/**
+ * Borra la plantilla si nadie la guardó. Si hay usuarios (FK restrict), la archiva:
+ * sale del catálogo y quienes la usan la conservan con su historial.
+ */
+export async function deleteRoutine(id: string): Promise<{ archived: boolean }> {
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.from("routine_templates").delete().eq("id", id);
 
-  if (error) {
-    if (error.code === "23503") {
-      throw new Error(
-        "No se puede eliminar: la rutina esta en uso por usuarios que la guardaron o activaron.",
-      );
-    }
+  if (!error) {
+    return { archived: false };
+  }
 
+  if (error.code !== "23503") {
     throw new Error(`No se pudo eliminar la rutina: ${error.message}`);
+  }
+
+  const { error: archiveError } = await supabase
+    .from("routine_templates")
+    .update({ archived_at: new Date().toISOString() })
+    .eq("id", id);
+
+  if (archiveError) {
+    throw new Error(`No se pudo archivar la rutina: ${archiveError.message}`);
+  }
+
+  return { archived: true };
+}
+
+export async function restoreRoutine(id: string) {
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase
+    .from("routine_templates")
+    .update({ archived_at: null })
+    .eq("id", id);
+
+  if (error) {
+    throw new Error(`No se pudo restaurar la rutina: ${error.message}`);
   }
 }
 
@@ -340,6 +330,7 @@ function mapRoutineTemplate(routine: RoutineRow): RoutineTemplate {
     imageUrl: routine.image_url ?? "",
     difficulty: routine.difficulty,
     objective: routine.objective,
+    archivedAt: routine.archived_at,
     days,
   };
 }
@@ -370,121 +361,6 @@ function mapRoutineExercise(item: RoutineItemRow): RoutineExerciseRef {
     steps: exercise.steps,
     tips: exercise.tips,
   };
-}
-
-async function replaceRoutineChildren(
-  supabase: SupabaseServerClient,
-  routineId: string,
-  days: RoutineDayWriteInput[],
-) {
-  const { error: deleteError } = await supabase
-    .from("routine_days")
-    .delete()
-    .eq("routine_id", routineId);
-
-  if (deleteError) {
-    throw new Error(`No se pudo reemplazar la estructura de dias: ${deleteError.message}`);
-  }
-
-  await insertRoutineChildren(supabase, routineId, days);
-}
-
-async function insertRoutineChildren(
-  supabase: SupabaseServerClient,
-  routineId: string,
-  days: RoutineDayWriteInput[],
-) {
-  const dayIdByOrder = new Map<number, string>();
-  const dayRows = days.map((day) => {
-    const dayId = crypto.randomUUID();
-    dayIdByOrder.set(day.dayOrder, dayId);
-
-    return {
-      id: dayId,
-      routine_id: routineId,
-      day_order: day.dayOrder,
-      day_name: day.dayName,
-    };
-  });
-
-  if (dayRows.length > 0) {
-    const { error: dayError } = await supabase.from("routine_days").insert(dayRows);
-
-    if (dayError) {
-      throw new Error(`No se pudieron guardar los dias: ${dayError.message}`);
-    }
-  }
-
-  const itemRows = days.flatMap((day) =>
-    day.items.map((item) => ({
-      id: crypto.randomUUID(),
-      routine_day_id: dayIdByOrder.get(day.dayOrder)!,
-      exercise_id: item.exerciseId,
-      series: item.series,
-      repetitions: item.repetitions,
-      rir: item.rir,
-      rest: item.rest,
-      row_order: item.rowOrder,
-    })),
-  );
-
-  if (itemRows.length > 0) {
-    const { error: itemError } = await supabase.from("routine_items").insert(itemRows);
-
-    if (itemError) {
-      throw new Error(`No se pudieron guardar las filas: ${itemError.message}`);
-    }
-  }
-}
-
-async function restoreRoutineSnapshot(
-  supabase: SupabaseServerClient,
-  routine: RoutineTemplate,
-) {
-  const { error: updateError } = await supabase
-    .from("routine_templates")
-    .update({
-      name: routine.name,
-      description: routine.description || null,
-      image_url: routine.imageUrl || null,
-      difficulty: routine.difficulty,
-      objective: routine.objective,
-    })
-    .eq("id", routine.id);
-
-  if (updateError) {
-    throw new Error(
-      `No se pudo restaurar la rutina tras un error de guardado: ${updateError.message}`,
-    );
-  }
-
-  const { error: deleteError } = await supabase
-    .from("routine_days")
-    .delete()
-    .eq("routine_id", routine.id);
-
-  if (deleteError) {
-    throw new Error(
-      `No se pudo restaurar la estructura de la rutina: ${deleteError.message}`,
-    );
-  }
-
-  await insertRoutineChildren(
-    supabase,
-    routine.id,
-    routine.days.map((day) => ({
-      dayOrder: day.dayOrder,
-      dayName: day.dayName,
-      items: day.items.map((item) => ({
-        exerciseId: item.exerciseId,
-        series: item.series,
-        repetitions: item.repetitions,
-        rir: item.rir,
-        rest: item.rest,
-        rowOrder: item.rowOrder,
-      })),
-    })),
-  );
 }
 
 function formatRoutineDate(value: string) {

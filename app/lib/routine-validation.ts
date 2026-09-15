@@ -33,11 +33,17 @@ const routineTextSchema = z.object({
   }),
 });
 
+const WEEKDAY_PREFIX = /^(lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)\b/i;
+
 const dayNameSchema = z
   .string()
   .trim()
   .min(1, "Ingresa un nombre para el dia.")
-  .max(40, "El nombre del dia no puede superar 40 caracteres.");
+  .max(40, "El nombre del dia no puede superar 40 caracteres.")
+  .refine(
+    (value) => !WEEKDAY_PREFIX.test(value),
+    "No uses dias de la semana: cada usuario entrena el dia que quiere. Nombralo por su contenido (ej. Pierna · Biceps).",
+  );
 
 const repetitionsSchema = z
   .string()
@@ -50,6 +56,12 @@ const restSchema = z
   .trim()
   .min(1, "Ingresa el descanso.")
   .max(40, "El descanso no puede superar 40 caracteres.");
+
+const existingIdSchema = z.uuid();
+
+function parseExistingId(value: string | undefined) {
+  return existingIdSchema.safeParse(value).success ? value : undefined;
+}
 
 type ParseRoutinePayloadOptions = {
   payload: RoutineFormPayload;
@@ -193,6 +205,7 @@ function parseRoutineDay({
   return {
     ok: true as const,
     data: {
+      id: parseExistingId(day.id),
       dayOrder: dayIndex + 1,
       dayName: parsedDayName!,
       items: parsedItems,
@@ -253,6 +266,7 @@ function parseRoutineItem({
   return {
     ok: true as const,
     data: {
+      id: parseExistingId(item.id),
       exerciseId,
       series: parsedSeries!,
       repetitions: parsedRepetitions!,

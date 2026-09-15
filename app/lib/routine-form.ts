@@ -36,6 +36,8 @@ export type RoutineFormPayload = {
 };
 
 export type RoutineItemWriteInput = {
+  /** ID existente: se actualiza en lugar de recrearse, así el historial sigue apuntando a la misma fila. */
+  id?: string;
   exerciseId: string;
   series: number;
   repetitions: string;
@@ -45,6 +47,7 @@ export type RoutineItemWriteInput = {
 };
 
 export type RoutineDayWriteInput = {
+  id?: string;
   dayOrder: number;
   dayName: string;
   items: RoutineItemWriteInput[];

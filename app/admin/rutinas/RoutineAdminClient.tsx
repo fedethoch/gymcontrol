@@ -13,6 +13,7 @@ import {
   Info,
   PencilLine,
   Plus,
+  RotateCcw,
   Search,
   Trash2,
   TriangleAlert,
@@ -20,7 +21,11 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-import { deleteRoutineAction, saveRoutineAction } from "@/app/admin/rutinas/actions";
+import {
+  deleteRoutineAction,
+  restoreRoutineAction,
+  saveRoutineAction,
+} from "@/app/admin/rutinas/actions";
 import { FilterPanel } from "@/app/components/shared/FilterPanel";
 import { Badge } from "@/app/components/ui/Badge";
 import { Button } from "@/app/components/ui/Button";
@@ -100,6 +105,7 @@ export function RoutineAdminClient({
 }: RoutineAdminClientProps) {
   const router = useRouter();
   const [isDeleting, startDeleteTransition] = useTransition();
+  const [isRestoring, startRestoreTransition] = useTransition();
 
   const [search, setSearch] = useState("");
   const [difficultyFilter, setDifficultyFilter] = useState<RoutineDifficulty | "all">("all");
@@ -208,8 +214,26 @@ export function RoutineAdminClient({
         return;
       }
 
-      toast.success("Rutina eliminada.");
+      toast.success(
+        result.archived
+          ? "Rutina archivada: salió del catálogo y quienes la usan la conservan."
+          : "Rutina eliminada.",
+      );
       setDeleteTarget(null);
+      router.refresh();
+    });
+  }
+
+  function handleRestore(routine: AdminRoutineListItem) {
+    startRestoreTransition(async () => {
+      const result = await restoreRoutineAction(routine.id);
+
+      if (!result.ok) {
+        toast.error(result.message);
+        return;
+      }
+
+      toast.success("Rutina restaurada: vuelve a aparecer en el catálogo.");
       router.refresh();
     });
   }
@@ -341,7 +365,10 @@ export function RoutineAdminClient({
                     <tr key={routine.id} className="transition-[background-color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[var(--card-alt)] motion-reduce:transition-none">
                       <td className="px-5 py-4 text-center sm:px-6">
                         <div className="mx-auto min-w-0 max-w-xs text-left">
-                          <p className="truncate font-medium text-white">{routine.name}</p>
+                          <div className="flex min-w-0 items-center gap-2">
+                            <p className="truncate font-medium text-white">{routine.name}</p>
+                            {routine.archivedAt ? <Badge className="shrink-0">Archivada</Badge> : null}
+                          </div>
                           <p className="truncate text-xs text-[var(--foreground-muted)]">
                             {routine.description || "Sin descripcion."}
                           </p>
@@ -391,16 +418,29 @@ export function RoutineAdminClient({
                           >
                             <PencilLine className="size-4" />
                           </Button>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            title="Eliminar"
-                            className="hover:text-red-400"
-                            onClick={() => setDeleteTarget(routine)}
-                          >
-                            <Trash2 className="size-4" />
-                          </Button>
+                          {routine.archivedAt ? (
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              title="Restaurar al catálogo"
+                              disabled={isRestoring}
+                              onClick={() => handleRestore(routine)}
+                            >
+                              <RotateCcw className="size-4" />
+                            </Button>
+                          ) : (
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              title={routine.usersCount > 0 ? "Archivar" : "Eliminar"}
+                              className="hover:text-red-400"
+                              onClick={() => setDeleteTarget(routine)}
+                            >
+                              <Trash2 className="size-4" />
+                            </Button>
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -422,7 +462,10 @@ export function RoutineAdminClient({
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <p className="truncate font-medium text-white">{routine.name}</p>
+                        <div className="flex min-w-0 items-center gap-2">
+                          <p className="truncate font-medium text-white">{routine.name}</p>
+                          {routine.archivedAt ? <Badge className="shrink-0">Archivada</Badge> : null}
+                        </div>
                         <p className="truncate text-xs text-[var(--foreground-muted)]">
                           {routine.description || "Sin descripcion."}
                         </p>
@@ -441,16 +484,30 @@ export function RoutineAdminClient({
                         >
                           <PencilLine className="size-4" />
                         </Button>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="size-11 hover:text-red-400"
-                          title="Eliminar"
-                          onClick={() => setDeleteTarget(routine)}
-                        >
-                          <Trash2 className="size-4" />
-                        </Button>
+                        {routine.archivedAt ? (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="size-11"
+                            title="Restaurar al catálogo"
+                            disabled={isRestoring}
+                            onClick={() => handleRestore(routine)}
+                          >
+                            <RotateCcw className="size-4" />
+                          </Button>
+                        ) : (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="size-11 hover:text-red-400"
+                            title={routine.usersCount > 0 ? "Archivar" : "Eliminar"}
+                            onClick={() => setDeleteTarget(routine)}
+                          >
+                            <Trash2 className="size-4" />
+                          </Button>
+                        )}
                       </div>
                     </div>
 
@@ -547,27 +604,50 @@ export function RoutineAdminClient({
             <span className="grid size-11 place-items-center rounded-full border border-[#7a2630] bg-[#3b1419]/60 text-[#f87171]">
               <TriangleAlert className="size-5" />
             </span>
-            <DialogTitle className="mt-3">Eliminar rutina</DialogTitle>
-            <DialogDescription>
-              ¿Estas seguro de que queres eliminar{" "}
-              <strong className="text-white">{deleteTarget?.name}</strong>? Esta accion no se
-              puede deshacer.
-            </DialogDescription>
+            {deleteTarget && deleteTarget.usersCount > 0 ? (
+              <>
+                <DialogTitle className="mt-3">Archivar rutina</DialogTitle>
+                <DialogDescription>
+                  <strong className="text-white">{deleteTarget.name}</strong> la{" "}
+                  {deleteTarget.usersCount === 1
+                    ? "tiene guardada 1 usuario"
+                    : `tienen guardada ${deleteTarget.usersCount} usuarios`}
+                  . Se va a archivar: sale del catálogo y quienes la usan la conservan con su
+                  historial. Podés restaurarla cuando quieras.
+                </DialogDescription>
+              </>
+            ) : (
+              <>
+                <DialogTitle className="mt-3">Eliminar rutina</DialogTitle>
+                <DialogDescription>
+                  ¿Estas seguro de que queres eliminar{" "}
+                  <strong className="text-white">{deleteTarget?.name}</strong>? Esta accion no se
+                  puede deshacer.
+                </DialogDescription>
+              </>
+            )}
           </DialogHeader>
           <div className="flex items-center justify-end gap-2 px-5 pb-5">
             <Button type="button" variant="outline" onClick={() => setDeleteTarget(null)}>
               Cancelar
             </Button>
-            <Button
-              type="button"
-              variant="default"
-              className="bg-[#b91c1c] text-white hover:bg-[#991b1b]"
-              disabled={isDeleting}
-              onClick={confirmDelete}
-            >
-              {isDeleting ? <LoadingDots /> : <Trash2 className="size-4" />}
-              Si, eliminar
-            </Button>
+            {deleteTarget && deleteTarget.usersCount > 0 ? (
+              <Button type="button" disabled={isDeleting} onClick={confirmDelete}>
+                {isDeleting ? <LoadingDots /> : null}
+                Sí, archivar
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                variant="default"
+                className="bg-[#b91c1c] text-white hover:bg-[#991b1b]"
+                disabled={isDeleting}
+                onClick={confirmDelete}
+              >
+                {isDeleting ? <LoadingDots /> : <Trash2 className="size-4" />}
+                Si, eliminar
+              </Button>
+            )}
           </div>
         </DialogContent>
       </Dialog>

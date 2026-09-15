@@ -5,13 +5,13 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdmin } from "@/app/lib/auth";
 import { listExerciseCatalogItems } from "@/app/lib/exercises";
 import type { RoutineFormPayload, RoutineFormState } from "@/app/lib/routine-form";
-import { createRoutine, deleteRoutine, getRoutineById, updateRoutine } from "@/app/lib/routines";
+import { deleteRoutine, getRoutineById, restoreRoutine, saveRoutine } from "@/app/lib/routines";
 import { parseRoutinePayload } from "@/app/lib/routine-validation";
 
 export async function saveRoutineAction(
   payload: RoutineFormPayload,
 ): Promise<RoutineFormState> {
-  const auth = await requireAdmin();
+  await requireAdmin();
   const routineId = payload.routineId?.trim();
   const existingRoutine = routineId ? await getRoutineById(routineId) : null;
 
@@ -37,25 +37,7 @@ export async function saveRoutineAction(
   }
 
   try {
-    if (existingRoutine) {
-      await updateRoutine({
-        id: existingRoutine.id,
-        name: parsed.data.name,
-        description: parsed.data.description,
-        difficulty: parsed.data.difficulty,
-        objective: parsed.data.objective,
-        days: parsed.data.days,
-      });
-    } else {
-      await createRoutine({
-        name: parsed.data.name,
-        description: parsed.data.description,
-        difficulty: parsed.data.difficulty,
-        objective: parsed.data.objective,
-        createdBy: auth.profile.id,
-        days: parsed.data.days,
-      });
-    }
+    await saveRoutine({ id: existingRoutine?.id, ...parsed.data });
   } catch (error) {
     return {
       status: "error",
@@ -88,11 +70,15 @@ export async function saveRoutineAction(
   };
 }
 
-export async function deleteRoutineAction(id: string): Promise<{ ok: true } | { ok: false; message: string }> {
+export async function deleteRoutineAction(
+  id: string,
+): Promise<{ ok: true; archived: boolean } | { ok: false; message: string }> {
   await requireAdmin();
 
+  let archived = false;
+
   try {
-    await deleteRoutine(id);
+    ({ archived } = await deleteRoutine(id));
   } catch (error) {
     return {
       ok: false,
@@ -100,10 +86,33 @@ export async function deleteRoutineAction(id: string): Promise<{ ok: true } | { 
     };
   }
 
+  revalidateRoutinePaths(id);
+
+  return { ok: true, archived };
+}
+
+export async function restoreRoutineAction(
+  id: string,
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  await requireAdmin();
+
+  try {
+    await restoreRoutine(id);
+  } catch (error) {
+    return {
+      ok: false,
+      message: error instanceof Error ? error.message : "No se pudo restaurar la rutina.",
+    };
+  }
+
+  revalidateRoutinePaths(id);
+
+  return { ok: true };
+}
+
+function revalidateRoutinePaths(id: string) {
   revalidatePath("/admin/rutinas");
   revalidatePath("/catalogo");
   revalidatePath(`/catalogo/rutinas/${id}`);
   revalidateTag("routines", {});
-
-  return { ok: true };
 }
