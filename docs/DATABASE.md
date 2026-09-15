@@ -447,7 +447,7 @@ Estado confirmado de imagenes generadas despues de `G29`:
 Estado confirmado de tracking despues de la vista diaria interactiva:
 
 - existen `workout_sessions` y `workout_session_items` con RLS owner-only
-- `workout_session_items` guarda `performed_reps`, `used_weight` (texto, valores por serie separados por `/`) nullable e `is_completed` por `routine_item_id`
+- `workout_session_items` guarda `performed_reps`, `used_weight` (texto, valores por serie separados por `/`) nullable e `is_completed` por `routine_item_id` (reemplazadas por `sets` en F1; ver contract del registro por series)
 - las migraciones versionadas son `supabase/migrations/20260609_g15_workout_tracking.sql`, `supabase/migrations/20260609_g16_workout_tracking_policy_hardening.sql` y `supabase/migrations/20260613_workout_session_items_text_reps_weight.sql`
 
 Estado de integridad del historial (F0, 2026-09-15, `supabase/migrations/20260915_training_history_integrity.sql`):
@@ -458,19 +458,25 @@ Estado de integridad del historial (F0, 2026-09-15, `supabase/migrations/2026091
 - `saved_routines.routine_template_id` pasa a `on delete restrict`; `routine_templates.archived_at` saca una plantilla del catalogo sin borrarla
 - `public.admin_save_routine(...)` guarda plantilla, dias y filas por diff conservando IDs en una sola transaccion (security invoker: aplican las policies admin)
 - `public.routine_template_usage()` devuelve solo conteos de guardadas y activas por plantilla, y solo a admin (security definer; `saved_routines` sigue owner-only)
-- es migracion expand: la version deployada sigue funcionando; el contract (drop de las columnas de texto, `exercise_id not null`) va despues del deploy
+- es migracion expand: la version deployada sigue funcionando; en el contract `exercise_id` quedo nullable a proposito (ver contract del registro por series)
 
 Estado del registro por series (F1, 2026-09-15, `supabase/migrations/20260915_training_workout_sets.sql`):
 
-- `workout_session_items.sets jsonb`: series por posicion `[{kg, reps, secs, done}]` con null en los huecos; null en la columna = fila escrita por el codigo anterior (se lee desde `performed_reps`/`used_weight`)
-- `workout_session_items.kind`: `reps` | `bodyweight` (`kg` = lastre) | `time` (`secs`); snapshot al registrar, no depende de la plantilla viva
+- `workout_session_items.sets jsonb not null`: series por posicion `[{kg, reps, secs, done}]` con null en los huecos
+- `workout_session_items.kind not null`: `reps` | `bodyweight` (`kg` = lastre) | `time` (`secs`); snapshot al registrar, no depende de la plantilla viva
 - `workout_session_items.target_snapshot`: objetivo prescripto ese dia (`routine_items.repetitions`)
 - `workout_session_items.sets_rev bigint`: version monotona del cliente; una escritura con rev menor o igual no pisa la guardada
-- contrato cliente-servidor v1 en `app/lib/workout-sync-contract.ts`; se escribe solo por `POST /api/workouts/sync` (route handler estable: la cola offline sobrevive a los deploys); el servidor sigue escribiendo `performed_reps`, `used_weight` e `is_completed` derivados mientras quede codigo viejo deployado
+- contrato cliente-servidor v1 en `app/lib/workout-sync-contract.ts`; se escribe solo por `POST /api/workouts/sync` (route handler estable: la cola offline sobrevive a los deploys)
 - IDs de sesion e item generados en el cliente; `workout_sessions.status = 'completed'` + `completed_at` = el usuario toco "Terminar entrenamiento"
-- que cuenta: una serie es valida si esta hecha y tiene reps o segundos; una sesion cuenta para la semana y la racha si tiene al menos una serie valida y ya se termino o es de un dia anterior (en el registro anterior: `status = 'completed'`); la racha cuenta semanas seguidas con sesiones contadas >= dias del plan activo
+- que cuenta: una serie es valida si esta hecha y tiene reps o segundos; una sesion cuenta para la semana y la racha si tiene al menos una serie valida y ya se termino o es de un dia anterior; la racha cuenta semanas seguidas con sesiones contadas >= dias del plan activo
 - policies sin cambios: las owner-only de `workout_session_items` cubren las columnas nuevas
-- contract pendiente (despues del deploy y de que no queden clientes viejos): backfill de `sets`/`kind` desde el texto, dejar de escribir los derivados, drop de `performed_reps`/`used_weight`/`is_completed` y `sets`/`kind`/`exercise_id` not null
+
+Contract del registro por series (2026-09-15, despues del deploy de F0-F3 a produccion):
+
+- `supabase/migrations/20260915_training_contract_sets_kind.sql` (aplicada): las filas del registro anterior (6 items de una sesion del 2026-06-22, sin reps ni kg) quedan con `sets = []` y `kind` segun el ejercicio; `sets` y `kind` pasan a not null y sus checks pierden la rama null
+- el codigo ya no lee ni escribe `performed_reps`, `used_weight` ni `is_completed`
+- `exercise_id` sigue nullable a proposito: Postgres valida NOT NULL antes de resolver `on conflict`, y el upsert del esqueleto de un ejercicio ya registrado fallaria cuando el admin borra su fila de la rutina (el trigger no encuentra la fila y deja null)
+- pendiente: drop de `performed_reps`, `used_weight` e `is_completed` cuando este deployado el codigo que no las usa
 
 Bootstrap admin minimo:
 
@@ -611,13 +617,11 @@ Esta seccion fija el criterio tecnico minimo para pasar el modelo a Supabase sin
 - `workout_session_id uuid not null references workout_sessions(id) on delete cascade`
 - `routine_item_id uuid references routine_items(id) on delete set null` (F0)
 - `exercise_id uuid references exercises(id) on delete restrict` (F0, snapshot del ejercicio realizado)
-- `sets jsonb` (F1, series por posicion; check array de hasta 20 y valores >= 0)
-- `kind text check (kind in ('reps','bodyweight','time'))` (F1)
+- `sets jsonb not null` (F1 + contract, series por posicion; check array de hasta 20 y valores >= 0)
+- `kind text not null check (kind in ('reps','bodyweight','time'))` (F1 + contract)
 - `target_snapshot text` (F1)
 - `sets_rev bigint not null default 0` (F1)
-- `performed_reps text` (valores por serie separados por `/`, ej. `"12/10/8"`)
-- `used_weight text` (valores por serie separados por `/`, ej. `"40/40/35"`)
-- `is_completed boolean not null default false`
+- `performed_reps text`, `used_weight text`, `is_completed boolean not null default false`: sin uso desde el contract, drop pendiente
 - `created_at timestamptz not null default now()`
 - `updated_at timestamptz not null default now()`
 - unique por `workout_session_id`, `routine_item_id`

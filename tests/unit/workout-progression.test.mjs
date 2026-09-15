@@ -9,7 +9,6 @@ import {
   formatLoggedSet,
   getLoadStep,
   isValidSet,
-  legacySetsFromText,
   parsePlanTarget,
   parseRestSeconds,
   resolveExerciseKind,
@@ -216,15 +215,7 @@ describe("computeWeeklyStreak", () => {
   });
 });
 
-describe("legacySetsFromText y formatLoggedSet", () => {
-  it("lee el texto del registro anterior", () => {
-    assert.deepEqual(legacySetsFromText({ performedReps: "10/8", usedWeight: "40/42,5", isCompleted: true }), [
-      set(40, 10),
-      set(42.5, 8),
-    ]);
-    assert.deepEqual(legacySetsFromText({ performedReps: null, usedWeight: null, isCompleted: true }), []);
-  });
-
+describe("formatLoggedSet", () => {
   it("formatea según el tipo de ejercicio", () => {
     assert.equal(formatLoggedSet(set(42.5, 10), "reps"), "42.5 kg × 10");
     assert.equal(formatLoggedSet(set(null, 12), "bodyweight"), "12 reps");

@@ -230,26 +230,6 @@ export function computeWeeklyStreak(args: {
   return streak;
 }
 
-/**
- * Filas del registro anterior (texto "10/8/8" sin huecos). Las posiciones no son confiables,
- * pero alcanzan para mostrar historial de lo que ya estaba guardado.
- */
-export function legacySetsFromText(args: {
-  performedReps: string | null;
-  usedWeight: string | null;
-  isCompleted: boolean;
-}): LoggedSet[] {
-  const reps = splitNumbers(args.performedReps);
-  const weights = splitNumbers(args.usedWeight);
-
-  return Array.from({ length: Math.max(reps.length, weights.length) }, (_, index) => ({
-    kg: weights[index] ?? null,
-    reps: reps[index] ?? null,
-    secs: null,
-    done: args.isCompleted,
-  }));
-}
-
 /** "40 kg × 10" · "12 reps" (sin carga) · "+10 kg × 8" (lastre) · "45 s". */
 export function formatLoggedSet(set: LoggedSet, kind: ExerciseKind): string {
   if (kind === "time") {
@@ -280,13 +260,6 @@ export function formatSeconds(secs: number): string {
   const rest = secs % 60;
 
   return rest === 0 ? `${minutes} min` : `${minutes}:${String(rest).padStart(2, "0")} min`;
-}
-
-function splitNumbers(value: string | null) {
-  return (value ?? "")
-    .split("/")
-    .map((token) => Number.parseFloat(token.trim().replace(",", ".")))
-    .filter((number) => Number.isFinite(number) && number > 0);
 }
 
 function roundLoad(kg: number) {

@@ -7,7 +7,6 @@ import {
   computeWeeklyStreak,
   findBestSet,
   isValidSet,
-  legacySetsFromText,
   type ExerciseKind,
   type LoggedSet,
 } from "@/app/lib/workout-progression";
@@ -65,13 +64,10 @@ export type MuscleStrengthSummary = {
 type ItemRow = {
   id: string;
   routine_item_id: string | null;
-  kind: ExerciseKind | null;
+  kind: ExerciseKind;
   target_snapshot: string | null;
-  sets: LoggedSet[] | null;
+  sets: LoggedSet[];
   sets_rev: number | string;
-  performed_reps: string | null;
-  used_weight: string | null;
-  is_completed: boolean;
 };
 
 type CountedSessionRow = {
@@ -80,13 +76,10 @@ type CountedSessionRow = {
   routine_day_id: string | null;
   training_date: string;
   status: WorkoutSessionStatus;
-  workout_session_items: Array<
-    Pick<ItemRow, "kind" | "sets" | "performed_reps" | "used_weight" | "is_completed">
-  > | null;
+  workout_session_items: Array<Pick<ItemRow, "sets">> | null;
 };
 
-const ITEM_SELECT =
-  "id, routine_item_id, kind, target_snapshot, sets, sets_rev, performed_reps, used_weight, is_completed";
+const ITEM_SELECT = "id, routine_item_id, kind, target_snapshot, sets, sets_rev";
 
 const STREAK_WEEKS = 12;
 const STRENGTH_WINDOW_DAYS = 180;
@@ -181,8 +174,8 @@ export async function getOpenSessionForRoutine(args: {
 
 /**
  * Resumen de entrenos que cuentan. Un entreno cuenta si tiene al menos una serie válida
- * (o, en el registro anterior, si quedó completado) y ya se terminó o es de un día anterior:
- * no hace falta tocar "Terminar", pero un entreno a medio hacer hoy todavía no suma.
+ * y ya se terminó o es de un día anterior: no hace falta tocar "Terminar", pero un entreno
+ * a medio hacer hoy todavía no suma.
  */
 export async function getTrainingOverview(args: {
   userId: string;
@@ -194,9 +187,7 @@ export async function getTrainingOverview(args: {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("workout_sessions")
-    .select(
-      "id, saved_routine_id, routine_day_id, training_date, status, workout_session_items (kind, sets, performed_reps, used_weight, is_completed)",
-    )
+    .select("id, saved_routine_id, routine_day_id, training_date, status, workout_session_items (sets)")
     .eq("user_id", args.userId)
     .gte("training_date", windowStart)
     .lte("training_date", today);
@@ -261,7 +252,7 @@ export async function listExerciseHistory(args: {
   let query = supabase
     .from("workout_session_items")
     .select(
-      "exercise_id, kind, target_snapshot, sets, performed_reps, used_weight, is_completed, workout_sessions!inner(id, user_id, training_date, created_at)",
+      "exercise_id, kind, target_snapshot, sets, workout_sessions!inner(id, user_id, training_date, created_at)",
     )
     .in("exercise_id", exerciseIds)
     .eq("workout_sessions.user_id", args.userId)
@@ -290,20 +281,17 @@ export async function listExerciseHistory(args: {
       continue;
     }
 
-    const kind = row.kind ?? "reps";
-    const sets = resolveItemSets(row);
-
-    if (!sets.some(isValidSet)) {
+    if (!row.sets.some(isValidSet)) {
       continue;
     }
 
     entries.push({
       sessionId: session.id,
       trainingDate: session.training_date,
-      kind,
+      kind: row.kind,
       target: row.target_snapshot,
-      sets,
-      best: findBestSet(sets, kind),
+      sets: row.sets,
+      best: findBestSet(row.sets, row.kind),
     });
   }
 
@@ -316,7 +304,7 @@ export async function listMuscleStrengthSummaries(args: { userId: string }): Pro
   const { data, error } = await supabase
     .from("workout_session_items")
     .select(
-      "kind, sets, performed_reps, used_weight, is_completed, exercise:exercises!workout_session_items_exercise_id_fkey(name, muscle_group), workout_sessions!inner(user_id, training_date)",
+      "kind, sets, exercise:exercises!workout_session_items_exercise_id_fkey(name, muscle_group), workout_sessions!inner(user_id, training_date)",
     )
     .eq("workout_sessions.user_id", args.userId)
     .gte("workout_sessions.training_date", addDaysToDateKey(getTodayDateKey(), -STRENGTH_WINDOW_DAYS));
@@ -333,7 +321,7 @@ export async function listMuscleStrengthSummaries(args: { userId: string }): Pro
   for (const row of (data ?? []) as unknown as StrengthRow[]) {
     const exercise = Array.isArray(row.exercise) ? row.exercise[0] : row.exercise;
     const muscleGroup = normalizeStrengthGroup(exercise?.muscle_group);
-    const best = findBestSet(resolveItemSets(row), row.kind ?? "reps");
+    const best = findBestSet(row.sets, row.kind);
 
     if (!exercise || !muscleGroup || !best) {
       continue;
@@ -376,7 +364,7 @@ type OpenSessionRow = {
   workout_session_items: ItemRow[] | null;
 };
 
-type HistoryRow = Pick<ItemRow, "kind" | "target_snapshot" | "sets" | "performed_reps" | "used_weight" | "is_completed"> & {
+type HistoryRow = Pick<ItemRow, "kind" | "target_snapshot" | "sets"> & {
   exercise_id: string;
   workout_sessions:
     | { id: string; training_date: string }
@@ -384,7 +372,7 @@ type HistoryRow = Pick<ItemRow, "kind" | "target_snapshot" | "sets" | "performed
     | null;
 };
 
-type StrengthRow = Pick<ItemRow, "kind" | "sets" | "performed_reps" | "used_weight" | "is_completed"> & {
+type StrengthRow = Pick<ItemRow, "kind" | "sets"> & {
   exercise:
     | { name: string; muscle_group: string | null }
     | Array<{ name: string; muscle_group: string | null }>
@@ -406,9 +394,9 @@ function mapOpenSession(row: OpenSessionRow): OpenWorkoutSession {
           {
             id: item.id,
             routineItemId: item.routine_item_id,
-            kind: item.kind ?? "reps",
+            kind: item.kind,
             target: item.target_snapshot,
-            sets: resolveItemSets(item),
+            sets: item.sets,
             rev: Number(item.sets_rev),
           } satisfies WorkoutItemState,
         ]),
@@ -416,24 +404,8 @@ function mapOpenSession(row: OpenSessionRow): OpenWorkoutSession {
   };
 }
 
-/** Series del item: el array por posición o, en filas del registro anterior, el texto parseado. */
-function resolveItemSets(item: Pick<ItemRow, "sets" | "performed_reps" | "used_weight" | "is_completed">) {
-  return (
-    item.sets ??
-    legacySetsFromText({
-      performedReps: item.performed_reps,
-      usedWeight: item.used_weight,
-      isCompleted: item.is_completed,
-    })
-  );
-}
-
 function isCountedSession(session: CountedSessionRow, today: string) {
-  const items = session.workout_session_items ?? [];
-  const isLegacy = items.length > 0 && items.every((item) => item.sets == null);
-  const hasValidWork = isLegacy
-    ? session.status === "completed"
-    : items.some((item) => resolveItemSets(item).some(isValidSet));
+  const hasValidWork = (session.workout_session_items ?? []).some((item) => item.sets.some(isValidSet));
 
   return hasValidWork && (session.status === "completed" || session.training_date < today);
 }

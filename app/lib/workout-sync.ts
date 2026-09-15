@@ -2,10 +2,8 @@ import "server-only";
 
 import { getTodayDateKey } from "@/app/lib/local-date";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
-import { isValidSet } from "@/app/lib/workout-progression";
 import {
   WORKOUT_SYNC_VERSION,
-  type ExerciseKind,
   type SyncItem,
   type SyncItemResult,
   type SyncRequest,
@@ -143,7 +141,6 @@ async function syncItem(
       sets_rev: item.rev,
       kind: item.kind,
       target_snapshot: item.target,
-      ...deriveLegacyColumns(item.sets, item.kind),
     })
     .eq("id", itemId)
     .lt("sets_rev", item.rev)
@@ -179,20 +176,7 @@ async function syncItem(
     id: itemId,
     status: "stale",
     rev: currentRev,
-    sets: (current.sets ?? []) as WorkoutSet[],
-  };
-}
-
-/** Columnas del registro anterior, mientras siga deployado código que las lee. */
-function deriveLegacyColumns(sets: WorkoutSet[], kind: ExerciseKind) {
-  const valid = sets.filter(isValidSet);
-  const values = valid.map((set) => (kind === "time" ? set.secs : set.reps));
-  const weights = valid.map((set) => set.kg).filter((kg): kg is number => kg != null && kg > 0);
-
-  return {
-    performed_reps: values.length > 0 ? values.join("/") : null,
-    used_weight: weights.length > 0 ? weights.join("/") : null,
-    is_completed: sets.length > 0 && sets.every((set) => set.done),
+    sets: current.sets as WorkoutSet[],
   };
 }
 
