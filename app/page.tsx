@@ -33,6 +33,7 @@ import {
 } from "@/app/components/ui/motion";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
 import { requireUser } from "@/app/lib/auth";
+import { addDaysToDateKey } from "@/app/lib/local-date";
 import {
   buildMealRows,
   formatMuscleGroup,
@@ -45,67 +46,26 @@ import {
   getLocalTrainingDate,
   type MealGroup,
 } from "@/app/lib/meal-logs";
-import { calculateNutritionPlan } from "@/app/lib/nutrition-calc";
-import { MOCK_PROFILE_DEFAULTS } from "@/app/lib/nutrition-mock";
 import { getNutritionProfile } from "@/app/lib/nutrition-profile";
 import { MACRO_COLORS } from "@/app/lib/nutrition-style";
 import { MEAL_TYPE_LABELS, type Macros } from "@/app/lib/nutrition-types";
 import type { RoutineItem } from "@/app/lib/routines";
 import {
+  findActiveSavedRoutine,
   getSavedRoutineByIdForUser,
   listSavedRoutinesForUser,
 } from "@/app/lib/saved-routines";
 import { countDatesThisWeek } from "@/app/lib/week";
+import { estimateDayMinutes, isValidSet } from "@/app/lib/workout-progression";
 import {
-  getCompletedTrainingDates,
-  getWorkoutSessionForToday,
-  listMuscleStrengthSummariesForSavedRoutine,
-  listWorkoutWeeklySummaries,
+  getOpenSessionForRoutine,
+  getTrainingOverview,
+  listMuscleStrengthSummaries,
   type MuscleStrengthSummary,
 } from "@/app/lib/workout-tracking";
 
 const STRENGTH_LEGEND_GRADIENT =
   "linear-gradient(90deg,var(--strength-1) 0%,var(--strength-2) 33%,var(--strength-3) 66%,var(--strength-4) 100%)";
-
-/** Días de entrenamiento consecutivos hasta hoy (o ayer si hoy aún no entrenó). */
-function computeStreak(completedDates: Set<string>, today: string): number {
-  if (completedDates.size === 0) return 0;
-  const [y, m, d] = today.split("-").map(Number);
-  const cur = new Date(y, m - 1, d);
-  if (!completedDates.has(today)) cur.setDate(cur.getDate() - 1);
-  let streak = 0;
-  while (true) {
-    const pad = (n: number) => String(n).padStart(2, "0");
-    const s = `${cur.getFullYear()}-${pad(cur.getMonth() + 1)}-${pad(cur.getDate())}`;
-    if (!completedDates.has(s)) break;
-    streak++;
-    cur.setDate(cur.getDate() - 1);
-  }
-  return streak;
-}
-
-/** Parsea string de descanso a segundos. Soporta "90", "90s", "2 min", "2:30". */
-function parseRestSeconds(rest: string): number {
-  const s = rest.trim().toLowerCase();
-  const colonMatch = s.match(/^(\d+):(\d{2})$/);
-  if (colonMatch) return parseInt(colonMatch[1]) * 60 + parseInt(colonMatch[2]);
-  const minMatch = s.match(/(\d+\.?\d*)\s*(min|m\b)/);
-  if (minMatch) return Math.round(parseFloat(minMatch[1]) * 60);
-  const numMatch = s.match(/(\d+)/);
-  if (numMatch) return parseInt(numMatch[1], 10);
-  return 90;
-}
-
-/** Estima la duración del día en minutos basándose en series + descanso. */
-function estimateDayMinutes(items: RoutineItem[]): number {
-  if (items.length === 0) return 0;
-  const totalSec = items.reduce((sum, item) => {
-    const restSec = parseRestSeconds(item.rest);
-    return sum + item.series * (30 + restSec);
-  }, 0);
-  const raw = Math.max(15, Math.round(totalSec / 60));
-  return Math.round(raw / 5) * 5;
-}
 
 /** Grupos musculares únicos del día, ordenados por frecuencia (top 3). */
 function dayMuscleGroups(items: RoutineItem[]): string[] {
@@ -122,15 +82,10 @@ function dayMuscleGroups(items: RoutineItem[]): string[] {
 }
 
 /** Cuenta cuántas fechas del set caen en la ventana de N días hasta hoy. */
-function countDatesInWindow(dates: Set<string>, days: number): number {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+function countDatesInWindow(dates: Set<string>, days: number, today: string): number {
   let count = 0;
   for (let i = 0; i < days; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-    if (dates.has(key)) count++;
+    if (dates.has(addDaysToDateKey(today, -i))) count++;
   }
   return count;
 }
@@ -146,45 +101,39 @@ export default async function Home() {
     getLoggedDatesForUser({ userId: auth.user.id, days: 70 }),
   ]);
 
-  const activeRoutineListItem =
-    savedRoutines.find((routine) => routine.isActive) ?? savedRoutines[0] ?? null;
+  const activeRoutineListItem = findActiveSavedRoutine(savedRoutines);
 
-  const [activeRoutine, weeklySummaries, completedTrainingDates, muscleStrengthSummaries] =
+  const [activeRoutine, trainingOverview, muscleStrengthSummaries, openSession] = await Promise.all([
     activeRoutineListItem
-      ? await Promise.all([
-          getSavedRoutineByIdForUser({
-            savedRoutineId: activeRoutineListItem.id,
-            userId: auth.user.id,
-          }),
-          listWorkoutWeeklySummaries({
-            userId: auth.user.id,
-            savedRoutineIds: [activeRoutineListItem.id],
-            plannedDaysBySavedRoutineId: {
-              [activeRoutineListItem.id]: activeRoutineListItem.dayCount,
-            },
-          }),
-          getCompletedTrainingDates({
-            userId: auth.user.id,
-            savedRoutineId: activeRoutineListItem.id,
-            days: 70,
-          }),
-          listMuscleStrengthSummariesForSavedRoutine({
-            userId: auth.user.id,
-            savedRoutineId: activeRoutineListItem.id,
-          }),
-        ])
-      : [null, {}, new Set<string>(), []];
+      ? getSavedRoutineByIdForUser({ savedRoutineId: activeRoutineListItem.id, userId: auth.user.id })
+      : null,
+    getTrainingOverview({
+      userId: auth.user.id,
+      savedRoutineId: activeRoutineListItem?.id ?? null,
+      plannedDays: activeRoutineListItem?.dayCount ?? 0,
+    }),
+    listMuscleStrengthSummaries({ userId: auth.user.id }),
+    activeRoutineListItem
+      ? getOpenSessionForRoutine({ userId: auth.user.id, savedRoutineId: activeRoutineListItem.id })
+      : null,
+  ]);
 
-  const plan = nutritionProfile?.plan ?? calculateNutritionPlan(MOCK_PROFILE_DEFAULTS);
+  // Sin perfil no hay objetivo: nada de valores inventados.
+  const plan = nutritionProfile?.plan ?? null;
 
-  const weeklySummary = activeRoutine ? weeklySummaries[activeRoutine.id] : null;
-  const completedDayIds = new Set(weeklySummary?.completedRoutineDayIds ?? []);
+  const completedDayIds = new Set(trainingOverview.completedRoutineDayIds);
+  const completedTrainingDates = new Set(trainingOverview.completedDates);
   const nextPendingDay =
     activeRoutine?.days.find((day) => !completedDayIds.has(day.id)) ?? null;
+  // Un entreno en curso manda sobre el próximo día pendiente.
+  const openDay = openSession
+    ? (activeRoutine?.days.find((day) => day.id === openSession.routineDayId) ?? null)
+    : null;
+  const heroDay = openDay ?? nextPendingDay;
 
   const primaryHref =
-    activeRoutine && nextPendingDay
-      ? `/rutinas/dia?savedRoutineId=${activeRoutine.id}&day=${nextPendingDay.dayOrder}`
+    activeRoutine && heroDay
+      ? `/rutinas/dia?savedRoutineId=${activeRoutine.id}&day=${heroDay.dayOrder}`
       : "/rutinas";
 
   const meals = mealLog?.meals ?? [];
@@ -198,7 +147,7 @@ export default async function Home() {
     { proteinG: 0, carbsG: 0, fatG: 0 },
   );
   const kcalPercent =
-    plan.targetKcal > 0
+    plan && plan.targetKcal > 0
       ? Math.min(100, Math.round((totalKcal / plan.targetKcal) * 100))
       : 0;
 
@@ -216,10 +165,10 @@ export default async function Home() {
     .slice(0, 4);
   const maxMuscleCount = muscleEntries[0]?.[1] ?? 1;
 
-  const streak = computeStreak(completedTrainingDates, logDate);
+  const streak = trainingOverview.weeklyStreak;
 
   // ── Derived for hero ──
-  const dayItems = nextPendingDay?.items ?? [];
+  const dayItems = heroDay?.items ?? [];
   const estimatedMinutes = estimateDayMinutes(dayItems);
   const exerciseCount = dayItems.length;
   const muscleGroups = dayMuscleGroups(dayItems);
@@ -228,27 +177,19 @@ export default async function Home() {
 
   // ── Derived for weekly counters ──
   const nutritionDatesSet = new Set(nutritionLoggedDates);
-  const weeklyTrainingCount = countDatesInWindow(completedTrainingDates, 7);
-  const weeklyNutritionCount = countDatesInWindow(nutritionDatesSet, 7);
+  const weeklyTrainingCount = countDatesInWindow(completedTrainingDates, 7, logDate);
+  const weeklyNutritionCount = countDatesInWindow(nutritionDatesSet, 7, logDate);
 
   // ── Home mobile (DESIGN.md §10) ──
-  const todaySession =
-    activeRoutine && nextPendingDay
-      ? await getWorkoutSessionForToday({
-          savedRoutineId: activeRoutine.id,
-          routineDayId: nextPendingDay.id,
-          userId: auth.user.id,
-        })
-      : null;
   const heroState = resolveHeroState({
     hasActiveRoutine: Boolean(activeRoutine),
     hasPendingDay: Boolean(nextPendingDay),
-    trainedToday: completedTrainingDates.has(logDate),
-    todaySessionStatus: todaySession?.status ?? null,
+    trainedToday: trainingOverview.trainedToday,
+    hasOpenSession: Boolean(openDay),
   });
   const heroGroups = muscleGroups.slice(0, 2).map(formatMuscleGroup);
   const heroTitle =
-    heroGroups.length === 2 ? `${heroGroups[0]} & ${heroGroups[1]}` : (heroGroups[0] ?? nextPendingDay?.dayName ?? "");
+    heroGroups.length === 2 ? `${heroGroups[0]} & ${heroGroups[1]}` : (heroGroups[0] ?? heroDay?.dayName ?? "");
   const weekdayName = new Intl.DateTimeFormat("es-AR", { weekday: "long" }).format(
     new Date(`${logDate}T00:00:00`),
   );
@@ -270,11 +211,11 @@ export default async function Home() {
             state={heroState}
             weekdayLabel={weekdayName.charAt(0).toUpperCase() + weekdayName.slice(1)}
             day={
-              nextPendingDay
+              heroDay
                 ? {
-                    order: nextPendingDay.dayOrder,
+                    order: heroDay.dayOrder,
                     total: totalDaysCount,
-                    name: nextPendingDay.dayName,
+                    name: heroDay.dayName,
                     groups: heroGroups,
                     minutes: estimatedMinutes,
                     exerciseCount,
@@ -282,10 +223,9 @@ export default async function Home() {
                   }
                 : null
             }
-            progress={
-              todaySession?.status === "in_progress" ? getSessionProgress(dayItems, todaySession) : null
-            }
+            progress={openSession && openDay ? getSessionProgress(dayItems, openSession) : null}
             startHref={primaryHref}
+            hasSavedRoutines={savedRoutines.length > 0}
             exercisesSheet={
               canStartToday && dayItems.length > 0 ? (
                 <TodayExercisesSheet
@@ -298,7 +238,9 @@ export default async function Home() {
                     name: item.exercise.name,
                     series: item.series,
                     repetitions: item.repetitions,
-                    done: todaySession?.itemsByRoutineItemId[item.id]?.isCompleted === true,
+                    done:
+                      (openSession?.itemsByRoutineItemId[item.id]?.sets ?? []).filter(isValidSet).length >=
+                      item.series,
                   }))}
                 />
               ) : undefined
@@ -309,9 +251,9 @@ export default async function Home() {
           <HomeNutrition
             hasProfile={Boolean(nutritionProfile)}
             totalKcal={totalKcal}
-            targetKcal={plan.targetKcal}
+            targetKcal={plan?.targetKcal ?? 0}
             totalMacros={totalMacros}
-            targetMacros={plan.macros}
+            targetMacros={plan?.macros ?? { proteinG: 0, carbsG: 0, fatG: 0 }}
             mealRows={buildMealRows(meals)}
             primary={heroState === "done_today" || heroState === "week_done"}
           />
@@ -378,24 +320,24 @@ export default async function Home() {
                       {g}
                     </span>
                   ))
-                ) : activeRoutine && nextPendingDay ? (
-                  nextPendingDay.dayName
+                ) : activeRoutine && heroDay ? (
+                  heroDay.dayName
                 ) : activeRoutine ? (
                   <span className="text-[var(--accent-bright)]">¡Semana completada!</span>
                 ) : (
                   <span className="text-[var(--foreground-subtle)]">Sin rutina activa</span>
                 )}
               </h2>
-              {nextPendingDay && (
+              {heroDay && (
                 <p className="text-xs font-medium text-[var(--foreground-muted)]">
-                  <span className="text-[var(--accent-bright)]">Día {nextPendingDay.dayOrder}</span>
+                  <span className="text-[var(--accent-bright)]">Día {heroDay.dayOrder}</span>
                   {" de tu rutina semanal"}
                 </p>
               )}
             </div>
 
             {/* Stats row — icono izquierda, valor+desc apilados a la derecha */}
-            {nextPendingDay && (
+            {heroDay && (
               <div className="flex items-center gap-5">
                 {estimatedMinutes > 0 && (
                   <HeroStat icon={Clock} value={`~${estimatedMinutes} min`} label="duración aprox." />
@@ -418,13 +360,17 @@ export default async function Home() {
                 size="default"
                 className="justify-center gap-1.5 px-4 normal-case tracking-normal"
               >
-                <Link href={primaryHref}>
-                  {nextPendingDay && <Play aria-hidden="true" className="size-3 fill-current" />}
-                  {nextPendingDay
-                    ? "Comenzar entrenamiento"
-                    : activeRoutine
-                      ? "Ver progreso"
-                      : "Explorar rutinas"}
+                <Link href={activeRoutine ? primaryHref : savedRoutines.length > 0 ? "/rutinas" : "/catalogo"}>
+                  {heroDay && <Play aria-hidden="true" className="size-3 fill-current" />}
+                  {openDay
+                    ? "Continuar entrenamiento"
+                    : heroDay
+                      ? "Comenzar entrenamiento"
+                      : activeRoutine
+                        ? "Ver progreso"
+                        : savedRoutines.length > 0
+                          ? "Elegir rutina"
+                          : "Explorar rutinas"}
                 </Link>
               </Button>
 
@@ -444,7 +390,7 @@ export default async function Home() {
         <MotionDiv variants={fadeUp} className="hidden lg:col-span-1 lg:block">
           <KpiStrip
             kcal={totalKcal}
-            targetKcal={plan.targetKcal}
+            targetKcal={plan?.targetKcal ?? null}
             completedDays={completedDaysCount}
             totalDays={totalDaysCount}
             streak={streak}
@@ -464,10 +410,10 @@ export default async function Home() {
         <MotionDiv variants={fadeUp} className="col-span-2 lg:col-span-1">
           <NutricionTodayCard
             totalKcal={totalKcal}
-            targetKcal={plan.targetKcal}
+            targetKcal={plan?.targetKcal ?? null}
             kcalPercent={kcalPercent}
             totalMacros={totalMacros}
-            targetMacros={plan.macros}
+            targetMacros={plan?.macros ?? null}
           />
         </MotionDiv>
         <MotionDiv variants={fadeUp} className="col-span-1">
@@ -563,7 +509,8 @@ function KpiStrip({
   primaryHref,
 }: {
   kcal: number;
-  targetKcal: number;
+  /** null: el usuario todavía no configuró su objetivo. */
+  targetKcal: number | null;
   completedDays: number;
   totalDays: number;
   streak: number;
@@ -575,7 +522,7 @@ function KpiStrip({
       label: "Nutrición",
       numeric: kcal,
       display: String(kcal),
-      sub: `de ${targetKcal} kcal`,
+      sub: targetKcal != null ? `de ${targetKcal} kcal` : "kcal · sin objetivo",
       href: "/nutricion/registro",
     },
     {
@@ -591,7 +538,7 @@ function KpiStrip({
       label: "Racha",
       numeric: streak,
       display: String(streak),
-      sub: streak === 1 ? "día seguido" : "días seguidos",
+      sub: streak === 1 ? "semana cumplida" : "semanas cumplidas",
       href: undefined as string | undefined,
     },
   ];
@@ -649,29 +596,30 @@ function NutricionTodayCard({
   targetMacros,
 }: {
   totalKcal: number;
-  targetKcal: number;
+  /** null: sin perfil nutricional, no hay objetivo que mostrar. */
+  targetKcal: number | null;
   kcalPercent: number;
   totalMacros: Macros;
-  targetMacros: Macros;
+  targetMacros: Macros | null;
 }) {
   const isEmpty = totalKcal === 0;
   const macros = [
     {
       label: "Prot.",
       value: totalMacros.proteinG,
-      target: targetMacros.proteinG,
+      target: targetMacros?.proteinG ?? 0,
       color: MACRO_COLORS.protein,
     },
     {
       label: "Carb.",
       value: totalMacros.carbsG,
-      target: targetMacros.carbsG,
+      target: targetMacros?.carbsG ?? 0,
       color: MACRO_COLORS.carbs,
     },
     {
       label: "Gras.",
       value: totalMacros.fatG,
-      target: targetMacros.fatG,
+      target: targetMacros?.fatG ?? 0,
       color: MACRO_COLORS.fat,
     },
   ];
@@ -681,7 +629,21 @@ function NutricionTodayCard({
       {/* Header */}
       <CardLabel icon={Flame} label="Nutrición" />
 
-      {isEmpty ? (
+      {targetKcal == null ? (
+        /* Sin objetivo: kcal del día + acceso a configurarlo, sin anillo ni barras */
+        <div className="flex flex-1 flex-col items-center justify-center gap-1 py-3 text-center">
+          <span className="font-display text-2xl font-bold leading-none tracking-[-0.01em] tabular-nums text-[var(--foreground)]">
+            {totalKcal}
+            <span className="ml-1 text-sm font-medium text-[var(--foreground-muted)]">kcal hoy</span>
+          </span>
+          <Link
+            href="/configuracion"
+            className="inline-flex min-h-11 items-center text-xs font-semibold text-[var(--accent-bright)] hover:text-white"
+          >
+            Configurá tu objetivo
+          </Link>
+        </div>
+      ) : isEmpty ? (
         /* Empty: fila compacta kcal + hint, sin ring ni barras */
         <div className="flex flex-1 flex-col items-center justify-center gap-1 py-3 text-center">
           <span className="font-display text-2xl font-bold leading-none tracking-[-0.01em] tabular-nums text-[var(--foreground)]">
@@ -918,7 +880,7 @@ function ComidasHoyCard({
 
 function formatMealFoods(meal: MealGroup) {
   if (meal.items.length === 0) return "Sin alimentos";
-  const names = meal.items.slice(0, 3).map((item) => item.foodName);
+  const names = meal.items.slice(0, 3).map((item) => item.name);
   const suffix = meal.items.length > 3 ? ` +${meal.items.length - 3}` : "";
   return `${names.join(", ")}${suffix}`;
 }
