@@ -299,7 +299,8 @@ La rutina guardada debe leer el contenido de la plantilla asociada, no replicarl
 - no se duplica toda la rutina cuando el usuario la guarda
 - no se crea media library avanzada
 - no se agregan tablas auxiliares de tags, categorias o estados
-- no se agregan analytics, notas avanzadas ni tracking por serie
+- no se agregan analytics ni notas avanzadas
+- el tracking por serie (F1, 2026-09-15) vive como JSONB por posición dentro de `workout_session_items`, sin tabla nueva (decisión de llm-council: la unidad que se guarda y se sincroniza es el ejercicio entero)
 
 ## Entidades que no entran por ahora
 
@@ -446,9 +447,30 @@ Estado confirmado de imagenes generadas despues de `G29`:
 Estado confirmado de tracking despues de la vista diaria interactiva:
 
 - existen `workout_sessions` y `workout_session_items` con RLS owner-only
-- `workout_sessions` fija una sola sesion por `(user_id, saved_routine_id, routine_day_id, training_date)`
 - `workout_session_items` guarda `performed_reps`, `used_weight` (texto, valores por serie separados por `/`) nullable e `is_completed` por `routine_item_id`
-- las migraciones versionadas son `supabase/migrations/20260609_g15_workout_tracking.sql`, `supabase/migrations/20260609_g16_workout_tracking_policy_hardening.sql` y `workout_session_items_text_reps_weight`
+- las migraciones versionadas son `supabase/migrations/20260609_g15_workout_tracking.sql`, `supabase/migrations/20260609_g16_workout_tracking_policy_hardening.sql` y `supabase/migrations/20260613_workout_session_items_text_reps_weight.sql`
+
+Estado de integridad del historial (F0, 2026-09-15, `supabase/migrations/20260915_training_history_integrity.sql`):
+
+- cada entreno es un registro: se quito el unique `(user_id, saved_routine_id, routine_day_id, training_date)`
+- `workout_sessions.routine_day_id`, `workout_sessions.saved_routine_id` y `workout_session_items.routine_item_id` son nullable con `on delete set null`: editar una rutina, quitar un dia o una fila o borrar una rutina guardada ya no borra historial
+- `workout_session_items.exercise_id` guarda el ejercicio realizado (snapshot para historial por ejercicio); el trigger `fill_workout_session_item_exercise` lo completa desde `routine_items` mientras el codigo deployado no lo mande
+- `saved_routines.routine_template_id` pasa a `on delete restrict`; `routine_templates.archived_at` saca una plantilla del catalogo sin borrarla
+- `public.admin_save_routine(...)` guarda plantilla, dias y filas por diff conservando IDs en una sola transaccion (security invoker: aplican las policies admin)
+- `public.routine_template_usage()` devuelve solo conteos de guardadas y activas por plantilla, y solo a admin (security definer; `saved_routines` sigue owner-only)
+- es migracion expand: la version deployada sigue funcionando; el contract (drop de las columnas de texto, `exercise_id not null`) va despues del deploy
+
+Estado del registro por series (F1, 2026-09-15, `supabase/migrations/20260915_training_workout_sets.sql`):
+
+- `workout_session_items.sets jsonb`: series por posicion `[{kg, reps, secs, done}]` con null en los huecos; null en la columna = fila escrita por el codigo anterior (se lee desde `performed_reps`/`used_weight`)
+- `workout_session_items.kind`: `reps` | `bodyweight` (`kg` = lastre) | `time` (`secs`); snapshot al registrar, no depende de la plantilla viva
+- `workout_session_items.target_snapshot`: objetivo prescripto ese dia (`routine_items.repetitions`)
+- `workout_session_items.sets_rev bigint`: version monotona del cliente; una escritura con rev menor o igual no pisa la guardada
+- contrato cliente-servidor v1 en `app/lib/workout-sync-contract.ts`; se escribe solo por `POST /api/workouts/sync` (route handler estable: la cola offline sobrevive a los deploys); el servidor sigue escribiendo `performed_reps`, `used_weight` e `is_completed` derivados mientras quede codigo viejo deployado
+- IDs de sesion e item generados en el cliente; `workout_sessions.status = 'completed'` + `completed_at` = el usuario toco "Terminar entrenamiento"
+- que cuenta: una serie es valida si esta hecha y tiene reps o segundos; una sesion cuenta para la semana y la racha si tiene al menos una serie valida y ya se termino o es de un dia anterior (en el registro anterior: `status = 'completed'`); la racha cuenta semanas seguidas con sesiones contadas >= dias del plan activo
+- policies sin cambios: las owner-only de `workout_session_items` cubren las columnas nuevas
+- contract pendiente (despues del deploy y de que no queden clientes viejos): backfill de `sets`/`kind` desde el texto, dejar de escribir los derivados, drop de `performed_reps`/`used_weight`/`is_completed` y `sets`/`kind`/`exercise_id` not null
 
 Bootstrap admin minimo:
 
@@ -535,6 +557,7 @@ Esta seccion fija el criterio tecnico minimo para pasar el modelo a Supabase sin
 - `created_by uuid not null references public.profiles(id) on delete restrict`
 - `created_at timestamptz not null default now()`
 - `updated_at timestamptz not null default now()`
+- `archived_at timestamptz` (F0: archivada = fuera del catalogo; quien la guardo la conserva)
 
 ### `routine_days`
 
@@ -562,7 +585,7 @@ Esta seccion fija el criterio tecnico minimo para pasar el modelo a Supabase sin
 
 - `id uuid primary key`
 - `user_id uuid not null references auth.users(id) on delete cascade`
-- `routine_template_id uuid not null references routine_templates(id) on delete cascade`
+- `routine_template_id uuid not null references routine_templates(id) on delete restrict` (F0; antes cascade)
 - `custom_name text`
 - `is_active boolean not null default false`
 - `saved_at timestamptz not null default now()`
@@ -573,20 +596,25 @@ Esta seccion fija el criterio tecnico minimo para pasar el modelo a Supabase sin
 
 - `id uuid primary key`
 - `user_id uuid not null references auth.users(id) on delete cascade`
-- `saved_routine_id uuid not null references saved_routines(id) on delete cascade`
-- `routine_day_id uuid not null references routine_days(id) on delete cascade`
-- `training_date date not null`
+- `saved_routine_id uuid references saved_routines(id) on delete set null` (F0)
+- `routine_day_id uuid references routine_days(id) on delete set null` (F0)
+- `training_date date not null` (fecha en hora argentina, `app/lib/local-date.ts`)
 - `status text not null default 'in_progress'`
 - `completed_at timestamptz`
 - `created_at timestamptz not null default now()`
 - `updated_at timestamptz not null default now()`
-- unique por `user_id`, `saved_routine_id`, `routine_day_id`, `training_date`
+- sin unique por fecha desde F0: cada entreno es un registro
 
 ### `workout_session_items`
 
 - `id uuid primary key`
 - `workout_session_id uuid not null references workout_sessions(id) on delete cascade`
-- `routine_item_id uuid not null references routine_items(id) on delete cascade`
+- `routine_item_id uuid references routine_items(id) on delete set null` (F0)
+- `exercise_id uuid references exercises(id) on delete restrict` (F0, snapshot del ejercicio realizado)
+- `sets jsonb` (F1, series por posicion; check array de hasta 20 y valores >= 0)
+- `kind text check (kind in ('reps','bodyweight','time'))` (F1)
+- `target_snapshot text` (F1)
+- `sets_rev bigint not null default 0` (F1)
 - `performed_reps text` (valores por serie separados por `/`, ej. `"12/10/8"`)
 - `used_weight text` (valores por serie separados por `/`, ej. `"40/40/35"`)
 - `is_completed boolean not null default false`
@@ -600,7 +628,7 @@ Esta seccion fija el criterio tecnico minimo para pasar el modelo a Supabase sin
 - `routine_days` y `routine_items` necesitan constraints de unicidad para sostener orden estable
 - `saved_routines` no duplica estructura semanal
 - `workout_sessions` no duplica la plantilla: solo registra ejecucion real por fecha
-- `workout_sessions` necesita unique por fecha para evitar sesiones duplicadas del mismo dia
+- `workout_sessions` ya no tiene unique por fecha (F0): repetir un dia crea otra sesion
 - `workout_session_items` necesita unique por sesion y fila para sostener correcciones simples
 - G2.1 no agrega RLS, storage, seeds ni tablas auxiliares
 - RLS y policies se resuelven inmediatamente despues de auth en `G5.5`
@@ -641,17 +669,18 @@ Migraciones: `20260613_g18_nutrition_core.sql` (esquema + RLS + storage), `20260
 - `id uuid primary key`
 - `name text not null`
 - `image_url text not null` (sin uso por ahora, catalogo usa iconos por categoria)
-- `category text not null check (category in ('desayuno','comida','snack'))`
+- `category text not null check (category in ('protein','carb','fat','vegetable','mixed','drink'))` (`drink` desde `20260915_nutrition_user_foods_recipes_targets`; bebidas se registran en ml, 1 ml ≈ 1 g)
 - `serving_g integer not null default 100 check (serving_g > 0)`
 - `measure text not null default 'g' check (measure in ('g','unit'))` (medida por defecto, g22)
 - `grams_per_unit numeric check (grams_per_unit is null or grams_per_unit > 0)` (g24; si esta seteado, el alimento se puede registrar tambien por unidades/porciones)
 - `calories integer not null check (calories >= 0)`
-- `protein_g integer not null check (protein_g >= 0)`
-- `carbs_g integer not null check (carbs_g >= 0)`
-- `fat_g integer not null check (fat_g >= 0)`
+- `protein_g numeric(6,1) not null check (protein_g >= 0)` (integer hasta `20260915_nutrition_foods_decimal_macros`)
+- `carbs_g numeric(6,1) not null check (carbs_g >= 0)`
+- `fat_g numeric(6,1) not null check (fat_g >= 0)`
+- `owner_user_id uuid references auth.users(id) on delete cascade` (null = catalogo global del admin; con valor = alimento privado de ese usuario)
 - `created_by uuid not null references profiles(id) on delete restrict`
 - `created_at`, `updated_at`
-- RLS: lectura publica (anon + authenticated), escritura solo admin (mismo patron que `exercises`)
+- RLS: anon lee solo catalogo global (`owner_user_id is null`); authenticated lee global + propios; insert/update/delete: admin sobre el catalogo global, cada usuario sobre sus propios alimentos (`owner_user_id = auth.uid()`, `created_by = current_profile_id()`)
 
 ### `nutrition_profiles`
 
@@ -664,6 +693,8 @@ Migraciones: `20260613_g18_nutrition_core.sql` (esquema + RLS + storage), `20260
 - `body_fat_pct numeric` (nullable, `check (0 < body_fat_pct < 100)`)
 - `activity_level text not null check (...)`, `goal text not null check (...)`
 - columnas cacheadas del calculo: `bmr_kcal`, `maintenance_kcal`, `target_kcal`, `protein_g`, `carbs_g`, `fat_g` (todas `integer >= 0`)
+- `target_mode text not null default 'auto' check (target_mode in ('auto','manual'))`: en `manual`, `target_kcal` y macros guardan el objetivo fijado por el usuario (no se recalculan); `bmr_kcal` y `maintenance_kcal` siguen siendo el calculo
+- sin fila de perfil la app no inventa objetivo: registro y home piden configurarlo
 - `created_at`, `updated_at`
 - RLS: owner-only (`auth.uid() = user_id`) para select/insert/update/delete, mismo patron que `saved_routines`
 
@@ -683,9 +714,10 @@ Migracion: `20260613_g21_nutrition_fase3.sql`. Nota: las dietas predefinidas (`d
 
 - `id uuid primary key`
 - `user_id uuid not null references auth.users(id) on delete cascade`
-- `log_date date not null`
+- `log_date date not null` (dia calendario en hora argentina, `app/lib/local-date.ts`; el servidor corre en UTC)
 - `created_at`, `updated_at`
 - unique por `(user_id, log_date)`
+- se puede cargar/corregir hasta 365 dias hacia atras (validado en server actions)
 - RLS: owner-only, mismo patron que `workout_sessions`
 
 ### `meal_log_meals` (g23)
@@ -699,18 +731,22 @@ Migracion: `20260613_g21_nutrition_fase3.sql`. Nota: las dietas predefinidas (`d
 ### `meal_log_items`
 
 - `id uuid primary key`
+- `meal_log_id uuid not null references meal_logs(id) on delete cascade` (base de la RLS; la app lo toma de la comida, nunca del cliente)
 - `meal_id uuid not null references meal_log_meals(id) on delete cascade`
-- `food_id uuid not null references foods(id) on delete restrict`
-- `grams numeric(7,1) not null check (grams > 0)` (valor autoritativo para macros)
-- `measure text not null default 'g' check (measure in ('g','unit'))` (g24, lo que ingreso el usuario)
+- `food_id uuid references foods(id) on delete restrict` (nullable desde `20260915_nutrition_user_foods_recipes_targets`)
+- `recipe_id uuid references recipes(id) on delete restrict`
+- `check ((food_id is null) <> (recipe_id is null))`: cada item es un alimento o una receta
+- `grams numeric(7,1) not null check (grams > 0)` (valor autoritativo para macros de alimentos; en recetas = gramos de las porciones)
+- `measure text not null default 'g' check (measure in ('g','unit'))` (g24, lo que ingreso el usuario; recetas siempre `unit` = porciones)
 - `quantity numeric not null check (quantity > 0)` (g24, cantidad en `measure`)
-- `created_at`
+- `created_at` (orden de los items dentro de la comida)
+- macros en runtime: alimento `food.* * (grams / serving_g)`; receta `(suma de recipe_items / recipes.servings) * quantity`
 - RLS: owner-only via `meal_logs.user_id`, mismo patron que `workout_session_items`
 
 ### Indices
 
 - `meal_logs.user_id`, `meal_logs.log_date`
-- `meal_log_items.food_id`
+- `meal_log_items.food_id`, `meal_log_items.recipe_id`
 
 ## Recetas (G26-27)
 
@@ -721,8 +757,9 @@ Migracion: `20260613_g21_nutrition_fase3.sql`. Nota: las dietas predefinidas (`d
 - `description text`
 - `image_url text`
 - en `G29`, apunta a la URL publica final del bucket `recipe-images` cuando la receta tiene imagen generada
-- `category text not null check (category in ('protein','carb','fat','vegetable','mixed'))`
+- `category text not null check (category in ('desayuno','comida','snack'))`
 - `servings integer not null default 1 check (servings > 0)`
+- una receta usada en `meal_log_items` no se puede borrar (`on delete restrict`)
 - `created_by uuid references profiles(id)`
 - `created_at`, `updated_at`
 - RLS: lectura publica, escritura solo admin (mismo patron que `foods`)
@@ -755,4 +792,17 @@ Estado confirmado al 2026-06-19:
 - la migracion `20260619_g32_arnold_split_catalog.sql` amplia ese catalogo con `Arnold Split 6 dias` sin resetear las rutinas existentes
 - `g30_routine_catalog_reset` borra las rutinas anteriores del catalogo y reconstruye sus dias/items; por cascada tambien elimina rutinas guardadas y sesiones asociadas a templates anteriores
 - la carga de alimentos, ejercicios y recetas es idempotente por nombre; las rutinas quedan como catalogo cerrado reconstruido por `g30_routine_catalog_reset`
-- los valores nutricionales del seed son valores de catalogo aproximados para uso funcional de la app; si se requiere precision clinica o regulatoria, deben reemplazarse por una fuente nutricional auditada
+- los valores nutricionales de `foods` de este seed eran sinteticos (generados por formula, no por tabla); se reemplazaron en `20260915_nutrition_catalog_ar` (ver seccion siguiente)
+
+## Catalogo AR con valores de referencia (2026-09-15)
+
+Fuentes y decision por alimento: `docs/CATALOGO_ALIMENTOS_AR.md` (SARA 2 / ARGENFOODS, USDA FoodData Central, rotulos). Valores por 100 g (bebidas por 100 ml, 1 ml ≈ 1 g); `carbs_g` = carbohidratos disponibles.
+
+| Migracion | Cuando | Que hace |
+| --- | --- | --- |
+| `20260915_nutrition_catalog_ar` | aplicada 2026-09-15 | reemplaza valores de los 200 existentes, nombres con estado ("Pechuga de pollo a la plancha"), unifica duplicados por tilde re-apuntando `recipe_items`/`meal_log_items`, pasa "test" a privado de la unica cuenta que lo uso, agrega 269 alimentos sin bebidas; todo con `measure = 'g'` |
+| `20260915_nutrition_catalog_ar_units_drinks` | solo con el codigo nuevo en produccion | 116 alimentos pasan a `measure = 'unit'` y agrega 36 bebidas (`category = 'drink'`); total global 505 |
+
+- por que dos fases: el codigo anterior rompe `/alimentos` y `/admin/alimentos` con `category = 'drink'` (icono inexistente) y arranca en 100 unidades los alimentos `unit`
+- backup previo: `private.foods_backup_20260915` (204 filas, schema no expuesto por la API)
+- la fase 1 termina con controles que revierten todo si falta un alimento del seed, si quedan duplicados o si "test" sigue en el catalogo global
