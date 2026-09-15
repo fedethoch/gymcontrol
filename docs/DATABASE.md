@@ -743,7 +743,7 @@ Migracion: `20260613_g21_nutrition_fase3.sql`. Nota: las dietas predefinidas (`d
 - `grams numeric(7,1) not null check (grams > 0)` (valor autoritativo para macros de alimentos y recetas)
 - `measure text not null default 'g' check (measure in ('g','unit'))` (g24, lo que ingreso el usuario; en recetas `unit` = porciones de `recipes.serving_g`)
 - `quantity numeric not null check (quantity > 0)` (g24, cantidad en `measure`)
-- `recipe_snapshot jsonb` (solo recetas, `20260915_nutrition_meal_order_user_recipes`): `{servingG, kcalPerG, proteinPerG, carbsPerG, fatPerG}` congelado al registrar; editar la receta no cambia lo ya registrado y cambiar la cantidad conserva el snapshot. Null solo en items insertados por codigo previo (fallback a la receta actual)
+- `recipe_snapshot jsonb` (solo recetas, `20260915_nutrition_meal_order_user_recipes`): `{servingG, kcalPerG, proteinPerG, carbsPerG, fatPerG}` congelado al registrar; editar la receta no cambia lo ya registrado y cambiar la cantidad conserva el snapshot. Obligatorio en items de receta: `check (recipe_id is null or recipe_snapshot is not null)` (`20260915_nutrition_recipes_contract`)
 - `created_at` (orden de los items dentro de la comida)
 - macros en runtime: alimento `food.* * (grams / serving_g)`; receta `recipe_snapshot.*PerG * grams` (`app/lib/recipe-nutrition.ts`)
 - RLS: owner-only via `meal_logs.user_id`, mismo patron que `workout_session_items`
@@ -763,8 +763,7 @@ Migracion: `20260613_g21_nutrition_fase3.sql`. Nota: las dietas predefinidas (`d
 - `image_url text`
 - en `G29`, apunta a la URL publica final del bucket `recipe-images` cuando la receta tiene imagen generada
 - `category text not null check (category in ('desayuno','comida','snack'))`
-- `servings integer not null default 1 check (servings > 0)` (legacy: la app ya no lo lee; la RPC lo mantiene ≈ peso base / porcion hasta el contract)
-- `serving_g numeric(7,1) check (> 0)`: gramos de una porcion, obligatorio en la app (backfill = suma de ingredientes / servings, asi los gramos ya registrados no cambian)
+- `serving_g numeric(7,1) not null check (> 0)`: gramos de una porcion (backfill = suma de ingredientes / el viejo `servings`, asi los gramos ya registrados no cambiaron; `servings` se elimino en `20260915_nutrition_recipes_contract`)
 - `total_weight_g numeric(8,1) check (> 0)`: peso final cocido opcional; peso base = `total_weight_g ?? suma de recipe_items.grams`
 - `archived_at timestamptz`: "eliminar" archiva; sale del catalogo y del buscador, los registros que la usaron quedan intactos
 - una receta usada en `meal_log_items` no se puede borrar (`on delete restrict`)
@@ -772,8 +771,6 @@ Migracion: `20260613_g21_nutrition_fase3.sql`. Nota: las dietas predefinidas (`d
 - `created_at`, `updated_at`
 - RLS (`20260915_nutrition_meal_order_user_recipes`): lectura publica; insert `authenticated` con `created_by = private.current_profile_id()`; update creador o admin; delete solo admin
 - guardado atomico: RPC `public.save_recipe(p_recipe_id, p_name, p_description, p_category, p_serving_g, p_total_weight_g, p_items jsonb)` (security invoker; valida dueño/admin `P0002`, ingredientes del catalogo global y porcion <= peso base `22023`)
-- pendiente contract (tras deploy): `serving_g not null`, drop `servings`, `recipe_snapshot` obligatorio en items de receta
-
 ### `recipe_items`
 
 - `id uuid primary key default gen_random_uuid()`

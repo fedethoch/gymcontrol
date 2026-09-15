@@ -125,7 +125,7 @@ async function fetchExercises() {
 async function fetchRecipes() {
   const { data, error } = await supabase
     .from("recipes")
-    .select("id, name, description, image_url, category, servings, recipe_items(grams, foods(name))")
+    .select("id, name, description, image_url, category, serving_g, recipe_items(grams, foods(name))")
     .order("category", { ascending: true })
     .order("name", { ascending: true });
 
@@ -243,7 +243,7 @@ function recipeToAsset(recipe) {
     status: recipe.image_url ? "linked" : "needs-generation",
     prompt:
       `Use case: photorealistic-natural. Asset type: recipe catalog card. Primary request: ${recipe.name}. ` +
-      `Description: ${recipe.description ?? ""}. Category: ${recipe.category}. Servings: ${recipe.servings}. Ingredients: ${ingredients}. ` +
+      `Description: ${recipe.description ?? ""}. Category: ${recipe.category}. Portion: ${recipe.serving_g} g. Ingredients: ${ingredients}. ` +
       "Scene: show the finished dish accurately matching the ingredients. Composition: horizontal 16:9, premium food photography, no text, no logo, no watermark.",
   };
 }

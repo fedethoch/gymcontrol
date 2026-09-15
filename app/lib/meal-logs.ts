@@ -745,7 +745,7 @@ function mapMealLogItem(row: MealLogItemRow): MealLogItem {
       throw new Error(`El item de registro ${row.id} referencia una receta inexistente o inaccesible.`);
     }
 
-    // Congelada al registrar; sin snapshot (items previos al cambio) se usa la receta actual.
+    // Congelada al registrar (la base exige snapshot en items de receta); la receta actual es solo red de seguridad.
     const snapshot = isRecipeSnapshot(row.recipe_snapshot)
       ? row.recipe_snapshot
       : buildRecipeSnapshot(toRecipeNutritionInput(recipe));
