@@ -39,6 +39,7 @@ Do not read all files. Pick only the relevant source from this map.
 - skills/agentes: `docs/SKILLS_AND_AGENTS.md`
 - plan y specs: `PLAN.md`, `specs/`
 - diseño / UI (tokens, tipografía, spacing, motion, PWA, a11y): `DESIGN.md`
+- dirección de rediseño de rutas (principios, rechazos, método con `/app-store-refs`, estado por ruta): `docs/REDESIGN_DIRECTION.md`
 
 Si cambia una decision, actualizar primero su fuente de verdad.
 
@@ -104,6 +105,7 @@ Rules:
 
 ## Frontend
 - **Fuente de verdad de diseño: `DESIGN.md`.** Leerlo antes de cualquier tarea de UI. Dirección cerrada: dark-only, app-native first, mobile primario, acento **emerald `#10b981`**, fuentes Sora (display) + Geist Sans (body) + Geist Mono, spacing airy, tap ≥44px. Si cambia una decisión de diseño, actualizar `DESIGN.md` primero.
+- **Rediseño de una ruta:** leer `docs/REDESIGN_DIRECTION.md` antes de proponer nada. Referencias con `/app-store-refs` usando las categorías de su tabla de rutas; el home mobile (`/`) es la vara.
 - For any frontend/UI task, use `ui-ux-pro-max` for UX/layout, `context7` for current docs, `shadcn` for components/patterns, `magic` for premium UI generation/refinement, and `$playwright-cli` to inspect desktop/mobile after meaningful visual changes.
 - Do not finish only because it compiles: open the changed screen, check layout/overflow/responsiveness/navigation, then make one visual refinement pass if needed.
 - Stack: React + Tailwind. Base components: shadcn/ui. Icons: `lucide-react` only.

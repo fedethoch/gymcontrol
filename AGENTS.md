@@ -38,6 +38,7 @@ Do not read all files. Pick only the relevant source from this map.
 - base de datos: `docs/DATABASE.md`
 - skills/agentes: `docs/SKILLS_AND_AGENTS.md`
 - plan y specs: `PLAN.md`, `specs/`
+- rediseño de rutas: `docs/REDESIGN_DIRECTION.md` (leer antes de rediseñar; tokens en `DESIGN.md`)
 
 Si cambia una decision, actualizar primero su fuente de verdad.
 

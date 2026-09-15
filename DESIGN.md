@@ -4,6 +4,8 @@ Fuente de verdad visual. Toda decisión de UI (color, tipografía, spacing, moti
 
 Ámbito: PWA operativa de entrenamiento + nutrición. **Dark-only**, **mobile-first real**, **app-native first**.
 
+Para rediseñar una ruta, la dirección y el método (referencias con `/app-store-refs`, decisiones, estados) están en `docs/REDESIGN_DIRECTION.md`.
+
 ---
 
 ## 0. Principios
@@ -121,12 +123,13 @@ Migración (Fase 1, en `layout.tsx`): quitar `IBM_Plex_Sans` / `IBM_Plex_Mono`, 
 | Display XL | 2rem / 1.1 | 700 | Sora | Número hero de métrica |
 | Metric M | 1.75rem / 1 | 700 | Sora | Stats en fila (entrenos, racha, comidas) |
 | H1 | 1.5rem / 1.2 | 600 | Sora | Título de pantalla |
-| H2 | 1.25rem / 1.25 | 600 | Sora | Título de sección |
+| H2 | 1.375rem / 1.25 | 700 | Sora | Título de sección (tracking −0.02em, sin kicker en mayúsculas) |
 | H3 | 1.0625rem / 1.3 | 600 | Sora | Título de card |
 | Body | 0.9375rem / 1.5 | 400 | Geist Sans | Texto base |
 | Body-strong | 0.9375rem / 1.5 | 500 | Geist Sans | Énfasis inline |
 | Label | 0.8125rem / 1.3 | 500 | Geist Sans | Labels de form, meta |
 | Caption | 0.75rem / 1.3 | 500 | Geist Sans | Hints, timestamps |
+| Micro label | 0.6875rem / 1.5 | 600 | Geist Sans | Nombre de un stat o de un paso ("Entrenos", "Tu objetivo"), en mayúsculas con tracking +0.08em. Nunca título de sección ni texto crítico |
 | Tab label | 0.625rem / 1 | 700 | Sora | Labels de bottom nav (ya definido) |
 | Mono | 0.875rem / 1.4 | 400–500 | Geist Mono | Números/datos |
 

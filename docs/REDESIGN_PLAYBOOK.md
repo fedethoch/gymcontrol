@@ -1,5 +1,7 @@
 # Redesign Playbook (Gymcontrol)
 
+> Anterior al rediseño del home mobile (septiembre 2026). La dirección vigente y el método con `/app-store-refs` están en `docs/REDESIGN_DIRECTION.md`. Si algo de este playbook la contradice (referencias de Awwwards/Dribbble, grid/bento como salida por defecto), gana ese archivo.
+
 Sistema de prompts para rediseñar una pantalla a calidad app premium, limpia y bien distribuida.
 Objetivo: evitar el fallo típico (skill overload → default AI → cards apiladas en vertical).
 
