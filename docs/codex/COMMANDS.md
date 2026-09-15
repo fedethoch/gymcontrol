@@ -13,5 +13,6 @@ Comandos versionados y ejecutables:
 | `pnpm exercisedb:audit` | genera reporte dry-run de mapeo ExerciseDB; con `-- --apply` actualiza `exercises.exercisedb_id` para matches confiables |
 | `pnpm validate:mobile` | validacion Playwright mobile autenticada; requiere `pnpm dev` o `pnpm start` activo y `.env.local` |
 | `pnpm check:ui` | build + validacion mobile autenticada |
+| `pnpm test:unit` | tests de logica pura con `node --test` (sin dependencias; `tests/unit/`) |
 
 No existe comando versionado para: deploy, migraciones locales.

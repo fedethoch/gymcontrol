@@ -239,6 +239,8 @@ La app es **instalable y standalone**. El diseño asume que el usuario la abre c
 
 Único cambio que aplica del redesign: el color de estado activo `#b995ff` (violeta) → `--accent-bright` `#6ee7b7` (emerald) en Fase 1. Nada más de la tab bar se toca.
 
+Tabs por rol (pedido explícito del usuario, 2026-09-15): usuario = Inicio · Rutina · Nutrición · Catálogo · Más; admin = Inicio · Rutina · Nutrición · Admin · Más (el admin también entrena; las secciones de gestión siguen en "Más" y en `/admin`). Un tab queda activo en su ruta y en sus subrutas (`/admin/rutinas` activa "Admin").
+
 Detalle: modo browser (`.pwa-browser` / `@media (display-mode: browser)`) usa barra alta con labels; standalone (`.pwa-standalone` / `@media (display-mode: standalone)`) usa barra fina pegada abajo. Respetar ambos.
 
 ### 6.3 Estados offline / instalación
@@ -304,26 +306,42 @@ Jerarquía de escala fuerte: un solo elemento Display XXL por pantalla, títulos
 
 | Zona | Contenido |
 |---|---|
-| Z1 Saludo | Avatar (link a `/configuracion`), "Hola, {nombre}" (o "Bienvenido a GymControl"), campana y chip de racha (solo si racha > 0) |
-| Z2 Semana | 7 círculos de 38px L–D: emerald con check = entrenado, borde claro = hoy |
+| Z1 Saludo | Avatar (link a `/configuracion`), "Hola, {nombre}" (o "Bienvenido a GymControl"), campana y chip de racha (solo si racha > 0). Racha = semanas seguidas cumpliendo los días del plan activo |
+| Z2 Semana | 7 círculos de 38px L–D: emerald con check = entreno que cuenta (terminado o de un día anterior), borde claro = hoy |
 | Z3 Hero "Hoy toca" | Foto grayscale, radio 28px, alto `clamp(380px, 52svh, 470px)`, título Display XXL (máx. 2 grupos musculares), meta en una línea, CTA 56px + botón de lista que abre un bottom sheet con los ejercicios |
 | Z4 Nutrición | Metric L (kcal restantes), 3 barras de macros, filas Desayuno/Almuerzo/Merienda/Cena (Snack solo si hay) con "+" de 44px → `/nutricion/registro?tipo=…` |
-| Z5 Esta semana | 3 stats Metric M (entrenos, racha, comidas) de la semana calendario, separados por líneas |
-| Z6 Tus músculos | `BodyMuscleFigure` sin card: switch Frente/Espalda, figura 150×300, etiquetas con líneas guía (nombre, kg, color del rango; la seleccionada suma el rango) y una fila de escala |
+| Z5 Esta semana | 3 stats Metric M (entrenos = días del plan hechos, racha en semanas "sem", comidas) de la semana calendario, separados por líneas |
+| Z6 Tus músculos | `BodyMuscleFigure` sin card: switch Frente/Espalda, figura 150×300, etiquetas con líneas guía (nombre, kg de la mejor serie, color del rango por 1RM estimado; la seleccionada suma el rango) y una fila de escala. Datos del usuario en todas sus rutinas |
 
 ### 10.2 Estados del hero
 
 | Estado | Condición | Hero | CTA emerald |
 |---|---|---|---|
-| `ready` | Día pendiente, sin sesión hoy | "Grupo & Grupo", meta min · ejercicios · series | "Empezar" en el hero |
-| `in_progress` | Sesión `in_progress` hoy | "X de N ejercicios" + barra | "Continuar" en el hero |
-| `done_today` | Hoy entrenado, queda día pendiente | Oscurecido, "Entreno hecho", próximo día | "Registrar comida" en Nutrición |
+| `ready` | Día pendiente, sin entreno en curso | "Grupo & Grupo", meta min · ejercicios · series | "Empezar" en el hero |
+| `in_progress` | Entreno sin terminar de hoy (cualquier día de la rutina; manda sobre el próximo pendiente) | "X de N ejercicios" + barra | "Continuar" en el hero |
+| `done_today` | Entreno terminado hoy, queda día pendiente | Oscurecido, "Entreno hecho", próximo día | "Registrar comida" en Nutrición |
 | `week_done` | Sin día pendiente | Oscurecido, "Semana cerrada" | "Registrar comida" en Nutrición |
-| `no_routine` | Sin rutina activa | "Elegí tu rutina" | "Explorar rutinas" en el hero |
+| `no_routine` | Sin rutina activa (estado válido: se puede desactivar) | "Elegí tu rutina"; con guardadas: "Activá una de tus rutinas guardadas" | Con guardadas: "Mis rutinas" → `/rutinas`; sin guardadas: "Explorar rutinas" → `/catalogo` |
 
-Reglas: **un solo CTA emerald por pantalla**. "Esta semana" y "Tus músculos" solo con rutina activa. Sin perfil nutricional, Nutrición muestra "Calculá tus kcal y macros" en lugar de números.
+Reglas: **un solo CTA emerald por pantalla**. "Esta semana" y "Tus músculos" solo con rutina activa. Sin perfil nutricional, Nutrición muestra "Calculá tus kcal y macros" en lugar de números. Home y `/rutinas` usan la misma regla de rutina activa (`findActiveSavedRoutine`): sin marca no hay activa, nunca se toma la primera guardada.
 
 ### 10.3 Tus músculos sin datos
 
 - **Vacío** (los 7 grupos sin peso): frente y espalda juntos a 104px, sin etiquetas ni switch, mensaje "Todavía sin datos de fuerza" + escala.
 - **Parcial** (≥1 grupo con peso): layout normal + línea "X de 7 grupos con datos".
+
+---
+
+## 11. Registro de entrenamiento (`/rutinas/dia`)
+
+Patrón funcional (F1–F3, 2026-09-15). El rediseño visual de la ruta sigue pendiente (`docs/REDESIGN_DIRECTION.md` §7); lo nuevo ya usa tokens.
+
+| Pieza | Regla |
+|---|---|
+| Ejercicio | Card colapsable (una abierta a la vez; se abre la primera pendiente y la siguiente al completar). Header ≥64px: estado (número o check), nombre, `series × objetivo · RIR · descanso`, contador `hechas/plan` en mono |
+| Serie | Fila `Serie · Anterior · kg · reps · ✓`. Peso corporal: columna "+kg" opcional (lastre). Tiempo: una sola columna "seg" o "min". Inputs 44px y 16px (sin zoom iOS), check redondo de 44px. Placeholder = sugerencia de hoy o, si no hay, la serie anterior o el mínimo del objetivo. ✓ con campos vacíos completa con el placeholder |
+| Anterior | Formato compacto en mono (`40×10`, `+10×8`, `45s`), etiqueta accesible completa |
+| Sugerencia | Una línea sobre la tabla (ícono tendencia): doble progresión contra el objetivo del plan. Primera vez: "apuntá a {objetivo}" |
+| Dock | `sticky` sobre la bottom nav: estado sin conexión/error, timer de descanso (hora de fin, +15 s, Saltar) y "Terminar entrenamiento" (único CTA emerald, confirma si faltan series). Parcial es válido |
+| Guardado | Indicador en el header: Guardando · Guardado · Sin conexión (`--warning`) · Reintentar (`--danger`). Nunca descarte silencioso |
+| Historial | Bottom sheet: mejor marca, sparkline de una serie en tinta neutra (dato ≠ acento; marcadores 8px; lectura al tocar/foco) y lista de sesiones como vista de tabla |
