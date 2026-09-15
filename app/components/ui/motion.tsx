@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ComponentProps, type ReactNode } from "react";
+import { useEffect, useRef, type ComponentProps, type ReactNode } from "react";
 import { animate, motion, useReducedMotion, type Variants } from "framer-motion";
 
 export const premiumEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -115,17 +115,24 @@ export function AnimatedMacroBar({ pct, color, delay = 0.05 }: { pct: number; co
   );
 }
 
-/** Contador animado que tween-ea desde el valor anterior hasta el nuevo. */
+/**
+ * Contador animado que tween-ea desde el valor anterior hasta el nuevo.
+ * Escribe el texto por ref (sin setState): el HTML del servidor y el primer
+ * render del cliente coinciden ("0") aunque el usuario tenga reduced-motion.
+ */
 export function AnimatedNumber({ value, className }: { value: number; className?: string }) {
   const reduceMotion = useReducedMotion();
-  const [display, setDisplay] = useState(reduceMotion ? value : 0);
-  const previousRef = useRef(reduceMotion ? value : 0);
+  const nodeRef = useRef<HTMLSpanElement>(null);
+  const previousRef = useRef(0);
 
   useEffect(() => {
+    const node = nodeRef.current;
+    if (!node) return;
+
     // Respeta prefers-reduced-motion: sin count-up, muestra el valor final directo.
     if (reduceMotion) {
       previousRef.current = value;
-      setDisplay(value);
+      node.textContent = String(Math.round(value));
       return;
     }
 
@@ -134,13 +141,17 @@ export function AnimatedNumber({ value, className }: { value: number; className?
       ease: "easeOut",
       onUpdate: (latest) => {
         previousRef.current = latest;
-        setDisplay(latest);
+        node.textContent = String(Math.round(latest));
       },
     });
     return () => controls.stop();
   }, [value, reduceMotion]);
 
-  return <span className={className}>{Math.round(display)}</span>;
+  return (
+    <span ref={nodeRef} className={className}>
+      0
+    </span>
+  );
 }
 
 export { motion };
