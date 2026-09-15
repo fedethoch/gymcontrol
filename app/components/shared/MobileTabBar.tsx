@@ -31,11 +31,12 @@ const USER_TABS: TabItem[] = [
   { href: "/catalogo", label: "Catálogo", icon: BookOpen },
 ];
 
+/** El admin también entrena: tabs de usuario con "Admin" en lugar de "Catálogo" (catálogo y gestión en "Más"). */
 const ADMIN_TABS: TabItem[] = [
+  { href: "/", label: "Inicio", icon: LayoutDashboard },
+  { href: "/rutinas", label: "Rutina", icon: Calendar },
+  { href: "/nutricion/registro", label: "Nutrición", icon: UtensilsCrossed },
   { href: "/admin", label: "Admin", icon: Shield },
-  { href: "/admin/ejercicios", label: "Ejercicios", icon: LayoutDashboard },
-  { href: "/admin/rutinas", label: "Rutinas", icon: Calendar },
-  { href: "/admin/alimentos", label: "Alimentos", icon: UtensilsCrossed },
 ];
 
 const GUEST_TABS: TabItem[] = [
@@ -67,7 +68,9 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
     >
       <div className="mobile-tab-bar-grid grid h-full grid-cols-5">
         {tabs.map((tab) => {
-          const active = resolveShellRouteMeta(pathname).href === tab.href;
+          const active =
+            resolveShellRouteMeta(pathname).href === tab.href ||
+            (tab.href !== "/" && pathname.startsWith(`${tab.href}/`));
           const Icon = tab.icon;
 
           return (

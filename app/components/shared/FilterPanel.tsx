@@ -18,6 +18,8 @@ export type FilterGroup = {
   /** Currently selected value; use "all" to represent no filter */
   value: string;
   onChange: (value: string) => void;
+  /** "sort": un orden, no un filtro. No muestra "Todos" ni cuenta como filtro activo. */
+  kind?: "filter" | "sort";
 };
 
 type FilterPanelProps = {
@@ -39,7 +41,7 @@ type FilterPanelProps = {
  */
 export function FilterPanel({ groups, onClear }: FilterPanelProps) {
   const [open, setOpen] = useState(false);
-  const activeCount = groups.filter((g) => g.value !== "all").length;
+  const activeCount = groups.filter((g) => g.kind !== "sort" && g.value !== "all").length;
 
   return (
     <>
@@ -73,17 +75,19 @@ export function FilterPanel({ groups, onClear }: FilterPanelProps) {
                   {group.label}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={() => group.onChange("all")}
-                    className={
-                      group.value === "all"
-                        ? "rounded-full border border-[var(--accent)] bg-[var(--accent)]/15 px-3 py-1.5 text-xs font-semibold text-white transition-[background-color,border-color,color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100"
-                        : "rounded-full border border-[var(--border)] bg-[var(--card-alt)] px-3 py-1.5 text-xs font-semibold text-[#9aa3b8] transition-[background-color,border-color,color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-white active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100"
-                    }
-                  >
-                    Todos
-                  </button>
+                  {group.kind !== "sort" ? (
+                    <button
+                      type="button"
+                      onClick={() => group.onChange("all")}
+                      className={
+                        group.value === "all"
+                          ? "rounded-full border border-[var(--accent)] bg-[var(--accent)]/15 px-3 py-1.5 text-xs font-semibold text-white transition-[background-color,border-color,color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100"
+                          : "rounded-full border border-[var(--border)] bg-[var(--card-alt)] px-3 py-1.5 text-xs font-semibold text-[#9aa3b8] transition-[background-color,border-color,color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-white active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100"
+                      }
+                    >
+                      Todos
+                    </button>
+                  ) : null}
                   {group.options.map((opt) => (
                     <button
                       key={opt.value}
