@@ -68,19 +68,21 @@ export function parseFoodPayload(
       continue;
     }
 
-    numericValues[field] = Math.round(value);
+    // kcal y porción enteras; macros con un decimal (ej. 0.4 g de grasa).
+    numericValues[field] = field === "servingG" || field === "calories" ? Math.round(value) : Math.round(value * 10) / 10;
   }
 
   const rawGramsPerUnit = payload.gramsPerUnit.trim();
   let gramsPerUnit: number | null = null;
 
   if (rawGramsPerUnit) {
-    const value = Number(rawGramsPerUnit);
+    // Un decimal: hay unidades chicas (ej. 1 disparo de aceite en aerosol = 0.3 g).
+    const value = Math.round(Number(rawGramsPerUnit) * 10) / 10;
 
     if (!Number.isFinite(value) || value <= 0) {
       fieldErrors.gramsPerUnit = "Ingresa un numero valido mayor a 0.";
     } else {
-      gramsPerUnit = Math.round(value);
+      gramsPerUnit = value;
     }
   }
 

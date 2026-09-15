@@ -1,8 +1,10 @@
 import { NutritionCatalogClient } from "@/app/alimentos/NutritionCatalogClient";
-import { listFoodCatalogItems } from "@/app/lib/foods";
+import { getOptionalAuthContext } from "@/app/lib/auth";
+import { listFoodCatalogItems, listFoodsForUser } from "@/app/lib/foods";
 
 export default async function NutricionPage() {
-  const foods = await listFoodCatalogItems();
+  const auth = await getOptionalAuthContext();
+  const foods = auth ? await listFoodsForUser(auth.user.id) : await listFoodCatalogItems();
 
   return (
     <section className="page-frame content-start bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.15),transparent_31%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
@@ -13,7 +15,7 @@ export default async function NutricionPage() {
       </div>
 
       <div className="-mt-2 sm:-mt-3">
-        <NutritionCatalogClient foods={foods} />
+        <NutritionCatalogClient foods={foods} canCreate={auth !== null} />
       </div>
     </section>
   );

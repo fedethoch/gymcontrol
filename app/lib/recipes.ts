@@ -138,6 +138,10 @@ export async function deleteRecipe(id: string) {
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.from("recipes").delete().eq("id", id);
 
+  if (error?.code === "23503") {
+    throw new Error("Esta receta está usada en comidas registradas, por eso no se puede eliminar.");
+  }
+
   if (error) {
     throw new Error(`No se pudo eliminar la receta: ${error.message}`);
   }

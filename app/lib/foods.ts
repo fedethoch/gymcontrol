@@ -23,10 +23,14 @@ type FoodRow = {
   protein_g: number;
   carbs_g: number;
   fat_g: number;
+  owner_user_id: string | null;
   created_at: string;
 };
 
-const FOOD_SELECT = "id, name, image_url, category, measure, serving_g, grams_per_unit, calories, protein_g, carbs_g, fat_g, created_at";
+const FOOD_SELECT =
+  "id, name, image_url, category, measure, serving_g, grams_per_unit, calories, protein_g, carbs_g, fat_g, owner_user_id, created_at";
+
+const FOREIGN_KEY_VIOLATION = "23503";
 
 function createAnonClient() {
   return createClient(
@@ -36,12 +40,14 @@ function createAnonClient() {
   );
 }
 
+/** Catálogo global (sin alimentos privados). Cacheado: se invalida con el tag "foods". */
 export const listFoodCatalogItems = unstable_cache(
   async (): Promise<Food[]> => {
     const supabase = createAnonClient();
     const { data, error } = await supabase
       .from("foods")
       .select(FOOD_SELECT)
+      .is("owner_user_id", null)
       .order("category", { ascending: true })
       .order("name", { ascending: true });
 
@@ -55,11 +61,34 @@ export const listFoodCatalogItems = unstable_cache(
   { revalidate: 3600, tags: ["foods"] },
 );
 
+export async function listOwnFoods(userId: string): Promise<Food[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("foods")
+    .select(FOOD_SELECT)
+    .eq("owner_user_id", userId)
+    .order("name", { ascending: true });
+
+  if (error) {
+    throw new Error(`No se pudieron leer tus alimentos: ${error.message}`);
+  }
+
+  return ((data ?? []) as FoodRow[]).map(mapFood);
+}
+
+/** Alimentos propios del usuario primero, después el catálogo global. */
+export async function listFoodsForUser(userId: string): Promise<Food[]> {
+  const [ownFoods, catalog] = await Promise.all([listOwnFoods(userId), listFoodCatalogItems()]);
+
+  return [...ownFoods, ...catalog];
+}
+
 export async function listAdminFoods(): Promise<AdminFoodListItem[]> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("foods")
     .select(FOOD_SELECT)
+    .is("owner_user_id", null)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -73,9 +102,11 @@ export async function listAdminFoods(): Promise<AdminFoodListItem[]> {
   }));
 }
 
-export async function getFoodById(id: string): Promise<Food | null> {
+/** Busca un alimento del catálogo global (`ownerUserId` null) o uno privado de ese usuario. */
+export async function getFoodById(id: string, ownerUserId: string | null = null): Promise<Food | null> {
   const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.from("foods").select(FOOD_SELECT).eq("id", id).maybeSingle();
+  const query = supabase.from("foods").select(FOOD_SELECT).eq("id", id);
+  const { data, error } = await (ownerUserId ? query.eq("owner_user_id", ownerUserId) : query.is("owner_user_id", null)).maybeSingle();
 
   if (error) {
     throw new Error(`No se pudo leer el alimento: ${error.message}`);
@@ -100,7 +131,9 @@ type FoodInput = {
   fatG: number;
 };
 
-export async function createFood(input: FoodInput & { createdBy: string }): Promise<string> {
+export async function createFood(
+  input: FoodInput & { createdBy: string; ownerUserId?: string | null },
+): Promise<string> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("foods")
@@ -116,6 +149,7 @@ export async function createFood(input: FoodInput & { createdBy: string }): Prom
       carbs_g: input.carbsG,
       fat_g: input.fatG,
       created_by: input.createdBy,
+      owner_user_id: input.ownerUserId ?? null,
     })
     .select("id")
     .single();
@@ -127,9 +161,9 @@ export async function createFood(input: FoodInput & { createdBy: string }): Prom
   return data.id;
 }
 
-export async function updateFood(input: FoodInput & { id: string }) {
+export async function updateFood(input: FoodInput & { id: string; ownerUserId?: string | null }) {
   const supabase = await createSupabaseServerClient();
-  const { error } = await supabase
+  const query = supabase
     .from("foods")
     .update({
       name: input.name,
@@ -143,15 +177,25 @@ export async function updateFood(input: FoodInput & { id: string }) {
       fat_g: input.fatG,
     })
     .eq("id", input.id);
+  const { data, error } = await (input.ownerUserId ? query.eq("owner_user_id", input.ownerUserId) : query.is("owner_user_id", null)).select("id");
 
   if (error) {
     throw new Error(`No se pudo actualizar el alimento: ${error.message}`);
   }
+
+  if (!data || data.length === 0) {
+    throw new Error("El alimento que intentas editar ya no existe.");
+  }
 }
 
-export async function deleteFood(id: string) {
+export async function deleteFood(id: string, ownerUserId: string | null = null) {
   const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.from("foods").delete().eq("id", id);
+  const query = supabase.from("foods").delete().eq("id", id);
+  const { error } = await (ownerUserId ? query.eq("owner_user_id", ownerUserId) : query.is("owner_user_id", null));
+
+  if (error?.code === FOREIGN_KEY_VIOLATION) {
+    throw new Error("Este alimento está usado en comidas registradas o recetas, por eso no se puede eliminar.");
+  }
 
   if (error) {
     throw new Error(`No se pudo eliminar el alimento: ${error.message}`);
@@ -171,6 +215,7 @@ function mapFood(row: FoodRow): Food {
     proteinG: row.protein_g,
     carbsG: row.carbs_g,
     fatG: row.fat_g,
+    ownerUserId: row.owner_user_id,
   };
 }
 

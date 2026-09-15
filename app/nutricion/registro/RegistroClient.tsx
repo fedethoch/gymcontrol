@@ -1,21 +1,24 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Beef,
   Check,
+  ChevronLeft,
+  ChevronRight,
   Droplet,
   Flame,
   type LucideIcon,
   Pencil,
   Plus,
-  Search,
   Settings2,
   Trash2,
   UtensilsCrossed,
   Wheat,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -53,35 +56,44 @@ import {
   SelectValue,
 } from "@/app/components/ui/Select";
 import {
-  addMealLogItemAction,
+  addMealItemAction,
   createMealAction,
   deleteMealAction,
-  deleteMealLogItemAction,
+  deleteMealItemAction,
   updateMealAction,
-  updateMealLogItemAction,
+  updateMealItemAction,
+  type MealLogActionResult,
 } from "@/app/nutricion/registro/actions";
-import { MACRO_COLORS, MACRO_LABELS } from "@/app/lib/nutrition-style";
-import type { MealGroup } from "@/app/lib/meal-logs";
 import {
+  FoodPicker,
+  formatQuantity,
+  getFoodGramsPerUnit,
+  parseQuantity,
+  previewNutrition,
+  type PickerOption,
+} from "@/app/nutricion/registro/FoodPicker";
+import { addDaysToDateKey, getWeekStartDateKey } from "@/app/lib/local-date";
+import { MACRO_COLORS, MACRO_LABELS } from "@/app/lib/nutrition-style";
+import type { MealGroup, MealLogItem } from "@/app/lib/meal-logs";
+import {
+  getAmountUnitLabel,
+  MEAL_LOG_MAX_PAST_DAYS,
   MEAL_TYPE_IMAGES,
   MEAL_TYPE_LABELS,
   MEAL_TYPES,
   type Food,
   type FoodMeasure,
+  type FrequentItem,
   type Macros,
+  type MealItemInput,
   type MealType,
+  type RecipeOption,
 } from "@/app/lib/nutrition-types";
 import { cn } from "@/app/lib/utils";
 
-type DraftItem = {
-  localId: string;
-  foodId: string;
-  measure: FoodMeasure;
-  quantity: number;
-};
+type DraftItem = MealItemInput & { localId: string };
 
 const compactControlClass = "nutrition-compact-control";
-const compactButtonClass = "h-8 rounded-lg px-2.5 text-xs";
 
 const NUTRITION_PHRASES = [
   "Cada comida registrada te acerca a tu objetivo.",
@@ -90,34 +102,55 @@ const NUTRITION_PHRASES = [
   "Un registro hoy, un hábito mañana.",
 ] as const;
 
+const WEEK_LETTERS = ["L", "M", "M", "J", "V", "S", "D"] as const;
+
+const WEEKDAY_FORMATTER = new Intl.DateTimeFormat("es-AR", { weekday: "long", timeZone: "UTC" });
+const DAY_MONTH_FORMATTER = new Intl.DateTimeFormat("es-AR", { day: "numeric", month: "long", timeZone: "UTC" });
+
 export function RegistroClient({
   foods,
+  recipes,
+  frequentItems,
   logDate,
+  todayKey,
   initialMeals,
-  targetKcal,
-  targetMacros,
+  target,
   loggedDates,
-  avgDailyKcal,
   initialMealType,
 }: {
   foods: Food[];
+  recipes: RecipeOption[];
+  frequentItems: FrequentItem[];
+  /** Día que se está viendo/cargando (YYYY-MM-DD). */
   logDate: string;
+  /** Hoy en hora argentina (YYYY-MM-DD). */
+  todayKey: string;
   initialMeals: MealGroup[];
-  targetKcal: number;
-  targetMacros: Macros;
+  /** null si el usuario todavía no configuró su objetivo. */
+  target: { kcal: number; macros: Macros } | null;
   loggedDates: string[];
-  avgDailyKcal: number;
-  /** Si viene (desde el home), abre "Nueva comida" con ese tipo elegido. */
+  /** Si viene (desde el home): abre la comida de ese tipo si ya existe, o "Nueva comida" con ese tipo. */
   initialMealType?: MealType;
 }) {
+  const router = useRouter();
+  const [focusMealId] = useState(
+    () => (initialMealType ? [...initialMeals].reverse().find((meal) => meal.type === initialMealType)?.id : undefined) ?? null,
+  );
   const [meals, setMeals] = useState(initialMeals);
+  const [foodList, setFoodList] = useState(foods);
   const [mealType, setMealType] = useState<MealType>(initialMealType ?? "desayuno");
   const [mealName, setMealName] = useState(MEAL_TYPE_LABELS[initialMealType ?? "desayuno"]);
   const [mealNameTouched, setMealNameTouched] = useState(false);
   const [draftItems, setDraftItems] = useState<DraftItem[]>([]);
   const [isSavingMeal, setIsSavingMeal] = useState(false);
-  const [editingMealId, setEditingMealId] = useState<string | null>(null);
-  const [newMealOpen, setNewMealOpen] = useState(Boolean(initialMealType));
+  const [editingMealId, setEditingMealId] = useState<string | null>(focusMealId);
+  const [newMealOpen, setNewMealOpen] = useState(Boolean(initialMealType) && !focusMealId);
+
+  useEffect(() => {
+    if (focusMealId) {
+      document.getElementById(`meal-${focusMealId}`)?.scrollIntoView({ block: "center" });
+    }
+  }, [focusMealId]);
 
   const totalKcal = meals.reduce((total, meal) => total + meal.kcal, 0);
   const totalMacros: Macros = meals.reduce<Macros>(
@@ -129,13 +162,47 @@ export function RegistroClient({
     { proteinG: 0, carbsG: 0, fatG: 0 },
   );
 
-  const streak = calculateStreak(loggedDates, logDate);
+  const isToday = logDate === todayKey;
+  const loggedSet = new Set(loggedDates);
+
+  if (meals.some((meal) => meal.items.length > 0)) {
+    loggedSet.add(logDate);
+  } else {
+    loggedSet.delete(logDate);
+  }
+
+  const streak = calculateStreak(loggedSet, todayKey);
   const macrosEmpty = totalMacros.proteinG === 0 && totalMacros.carbsG === 0 && totalMacros.fatG === 0;
   const dailyPhrase = NUTRITION_PHRASES[parseInt(logDate.replace(/-/g, ""), 10) % NUTRITION_PHRASES.length];
-  const todayDow = (new Date().getDay() + 6) % 7;
+  const weekStart = getWeekStartDateKey(todayKey);
+  const minDate = addDaysToDateKey(todayKey, -MEAL_LOG_MAX_PAST_DAYS);
+  const previousDay = addDaysToDateKey(logDate, -1);
+  const nextDay = addDaysToDateKey(logDate, 1);
+  const kcalPct = target && target.kcal > 0 ? Math.round((totalKcal / target.kcal) * 100) : 0;
+  const remainingKcal = target ? target.kcal - totalKcal : 0;
+  const isOverTarget = target !== null && remainingKcal < 0;
 
-  function handleAddDraftItem(foodId: string, measure: FoodMeasure, quantity: number) {
-    setDraftItems((current) => [...current, { localId: crypto.randomUUID(), foodId, measure, quantity }]);
+  function registroHref(dateKey: string) {
+    return dateKey === todayKey ? "/nutricion/registro" : `/nutricion/registro?fecha=${dateKey}`;
+  }
+
+  function applyResult(result: MealLogActionResult) {
+    if (!result.ok) {
+      toast.error(result.message);
+      return false;
+    }
+
+    setMeals(result.log.meals);
+    return true;
+  }
+
+  function handleFoodCreated(food: Food) {
+    setFoodList((current) => [food, ...current.filter((candidate) => candidate.id !== food.id)]);
+  }
+
+  function handleAddDraftItem(input: MealItemInput) {
+    setDraftItems((current) => [...current, { ...input, localId: crypto.randomUUID() }]);
+    return true;
   }
 
   function handleRemoveDraftItem(localId: string) {
@@ -166,32 +233,26 @@ export function RegistroClient({
     setIsSavingMeal(true);
 
     try {
-      let log = await createMealAction({ logDate, name: trimmed, type: mealType });
-      const newMeal = log.meals.find((meal) => !meals.some((existing) => existing.id === meal.id));
+      // Comida + alimentos en un solo paso: si algo falla no queda una comida a medias.
+      const result = await createMealAction({
+        logDate,
+        name: trimmed,
+        type: mealType,
+        items: draftItems.map(toMealItemInput),
+      });
 
-      if (!newMeal) {
-        throw new Error("No se pudo identificar la comida creada.");
+      if (!applyResult(result)) {
+        return;
       }
 
-      for (const item of draftItems) {
-        log = await addMealLogItemAction({
-          logDate,
-          mealId: newMeal.id,
-          foodId: item.foodId,
-          measure: item.measure,
-          quantity: item.quantity,
-        });
-      }
-
-      setMeals(log.meals);
       setMealType("desayuno");
       setMealName(MEAL_TYPE_LABELS.desayuno);
       setMealNameTouched(false);
       setDraftItems([]);
       setNewMealOpen(false);
-      toast.success("Comida creada.");
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "No se pudo crear la comida.");
+      toast.success("Comida guardada.");
+    } catch {
+      toast.error("No se pudo guardar la comida. Revisá tu conexión.");
     } finally {
       setIsSavingMeal(false);
     }
@@ -199,11 +260,14 @@ export function RegistroClient({
 
   async function handleDeleteMeal(mealId: string) {
     try {
-      await deleteMealAction(mealId);
-      setMeals((current) => current.filter((meal) => meal.id !== mealId));
+      if (!applyResult(await deleteMealAction({ logDate, mealId }))) {
+        return;
+      }
+
       if (editingMealId === mealId) {
         setEditingMealId(null);
       }
+
       toast.success("Comida eliminada.");
     } catch {
       toast.error("No se pudo eliminar la comida.");
@@ -211,32 +275,52 @@ export function RegistroClient({
   }
 
   async function handleUpdateMeal(mealId: string, input: { name?: string; type?: MealType }) {
-    const log = await updateMealAction({ logDate, mealId, ...input });
-    setMeals(log.meals);
+    const result = await updateMealAction({ logDate, mealId, ...input });
+
+    if (!result.ok) {
+      throw new Error(result.message);
+    }
+
+    setMeals(result.log.meals);
   }
 
-  async function handleAddItem(mealId: string, foodId: string, measure: FoodMeasure, quantity: number) {
-    const log = await addMealLogItemAction({ logDate, mealId, foodId, measure, quantity });
-    setMeals(log.meals);
+  async function handleAddItem(mealId: string, input: MealItemInput) {
+    try {
+      if (!applyResult(await addMealItemAction({ logDate, mealId, item: input }))) {
+        return false;
+      }
+
+      toast.success("Agregado a la comida.");
+      return true;
+    } catch {
+      toast.error("No se pudo agregar a la comida.");
+      return false;
+    }
   }
 
   async function handleUpdateItem(itemId: string, measure: FoodMeasure, quantity: number) {
-    const log = await updateMealLogItemAction({ logDate, itemId, measure, quantity });
-    setMeals(log.meals);
+    const result = await updateMealItemAction({ logDate, itemId, measure, quantity });
+
+    if (!result.ok) {
+      throw new Error(result.message);
+    }
+
+    setMeals(result.log.meals);
   }
 
   async function handleDeleteItem(itemId: string) {
-    await deleteMealLogItemAction(itemId);
-    setMeals((current) =>
-      current.map((meal) => ({
-        ...meal,
-        items: meal.items.filter((item) => item.id !== itemId),
-      })),
-    );
+    const result = await deleteMealItemAction({ logDate, itemId });
+
+    if (!result.ok) {
+      throw new Error(result.message);
+    }
+
+    // Totales del día y de la comida vuelven recalculados desde el servidor.
+    setMeals(result.log.meals);
   }
 
   const newMealBody = (
-    <div className="flex max-h-[calc(82dvh-4.25rem)] flex-col gap-2.5 overflow-y-auto pr-1">
+    <div className="flex max-h-[calc(82dvh-4.25rem)] flex-col gap-3 overflow-y-auto pr-1">
       <div className="grid grid-cols-[60px_1fr] items-end gap-2.5">
         <div className="relative aspect-square overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card-alt)]">
           <Image
@@ -277,10 +361,17 @@ export function RegistroClient({
         />
       </label>
 
-      <FoodPickerRow foods={foods} onAdd={handleAddDraftItem} actionLabel="Agregar" />
+      <FoodPicker
+        foods={foodList}
+        recipes={recipes}
+        frequentItems={frequentItems}
+        actionLabel="Agregar"
+        onAdd={handleAddDraftItem}
+        onFoodCreated={handleFoodCreated}
+      />
 
       <div className="flex min-h-[6.75rem] flex-col overflow-hidden rounded-xl border border-[var(--border)]">
-        <div className="grid grid-cols-[1fr_auto_auto_auto] gap-2 bg-[var(--card-alt)] px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-[#7887a6]">
+        <div className="grid grid-cols-[1fr_auto_auto_2.75rem] gap-2 bg-[var(--card-alt)] px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-[#7887a6]">
           <span>Alimento</span>
           <span className="text-right">Cantidad</span>
           <span className="text-right">Calorías</span>
@@ -293,29 +384,28 @@ export function RegistroClient({
           </div>
         ) : (
           draftItems.map((item) => {
-            const food = foods.find((candidate) => candidate.id === item.foodId);
+            const option = resolveOption(item, foodList, recipes);
 
-            if (!food) {
+            if (!option) {
               return null;
             }
 
-            const preview = previewItem(food, item.measure, item.quantity);
+            const preview = previewNutrition(option, item.kind === "food" ? item.measure : "unit", item.quantity);
 
             return (
               <div
                 key={item.localId}
-                className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-2 border-t border-[var(--border)] px-2.5 py-1.5 text-xs"
+                className="grid grid-cols-[1fr_auto_auto_2.75rem] items-center gap-2 border-t border-[var(--border)] px-2.5 py-1 text-xs"
               >
-                <span className="truncate font-semibold text-white">{food.name}</span>
-                <span className="text-right text-[var(--foreground-muted)]">
-                  {item.measure === "unit" ? `${roundQuantity(item.quantity)} u` : `${item.quantity} g`}
-                </span>
+                <span className="truncate font-semibold text-white">{option.name}</span>
+                <span className="text-right text-[var(--foreground-muted)]">{formatDraftAmount(item, option)}</span>
                 <span className="text-right text-[var(--foreground-muted)]">{preview.kcal} kcal</span>
                 <Button
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="size-8 justify-self-end rounded-lg"
+                  className="size-11 justify-self-end rounded-lg"
+                  aria-label={`Quitar ${option.name}`}
                   onClick={() => handleRemoveDraftItem(item.localId)}
                 >
                   <Trash2 className="size-3.5" />
@@ -328,11 +418,11 @@ export function RegistroClient({
 
       <Button
         type="button"
-        className="sticky bottom-0 h-10 shrink-0 rounded-lg text-sm shadow-[0_-10px_24px_rgba(8,11,16,0.85)]"
+        className="sticky bottom-0 h-11 shrink-0 rounded-lg text-sm shadow-[0_-10px_24px_rgba(8,11,16,0.85)]"
         onClick={handleSaveMeal}
         disabled={isSavingMeal}
       >
-                    {isSavingMeal ? <LoadingDots /> : <Plus className="size-4" />}
+        {isSavingMeal ? <LoadingDots /> : <Plus className="size-4" />}
         Guardar comida
       </Button>
     </div>
@@ -346,7 +436,9 @@ export function RegistroClient({
       <div>
         <CardTitle className="text-base">Nueva comida</CardTitle>
         <p className="mt-0.5 text-xs text-[var(--foreground-muted)]">
-          Agregá los alimentos que consumiste y guardá tu comida.
+          {isToday
+            ? "Agregá los alimentos que consumiste y guardá tu comida."
+            : `Se guarda en el registro del ${formatDayMonth(logDate)}.`}
         </p>
       </div>
     </div>
@@ -364,14 +456,17 @@ export function RegistroClient({
 
       <Drawer open={newMealOpen} onOpenChange={setNewMealOpen}>
         <DrawerContent className="max-h-[82dvh]">
-          <DrawerHeader className="px-3 py-2">
-            <DrawerTitle className="sr-only">Nueva comida</DrawerTitle>
-            <DrawerDescription className="sr-only">
-              Agregá los alimentos que consumiste y guardá tu comida.
-            </DrawerDescription>
-            {newMealIntro}
-          </DrawerHeader>
-          <div className="min-h-0 px-3 pb-3">{newMealBody}</div>
+          {/* En desktop el sheet ocupa todo el ancho: el contenido queda centrado con ancho legible. */}
+          <div className="mx-auto flex min-h-0 w-full max-w-xl flex-col">
+            <DrawerHeader className="px-3 py-2">
+              <DrawerTitle className="sr-only">Nueva comida</DrawerTitle>
+              <DrawerDescription className="sr-only">
+                Agregá los alimentos que consumiste y guardá tu comida.
+              </DrawerDescription>
+              {newMealIntro}
+            </DrawerHeader>
+            <div className="min-h-0 px-3 pb-3">{newMealBody}</div>
+          </div>
         </DrawerContent>
       </Drawer>
 
@@ -381,52 +476,125 @@ export function RegistroClient({
         initial="hidden"
         animate="visible"
       >
+        {/* Row 0: día del registro */}
+        <motion.nav
+          variants={fadeUp}
+          aria-label="Día del registro"
+          className="grid grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] items-center gap-2 rounded-2xl bg-[#0e131e] p-1.5"
+        >
+          {logDate > minDate ? (
+            <Button asChild variant="ghost" size="icon" className="size-11 rounded-xl">
+              <Link href={registroHref(previousDay)} prefetch={false} aria-label="Día anterior">
+                <ChevronLeft className="size-5" />
+              </Link>
+            </Button>
+          ) : (
+            <span aria-hidden="true" />
+          )}
+          <label className="relative grid min-h-11 cursor-pointer place-items-center rounded-xl px-2 text-center hover:bg-[var(--card-alt)]">
+            <span className="font-display text-base font-semibold leading-tight text-white">
+              {formatDayTitle(logDate, todayKey)}
+            </span>
+            <span className="text-xs text-[var(--foreground-muted)]">{formatDayMonth(logDate)}</span>
+            <input
+              type="date"
+              aria-label="Elegir día del registro"
+              className="absolute inset-0 cursor-pointer opacity-0"
+              min={minDate}
+              max={todayKey}
+              value={logDate}
+              onClick={(event) => event.currentTarget.showPicker?.()}
+              onChange={(event) => {
+                const value = event.target.value;
+
+                if (value && value >= minDate && value <= todayKey && value !== logDate) {
+                  router.push(registroHref(value));
+                }
+              }}
+            />
+          </label>
+          {isToday ? (
+            <span aria-hidden="true" />
+          ) : (
+            <Button asChild variant="ghost" size="icon" className="size-11 rounded-xl">
+              <Link href={registroHref(nextDay)} prefetch={false} aria-label="Día siguiente">
+                <ChevronRight className="size-5" />
+              </Link>
+            </Button>
+          )}
+        </motion.nav>
+
         {/* Row 1: Calorías card */}
         <motion.div variants={fadeUp} className="rounded-2xl bg-[#0e131e] p-3">
           <div className="mb-2 flex items-center gap-1.5">
             <Flame className="size-3.5 text-[var(--accent-bright)]" />
             <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#7887a6]">Calorías</span>
-            <Button asChild type="button" variant="outline" size="sm" className="ml-auto h-6 gap-1 border-[rgba(255,255,255,0.1)] px-2 text-[10px]">
-              <Link href="/configuracion">
-                <Settings2 className="size-3" />
-                <span>Editar objetivo</span>
-              </Link>
-            </Button>
+            {target ? (
+              <Button asChild type="button" variant="outline" size="sm" className="ml-auto h-6 gap-1 border-[rgba(255,255,255,0.1)] px-2 text-[10px]">
+                <Link href="/configuracion">
+                  <Settings2 className="size-3" />
+                  <span>Editar objetivo</span>
+                </Link>
+              </Button>
+            ) : null}
           </div>
-          <p className="mb-2 text-center text-[9px] font-semibold text-[#7887a6]">
-            Objetivo: {targetKcal} kcal
-          </p>
-          <div className="grid grid-cols-3 items-center">
-            <div className="flex flex-col items-center gap-0.5">
-              <span className="font-display text-xl font-bold text-white">
-                <AnimatedNumber value={totalKcal} />
-              </span>
-              <span className="text-center text-[9px] leading-tight text-[#7887a6]">kcal consumidas</span>
-            </div>
-            <div className="flex justify-center">
-              <AnimatedProgressRing
-                value={targetKcal > 0 ? Math.min(100, Math.round((totalKcal / targetKcal) * 100)) : 0}
-                size={72}
-                strokeWidth={5}
-                progressColor="var(--accent-bright)"
-              >
+          {target ? (
+            <>
+              <p className="mb-2 text-center text-[9px] font-semibold text-[#7887a6]">
+                Objetivo: {target.kcal} kcal
+              </p>
+              <div className="grid grid-cols-3 items-center">
                 <div className="flex flex-col items-center gap-0.5">
-                  <span className="font-display text-sm font-bold text-white">
-                    {targetKcal > 0 ? Math.min(100, Math.round((totalKcal / targetKcal) * 100)) : 0}%
+                  <span className="font-display text-xl font-bold text-white">
+                    <AnimatedNumber value={totalKcal} />
                   </span>
-                  {totalKcal === 0 && (
-                    <span className="text-[7px] leading-none text-[#7887a6]">Sin registro</span>
-                  )}
+                  <span className="text-center text-[9px] leading-tight text-[#7887a6]">kcal consumidas</span>
                 </div>
-              </AnimatedProgressRing>
+                <div className="flex justify-center">
+                  <AnimatedProgressRing
+                    value={Math.min(100, kcalPct)}
+                    size={72}
+                    strokeWidth={5}
+                    progressColor={isOverTarget ? "var(--warning)" : "var(--accent-bright)"}
+                  >
+                    <div className="flex flex-col items-center gap-0.5">
+                      <span className="font-display text-sm font-bold text-white">{kcalPct}%</span>
+                      {totalKcal === 0 && (
+                        <span className="text-[7px] leading-none text-[#7887a6]">Sin registro</span>
+                      )}
+                    </div>
+                  </AnimatedProgressRing>
+                </div>
+                <div className="flex flex-col items-center gap-0.5">
+                  <span className={cn("font-display text-xl font-bold", isOverTarget ? "text-[var(--warning)]" : "text-white")}>
+                    {isOverTarget ? "+" : null}
+                    <AnimatedNumber value={Math.abs(remainingKcal)} />
+                  </span>
+                  <span className="text-center text-[9px] leading-tight text-[#7887a6]">
+                    {isOverTarget ? "kcal de más" : "kcal restantes"}
+                  </span>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="grid justify-items-center gap-3 py-1 text-center">
+              <p>
+                <span className="font-display text-xl font-bold text-white">
+                  <AnimatedNumber value={totalKcal} />
+                </span>
+                <span className="ml-1.5 text-xs text-[#7887a6]">kcal consumidas</span>
+              </p>
+              <p className="max-w-[18rem] text-sm text-[var(--foreground-muted)]">
+                Configurá tu objetivo para ver cuánto te falta cada día.
+              </p>
+              <Button asChild variant="secondary" className="h-11 rounded-xl">
+                <Link href="/configuracion">
+                  <Settings2 className="size-4" />
+                  Configurar objetivo
+                </Link>
+              </Button>
             </div>
-            <div className="flex flex-col items-center gap-0.5">
-              <span className="font-display text-xl font-bold text-white">
-                <AnimatedNumber value={Math.max(0, targetKcal - totalKcal)} />
-              </span>
-              <span className="text-center text-[9px] leading-tight text-[#7887a6]">kcal restantes</span>
-            </div>
-          </div>
+          )}
         </motion.div>
 
         {/* Row 2: Macros card */}
@@ -440,28 +608,31 @@ export function RegistroClient({
           <div className="grid grid-cols-3 divide-x divide-[rgba(255,255,255,0.07)]">
             {(
               [
-                { Icon: Beef, label: MACRO_LABELS.protein, value: totalMacros.proteinG, target: targetMacros.proteinG, color: MACRO_COLORS.protein, barDelay: 0 },
-                { Icon: Wheat, label: MACRO_LABELS.carbs, value: totalMacros.carbsG, target: targetMacros.carbsG, color: MACRO_COLORS.carbs, barDelay: 0.1 },
-                { Icon: Droplet, label: MACRO_LABELS.fat, value: totalMacros.fatG, target: targetMacros.fatG, color: MACRO_COLORS.fat, barDelay: 0.2 },
+                { Icon: Beef, label: MACRO_LABELS.protein, value: totalMacros.proteinG, target: target?.macros.proteinG ?? 0, color: MACRO_COLORS.protein, barDelay: 0 },
+                { Icon: Wheat, label: MACRO_LABELS.carbs, value: totalMacros.carbsG, target: target?.macros.carbsG ?? 0, color: MACRO_COLORS.carbs, barDelay: 0.1 },
+                { Icon: Droplet, label: MACRO_LABELS.fat, value: totalMacros.fatG, target: target?.macros.fatG ?? 0, color: MACRO_COLORS.fat, barDelay: 0.2 },
               ] as { Icon: LucideIcon; label: string; value: number; target: number; color: string; barDelay: number }[]
-            ).map(({ Icon: MacroIcon, label, value, target, color, barDelay }) => {
-              const pct = target > 0 ? Math.min(100, Math.round((value / target) * 100)) : 0;
+            ).map(({ Icon: MacroIcon, label, value, target: macroTarget, color, barDelay }) => {
+              const pct = macroTarget > 0 ? Math.round((value / macroTarget) * 100) : 0;
               return (
                 <div key={label} className="flex min-w-0 flex-col items-center px-1.5 first:pl-0 last:pr-0">
                   <p className="mb-1.5 truncate text-[10px] font-bold leading-none text-white">{label}</p>
-                  <AnimatedProgressRing value={pct} size={42} strokeWidth={4} progressColor={color}>
+                  <AnimatedProgressRing value={Math.min(100, pct)} size={42} strokeWidth={4} progressColor={color}>
                     <MacroIcon className="size-3" style={{ color }} />
                   </AnimatedProgressRing>
                   <div className="mt-1 w-full min-w-0 text-center">
                     <p className="mt-1 whitespace-nowrap text-[10px] font-bold leading-none text-white">
-                      <AnimatedNumber value={Math.round(value)} /> / {Math.round(target)}g
+                      <AnimatedNumber value={Math.round(value)} />
+                      {macroTarget > 0 ? ` / ${Math.round(macroTarget)}g` : " g"}
                     </p>
                     <div className="mt-1 h-1 overflow-hidden rounded-full bg-[#1a2235]">
-                      <AnimatedMacroBar pct={pct} color={color} delay={barDelay} />
+                      <AnimatedMacroBar pct={Math.min(100, pct)} color={color} delay={barDelay} />
                     </div>
-                    <p className="mt-1 text-center text-[9px] font-semibold leading-none" style={{ color }}>
-                      {pct}%
-                    </p>
+                    {macroTarget > 0 ? (
+                      <p className="mt-1 text-center text-[9px] font-semibold leading-none" style={{ color }}>
+                        {pct}%
+                      </p>
+                    ) : null}
                   </div>
                 </div>
               );
@@ -474,14 +645,16 @@ export function RegistroClient({
           )}
         </motion.div>
 
-        {/* Row 3: Comidas de hoy */}
+        {/* Row 3: Comidas del día */}
         <motion.div variants={fadeUp} className="rounded-2xl bg-[#0e131e] p-3">
           <div className="mb-3 flex items-center justify-between gap-2">
             <div className="min-w-0">
-              <h2 className="font-display text-base font-semibold text-white">Comidas de hoy</h2>
+              <h2 className="font-display text-base font-semibold text-white">
+                {isToday ? "Comidas de hoy" : "Comidas del día"}
+              </h2>
               <p className="mt-0.5 truncate text-xs text-[#7887a6]">Cada comida suma a tu registro diario</p>
             </div>
-            <Button type="button" size="sm" className="h-8 shrink-0 px-2.5 text-[10px]" onClick={() => setNewMealOpen(true)}>
+            <Button type="button" size="sm" className="h-11 shrink-0 px-3 text-[10px]" onClick={() => setNewMealOpen(true)}>
               <Plus className="size-4" />
               Nueva comida
             </Button>
@@ -495,8 +668,12 @@ export function RegistroClient({
             >
               <UtensilsCrossed className="size-6 text-[#3c4456]" />
               <p className="text-sm text-[#7887a6]">
-                Todavía no registraste comidas hoy.{" "}
-                <span className="text-white/50">Agregá tu primera comida para empezar a sumar calorías y macros.</span>
+                {isToday ? "Todavía no registraste comidas hoy." : "No registraste comidas este día."}{" "}
+                <span className="text-white/50">
+                  {isToday
+                    ? "Agregá tu primera comida para empezar a sumar calorías y macros."
+                    : "Podés cargar lo que comiste y se suma a ese día."}
+                </span>
               </p>
             </motion.div>
           ) : (
@@ -505,14 +682,17 @@ export function RegistroClient({
                 <MealCard
                   key={meal.id}
                   meal={meal}
-                  foods={foods}
+                  foods={foodList}
+                  recipes={recipes}
+                  frequentItems={frequentItems}
                   isEditing={editingMealId === meal.id}
                   onToggleEdit={() => setEditingMealId((current) => (current === meal.id ? null : meal.id))}
                   onDeleteMeal={() => handleDeleteMeal(meal.id)}
                   onUpdateMeal={(input) => handleUpdateMeal(meal.id, input)}
-                  onAddItem={(foodId, measure, quantity) => handleAddItem(meal.id, foodId, measure, quantity)}
+                  onAddItem={(input) => handleAddItem(meal.id, input)}
                   onDeleteItem={handleDeleteItem}
                   onUpdateItem={handleUpdateItem}
+                  onFoodCreated={handleFoodCreated}
                 />
               ))}
             </div>
@@ -529,21 +709,19 @@ export function RegistroClient({
                 <p className="mt-0.5 text-xs text-[#7887a6]">Registrá una comida hoy para iniciar tu racha.</p>
               )}
               <div className="mt-2 flex justify-between">
-                {(["L","M","M","J","V","S","D"] as const).map((letter, i) => {
-                  const d = new Date();
-                  d.setDate(d.getDate() - todayDow + i);
-                  const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-                  const logged = loggedDates.includes(key) || (i === todayDow && meals.length > 0);
-                  const isToday = i === todayDow;
-                  const todayActive = isToday && (loggedDates.includes(logDate) || meals.length > 0);
+                {WEEK_LETTERS.map((letter, index) => {
+                  const key = addDaysToDateKey(weekStart, index);
+                  const logged = loggedSet.has(key);
+                  const isTodayDot = key === todayKey;
+                  const todayActive = isTodayDot && logged;
                   return (
-                    <div key={i} className="flex flex-col items-center gap-1">
-                      <span className={`text-[9px] font-medium ${isToday ? "text-white" : "text-[#7887a6]"}`}>{letter}</span>
+                    <div key={key} className="flex flex-col items-center gap-1">
+                      <span className={`text-[9px] font-medium ${isTodayDot ? "text-white" : "text-[#7887a6]"}`}>{letter}</span>
                       <motion.div
                         className={`size-4 rounded-full border-2 ${
                           logged
                             ? "border-orange-400 bg-orange-400"
-                            : isToday
+                            : isTodayDot
                             ? "border-[var(--accent-bright)] bg-transparent"
                             : "border-[#3a4560] bg-transparent"
                         }`}
@@ -590,6 +768,8 @@ export function RegistroClient({
 function MealCard({
   meal,
   foods,
+  recipes,
+  frequentItems,
   isEditing,
   onToggleEdit,
   onDeleteMeal,
@@ -597,16 +777,20 @@ function MealCard({
   onAddItem,
   onDeleteItem,
   onUpdateItem,
+  onFoodCreated,
 }: {
   meal: MealGroup;
   foods: Food[];
+  recipes: RecipeOption[];
+  frequentItems: FrequentItem[];
   isEditing: boolean;
   onToggleEdit: () => void;
-  onDeleteMeal: () => void;
+  onDeleteMeal: () => Promise<void>;
   onUpdateMeal: (input: { name?: string; type?: MealType }) => Promise<void>;
-  onAddItem: (foodId: string, measure: FoodMeasure, quantity: number) => Promise<void>;
+  onAddItem: (input: MealItemInput) => Promise<boolean>;
   onDeleteItem: (itemId: string) => Promise<void>;
   onUpdateItem: (itemId: string, measure: FoodMeasure, quantity: number) => Promise<void>;
+  onFoodCreated: (food: Food) => void;
 }) {
   const [name, setName] = useState(meal.name);
   const [type, setType] = useState<MealType>(meal.type);
@@ -617,6 +801,8 @@ function MealCard({
   const [editQuantity, setEditQuantity] = useState("");
   const [editMeasure, setEditMeasure] = useState<FoodMeasure>("g");
   const [isSavingItem, setIsSavingItem] = useState(false);
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+  const [isDeletingMeal, setIsDeletingMeal] = useState(false);
 
   useEffect(() => {
     if (!isEditing) {
@@ -634,8 +820,8 @@ function MealCard({
 
       try {
         await onUpdateMeal({ name: trimmed });
-      } catch {
-        toast.error("No se pudo actualizar la comida.");
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : "No se pudo actualizar la comida.");
       } finally {
         setIsSavingName(false);
       }
@@ -672,9 +858,9 @@ function MealCard({
 
     try {
       await onDeleteItem(itemId);
-      toast.success("Alimento eliminado.");
-    } catch {
-      toast.error("No se pudo eliminar el alimento.");
+      toast.success("Quitado de la comida.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "No se pudo quitar de la comida.");
     } finally {
       setDeletingId(null);
     }
@@ -683,11 +869,11 @@ function MealCard({
   function handleStartEditItem(itemId: string, measure: FoodMeasure, quantity: number) {
     setEditingItemId(itemId);
     setEditMeasure(measure);
-    setEditQuantity(String(roundQuantity(quantity)));
+    setEditQuantity(formatQuantity(quantity));
   }
 
-  async function handleSaveItem(itemId: string, nextMeasure = editMeasure, nextQuantity = editQuantity) {
-    const parsedQuantity = Number(nextQuantity);
+  async function handleSaveItem(item: MealLogItem) {
+    const parsedQuantity = parseQuantity(editQuantity);
 
     if (!Number.isFinite(parsedQuantity) || parsedQuantity <= 0) {
       toast.error("Ingresá una cantidad válida.");
@@ -697,22 +883,24 @@ function MealCard({
     setIsSavingItem(true);
 
     try {
-      await onUpdateItem(itemId, nextMeasure, parsedQuantity);
+      await onUpdateItem(item.id, item.kind === "recipe" ? "unit" : editMeasure, parsedQuantity);
       setEditingItemId(null);
-      toast.success("Alimento actualizado.");
+      toast.success("Cantidad actualizada.");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "No se pudo actualizar el alimento.");
+      toast.error(error instanceof Error ? error.message : "No se pudo actualizar la cantidad.");
     } finally {
       setIsSavingItem(false);
     }
   }
 
-  async function handleAddItem(foodId: string, measure: FoodMeasure, quantity: number) {
+  async function handleConfirmDelete() {
+    setIsDeletingMeal(true);
+
     try {
-      await onAddItem(foodId, measure, quantity);
-      toast.success("Alimento agregado.");
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "No se pudo agregar el alimento.");
+      await onDeleteMeal();
+    } finally {
+      setIsDeletingMeal(false);
+      setIsConfirmingDelete(false);
     }
   }
 
@@ -727,10 +915,10 @@ function MealCard({
   const itemsList = (
     <div className="grid gap-1.5">
       {meal.items.map((item) => {
-        const itemFood = foods.find((food) => food.id === item.foodId);
-        const itemGramsPerUnit =
-          itemFood?.gramsPerUnit ?? (itemFood?.measure === "unit" ? itemFood.servingG : null);
-        const canChooseUnit = itemGramsPerUnit != null;
+        const itemFood = item.foodId ? foods.find((food) => food.id === item.foodId) : undefined;
+        const itemGramsPerUnit = itemFood ? getFoodGramsPerUnit(itemFood) : null;
+        const canChooseUnit = item.kind === "food" && itemGramsPerUnit != null;
+        const amountLabel = item.category === "drink" ? "Mililitros" : "Gramos";
         const isEditingItem = editingItemId === item.id;
 
         return (
@@ -739,10 +927,10 @@ function MealCard({
             className="flex flex-wrap items-center gap-2.5 rounded-xl border border-[var(--border)] bg-[var(--card)] px-3 py-2.5"
           >
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold text-white">{item.foodName}</p>
+              <p className="truncate text-sm font-semibold text-white">{item.name}</p>
               {!isEditingItem && (
                 <p className="text-xs text-[var(--foreground-muted)]">
-                  {item.measure === "unit" ? `${roundQuantity(item.quantity)} u` : `${item.grams} g`} · {item.kcal} kcal
+                  {formatItemAmount(item)} · {item.kcal} kcal
                 </p>
               )}
             </div>
@@ -753,45 +941,63 @@ function MealCard({
                     value={editMeasure}
                     onValueChange={(value) => {
                       const nextMeasure = value as FoodMeasure;
-                      const parsedQuantity = Number(editQuantity);
+                      const parsedQuantity = parseQuantity(editQuantity);
                       const nextQuantity =
                         Number.isFinite(parsedQuantity) && parsedQuantity > 0 && itemGramsPerUnit
                           ? nextMeasure === "unit"
-                            ? String(roundQuantity(parsedQuantity / itemGramsPerUnit))
-                            : String(roundQuantity(parsedQuantity * itemGramsPerUnit))
+                            ? formatQuantity(parsedQuantity / itemGramsPerUnit)
+                            : formatQuantity(parsedQuantity * itemGramsPerUnit)
                           : editQuantity;
                       setEditMeasure(nextMeasure);
                       setEditQuantity(nextQuantity);
                     }}
                   >
-                    <SelectTrigger className={cn(compactControlClass, "w-22 sm:w-26")}>
+                    <SelectTrigger aria-label="Medida" className={cn(compactControlClass, "w-26 sm:w-28")}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="g">Gramos</SelectItem>
+                      <SelectItem value="g">{amountLabel}</SelectItem>
                       <SelectItem value="unit">Unidades</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
                 <Input
-                  type="number"
-                  min={editMeasure === "unit" ? 0.5 : 1}
-                  step={editMeasure === "unit" ? 0.5 : 1}
+                  inputMode="decimal"
+                  aria-label={item.kind === "recipe" ? "Porciones" : editMeasure === "unit" ? "Unidades" : amountLabel}
                   value={editQuantity}
                   onChange={(event) => setEditQuantity(event.target.value)}
-                  className={cn(compactControlClass, "w-14 sm:w-18")}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      event.preventDefault();
+                      void handleSaveItem(item);
+                    }
+                  }}
+                  className={cn(compactControlClass, "w-16 sm:w-20")}
                 />
+                {item.kind === "recipe" ? (
+                  <span className="text-xs text-[var(--foreground-muted)]">porciones</span>
+                ) : null}
                 <Button
                   type="button"
                   variant="outline"
                   size="icon"
-                  className="size-8 rounded-lg"
-                  onClick={() => handleSaveItem(item.id)}
+                  className="size-11 rounded-lg"
+                  onClick={() => handleSaveItem(item)}
                   disabled={isSavingItem}
-                  title="Guardar alimento"
-                  aria-label="Guardar alimento"
+                  title="Guardar cantidad"
+                  aria-label="Guardar cantidad"
                 >
                   {isSavingItem ? <LoadingDots /> : <Check className="size-4" />}
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="size-11 rounded-lg"
+                  onClick={() => setEditingItemId(null)}
+                  aria-label="Cancelar edición de cantidad"
+                >
+                  <X className="size-4" />
                 </Button>
               </div>
             )}
@@ -801,6 +1007,8 @@ function MealCard({
                   type="button"
                   variant="outline"
                   size="icon"
+                  className="size-11"
+                  aria-label={`Editar cantidad de ${item.name}`}
                   onClick={() => handleStartEditItem(item.id, item.measure, item.quantity)}
                 >
                   <Pencil className="size-4" />
@@ -809,10 +1017,12 @@ function MealCard({
                   type="button"
                   variant="outline"
                   size="icon"
+                  className="size-11"
+                  aria-label={`Quitar ${item.name}`}
                   onClick={() => handleDelete(item.id)}
                   disabled={deletingId === item.id}
                 >
-                            {deletingId === item.id ? <LoadingDots /> : <Trash2 className="size-4" />}
+                  {deletingId === item.id ? <LoadingDots /> : <Trash2 className="size-4" />}
                 </Button>
               </div>
             )}
@@ -828,8 +1038,10 @@ function MealCard({
         type="button"
         variant="ghost"
         size="icon"
+        className="size-11"
         onClick={handleToggleEdit}
         title={isEditing ? "Terminar edición" : "Editar comida"}
+        aria-label={isEditing ? "Terminar edición" : "Editar comida"}
       >
         <Pencil className="size-4" />
       </Button>
@@ -837,9 +1049,10 @@ function MealCard({
         type="button"
         variant="ghost"
         size="icon"
-        className="hover:text-red-400"
-        onClick={onDeleteMeal}
+        className="size-11 hover:text-red-400"
+        onClick={() => setIsConfirmingDelete(true)}
         title="Eliminar comida"
+        aria-label="Eliminar comida"
       >
         <Trash2 className="size-4" />
       </Button>
@@ -848,9 +1061,9 @@ function MealCard({
 
   const macroChips = (
     <div className="flex flex-1 flex-wrap gap-1.5">
-      <MacroChip label="P" value={meal.macros.proteinG} color={MACRO_COLORS.protein} />
-      <MacroChip label="C" value={meal.macros.carbsG} color={MACRO_COLORS.carbs} />
-      <MacroChip label="G" value={meal.macros.fatG} color={MACRO_COLORS.fat} />
+      <MacroChip label="P" value={Math.round(meal.macros.proteinG)} color={MACRO_COLORS.protein} />
+      <MacroChip label="C" value={Math.round(meal.macros.carbsG)} color={MACRO_COLORS.carbs} />
+      <MacroChip label="G" value={Math.round(meal.macros.fatG)} color={MACRO_COLORS.fat} />
     </div>
   );
 
@@ -860,9 +1073,10 @@ function MealCard({
         type="button"
         variant="ghost"
         size="icon"
-        className="size-9 rounded-lg"
+        className="size-11 rounded-lg"
         onClick={handleToggleEdit}
-        title={isEditing ? "Terminar ediciÃ³n" : "Editar comida"}
+        title="Editar comida"
+        aria-label="Editar comida"
       >
         <Pencil className="size-3.5" />
       </Button>
@@ -870,17 +1084,43 @@ function MealCard({
         type="button"
         variant="ghost"
         size="icon"
-        className="size-9 rounded-lg hover:text-red-400"
-        onClick={onDeleteMeal}
+        className="size-11 rounded-lg hover:text-red-400"
+        onClick={() => setIsConfirmingDelete(true)}
         title="Eliminar comida"
+        aria-label="Eliminar comida"
       >
         <Trash2 className="size-3.5" />
       </Button>
     </div>
   );
 
+  const deleteConfirmation = isConfirmingDelete ? (
+    <div
+      role="group"
+      aria-label="Confirmar eliminación"
+      className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[rgba(244,63,94,0.35)] bg-[rgba(244,63,94,0.08)] px-3 py-2"
+    >
+      <p className="min-w-0 text-sm text-[var(--foreground)]">¿Eliminar “{meal.name}” y sus alimentos?</p>
+      <div className="flex gap-1.5">
+        <Button type="button" variant="ghost" className="h-11" onClick={() => setIsConfirmingDelete(false)} disabled={isDeletingMeal}>
+          Cancelar
+        </Button>
+        <Button
+          type="button"
+          className="h-11 bg-[var(--danger)] text-white hover:bg-[var(--danger)]/90"
+          onClick={handleConfirmDelete}
+          disabled={isDeletingMeal}
+        >
+          {isDeletingMeal ? <LoadingDots /> : <Trash2 className="size-4" />}
+          Eliminar
+        </Button>
+      </div>
+    </div>
+  ) : null;
+
   return (
     <div
+      id={`meal-${meal.id}`}
       className={cn(
         "flex h-full flex-col",
         isEditing
@@ -902,7 +1142,7 @@ function MealCard({
             </div>
             <div className="min-w-0">
               <Select value={type} onValueChange={(value) => handleTypeChange(value as MealType)}>
-                <SelectTrigger className={compactControlClass}>
+                <SelectTrigger aria-label="Tipo de comida" className={compactControlClass}>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -919,6 +1159,7 @@ function MealCard({
 
           <div className="grid gap-1.5">
             <Input
+              aria-label="Nombre de la comida"
               value={name}
               onChange={(event) => setName(event.target.value)}
               onBlur={() => {
@@ -943,7 +1184,16 @@ function MealCard({
             itemsList
           )}
 
-          <FoodPickerRow foods={foods} onAdd={handleAddItem} actionLabel="Agregar" layout="stacked" />
+          <FoodPicker
+            foods={foods}
+            recipes={recipes}
+            frequentItems={frequentItems}
+            actionLabel="Agregar a la comida"
+            onAdd={onAddItem}
+            onFoodCreated={onFoodCreated}
+          />
+
+          {deleteConfirmation}
 
           <div className="mt-auto flex items-center justify-between gap-2.5 border-t border-[var(--border)] pt-2.5">
             {macroChips}
@@ -986,6 +1236,8 @@ function MealCard({
             </div>
           </div>
 
+          {deleteConfirmation}
+
           {meal.items.length > 0 && (
             <Accordion type="single" collapsible className="-my-1">
               <AccordionItem value="items" className="border-none">
@@ -1002,12 +1254,56 @@ function MealCard({
   );
 }
 
+function toMealItemInput(item: DraftItem): MealItemInput {
+  return item.kind === "recipe"
+    ? { kind: "recipe", recipeId: item.recipeId, quantity: item.quantity }
+    : { kind: "food", foodId: item.foodId, measure: item.measure, quantity: item.quantity };
+}
+
+function resolveOption(item: MealItemInput, foods: Food[], recipes: RecipeOption[]): PickerOption | null {
+  if (item.kind === "recipe") {
+    const recipe = recipes.find((candidate) => candidate.id === item.recipeId);
+    return recipe ? { kind: "recipe", id: recipe.id, name: recipe.name, recipe } : null;
+  }
+
+  const food = foods.find((candidate) => candidate.id === item.foodId);
+  return food ? { kind: "food", id: food.id, name: food.name, food } : null;
+}
+
+function formatServings(quantity: number) {
+  return `${formatQuantity(quantity)} ${quantity === 1 ? "porción" : "porciones"}`;
+}
+
+function formatDraftAmount(item: MealItemInput, option: PickerOption) {
+  if (item.kind === "recipe") {
+    return formatServings(item.quantity);
+  }
+
+  if (item.measure === "unit") {
+    return `${formatQuantity(item.quantity)} u`;
+  }
+
+  return `${formatQuantity(item.quantity)} ${option.kind === "food" ? getAmountUnitLabel(option.food.category) : "g"}`;
+}
+
+function formatItemAmount(item: MealLogItem) {
+  if (item.kind === "recipe") {
+    return formatServings(item.quantity);
+  }
+
+  if (item.measure === "unit") {
+    return `${formatQuantity(item.quantity)} u`;
+  }
+
+  return `${formatQuantity(item.grams)} ${item.category ? getAmountUnitLabel(item.category) : "g"}`;
+}
+
 function formatMealFoods(meal: MealGroup) {
   if (meal.items.length === 0) {
     return "Sin alimentos";
   }
 
-  const names = meal.items.slice(0, 3).map((item) => item.foodName);
+  const names = meal.items.slice(0, 3).map((item) => item.name);
   const suffix = meal.items.length > 3 ? ` +${meal.items.length - 3}` : "";
 
   return `${names.join(", ")}${suffix}`;
@@ -1024,212 +1320,38 @@ function MacroChip({ label, value, color }: { label: string; value: number; colo
   );
 }
 
-function FoodPickerRow({
-  foods,
-  onAdd,
-  actionLabel,
-  layout = "responsive",
-}: {
-  foods: Food[];
-  onAdd: (foodId: string, measure: FoodMeasure, quantity: number) => void | Promise<void>;
-  actionLabel: string;
-  layout?: "responsive" | "stacked";
-}) {
-  const [query, setQuery] = useState("");
-  const [showResults, setShowResults] = useState(false);
-  const [foodId, setFoodId] = useState<string | null>(null);
-  const [measure, setMeasure] = useState<FoodMeasure>("g");
-  const [quantity, setQuantity] = useState("100");
-  const [isAdding, setIsAdding] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+function dateKeyToDate(key: string) {
+  return new Date(`${key}T12:00:00Z`);
+}
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setShowResults(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const selectedFood = foods.find((food) => food.id === foodId);
-  const gramsPerUnit = selectedFood?.gramsPerUnit ?? (selectedFood?.measure === "unit" ? selectedFood.servingG : null);
-  const canChooseUnit = gramsPerUnit != null;
-  const isUnit = canChooseUnit && measure === "unit";
-
-  const normalizedQuery = query.trim().toLowerCase();
-  const results = normalizedQuery
-    ? foods.filter((food) => food.name.toLowerCase().includes(normalizedQuery)).slice(0, 6)
-    : [];
-
-  function handleSelectFood(food: Food) {
-    setFoodId(food.id);
-    setMeasure(food.measure);
-    setQuery(food.name);
-    setShowResults(false);
+function formatDayTitle(logDate: string, todayKey: string) {
+  if (logDate === todayKey) {
+    return "Hoy";
   }
 
-  async function handleAdd() {
-    const parsedQuantity = Number(quantity);
-
-    if (!foodId || !Number.isFinite(parsedQuantity) || parsedQuantity <= 0) {
-      toast.error("Elegí un alimento y una cantidad válida.");
-      return;
-    }
-
-    setIsAdding(true);
-
-    try {
-      await onAdd(foodId, isUnit ? "unit" : "g", parsedQuantity);
-      setQuery("");
-      setFoodId(null);
-      setQuantity("100");
-    } finally {
-      setIsAdding(false);
-    }
+  if (logDate === addDaysToDateKey(todayKey, -1)) {
+    return "Ayer";
   }
 
-  const isStacked = layout === "stacked";
-
-  return (
-    <div
-      className={cn(
-        "grid gap-1",
-        isStacked
-          ? "grid-cols-2 gap-x-2.5 gap-y-3"
-          : "sm:grid-cols-2 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-end",
-      )}
-    >
-      <div ref={containerRef} className={cn("relative", isStacked ? "col-span-2" : "sm:col-span-2 lg:col-span-1")}>
-        <label className="grid gap-0.5 text-[11px] font-semibold text-[#c2c8d6]">
-          Buscar alimento
-          <div className="relative">
-            <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-[#7d8697]" />
-            <Input
-              className={cn("pl-8 text-[12px] placeholder:text-[12px]", compactControlClass)}
-              placeholder="Buscar alimento..."
-              value={query}
-              onChange={(event) => {
-                setQuery(event.target.value);
-                setFoodId(null);
-                setShowResults(true);
-              }}
-              onFocus={() => setShowResults(true)}
-            />
-          </div>
-        </label>
-
-        {showResults && results.length > 0 && (
-          <div className="absolute left-0 right-0 top-[calc(100%+4px)] z-20 max-h-44 overflow-y-auto rounded-xl border border-[var(--border)] bg-[var(--card)] shadow-[0_12px_28px_rgba(0,0,0,0.35)]">
-            {results.map((food) => (
-              <button
-                key={food.id}
-                type="button"
-                onClick={() => handleSelectFood(food)}
-                className="flex w-full items-center justify-between gap-2 border-b border-[var(--border)] px-3 py-1.5 text-left text-xs text-[var(--foreground)] last:border-b-0 hover:bg-[rgba(124,58,237,0.1)]"
-              >
-                <span className="truncate">{food.name}</span>
-                <span className="whitespace-nowrap text-[11px] text-[#7887a6]">{food.calories} kcal/{food.servingG}g</span>
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <label className="grid gap-0.5 text-[11px] font-semibold text-[#c2c8d6]">
-        Porción
-        <Select
-          value={canChooseUnit ? measure : "g"}
-          disabled={!canChooseUnit}
-          onValueChange={(value) => {
-            const nextMeasure = value as FoodMeasure;
-            const parsedQuantity = Number(quantity);
-
-            if (Number.isFinite(parsedQuantity) && parsedQuantity > 0 && gramsPerUnit) {
-              const nextQuantity =
-                nextMeasure === "unit" ? parsedQuantity / gramsPerUnit : parsedQuantity * gramsPerUnit;
-              setQuantity(String(roundQuantity(nextQuantity)));
-            }
-
-            setMeasure(nextMeasure);
-          }}
-        >
-          <SelectTrigger className={cn(compactControlClass, isStacked && "h-8 px-2 text-[12px]")}>
-            <SelectValue placeholder="Medida" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="g">Gramos</SelectItem>
-            <SelectItem value="unit">Unidades</SelectItem>
-          </SelectContent>
-        </Select>
-      </label>
-
-      <label className="grid gap-0.5 text-[11px] font-semibold text-[#c2c8d6]">
-        {isUnit ? "Unidades" : "Gramos"}
-        <Input
-          type="number"
-          min={isUnit ? 0.5 : 1}
-          step={isUnit ? 0.5 : 1}
-          value={quantity}
-          className={cn(compactControlClass, isStacked && "h-8 px-2 text-[11px]")}
-          onChange={(event) => setQuantity(event.target.value)}
-        />
-      </label>
-
-      <Button
-        type="button"
-        variant="outline"
-        onClick={handleAdd}
-        disabled={isAdding || !foodId}
-        className={cn(compactButtonClass, isStacked ? "col-span-2 mt-1" : "sm:col-span-2 lg:col-span-1")}
-      >
-              {isAdding ? <LoadingDots /> : <Plus className="size-4" />}
-        {actionLabel}
-      </Button>
-    </div>
-  );
+  const weekday = WEEKDAY_FORMATTER.format(dateKeyToDate(logDate));
+  return weekday.charAt(0).toUpperCase() + weekday.slice(1);
 }
 
-function previewItem(food: Food, measure: FoodMeasure, quantity: number) {
-  const gramsPerUnit = food.gramsPerUnit ?? food.servingG;
-  const grams = measure === "unit" ? quantity * gramsPerUnit : quantity;
-  const ratio = grams / food.servingG;
-
-  return {
-    grams,
-    kcal: Math.round(food.calories * ratio),
-    proteinG: Math.round(food.proteinG * ratio),
-    carbsG: Math.round(food.carbsG * ratio),
-    fatG: Math.round(food.fatG * ratio),
-  };
+function formatDayMonth(logDate: string) {
+  return DAY_MONTH_FORMATTER.format(dateKeyToDate(logDate));
 }
 
-function roundQuantity(value: number) {
-  return Math.round(value * 100) / 100;
-}
-
-function calculateStreak(loggedDates: string[], fromDate: string) {
-  const dates = new Set(loggedDates);
+/** Días seguidos con comidas registradas, contando hacia atrás desde hoy. */
+function calculateStreak(loggedDates: Set<string>, todayKey: string) {
   let streak = 0;
-  let cursor = new Date(`${fromDate}T00:00:00`);
+  let cursor = todayKey;
 
-  while (dates.has(formatDateOnly(cursor))) {
+  while (loggedDates.has(cursor)) {
     streak += 1;
-    cursor = new Date(cursor);
-    cursor.setDate(cursor.getDate() - 1);
+    cursor = addDaysToDateKey(cursor, -1);
   }
 
   return streak;
-}
-
-function formatDateOnly(value: Date) {
-  const year = value.getFullYear();
-  const month = String(value.getMonth() + 1).padStart(2, "0");
-  const day = String(value.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
 }
 
 function NutritionTipCard({

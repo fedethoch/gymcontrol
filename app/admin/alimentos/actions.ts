@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 
 import { requireAdmin } from "@/app/lib/auth";
 import type { FoodFormPayload, FoodFormState } from "@/app/lib/foods-form";
@@ -47,12 +47,13 @@ export async function saveFoodAction(payload: FoodFormPayload): Promise<SaveFood
 
   revalidatePath("/admin/alimentos");
   revalidatePath("/alimentos");
-  revalidateTag("foods", {});
+  updateTag("foods");
 
   const food: Food = {
     id,
     imageUrl: existingFood?.imageUrl ?? "",
     ...parsed.data,
+    ownerUserId: null,
   };
 
   return {
@@ -77,7 +78,7 @@ export async function deleteFoodAction(id: string): Promise<{ ok: true } | { ok:
 
   revalidatePath("/admin/alimentos");
   revalidatePath("/alimentos");
-  revalidateTag("foods", {});
+  updateTag("foods");
 
   return { ok: true };
 }

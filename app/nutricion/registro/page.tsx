@@ -1,50 +1,76 @@
 import { RegistroClient } from "@/app/nutricion/registro/RegistroClient";
 import { requireUser } from "@/app/lib/auth";
-import { listFoodCatalogItems } from "@/app/lib/foods";
-import { calculateNutritionPlan } from "@/app/lib/nutrition-calc";
-import { MOCK_PROFILE_DEFAULTS } from "@/app/lib/nutrition-mock";
-import {
-  getDailyKcalAverage,
-  getLocalTrainingDate,
-  getLoggedDatesForUser,
-  getMealLogForDate,
-} from "@/app/lib/meal-logs";
+import { listFoodsForUser } from "@/app/lib/foods";
+import { addDaysToDateKey, getTodayDateKey, isDateKey } from "@/app/lib/local-date";
+import { getLoggedDatesForUser, getMealLogForDate, listFrequentItems } from "@/app/lib/meal-logs";
 import { getNutritionProfile } from "@/app/lib/nutrition-profile";
-import { MEAL_TYPES, type MealType } from "@/app/lib/nutrition-types";
+import { MEAL_LOG_MAX_PAST_DAYS, MEAL_TYPES, type MealType, type RecipeOption } from "@/app/lib/nutrition-types";
+import { listRecipeCatalogItems } from "@/app/lib/recipes";
 
 export default async function RegistroNutricionPage({
   searchParams,
 }: {
-  searchParams: Promise<{ tipo?: string | string[] }>;
+  searchParams: Promise<{ tipo?: string | string[]; fecha?: string | string[] }>;
 }) {
   const auth = await requireUser();
-  const logDate = getLocalTrainingDate();
-  // "+" de cada comida en el home: /nutricion/registro?tipo=almuerzo
-  const { tipo } = await searchParams;
-  const initialMealType = MEAL_TYPES.find((type) => type === tipo) as MealType | undefined;
+  const todayKey = getTodayDateKey();
+  const { tipo, fecha } = await searchParams;
+  const logDate = resolveLogDate(fecha, todayKey);
+  // "+" de cada comida en el home: /nutricion/registro?tipo=almuerzo (siempre hoy)
+  const initialMealType =
+    logDate === todayKey ? (MEAL_TYPES.find((type) => type === tipo) as MealType | undefined) : undefined;
 
-  const [foods, mealLog, profile, loggedDates, avgDailyKcal] = await Promise.all([
-    listFoodCatalogItems(),
+  const [foods, recipes, mealLog, profile, loggedDates, frequentItems] = await Promise.all([
+    listFoodsForUser(auth.user.id),
+    listRecipeCatalogItems(),
     getMealLogForDate({ userId: auth.user.id, logDate }),
     getNutritionProfile(auth.user.id),
     getLoggedDatesForUser({ userId: auth.user.id, days: 70 }),
-    getDailyKcalAverage({ userId: auth.user.id, days: 30 }),
+    listFrequentItems({ userId: auth.user.id }),
   ]);
 
-  const plan = profile?.plan ?? calculateNutritionPlan(MOCK_PROFILE_DEFAULTS);
+  const recipeOptions: RecipeOption[] = recipes.map((recipe) => {
+    const servings = Math.max(1, recipe.servings);
+    const totalGrams = recipe.ingredients.reduce((sum, ingredient) => sum + ingredient.grams, 0);
+
+    return {
+      id: recipe.id,
+      name: recipe.name,
+      servings,
+      gramsPerServing: totalGrams / servings,
+      kcalPerServing: recipe.calories / servings,
+      macrosPerServing: {
+        proteinG: recipe.proteinG / servings,
+        carbsG: recipe.carbsG / servings,
+        fatG: recipe.fatG / servings,
+      },
+    };
+  });
 
   return (
     <section className="page-frame content-start bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.15),transparent_31%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
       <RegistroClient
+        key={logDate}
         foods={foods}
+        recipes={recipeOptions}
+        frequentItems={frequentItems}
         logDate={logDate}
+        todayKey={todayKey}
         initialMeals={mealLog?.meals ?? []}
-        targetKcal={plan.targetKcal}
-        targetMacros={plan.macros}
+        target={profile ? { kcal: profile.plan.targetKcal, macros: profile.plan.macros } : null}
         loggedDates={[...loggedDates]}
-        avgDailyKcal={avgDailyKcal}
         initialMealType={initialMealType}
       />
     </section>
   );
+}
+
+function resolveLogDate(value: string | string[] | undefined, todayKey: string) {
+  const candidate = Array.isArray(value) ? value[0] : value;
+
+  if (!candidate || !isDateKey(candidate) || candidate > todayKey) {
+    return todayKey;
+  }
+
+  return candidate < addDaysToDateKey(todayKey, -MEAL_LOG_MAX_PAST_DAYS) ? todayKey : candidate;
 }

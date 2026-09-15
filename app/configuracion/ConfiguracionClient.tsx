@@ -37,7 +37,10 @@ import {
   type ActivityLevel,
   type Gender,
   type Goal,
+  type ManualTarget,
+  type NutritionPlan,
   type NutritionProfileInput,
+  type TargetMode,
 } from "@/app/lib/nutrition-types";
 import { MOCK_PROFILE_DEFAULTS } from "@/app/lib/nutrition-mock";
 import type { NutritionProfile } from "@/app/lib/nutrition-profile";
@@ -78,6 +81,12 @@ export function ConfiguracionClient({
     initialProfile?.activityLevel ?? MOCK_PROFILE_DEFAULTS.activityLevel,
   );
   const [goal, setGoal] = useState<Goal>(initialProfile?.goal ?? MOCK_PROFILE_DEFAULTS.goal);
+  const initialManualPlan = initialProfile?.targetMode === "manual" ? initialProfile.plan : null;
+  const [targetMode, setTargetMode] = useState<TargetMode>(initialProfile?.targetMode ?? "auto");
+  const [manualKcal, setManualKcal] = useState(initialManualPlan ? String(initialManualPlan.targetKcal) : "");
+  const [manualProteinG, setManualProteinG] = useState(initialManualPlan ? String(initialManualPlan.macros.proteinG) : "");
+  const [manualCarbsG, setManualCarbsG] = useState(initialManualPlan ? String(initialManualPlan.macros.carbsG) : "");
+  const [manualFatG, setManualFatG] = useState(initialManualPlan ? String(initialManualPlan.macros.fatG) : "");
   const [profileSaveStatus, setProfileSaveStatus] = useState<ProfileSaveStatus>("idle");
   const [isRecalculating, setIsRecalculating] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState("");
@@ -100,14 +109,34 @@ export function ConfiguracionClient({
     };
   }, [gender, age, heightCm, weightKg, bodyFatPct, activityLevel, goal]);
 
-  const profileSignature = useMemo(() => JSON.stringify(profileInput), [profileInput]);
+  // Objetivo manual: solo se guarda si los valores son coherentes (mismos límites que el servidor).
+  const manualTarget = useMemo<ManualTarget | null>(() => {
+    if (targetMode !== "manual") return null;
+
+    const kcal = Math.round(Number(manualKcal.replace(",", ".")));
+    const macros = [manualProteinG, manualCarbsG, manualFatG].map((value) => Math.round(Number(value.replace(",", "."))));
+
+    if (!manualKcal.trim() || !Number.isFinite(kcal) || kcal < 800 || kcal > 10000) return null;
+    if (macros.some((value) => !Number.isFinite(value) || value < 0 || value > 1500)) return null;
+
+    return { targetKcal: kcal, macros: { proteinG: macros[0], carbsG: macros[1], fatG: macros[2] } };
+  }, [targetMode, manualKcal, manualProteinG, manualCarbsG, manualFatG]);
+  const isManualInvalid = targetMode === "manual" && manualTarget === null;
+
+  const profileSignature = useMemo(
+    () => JSON.stringify({ profileInput, targetMode, manualTarget }),
+    [profileInput, targetMode, manualTarget],
+  );
   const savedProfileSignatureRef = useRef(profileSignature);
   const isFirstRender = useRef(true);
-  const plan = useMemo(() => calculateNutritionPlan(profileInput), [profileInput]);
+  const calculatedPlan = useMemo(() => calculateNutritionPlan(profileInput), [profileInput]);
+  const plan: NutritionPlan = manualTarget
+    ? { ...calculatedPlan, targetKcal: manualTarget.targetKcal, macros: manualTarget.macros }
+    : calculatedPlan;
 
   // Auto-save (unchanged behavior)
   useEffect(() => {
-    if (profileSignature === savedProfileSignatureRef.current) {
+    if (profileSignature === savedProfileSignatureRef.current || isManualInvalid) {
       setProfileSaveStatus("idle");
       return;
     }
@@ -118,7 +147,7 @@ export function ConfiguracionClient({
     const timeout = window.setTimeout(() => {
       setProfileSaveStatus("saving");
 
-      void saveNutritionProfileAction(profileInput)
+      void saveNutritionProfileAction(profileInput, manualTarget)
         .then(() => {
           if (ignore) return;
           savedProfileSignatureRef.current = profileSignature;
@@ -135,7 +164,18 @@ export function ConfiguracionClient({
       ignore = true;
       window.clearTimeout(timeout);
     };
-  }, [profileInput, profileSignature]);
+  }, [profileInput, profileSignature, manualTarget, isManualInvalid]);
+
+  function handleTargetModeChange(nextMode: TargetMode) {
+    if (nextMode === "manual" && !manualKcal.trim()) {
+      setManualKcal(String(calculatedPlan.targetKcal));
+      setManualProteinG(String(calculatedPlan.macros.proteinG));
+      setManualCarbsG(String(calculatedPlan.macros.carbsG));
+      setManualFatG(String(calculatedPlan.macros.fatG));
+    }
+
+    setTargetMode(nextMode);
+  }
 
   // "Recalculando…" visual indicator — skips first render
   useEffect(() => {
@@ -394,6 +434,54 @@ export function ConfiguracionClient({
       <p className="text-xs">
         <span className="font-semibold text-[var(--accent)]">{GOAL_ADJ_LABELS[goal]}</span>
       </p>
+
+      <div className="grid gap-2.5 border-t border-[var(--border)] pt-3">
+        <p className="text-xs font-semibold text-[#c2c8d6]">Calorías y macros diarios</p>
+        <div className="grid grid-cols-2 gap-1.5">
+          <ToggleOption compact active={targetMode === "auto"} label="Calculados" onClick={() => handleTargetModeChange("auto")} />
+          <ToggleOption compact active={targetMode === "manual"} label="Los fijo yo" onClick={() => handleTargetModeChange("manual")} />
+        </div>
+        {targetMode === "manual" ? (
+          <div className="grid gap-2">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              <label className="grid min-w-0 gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+                Calorías (kcal)
+                <Input inputMode="numeric" value={manualKcal} onChange={(e) => setManualKcal(e.target.value)} />
+              </label>
+              <label className="grid min-w-0 gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+                Proteínas (g)
+                <Input inputMode="numeric" value={manualProteinG} onChange={(e) => setManualProteinG(e.target.value)} />
+              </label>
+              <label className="grid min-w-0 gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+                Carbohidratos (g)
+                <Input inputMode="numeric" value={manualCarbsG} onChange={(e) => setManualCarbsG(e.target.value)} />
+              </label>
+              <label className="grid min-w-0 gap-1.5 text-xs font-semibold text-[#c2c8d6]">
+                Grasas (g)
+                <Input inputMode="numeric" value={manualFatG} onChange={(e) => setManualFatG(e.target.value)} />
+              </label>
+            </div>
+            {isManualInvalid ? (
+              <p className="text-xs text-[var(--warning)]">
+                Completá calorías entre 800 y 10000 y macros de 0 a 1500 g para guardar.
+              </p>
+            ) : manualTarget ? (
+              <p className="text-xs text-[var(--foreground-muted)]">
+                Tus macros suman ≈
+                {manualTarget.macros.proteinG * 4 + manualTarget.macros.carbsG * 4 + manualTarget.macros.fatG * 9} kcal.
+                {Math.abs(manualTarget.macros.proteinG * 4 + manualTarget.macros.carbsG * 4 + manualTarget.macros.fatG * 9 - manualTarget.targetKcal) >
+                manualTarget.targetKcal * 0.1
+                  ? " No coinciden con las calorías: revisalos."
+                  : ""}
+              </p>
+            ) : null}
+          </div>
+        ) : (
+          <p className="text-xs text-[var(--foreground-muted)]">
+            Los calculamos con tus datos, tu actividad y tu objetivo.
+          </p>
+        )}
+      </div>
     </div>
   );
 
@@ -437,7 +525,7 @@ export function ConfiguracionClient({
                 </span>
                 <span className="text-xs text-[var(--foreground-muted)]">kcal</span>
                 <span className="ml-1 truncate text-xs font-semibold text-[var(--accent)]">
-                  {GOAL_INFO[goal].label}
+                  {manualTarget ? "Objetivo manual" : GOAL_INFO[goal].label}
                 </span>
               </div>
               <p className="mt-0.5 text-[10px] text-[var(--foreground-muted)]">
@@ -549,7 +637,7 @@ export function ConfiguracionClient({
                 <span className="font-semibold">Objetivo</span>
                 <div className="flex items-center gap-1.5">
                   <span className="truncate text-xs text-[var(--foreground-muted)]">
-                    {GOAL_INFO[goal].label}
+                    {manualTarget ? `Manual · ${manualTarget.targetKcal} kcal` : GOAL_INFO[goal].label}
                   </span>
                   <Check className="size-3 shrink-0 text-[var(--accent)]" />
                 </div>
@@ -662,7 +750,7 @@ export function ConfiguracionClient({
                 </span>
               </div>
               <p className="mt-1.5 text-[10px] font-semibold text-[var(--accent)]">
-                {GOAL_ADJ_LABELS[goal]}
+                {manualTarget ? "Objetivo fijado a mano" : GOAL_ADJ_LABELS[goal]}
               </p>
             </div>
           </div>
@@ -713,7 +801,9 @@ export function ConfiguracionClient({
               );
             })}
             <p className="text-[11px] text-[var(--foreground-muted)]">
-              Este plan se actualiza cuando modificás tus datos.
+              {manualTarget
+                ? "Objetivo manual: no cambia aunque modifiques tus datos."
+                : "Este plan se actualiza cuando modificás tus datos."}
             </p>
           </div>
         </CardContent>

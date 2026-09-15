@@ -1,4 +1,4 @@
-import { Apple, Beef, Droplet, Leaf, Sunrise, UtensilsCrossed, Wheat } from "lucide-react";
+import { Apple, Beef, CupSoda, Droplet, Leaf, Sunrise, UtensilsCrossed, Wheat } from "lucide-react";
 
 import type { FoodCategory, RecipeCategory } from "@/app/lib/nutrition-types";
 
@@ -25,6 +25,7 @@ export const CATEGORY_ICONS: Record<FoodCategory, typeof Beef> = {
   fat: Droplet,
   vegetable: Leaf,
   mixed: UtensilsCrossed,
+  drink: CupSoda,
 };
 
 export const CATEGORY_GRADIENTS: Record<FoodCategory, string> = {
@@ -33,6 +34,7 @@ export const CATEGORY_GRADIENTS: Record<FoodCategory, string> = {
   fat: "linear-gradient(140deg,#0c2a3a 0%,#141c26 50%,#080c10 100%)",
   vegetable: "linear-gradient(140deg,#0e2612 0%,#0d1820 50%,#070a10 100%)",
   mixed: "linear-gradient(140deg,#2e1a58 0%,#141828 55%,#08090f 100%)",
+  drink: "linear-gradient(140deg,#0b2a33 0%,#101b24 50%,#070b10 100%)",
 };
 
 export const CATEGORY_ACCENT: Record<FoodCategory, string> = {
@@ -41,6 +43,7 @@ export const CATEGORY_ACCENT: Record<FoodCategory, string> = {
   fat: MACRO_COLORS.fat,
   vegetable: "#7adf9c",
   mixed: "#b995ff",
+  drink: "#67e8f9",
 };
 
 // Recipe-specific category maps (meal-type: desayuno/comida/snack)

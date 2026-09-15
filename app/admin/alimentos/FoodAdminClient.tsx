@@ -595,7 +595,8 @@ function FoodFormSheet({ open, food, onClose, onSave }: FoodFormSheetProps) {
               Gramos por unidad/porción (opcional)
               <Input
                 type="number"
-                min={1}
+                min={0.1}
+                step="0.1"
                 placeholder="Ej. 50"
                 value={gramsPerUnit}
                 onChange={(e) => setGramsPerUnit(e.target.value)}
@@ -608,15 +609,15 @@ function FoodFormSheet({ open, food, onClose, onSave }: FoodFormSheetProps) {
             <div className="grid grid-cols-3 gap-3">
               <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
                 Proteína (g)
-                <Input type="number" min={0} value={proteinG} onChange={(e) => setProteinG(e.target.value)} />
+                <Input type="number" min={0} step="0.1" value={proteinG} onChange={(e) => setProteinG(e.target.value)} />
               </label>
               <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
                 Carbohidratos (g)
-                <Input type="number" min={0} value={carbsG} onChange={(e) => setCarbsG(e.target.value)} />
+                <Input type="number" min={0} step="0.1" value={carbsG} onChange={(e) => setCarbsG(e.target.value)} />
               </label>
               <label className="grid gap-1.5 text-xs font-semibold text-[#c2c8d6]">
                 Grasas (g)
-                <Input type="number" min={0} value={fatG} onChange={(e) => setFatG(e.target.value)} />
+                <Input type="number" min={0} step="0.1" value={fatG} onChange={(e) => setFatG(e.target.value)} />
               </label>
             </div>
 

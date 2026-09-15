@@ -2,10 +2,17 @@ import "server-only";
 
 import { calculateNutritionPlan } from "@/app/lib/nutrition-calc";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
-import type { NutritionPlan, NutritionProfileInput } from "@/app/lib/nutrition-types";
+import type {
+  ManualTarget,
+  NutritionPlan,
+  NutritionProfileInput,
+  TargetMode,
+} from "@/app/lib/nutrition-types";
 
 export type NutritionProfile = NutritionProfileInput & {
+  /** Objetivo vigente: el calculado o, en modo manual, el fijado por el usuario. */
   plan: NutritionPlan;
+  targetMode: TargetMode;
 };
 
 type NutritionProfileRow = {
@@ -16,6 +23,7 @@ type NutritionProfileRow = {
   body_fat_pct: number | null;
   activity_level: NutritionProfileInput["activityLevel"];
   goal: NutritionProfileInput["goal"];
+  target_mode: TargetMode;
   bmr_kcal: number;
   maintenance_kcal: number;
   target_kcal: number;
@@ -29,7 +37,7 @@ export async function getNutritionProfile(userId: string): Promise<NutritionProf
   const { data, error } = await supabase
     .from("nutrition_profiles")
     .select(
-      "gender, age, height_cm, weight_kg, body_fat_pct, activity_level, goal, bmr_kcal, maintenance_kcal, target_kcal, protein_g, carbs_g, fat_g",
+      "gender, age, height_cm, weight_kg, body_fat_pct, activity_level, goal, target_mode, bmr_kcal, maintenance_kcal, target_kcal, protein_g, carbs_g, fat_g",
     )
     .eq("user_id", userId)
     .maybeSingle();
@@ -45,11 +53,17 @@ export async function getNutritionProfile(userId: string): Promise<NutritionProf
   return mapNutritionProfile(data as NutritionProfileRow);
 }
 
+/** Guarda datos y objetivo. Con `manualTarget` el objetivo queda fijo; sin él se usa el cálculo. */
 export async function saveNutritionProfile(
   userId: string,
   input: NutritionProfileInput,
+  manualTarget: ManualTarget | null = null,
 ): Promise<NutritionProfile> {
-  const plan = calculateNutritionPlan(input);
+  const calculated = calculateNutritionPlan(input);
+  const plan: NutritionPlan = manualTarget
+    ? { ...calculated, targetKcal: manualTarget.targetKcal, macros: manualTarget.macros }
+    : calculated;
+  const targetMode: TargetMode = manualTarget ? "manual" : "auto";
   const supabase = await createSupabaseServerClient();
 
   const { error } = await supabase.from("nutrition_profiles").upsert(
@@ -62,6 +76,7 @@ export async function saveNutritionProfile(
       body_fat_pct: input.bodyFatPct,
       activity_level: input.activityLevel,
       goal: input.goal,
+      target_mode: targetMode,
       bmr_kcal: plan.bmr,
       maintenance_kcal: plan.maintenanceKcal,
       target_kcal: plan.targetKcal,
@@ -76,7 +91,7 @@ export async function saveNutritionProfile(
     throw new Error(`No se pudo guardar el perfil nutricional: ${error.message}`);
   }
 
-  return { ...input, plan };
+  return { ...input, plan, targetMode };
 }
 
 function mapNutritionProfile(row: NutritionProfileRow): NutritionProfile {
@@ -88,6 +103,7 @@ function mapNutritionProfile(row: NutritionProfileRow): NutritionProfile {
     bodyFatPct: row.body_fat_pct,
     activityLevel: row.activity_level,
     goal: row.goal,
+    targetMode: row.target_mode,
     plan: {
       bmr: row.bmr_kcal,
       maintenanceKcal: row.maintenance_kcal,

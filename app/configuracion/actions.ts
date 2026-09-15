@@ -1,16 +1,60 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 
 import { requireUser } from "@/app/lib/auth";
 import { saveNutritionProfile } from "@/app/lib/nutrition-profile";
 import { createSupabaseAdminClient } from "@/app/lib/supabase/admin";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
-import type { NutritionPlan, NutritionProfileInput } from "@/app/lib/nutrition-types";
+import {
+  ACTIVITY_LEVELS,
+  GENDERS,
+  GOALS,
+  type ManualTarget,
+  type NutritionPlan,
+  type NutritionProfileInput,
+} from "@/app/lib/nutrition-types";
 
-export async function saveNutritionProfileAction(input: NutritionProfileInput): Promise<NutritionPlan> {
+const profileInputSchema = z.object({
+  gender: z.enum(GENDERS),
+  age: z.number().int().positive().max(120),
+  heightCm: z.number().positive().max(300),
+  weightKg: z.number().positive().max(500),
+  bodyFatPct: z.number().gt(0).lt(100).nullable(),
+  activityLevel: z.enum(ACTIVITY_LEVELS),
+  goal: z.enum(GOALS),
+});
+
+const macroGramsSchema = z.number().min(0, "Los macros no pueden ser negativos.").max(1500, "Revisá los macros.");
+
+const manualTargetSchema = z.object({
+  targetKcal: z.number().int().min(800, "El objetivo manual debe ser de al menos 800 kcal.").max(10_000, "Revisá las calorías."),
+  macros: z.object({ proteinG: macroGramsSchema, carbsG: macroGramsSchema, fatG: macroGramsSchema }),
+});
+
+export async function saveNutritionProfileAction(
+  input: NutritionProfileInput,
+  manualTarget: ManualTarget | null = null,
+): Promise<NutritionPlan> {
   const auth = await requireUser();
-  const profile = await saveNutritionProfile(auth.user.id, input);
+  const parsedInput = profileInputSchema.safeParse(input);
+  const parsedTarget = manualTarget ? manualTargetSchema.safeParse(manualTarget) : null;
+
+  if (!parsedInput.success) {
+    throw new Error("Revisá tus datos: edad, altura y peso tienen que ser válidos.");
+  }
+
+  if (parsedTarget && !parsedTarget.success) {
+    throw new Error(parsedTarget.error.issues[0]?.message ?? "Revisá el objetivo manual.");
+  }
+
+  const profile = await saveNutritionProfile(auth.user.id, parsedInput.data, parsedTarget?.data ?? null);
+
+  revalidatePath("/nutricion/registro");
+  revalidatePath("/");
+
   return profile.plan;
 }
 

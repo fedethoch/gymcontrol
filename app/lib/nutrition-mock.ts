@@ -1,6 +1,6 @@
 import type { Food } from "@/app/lib/nutrition-types";
 
-const MOCK_FOODS_BASE: Omit<Food, "measure" | "gramsPerUnit">[] = [
+const MOCK_FOODS_BASE: Omit<Food, "measure" | "gramsPerUnit" | "ownerUserId">[] = [
   // Proteínas
   {
     id: "pollo-pechuga",
@@ -194,7 +194,7 @@ const MOCK_FOODS_BASE: Omit<Food, "measure" | "gramsPerUnit">[] = [
   },
 ];
 
-export const MOCK_FOODS: Food[] = MOCK_FOODS_BASE.map((food) => ({ ...food, measure: "g" as const, gramsPerUnit: null }));
+export const MOCK_FOODS: Food[] = MOCK_FOODS_BASE.map((food) => ({ ...food, measure: "g" as const, gramsPerUnit: null, ownerUserId: null }));
 
 export const MOCK_PROFILE_DEFAULTS = {
   gender: "male" as const,

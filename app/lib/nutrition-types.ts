@@ -1,4 +1,4 @@
-export const FOOD_CATEGORIES = ["protein", "carb", "fat", "vegetable", "mixed"] as const;
+export const FOOD_CATEGORIES = ["protein", "carb", "fat", "vegetable", "mixed", "drink"] as const;
 export type FoodCategory = (typeof FOOD_CATEGORIES)[number];
 
 export const FOOD_CATEGORY_LABELS: Record<FoodCategory, string> = {
@@ -7,6 +7,7 @@ export const FOOD_CATEGORY_LABELS: Record<FoodCategory, string> = {
   fat: "Grasa",
   vegetable: "Vegetal",
   mixed: "Mixto",
+  drink: "Bebida",
 };
 
 export const RECIPE_CATEGORIES = ["desayuno", "comida", "snack"] as const;
@@ -63,6 +64,40 @@ export type Food = {
   proteinG: number;
   carbsG: number;
   fatG: number;
+  /** null = catálogo global; con valor = alimento privado de ese usuario. */
+  ownerUserId: string | null;
+};
+
+/** Bebidas se registran en ml (1 ml ≈ 1 g); el resto en gramos. */
+export function getAmountUnitLabel(category: FoodCategory) {
+  return category === "drink" ? "ml" : "g";
+}
+
+/** Hasta cuántos días atrás se puede cargar o corregir el registro diario. */
+export const MEAL_LOG_MAX_PAST_DAYS = 365;
+
+/** Lo que se agrega a una comida: un alimento (gramos/unidades) o una receta (porciones). */
+export type MealItemInput =
+  | { kind: "food"; foodId: string; measure: FoodMeasure; quantity: number }
+  | { kind: "recipe"; recipeId: string; quantity: number };
+
+/** Receta lista para registrar: valores por porción. */
+export type RecipeOption = {
+  id: string;
+  name: string;
+  servings: number;
+  gramsPerServing: number;
+  kcalPerServing: number;
+  macrosPerServing: Macros;
+};
+
+/** Alimento o receta que el usuario registra seguido (para cargarlo en 2 taps). */
+export type FrequentItem = {
+  kind: "food" | "recipe";
+  id: string;
+  uses: number;
+  lastMeasure: FoodMeasure;
+  lastQuantity: number;
 };
 
 export type RecipeIngredient = {
@@ -161,6 +196,15 @@ export type NutritionProfileInput = {
 export type NutritionPlan = {
   bmr: number;
   maintenanceKcal: number;
+  targetKcal: number;
+  macros: Macros;
+};
+
+export const TARGET_MODES = ["auto", "manual"] as const;
+export type TargetMode = (typeof TARGET_MODES)[number];
+
+/** Objetivo diario fijado a mano (reemplaza al calculado cuando targetMode = "manual"). */
+export type ManualTarget = {
   targetKcal: number;
   macros: Macros;
 };
