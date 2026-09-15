@@ -10,6 +10,7 @@ import {
   FolderOpen,
   ListChecks,
   LogIn,
+  Play,
   Power,
   RefreshCw,
 } from "lucide-react";
@@ -70,14 +71,18 @@ export default async function CatalogRoutineDetailPage({
   const savedRoutineId = savedRoutine?.id ?? query.savedRoutineId;
   const isRoutineActive = savedRoutine?.isActive ?? query.status === "active";
 
+  const isArchivedForUser = Boolean(routine.archivedAt) && !isSavedState;
+
   const toastMessage =
     query.status === "created"
-      ? "Rutina guardada en tu cuenta."
+      ? "Rutina guardada. Activala cuando quieras desde Mis rutinas."
       : query.status === "already-saved"
-        ? "Rutina ya guardada en tu cuenta."
+        ? "Esta rutina ya estaba guardada en tu cuenta."
         : query.status === "active"
-          ? "Rutina activada."
-          : null;
+          ? "Listo: es tu rutina activa."
+          : query.status === "inactive"
+            ? "Rutina desactivada."
+            : null;
   const toastError =
     query.status === "save-error"
       ? "No se pudo guardar la rutina. Intenta nuevamente."
@@ -217,16 +222,21 @@ export default async function CatalogRoutineDetailPage({
             {auth ? (
               isSavedState ? (
                 <div className="flex flex-wrap gap-3">
+                  {isRoutineActive ? (
+                    <Button asChild className="h-11 rounded-lg px-5 text-base">
+                      <Link href="/rutinas">
+                        <Play className="size-5 fill-current" />
+                        Ver mi semana
+                      </Link>
+                    </Button>
+                  ) : null}
                   <form action={activateRoutineFromCatalogAction}>
                     <input type="hidden" name="savedRoutineId" value={savedRoutineId ?? ""} />
                     <input type="hidden" name="routineTemplateId" value={routine.id} />
                     <Button
                       type="submit"
-                      className={
-                        isRoutineActive
-                          ? "h-11 rounded-lg border border-[#2f2847] bg-[#141827] px-5 text-base text-[#c7bedf] shadow-none hover:bg-[#1a2033] hover:text-white"
-                          : "h-11 rounded-lg px-5 text-base"
-                      }
+                      variant={isRoutineActive ? "ghost" : "default"}
+                      className="h-11 rounded-lg px-5 text-base"
                       disabled={!savedRoutineId}
                     >
                       {isRoutineActive ? (
@@ -234,20 +244,26 @@ export default async function CatalogRoutineDetailPage({
                       ) : (
                         <Check className="size-5" />
                       )}
-                      {isRoutineActive ? "Desactivar rutina" : "Activar rutina"}
+                      {isRoutineActive ? "Desactivar" : "Activar rutina"}
                     </Button>
                   </form>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="h-11 rounded-lg border-[rgba(148,163,184,0.25)] bg-transparent px-5 text-base"
-                  >
-          <Link href="/rutinas">
-                      <FolderOpen className="size-5" />
-                      Ir a mis rutinas
-                    </Link>
-                  </Button>
+                  {isRoutineActive ? null : (
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="h-11 rounded-lg border-[rgba(148,163,184,0.25)] bg-transparent px-5 text-base"
+                    >
+                      <Link href="/rutinas">
+                        <FolderOpen className="size-5" />
+                        Ir a mis rutinas
+                      </Link>
+                    </Button>
+                  )}
                 </div>
+              ) : isArchivedForUser ? (
+                <p className="text-sm leading-6 text-[var(--foreground-muted)]">
+                  Esta rutina ya no está disponible para guardar.
+                </p>
               ) : (
                 <form action={saveRoutineFromCatalogAction} className="grid gap-3">
                   <input type="hidden" name="routineTemplateId" value={routine.id} />
@@ -265,9 +281,20 @@ export default async function CatalogRoutineDetailPage({
                       placeholder={routine.name}
                     />
                   </div>
-                  <Button type="submit" className="h-11 rounded-lg text-base">
-                    Guardar rutina
-                  </Button>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <Button type="submit" name="intent" value="use" className="h-11 rounded-lg text-base">
+                      Usar esta rutina
+                    </Button>
+                    <Button
+                      type="submit"
+                      name="intent"
+                      value="save"
+                      variant="outline"
+                      className="h-11 rounded-lg text-base"
+                    >
+                      Guardar para después
+                    </Button>
+                  </div>
                 </form>
               )
             ) : (
@@ -286,26 +313,45 @@ export default async function CatalogRoutineDetailPage({
       <div className="xl:hidden">
         {auth ? (
           isSavedState ? (
-            <form action={activateRoutineFromCatalogAction} className="w-full">
-              <input type="hidden" name="savedRoutineId" value={savedRoutineId ?? ""} />
-              <input type="hidden" name="routineTemplateId" value={routine.id} />
-              <Button
-                type="submit"
-                className={
-                  isRoutineActive
-                    ? "h-10 w-full rounded-lg border border-[#2f2847] bg-[#141827] px-4 text-sm text-[#c7bedf] shadow-none hover:bg-[#1a2033] hover:text-white"
-                    : "h-10 w-full rounded-lg px-4 text-sm"
-                }
-                disabled={!savedRoutineId}
-              >
-                {isRoutineActive ? (
-                  <Power className="size-4" />
-                ) : (
-                  <Check className="size-4" />
-                )}
-                {isRoutineActive ? "Desactivar rutina" : "Activar rutina"}
-              </Button>
-            </form>
+            <div className="grid gap-2">
+              {isRoutineActive ? (
+                <Button asChild className="h-11 w-full rounded-lg text-sm">
+                  <Link href="/rutinas">
+                    <Play className="size-4 fill-current" />
+                    Ver mi semana
+                  </Link>
+                </Button>
+              ) : null}
+              <form action={activateRoutineFromCatalogAction} className="w-full">
+                <input type="hidden" name="savedRoutineId" value={savedRoutineId ?? ""} />
+                <input type="hidden" name="routineTemplateId" value={routine.id} />
+                <Button
+                  type="submit"
+                  variant={isRoutineActive ? "ghost" : "default"}
+                  className="h-11 w-full rounded-lg px-4 text-sm"
+                  disabled={!savedRoutineId}
+                >
+                  {isRoutineActive ? (
+                    <Power className="size-4" />
+                  ) : (
+                    <Check className="size-4" />
+                  )}
+                  {isRoutineActive ? "Desactivar" : "Activar rutina"}
+                </Button>
+              </form>
+              {isRoutineActive ? null : (
+                <Button asChild variant="outline" className="h-11 w-full rounded-lg text-sm">
+                  <Link href="/rutinas">
+                    <FolderOpen className="size-4" />
+                    Ir a mis rutinas
+                  </Link>
+                </Button>
+              )}
+            </div>
+          ) : isArchivedForUser ? (
+            <p className="text-sm leading-6 text-[var(--foreground-muted)]">
+              Esta rutina ya no está disponible para guardar.
+            </p>
           ) : (
             <form action={saveRoutineFromCatalogAction} className="grid gap-3">
               <input type="hidden" name="routineTemplateId" value={routine.id} />
@@ -320,8 +366,17 @@ export default async function CatalogRoutineDetailPage({
                   placeholder={routine.name}
                 />
               </div>
-              <Button type="submit" className="h-10 rounded-lg text-sm">
-                Guardar rutina
+              <Button type="submit" name="intent" value="use" className="h-11 rounded-lg text-sm">
+                Usar esta rutina
+              </Button>
+              <Button
+                type="submit"
+                name="intent"
+                value="save"
+                variant="outline"
+                className="h-11 rounded-lg text-sm"
+              >
+                Guardar para después
               </Button>
             </form>
           )

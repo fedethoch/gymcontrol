@@ -20,15 +20,18 @@ import {
 } from "@/app/lib/routine-metadata";
 import type { RoutineTemplate } from "@/app/lib/routines";
 
+type SavedStatus = "active" | "saved";
+
 type RoutineCatalogClientProps = {
   routines: RoutineTemplate[];
+  savedStatusByTemplateId: Record<string, SavedStatus>;
 };
 
 type SortOption = "recent" | "name" | "days" | "rows";
 
 const PAGE_SIZE = 8;
 
-export function RoutineCatalogClient({ routines }: RoutineCatalogClientProps) {
+export function RoutineCatalogClient({ routines, savedStatusByTemplateId }: RoutineCatalogClientProps) {
   const [query, setQuery] = useState("");
   const [difficulty, setDifficulty] = useState<string>("all");
   const [objective, setObjective] = useState<string>("all");
@@ -102,10 +105,6 @@ export function RoutineCatalogClient({ routines }: RoutineCatalogClientProps) {
   const paginatedRoutines = filteredRoutines.slice(pageStart, pageStart + PAGE_SIZE);
   const visiblePages = getVisiblePages(page, totalPages);
 
-  const activeFilterCount = [difficulty, objective, dayCount].filter(
-    (value) => value !== "all",
-  ).length;
-
   function handleClearFilters() {
     handleFilterChange(setDifficulty, "all");
     handleFilterChange(setObjective, "all");
@@ -177,6 +176,7 @@ export function RoutineCatalogClient({ routines }: RoutineCatalogClientProps) {
               ],
               value: sortBy,
               onChange: handleSortChange,
+              kind: "sort",
             },
           ]}
           onClear={handleClearFilters}
@@ -205,7 +205,10 @@ export function RoutineCatalogClient({ routines }: RoutineCatalogClientProps) {
           >
             {paginatedRoutines.map((routine) => (
               <motion.div key={routine.id} variants={fadeUp} className="h-full">
-                <RoutineCatalogCard routine={routine} />
+                <RoutineCatalogCard
+                  routine={routine}
+                  savedStatus={savedStatusByTemplateId[routine.id] ?? null}
+                />
               </motion.div>
             ))}
           </motion.div>
@@ -261,7 +264,13 @@ export function RoutineCatalogClient({ routines }: RoutineCatalogClientProps) {
   );
 }
 
-function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
+function RoutineCatalogCard({
+  routine,
+  savedStatus,
+}: {
+  routine: RoutineTemplate;
+  savedStatus: SavedStatus | null;
+}) {
   const dayCount = routine.days.length;
   const itemCount = getRoutineItemCount(routine);
   const imageUrl = getRoutineCoverImage(routine);
@@ -300,6 +309,17 @@ function RoutineCatalogCard({ routine }: { routine: RoutineTemplate }) {
           <div className="thumb-fitness h-full w-full" />
         )}
         <div className="absolute inset-x-0 bottom-0 h-12 bg-[linear-gradient(180deg,transparent,rgba(5,7,11,0.86))]" />
+        {savedStatus ? (
+          <span
+            className={
+              savedStatus === "active"
+                ? "absolute left-2 top-2 rounded-full bg-[var(--accent)] px-2 py-0.5 text-[10px] font-bold text-[var(--accent-foreground)] sm:text-[11px]"
+                : "absolute left-2 top-2 rounded-full bg-[rgba(5,7,11,0.78)] px-2 py-0.5 text-[10px] font-bold text-white sm:text-[11px]"
+            }
+          >
+            {savedStatus === "active" ? "Tu rutina activa" : "Guardada"}
+          </span>
+        ) : null}
       </div>
 
       {/* Card body */}

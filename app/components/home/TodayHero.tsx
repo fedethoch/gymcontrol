@@ -33,6 +33,7 @@ export function TodayHero({
   day,
   progress,
   startHref,
+  hasSavedRoutines,
   exercisesSheet,
 }: {
   state: HeroState;
@@ -40,6 +41,8 @@ export function TodayHero({
   day: HeroDay | null;
   progress: SessionProgress | null;
   startHref: string;
+  /** Sin rutina activa: con rutinas guardadas se elige entre ellas; sin ninguna, en el catálogo. */
+  hasSavedRoutines: boolean;
   exercisesSheet?: ReactNode;
 }) {
   const dimmed = state === "done_today" || state === "week_done";
@@ -145,7 +148,7 @@ export function TodayHero({
           ) : state === "week_done" ? (
             "El lunes arranca una nueva semana"
           ) : state === "no_routine" ? (
-            "Elegí una del catálogo o armá la tuya"
+            hasSavedRoutines ? "Activá una de tus rutinas guardadas" : "Elegí una del catálogo para empezar"
           ) : day ? (
             <>
               <b className="font-semibold text-white">~{day.minutes}</b> min ·{" "}
@@ -169,8 +172,8 @@ export function TodayHero({
           </>
         ) : state === "no_routine" ? (
           <Button asChild className="h-14 flex-1 rounded-2xl text-base font-bold">
-            <Link href="/catalogo">
-              Explorar rutinas
+            <Link href={hasSavedRoutines ? "/rutinas" : "/catalogo"}>
+              {hasSavedRoutines ? "Mis rutinas" : "Explorar rutinas"}
               <ChevronRight aria-hidden="true" className="size-4" />
             </Link>
           </Button>

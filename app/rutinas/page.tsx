@@ -7,15 +7,48 @@ import { Button } from "@/app/components/ui/Button";
 import { Card, CardContent } from "@/app/components/ui/Card";
 import { requireUser } from "@/app/lib/auth";
 import { ROUTINE_OBJECTIVE_LABELS, ROUTINE_DIFFICULTY_LABELS } from "@/app/lib/routine-metadata";
-import { listSavedRoutinesForUser, getSavedRoutineByIdForUser } from "@/app/lib/saved-routines";
-import { listWorkoutWeeklySummaries } from "@/app/lib/workout-tracking";
+import {
+  findActiveSavedRoutine,
+  getSavedRoutineByIdForUser,
+  listSavedRoutinesForUser,
+} from "@/app/lib/saved-routines";
+import { estimateDayMinutes } from "@/app/lib/workout-progression";
+import { getTrainingOverview } from "@/app/lib/workout-tracking";
+import { MyRoutinesList, MyRoutinesSheet, type MyRoutineRow } from "@/app/rutinas/MyRoutinesList";
 import { RutinasOverview } from "@/app/rutinas/RutinasOverview";
 import { WeekDaysList } from "@/app/rutinas/WeekDaysList";
 
 export default async function RutinasPage() {
   const auth = await requireUser();
   const routines = await listSavedRoutinesForUser(auth.user.id);
-  const activeRoutineListItem = routines.find((routine) => routine.isActive) ?? null;
+  const activeRoutineListItem = findActiveSavedRoutine(routines);
+  const myRoutineRows: MyRoutineRow[] = routines.map((routine) => ({
+    id: routine.id,
+    displayName: routine.displayName,
+    meta: `${routine.dayCount} ${routine.dayCount === 1 ? "día" : "días"} · ${ROUTINE_OBJECTIVE_LABELS[routine.objective]}`,
+    isActive: routine.isActive,
+  }));
+
+  if (!activeRoutineListItem && routines.length > 0) {
+    return (
+      <section className="page-frame dashboard-page-frame bg-[var(--background)]">
+        <header className="grid gap-1">
+          <h1 className="font-display text-2xl font-bold tracking-[-0.02em] text-[var(--foreground)]">
+            Elegí tu rutina activa
+          </h1>
+          <p className="text-sm text-[var(--foreground-muted)]">
+            Activá una de tus rutinas guardadas para ver tu semana y empezar a entrenar.
+          </p>
+        </header>
+
+        <MyRoutinesList routines={myRoutineRows} />
+
+        <Button asChild variant="outline" className="h-12 w-full sm:w-fit">
+          <Link href="/catalogo">Explorar catálogo</Link>
+        </Button>
+      </section>
+    );
+  }
 
   if (!activeRoutineListItem) {
     return (
@@ -31,19 +64,13 @@ export default async function RutinasPage() {
                 <Dumbbell className="size-8" />
               </span>
               <p className="font-display mt-5 text-2xl font-semibold text-white">
-                {routines.length > 0
-                  ? "No tienes una rutina activa"
-                  : "Aun no hay una rutina guardada en tu cuenta"}
+                Aun no hay una rutina guardada en tu cuenta
               </p>
               <p className="mt-2 text-sm leading-6 text-[var(--foreground-muted)]">
-                {routines.length > 0
-                  ? "Marca una de tus rutinas guardadas como activa para ver su progreso semanal."
-                  : "Cuando guardes una rutina desde el catalogo, esta pantalla mostrara tu progreso semanal y los dias disponibles."}
+                Cuando elijas una rutina desde el catalogo, esta pantalla mostrara tu semana y los dias disponibles.
               </p>
               <Button asChild className="mt-5">
-                <Link href={routines.length > 0 ? "/" : "/catalogo"}>
-                  {routines.length > 0 ? "Ir a mis rutinas" : "Ir al catalogo"}
-                </Link>
+                <Link href="/catalogo">Ir al catalogo</Link>
               </Button>
             </div>
           </CardContent>
@@ -52,17 +79,15 @@ export default async function RutinasPage() {
     );
   }
 
-  const [activeRoutine, weeklySummaries] = await Promise.all([
+  const [activeRoutine, overview] = await Promise.all([
     getSavedRoutineByIdForUser({
       savedRoutineId: activeRoutineListItem.id,
       userId: auth.user.id,
     }),
-    listWorkoutWeeklySummaries({
+    getTrainingOverview({
       userId: auth.user.id,
-      savedRoutineIds: routines.map((routine) => routine.id),
-      plannedDaysBySavedRoutineId: Object.fromEntries(
-        routines.map((routine) => [routine.id, routine.dayCount]),
-      ),
+      savedRoutineId: activeRoutineListItem.id,
+      plannedDays: activeRoutineListItem.dayCount,
     }),
   ]);
 
@@ -71,15 +96,14 @@ export default async function RutinasPage() {
   }
 
   const totalDays = activeRoutine.days.length;
-  const weeklySummary = weeklySummaries[activeRoutine.id];
-  const completedDayCount = weeklySummary?.completedDayCount ?? 0;
+  const completedDayIds = new Set(overview.completedRoutineDayIds);
+  const completedDayCount = activeRoutine.days.filter((day) => completedDayIds.has(day.id)).length;
   const weeklyProgressPercent =
     totalDays > 0 ? Math.min(100, Math.round((completedDayCount / totalDays) * 100)) : 0;
-  const completedDayIds = new Set(weeklySummary?.completedRoutineDayIds ?? []);
   const nextPendingDay = activeRoutine.days.find((day) => !completedDayIds.has(day.id)) ?? null;
   const remaining = totalDays - completedDayCount;
-  const currentStreak = weeklySummary?.currentStreak ?? 0;
-  const hasRealData = weeklySummary?.hasRealData ?? false;
+  const currentStreak = overview.weeklyStreak;
+  const hasRealData = overview.hasHistory;
 
   const objectiveLabel = ROUTINE_OBJECTIVE_LABELS[activeRoutineListItem.objective];
   const difficultyLabel = ROUTINE_DIFFICULTY_LABELS[activeRoutineListItem.difficulty];
@@ -93,10 +117,10 @@ export default async function RutinasPage() {
     <section className="page-frame dashboard-page-frame bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
       <MobileHeaderBadgeSync
         badge={
-          weeklySummary?.hasRealData
+          hasRealData
             ? {
-                label: String(weeklySummary.currentStreak),
-                ariaLabel: `${weeklySummary.currentStreak} días de racha de entrenamiento`,
+                label: String(currentStreak),
+                ariaLabel: `${currentStreak} ${currentStreak === 1 ? "semana seguida" : "semanas seguidas"} cumpliendo tu rutina`,
                 tone: "warm",
               }
             : null
@@ -116,6 +140,7 @@ export default async function RutinasPage() {
         hasRealData={hasRealData}
         nextPendingDayOrder={nextPendingDay?.dayOrder ?? null}
         nextPendingDayName={nextPendingDay?.dayName ?? null}
+        nextPendingDayMinutes={nextPendingDay ? estimateDayMinutes(nextPendingDay.items) : null}
         startHref={startHref}
         remaining={remaining}
       />
@@ -128,6 +153,7 @@ export default async function RutinasPage() {
             dayOrder: day.dayOrder,
             dayName: day.dayName,
             itemsCount: day.items.length,
+            estimatedMinutes: estimateDayMinutes(day.items),
           }))}
           completedDayIds={Array.from(completedDayIds)}
           currentDayId={nextPendingDay?.id ?? activeRoutine.days[0]?.id ?? null}
@@ -147,6 +173,8 @@ export default async function RutinasPage() {
           </CardContent>
         </Card>
       )}
+
+      <MyRoutinesSheet routines={myRoutineRows} />
     </section>
   );
 }

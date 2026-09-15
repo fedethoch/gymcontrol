@@ -13,9 +13,10 @@ export async function saveRoutineFromCatalogAction(formData: FormData) {
   const auth = await requireUser();
   const routineTemplateId = String(formData.get("routineTemplateId") ?? "").trim();
   const customName = String(formData.get("customName") ?? "");
+  const activate = formData.get("intent") === "use";
 
   if (!routineTemplateId) {
-    redirect("/catalogo?status=save-error");
+    redirect("/catalogo");
   }
 
   let destination = `/catalogo/rutinas/${routineTemplateId}?status=save-error`;
@@ -25,13 +26,13 @@ export async function saveRoutineFromCatalogAction(formData: FormData) {
       routineTemplateId,
       userId: auth.user.id,
       customName,
+      activate,
     });
 
-  revalidatePath("/");
-  revalidatePath("/rutinas");
-    revalidatePath(`/catalogo/rutinas/${routineTemplateId}`);
+    revalidateRoutineSelection(routineTemplateId);
 
-    destination = `/catalogo/rutinas/${routineTemplateId}?status=${result.status}&savedRoutineId=${result.routine.id}`;
+    const status = activate ? "active" : result.status;
+    destination = `/catalogo/rutinas/${routineTemplateId}?status=${status}&savedRoutineId=${result.routine.id}`;
   } catch {
     destination = `/catalogo/rutinas/${routineTemplateId}?status=save-error`;
   }
@@ -44,22 +45,22 @@ export async function activateRoutineFromCatalogAction(formData: FormData) {
   const savedRoutineId = String(formData.get("savedRoutineId") ?? "").trim();
   const routineTemplateId = String(formData.get("routineTemplateId") ?? "").trim();
 
-  if (!savedRoutineId || !routineTemplateId) {
-    redirect("/catalogo/rutinas?status=active-error");
+  if (!routineTemplateId) {
+    redirect("/catalogo");
   }
 
   let destination = `/catalogo/rutinas/${routineTemplateId}?status=active-error`;
 
   try {
-    const result = await toggleSavedRoutineActiveForUser({
-      savedRoutineId,
-      userId: auth.user.id,
-    });
+    const result = savedRoutineId
+      ? await toggleSavedRoutineActiveForUser({
+          savedRoutineId,
+          userId: auth.user.id,
+        })
+      : null;
 
     if (result) {
-  revalidatePath("/");
-  revalidatePath("/rutinas");
-      revalidatePath(`/catalogo/rutinas/${routineTemplateId}`);
+      revalidateRoutineSelection(routineTemplateId);
 
       const status = result.status === "activated" ? "active" : "inactive";
       destination = `/catalogo/rutinas/${routineTemplateId}?status=${status}&savedRoutineId=${savedRoutineId}`;
@@ -69,4 +70,11 @@ export async function activateRoutineFromCatalogAction(formData: FormData) {
   }
 
   redirect(destination);
+}
+
+function revalidateRoutineSelection(routineTemplateId: string) {
+  revalidatePath("/");
+  revalidatePath("/rutinas");
+  revalidatePath("/catalogo");
+  revalidatePath(`/catalogo/rutinas/${routineTemplateId}`);
 }

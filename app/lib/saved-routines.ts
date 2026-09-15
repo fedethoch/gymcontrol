@@ -269,16 +269,14 @@ export async function getSavedRoutineByTemplateForUser(args: {
   return mapSavedRoutineListItem(data as unknown as SavedRoutineListRow);
 }
 
+/** Guarda la plantilla en la cuenta; con `activate` además la deja como rutina activa. */
 export async function saveRoutineForUser(args: {
   routineTemplateId: string;
   userId: string;
   customName?: string | null;
-}): Promise<
-  | { status: "created"; routine: SavedRoutineListItem }
-  | { status: "already-saved"; routine: SavedRoutineListItem }
-> {
+  activate: boolean;
+}): Promise<{ status: "created" | "already-saved"; routine: SavedRoutineListItem }> {
   const supabase = await createSupabaseServerClient();
-  const hasActiveRoutine = await hasActiveSavedRoutineForUser(args.userId);
   const normalizedCustomName = normalizeCustomName(args.customName);
   const existing = await getSavedRoutineByTemplateForUser({
     routineTemplateId: args.routineTemplateId,
@@ -288,8 +286,22 @@ export async function saveRoutineForUser(args: {
   if (existing) {
     return {
       status: "already-saved",
-      routine: existing,
+      routine: await activateIfRequested(existing, args),
     };
+  }
+
+  const { data: template, error: templateError } = await supabase
+    .from("routine_templates")
+    .select("archived_at")
+    .eq("id", args.routineTemplateId)
+    .maybeSingle();
+
+  if (templateError || !template) {
+    throw new Error("La rutina no existe.");
+  }
+
+  if (template.archived_at) {
+    throw new Error("Esta rutina ya no esta disponible en el catalogo.");
   }
 
   const { data, error } = await supabase
@@ -298,7 +310,7 @@ export async function saveRoutineForUser(args: {
       user_id: args.userId,
       routine_template_id: args.routineTemplateId,
       custom_name: normalizedCustomName,
-      is_active: !hasActiveRoutine,
+      is_active: false,
     })
     .select(SAVED_ROUTINE_LIST_SELECT)
     .single();
@@ -313,7 +325,7 @@ export async function saveRoutineForUser(args: {
       if (duplicate) {
         return {
           status: "already-saved",
-          routine: duplicate,
+          routine: await activateIfRequested(duplicate, args),
         };
       }
     }
@@ -323,8 +335,47 @@ export async function saveRoutineForUser(args: {
 
   return {
     status: "created",
-    routine: mapSavedRoutineListItem(data as unknown as SavedRoutineListRow),
+    routine: await activateIfRequested(
+      mapSavedRoutineListItem(data as unknown as SavedRoutineListRow),
+      args,
+    ),
   };
+}
+
+async function activateIfRequested(
+  routine: SavedRoutineListItem,
+  args: { userId: string; activate: boolean },
+) {
+  if (!args.activate || routine.isActive) {
+    return routine;
+  }
+
+  return (
+    (await setSavedRoutineActiveForUser({ savedRoutineId: routine.id, userId: args.userId })) ??
+    routine
+  );
+}
+
+/** Estado de cada plantilla guardada por el usuario, para marcar el catálogo. */
+export async function listSavedRoutineStatusesForUser(
+  userId: string,
+): Promise<Record<string, "active" | "saved">> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("saved_routines")
+    .select("routine_template_id, is_active")
+    .eq("user_id", userId);
+
+  if (error) {
+    throw new Error(`No se pudieron leer tus rutinas guardadas: ${error.message}`);
+  }
+
+  return Object.fromEntries(
+    ((data ?? []) as Array<{ routine_template_id: string; is_active: boolean }>).map((row) => [
+      row.routine_template_id,
+      row.is_active ? "active" : "saved",
+    ]),
+  );
 }
 
 export async function renameSavedRoutineForUser(args: {
@@ -397,6 +448,22 @@ export async function setSavedRoutineActiveForUser(args: {
   return mapSavedRoutineListItem(data as unknown as SavedRoutineListRow);
 }
 
+export async function deactivateSavedRoutineForUser(args: {
+  savedRoutineId: string;
+  userId: string;
+}) {
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase
+    .from("saved_routines")
+    .update({ is_active: false })
+    .eq("id", args.savedRoutineId)
+    .eq("user_id", args.userId);
+
+  if (error) {
+    throw new Error(`No se pudo desactivar la rutina: ${error.message}`);
+  }
+}
+
 export async function toggleSavedRoutineActiveForUser(args: {
   savedRoutineId: string;
   userId: string;
@@ -440,77 +507,30 @@ export async function toggleSavedRoutineActiveForUser(args: {
   return routine ? { status: "activated", routine } : null;
 }
 
+/** Borra la rutina guardada. El historial de entrenamientos se conserva (FK set null). */
 export async function deleteSavedRoutineForUser(args: {
   savedRoutineId: string;
   userId: string;
-}): Promise<{ deleted: boolean; wasActive: boolean }> {
+}): Promise<{ deleted: boolean }> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("saved_routines")
     .delete()
     .eq("id", args.savedRoutineId)
     .eq("user_id", args.userId)
-    .select("id, is_active")
+    .select("id")
     .maybeSingle();
 
   if (error) {
     throw new Error(`No se pudo borrar la rutina guardada: ${error.message}`);
   }
 
-  if (!data) {
-    return { deleted: false, wasActive: false };
-  }
-
-  if (data.is_active) {
-    await activateFirstSavedRoutineForUser(args.userId);
-  }
-
-  return { deleted: true, wasActive: data.is_active };
+  return { deleted: Boolean(data) };
 }
 
-async function hasActiveSavedRoutineForUser(userId: string) {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("saved_routines")
-    .select("id")
-    .eq("user_id", userId)
-    .eq("is_active", true)
-    .maybeSingle();
-
-  if (error) {
-    throw new Error(`No se pudo consultar la rutina activa: ${error.message}`);
-  }
-
-  return Boolean(data);
-}
-
-async function activateFirstSavedRoutineForUser(userId: string) {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("saved_routines")
-    .select("id")
-    .eq("user_id", userId)
-    .order("saved_at", { ascending: true })
-    .limit(1)
-    .maybeSingle();
-
-  if (error) {
-    throw new Error(`No se pudo buscar la siguiente rutina activa: ${error.message}`);
-  }
-
-  if (!data) {
-    return;
-  }
-
-  const { error: updateError } = await supabase
-    .from("saved_routines")
-    .update({ is_active: true })
-    .eq("id", data.id)
-    .eq("user_id", userId);
-
-  if (updateError) {
-    throw new Error(`No se pudo activar la siguiente rutina: ${updateError.message}`);
-  }
+/** Rutina activa: la marcada como activa. Sin marca, no hay rutina activa (estado válido). */
+export function findActiveSavedRoutine(routines: SavedRoutineListItem[]) {
+  return routines.find((routine) => routine.isActive) ?? null;
 }
 
 function mapSavedRoutineListItem(row: SavedRoutineListRow): SavedRoutineListItem {

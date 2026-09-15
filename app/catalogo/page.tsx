@@ -1,8 +1,11 @@
 import { RoutineCatalogClient } from "@/app/catalogo/RoutineCatalogClient";
+import { getOptionalAuthContext } from "@/app/lib/auth";
 import { listRoutineTemplates } from "@/app/lib/routines";
+import { listSavedRoutineStatusesForUser } from "@/app/lib/saved-routines";
 
 export default async function CatalogoPage() {
-  const routines = await listRoutineTemplates();
+  const [routines, auth] = await Promise.all([listRoutineTemplates(), getOptionalAuthContext()]);
+  const savedStatusByTemplateId = auth ? await listSavedRoutineStatusesForUser(auth.user.id) : {};
 
   return (
     <section className="page-frame content-start bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.15),transparent_31%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
@@ -16,7 +19,7 @@ export default async function CatalogoPage() {
       </div>
 
       <div className="-mt-2 sm:-mt-3">
-        <RoutineCatalogClient routines={routines} />
+        <RoutineCatalogClient routines={routines} savedStatusByTemplateId={savedStatusByTemplateId} />
       </div>
     </section>
   );
