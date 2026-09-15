@@ -447,7 +447,7 @@ Estado confirmado de imagenes generadas despues de `G29`:
 Estado confirmado de tracking despues de la vista diaria interactiva:
 
 - existen `workout_sessions` y `workout_session_items` con RLS owner-only
-- `workout_session_items` guarda `performed_reps`, `used_weight` (texto, valores por serie separados por `/`) nullable e `is_completed` por `routine_item_id` (reemplazadas por `sets` en F1; ver contract del registro por series)
+- `workout_session_items` guarda `performed_reps`, `used_weight` (texto, valores por serie separados por `/`) nullable e `is_completed` por `routine_item_id` (reemplazadas por `sets` en F1 y eliminadas en el contract del registro por series)
 - las migraciones versionadas son `supabase/migrations/20260609_g15_workout_tracking.sql`, `supabase/migrations/20260609_g16_workout_tracking_policy_hardening.sql` y `supabase/migrations/20260613_workout_session_items_text_reps_weight.sql`
 
 Estado de integridad del historial (F0, 2026-09-15, `supabase/migrations/20260915_training_history_integrity.sql`):
@@ -476,7 +476,7 @@ Contract del registro por series (2026-09-15, despues del deploy de F0-F3 a prod
 - `supabase/migrations/20260915_training_contract_sets_kind.sql` (aplicada): las filas del registro anterior (6 items de una sesion del 2026-06-22, sin reps ni kg) quedan con `sets = []` y `kind` segun el ejercicio; `sets` y `kind` pasan a not null y sus checks pierden la rama null
 - el codigo ya no lee ni escribe `performed_reps`, `used_weight` ni `is_completed`
 - `exercise_id` sigue nullable a proposito: Postgres valida NOT NULL antes de resolver `on conflict`, y el upsert del esqueleto de un ejercicio ya registrado fallaria cuando el admin borra su fila de la rutina (el trigger no encuentra la fila y deja null)
-- pendiente: drop de `performed_reps`, `used_weight` e `is_completed` cuando este deployado el codigo que no las usa
+- `supabase/migrations/20260915_training_contract_drop_legacy.sql` (aplicada con ese codigo ya en produccion): drop de `performed_reps`, `used_weight` e `is_completed`
 
 Bootstrap admin minimo:
 
@@ -621,7 +621,6 @@ Esta seccion fija el criterio tecnico minimo para pasar el modelo a Supabase sin
 - `kind text not null check (kind in ('reps','bodyweight','time'))` (F1 + contract)
 - `target_snapshot text` (F1)
 - `sets_rev bigint not null default 0` (F1)
-- `performed_reps text`, `used_weight text`, `is_completed boolean not null default false`: sin uso desde el contract, drop pendiente
 - `created_at timestamptz not null default now()`
 - `updated_at timestamptz not null default now()`
 - unique por `workout_session_id`, `routine_item_id`
