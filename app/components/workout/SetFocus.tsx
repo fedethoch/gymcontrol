@@ -99,6 +99,14 @@ function StepperValue({ field, onChange }: { field: StepperField; onChange: (val
   const inputRef = useRef<HTMLInputElement>(null);
   const [editing, setEditing] = useState(false);
   const empty = field.value.length === 0;
+  // Metric L (3rem) cuando entra; si no, achica al ancho que queda entre los botones. En Sora bold
+  // tabular un dígito mide 0.636em y el separador 0.233em; como mínimo se cuentan 2 dígitos para que
+  // el número no salte al escribir. Nunca baja de 16px.
+  const textEm = [...(field.value || field.placeholder || "—")].reduce(
+    (total, char) => total + (/\d/.test(char) ? 0.636 : char === "." || char === "," ? 0.233 : 0.874),
+    0,
+  );
+  const fontSize = `clamp(1rem, calc(100cqw / ${(Math.max(textEm, 1.272) * 1.04).toFixed(3)}), 3rem)`;
 
   useEffect(() => {
     if (!editing) return;
@@ -106,9 +114,11 @@ function StepperValue({ field, onChange }: { field: StepperField; onChange: (val
   }, [editing]);
 
   return (
-    <span className="grid min-w-0 flex-1 justify-items-center leading-none">
+    <span className="@container grid min-w-0 flex-1 justify-items-center leading-none">
       <input
         ref={inputRef}
+        data-metric-input=""
+        style={{ fontSize }}
         inputMode={field.allowDecimal ? "decimal" : "numeric"}
         aria-label={field.label}
         value={field.value}
@@ -117,7 +127,7 @@ function StepperValue({ field, onChange }: { field: StepperField; onChange: (val
         onFocus={() => setEditing(true)}
         onBlur={() => setEditing(false)}
         className={cn(
-          "w-full bg-transparent text-center font-display text-[3rem] font-bold tracking-[-0.04em] tabular-nums outline-none",
+          "h-[3rem] w-full bg-transparent text-center font-display font-bold leading-none tracking-[-0.04em] tabular-nums outline-none",
           "placeholder:text-[var(--foreground-subtle)]",
           empty ? "text-[var(--foreground-subtle)]" : "text-[var(--foreground)]",
         )}

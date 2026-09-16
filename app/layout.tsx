@@ -104,6 +104,7 @@ export default async function RootLayout({
         <PwaRuntime />
         {auth ? <WorkoutSyncRunner userId={auth.user.id} /> : null}
         <Toaster
+          theme="dark"
           richColors
           position="top-center"
           offset={{ top: "calc(env(safe-area-inset-top) + 24px)" }}
