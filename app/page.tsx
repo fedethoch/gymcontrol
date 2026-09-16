@@ -49,7 +49,7 @@ import {
 import { getNutritionProfile } from "@/app/lib/nutrition-profile";
 import { MACRO_COLORS } from "@/app/lib/nutrition-style";
 import { MEAL_TYPE_LABELS, type Macros } from "@/app/lib/nutrition-types";
-import type { RoutineItem } from "@/app/lib/routines";
+import { dayMuscleGroups } from "@/app/lib/routine-week";
 import {
   findActiveSavedRoutine,
   getSavedRoutineByIdForUser,
@@ -66,20 +66,6 @@ import {
 
 const STRENGTH_LEGEND_GRADIENT =
   "linear-gradient(90deg,var(--strength-1) 0%,var(--strength-2) 33%,var(--strength-3) 66%,var(--strength-4) 100%)";
-
-/** Grupos musculares únicos del día, ordenados por frecuencia (top 3). */
-function dayMuscleGroups(items: RoutineItem[]): string[] {
-  const counts: Record<string, number> = {};
-  for (const item of items) {
-    const g = item.exercise.muscleGroup;
-    if (!g) continue;
-    counts[g] = (counts[g] ?? 0) + 1;
-  }
-  return Object.entries(counts)
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 3)
-    .map(([g]) => g);
-}
 
 /** Cuenta cuántas fechas del set caen en la ventana de N días hasta hoy. */
 function countDatesInWindow(dates: Set<string>, days: number, today: string): number {

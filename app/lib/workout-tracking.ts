@@ -33,6 +33,8 @@ export type OpenWorkoutSession = {
 export type TrainingOverview = {
   /** Días de la rutina con un entreno contado en la semana en curso. */
   completedRoutineDayIds: string[];
+  /** Fecha (YYYY-MM-DD) del último entreno contado de cada día de `completedRoutineDayIds`. */
+  completedDayDates: Record<string, string>;
   /** Fechas con al menos un entreno contado (últimas 12 semanas, cualquier rutina). */
   completedDates: string[];
   weeklyStreak: number;
@@ -201,6 +203,7 @@ export async function getTrainingOverview(args: {
   );
 
   const completedRoutineDayIds = new Set<string>();
+  const completedDayDates: Record<string, string> = {};
   const completedDates = new Set<string>();
   const sessionsByWeekStart: Record<string, number> = {};
 
@@ -215,11 +218,16 @@ export async function getTrainingOverview(args: {
       session.saved_routine_id === args.savedRoutineId
     ) {
       completedRoutineDayIds.add(session.routine_day_id);
+      const previous = completedDayDates[session.routine_day_id];
+      if (!previous || session.training_date > previous) {
+        completedDayDates[session.routine_day_id] = session.training_date;
+      }
     }
   }
 
   return {
     completedRoutineDayIds: [...completedRoutineDayIds],
+    completedDayDates,
     completedDates: [...completedDates],
     weeklyStreak: computeWeeklyStreak({
       weekStarts: Array.from({ length: STREAK_WEEKS }, (_, index) => addDaysToDateKey(weekStart, -7 * index)),
