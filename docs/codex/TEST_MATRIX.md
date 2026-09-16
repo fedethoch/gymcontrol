@@ -12,8 +12,10 @@
 | Integracion ExerciseDB / demostraciones | `pnpm check` + `pnpm exercisedb:audit` con API key disponible + validar que `EXERCISEDB_API_KEY` no aparece en cliente + prueba manual/Playwright del modal en desktop/mobile |
 | Progresion / fechas / racha (`app/lib/workout-progression.ts`) | `pnpm test:unit` |
 | Registro de series / sync offline (`/rutinas/dia`, `/api/workouts/sync`, cola) | `pnpm test:unit` + Playwright con `pnpm dev`: series con hueco + recarga, modo avion, terminar parcial; limpiar sesiones de prueba de la cuenta admin |
+| Registro mobile (`app/components/workout/`, `app/lib/day-workout.ts`) | `pnpm test:unit` + Playwright a 375/390/430: marcar serie, descanso, avance de ejercicio, sheet de ejercicios, entreno completo, dia vacio; 1280 sin cambios |
 | Contrato de sync (`app/lib/workout-sync-contract.ts`) | cambio incompatible = version nueva; el servidor acepta la anterior hasta que no queden clientes viejos |
 | Nutricion: orden de comidas / recetas (`app/lib/meal-order.ts`, `app/lib/recipe-nutrition.ts`, `/nutricion/registro`, `/recetas`) | `pnpm test:unit` + Playwright con `pnpm dev`: crear "despues de…", mover ↑/↓, home en orden, receta por porcion y por gramos, editar (registro congelado), archivar; limpiar comidas/recetas de prueba de la cuenta admin |
+| Semana activa mobile (`/rutinas`, `app/lib/routine-week.ts`) | `pnpm test:unit` + Playwright a 375/390/430 (pestañas, swipe, sheet Mis rutinas, detalle) y 1280 sin cambios |
 | Docs | no correr tests |
 
 Fallback actual: `pnpm lint`, `pnpm build`, `pnpm validate:mobile` o validacion manual minima.

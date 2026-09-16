@@ -231,7 +231,7 @@ La app es **instalable y standalone**. El diseño asume que el usuario la abre c
 - Regiones: `PrimaryNavigation` (sidebar desktop) · `.shell-workspace` (`MobileHeader` + `main.shell-main`) · `MobileTabBar` (bottom nav).
 - `viewport-fit: cover` + `env(safe-area-inset-*)` en todos los bordes (header top, tab bar bottom, toasts). Ver `.page-frame` padding-top/bottom con safe-area.
 - `theme_color` y `background_color` = `#05070b`. `apple-mobile-web-app-status-bar-style: black-translucent`.
-- **Excepción del home (`/`)**: `MobileHeader` no se renderiza en `/`; el home tiene su propio saludo (§10). Para que el scroll no pase por debajo de la barra de estado en standalone, el home fija una franja `env(safe-area-inset-top)` con `--background` (`.home-safe-top`).
+- **Excepción del home (`/`), la semana activa (`/rutinas`) y el registro (`/rutinas/dia`)**: `MobileHeader` no se renderiza en esas rutas; el home tiene su propio saludo (§10), `/rutinas` su switcher de rutina (§12) y `/rutinas/dia` su barra de entreno (§11.1 Z1). Para que el scroll no pase por debajo de la barra de estado en standalone, las tres fijan una franja `env(safe-area-inset-top)` con `--background` (`.home-safe-top`).
 
 ### 6.2 Bottom nav — **NO TOCAR sin pedido explícito**
 
@@ -334,14 +334,70 @@ Reglas: **un solo CTA emerald por pantalla**. "Esta semana" y "Tus músculos" so
 
 ## 11. Registro de entrenamiento (`/rutinas/dia`)
 
-Patrón funcional (F1–F3, 2026-09-15). El rediseño visual de la ruta sigue pendiente (`docs/REDESIGN_DIRECTION.md` §7); lo nuevo ya usa tokens.
+Pantalla de una tarea: **hacer la serie que sigue**. Mobile (<1024) se rediseñó con la dirección "Foco" (2026-09-16): un ejercicio por pantalla, la serie actual como protagonista y el resto del día a un toque. Desktop (≥1024) conserva las cards colapsables con la tabla de series, sin cambios. Mock y decisiones D-D1…D-D6: https://claude.ai/artifact/A9wFreDnAKE6UJexN7Yd4H
+
+### 11.1 Zonas mobile (arriba → abajo)
+
+| Zona | Contenido |
+|---|---|
+| Z1 Barra | ✕ de 44px (sale del entreno; con series pendientes ofrece terminar), barra segmentada con un segmento por ejercicio relleno según sus series hechas, contador `hechas/plan` en mono e indicador de guardado. Debajo, línea chica `Día N · Grupos` |
+| Z2 Ejercicio | Ilustración del ejercicio de 184px **invertida a dark** (`invert(1) hue-rotate(180deg)`: figura clara sobre negro, músculos rojizos), chip `N de M` y chip "Técnica" → `ExerciseDetailModal`. Debajo, nombre en H1 y `series × objetivo · RIR · descanso` |
+| Z3 Serie actual | Micro label `Serie N de M`, dos steppers −/+ con el valor en Metric L (kg y reps; en ejercicios de tiempo, una sola columna seg/min), "Anterior" en mono y la línea de sugerencia |
+| Z4 Series | Filas de 40px por serie: hecha (check emerald + valores), actual (marcador y "Ahora"), pendiente (valores en `--foreground-subtle`). Tocar una fila la vuelve la actual. Acción de texto "Historial" → `ExerciseHistorySheet` |
+| Z5 Dock | `sticky` sobre la bottom nav (mismo offset que `/rutinas`): botón ≡ que abre el sheet del día + CTA emerald "Serie N hecha". Es la única forma del dock que usa acento |
+
+El pager se desliza horizontalmente entre ejercicios (scroll-snap) y se navega con ←/→; al completar un ejercicio avanza solo al próximo pendiente.
+
+### 11.2 Estados
+
+| Estado | Condición | Protagonista | Dock |
+|---|---|---|---|
+| `ready` | Sin series cargadas | Serie 1 del primer ejercicio; kg vacío si no hay historial | "Serie 1 hecha" emerald |
+| `active` | Hay series cargadas | Serie actual del ejercicio visible | "Serie N hecha" emerald |
+| `resting` | Descanso corriendo | Las series del ejercicio (los steppers se ocultan) | Anillo con el tiempo en Metric L, `+15 s`, `Saltar` y la próxima serie. Al llegar a 0 vibra y vuelve el CTA |
+| `all_done` | `hechas ≥ plan` | "Entreno completo" en Display XXL + stats series y ejercicios | "Terminar entrenamiento" emerald |
+| Terminar parcial | ✕ o sheet con series pendientes | — | Confirmación inline en el dock ("Hiciste X de N. ¿Terminar igual?"), nunca dialog |
+| `empty` | Día sin ejercicios | "Día vacío" en Display XXL | Botón neutro a `/rutinas`, sin barra ni pager |
+
+Reglas: **un solo CTA emerald** por pantalla; "Terminar entrenamiento" vive neutro al pie del sheet de ejercicios y en ✕ mientras falten series, y solo pasa a emerald en `all_done`. El resumen muestra únicamente lo que la base registra (series y ejercicios). Sin conexión o error: aviso en Z1 (`--warning` / `--danger`) y en la confirmación; nunca descarte silencioso. Si el día ya se registró esta semana, línea "se guarda como otro entreno".
+
+### 11.3 Piezas que no cambian
 
 | Pieza | Regla |
 |---|---|
-| Ejercicio | Card colapsable (una abierta a la vez; se abre la primera pendiente y la siguiente al completar). Header ≥64px: estado (número o check), nombre, `series × objetivo · RIR · descanso`, contador `hechas/plan` en mono |
-| Serie | Fila `Serie · Anterior · kg · reps · ✓`. Peso corporal: columna "+kg" opcional (lastre). Tiempo: una sola columna "seg" o "min". Inputs 44px y 16px (sin zoom iOS), check redondo de 44px. Placeholder = sugerencia de hoy o, si no hay, la serie anterior o el mínimo del objetivo. ✓ con campos vacíos completa con el placeholder |
+| Sugerencia | Doble progresión contra el objetivo del plan; primera vez, "apuntá a {objetivo}" |
+| Placeholder | Sugerencia de hoy o, si no hay, la serie anterior o el mínimo del objetivo. Marcar con campos vacíos completa con el placeholder |
 | Anterior | Formato compacto en mono (`40×10`, `+10×8`, `45s`), etiqueta accesible completa |
-| Sugerencia | Una línea sobre la tabla (ícono tendencia): doble progresión contra el objetivo del plan. Primera vez: "apuntá a {objetivo}" |
-| Dock | `sticky` sobre la bottom nav: estado sin conexión/error, timer de descanso (hora de fin, +15 s, Saltar) y "Terminar entrenamiento" (único CTA emerald, confirma si faltan series). Parcial es válido |
-| Guardado | Indicador en el header: Guardando · Guardado · Sin conexión (`--warning`) · Reintentar (`--danger`). Nunca descarte silencioso |
-| Historial | Bottom sheet: mejor marca, sparkline de una serie en tinta neutra (dato ≠ acento; marcadores 8px; lectura al tocar/foco) y lista de sesiones como vista de tabla |
+| Descanso | Se cuenta contra una hora de fin: sigue siendo correcto con la pantalla bloqueada |
+| Historial | Bottom sheet: mejor marca, sparkline en tinta neutra (dato ≠ acento) y sesiones como tabla |
+| Desktop | Card colapsable por ejercicio con la tabla `Serie · Anterior · kg · reps · ✓` (inputs de 44px y 16px, sin zoom iOS) |
+
+---
+
+## 12. Semana activa mobile (`/rutinas`, <1024px)
+
+Recorrer el plan entero sin salir de la pantalla: pestañas por día y un panel que se desliza. Mismo sistema que el home (§10): un protagonista Display XXL, secciones sin cajas, un CTA emerald. Desktop (≥1024) conserva su layout de cards sin cambios. Mock y decisiones: https://claude.ai/artifact/53cupB98h4cLZAxbBcLGrg (v3).
+
+### 12.1 Zonas (arriba → abajo)
+
+| Zona | Contenido |
+|---|---|
+| Z1 Portada | Imagen de la plantilla (`routine_templates.image_url`) a sangre detrás de Z1–Z3: gris, caja al 137% anclada abajo (tapa el 27% superior, donde las portadas traen el título), degradé a `--background`. Sin imagen: la foto del hero del home (`/images/hero.png`) sin recorte. Sin radio ni card: no es el hero del home |
+| Z1 Switcher | "Tu rutina · X de N esta semana" + nombre (H2) con chevron → bottom sheet "Mis rutinas" (activar, renombrar inline, desactivar, eliminar con confirmación). Pill de racha a la derecha solo si racha > 0 |
+| Z2 Pestañas | Una por día, 64px, número + etiqueta corta: check emerald y día de semana si está hecho ("Hoy" si fue hoy), "En curso", "Hoy"/"Próximo" para el siguiente, grupo principal para el resto. Flechas ←/→ con teclado |
+| Z3 Panel del día | Chip · grupos del día en Display XXL (máx. 2, `&` emerald) · figura `MuscleBodyView` frente/espalda de 40px con los grupos del día en `--foreground` (principales) y `--foreground-muted` (resto), sin acento ni rampa · stats en fila (duración, ejercicios, series) · filas de ejercicios 72px (orden, miniatura, nombre, `series × reps · RIR · descanso`) que abren `ExerciseDetailModal`. Sin "Anterior". El panel se desliza con scroll-snap horizontal |
+| Z4 Dock | Sticky sobre la bottom nav (mismo offset que `/rutinas/dia`) con la acción del panel visible |
+
+### 12.2 Estados
+
+| Estado | Panel inicial | Dock |
+|---|---|---|
+| `ready` | Próximo día pendiente | "Empezar" emerald en ese día; otros días "Empezar día N" neutro; días hechos "Ver entreno" neutro |
+| `in_progress` | Día con entreno sin terminar: barra "X de N ejercicios · sigue …" en lugar de stats, filas hechas con check | "Continuar" emerald |
+| `done_today` | Próximo día pendiente | "Empezar día N" neutro + línea "Hoy ya entrenaste" |
+| `week_done` | Resumen: "Semana cerrada" XXL, stats (entrenos, racha, series del plan) y filas por día con fecha. Tocar una pestaña abre ese día | Sin dock en el resumen |
+| Sin rutina activa | Sin portada: "Elegí tu rutina" XXL + rutinas guardadas con "Activar" + link al catálogo | — |
+| Sin rutinas guardadas | Sin portada: "Elegí tu rutina" XXL | "Explorar catálogo" emerald |
+| Rutina sin días | Portada + "Rutina vacía" + botón neutro al catálogo, sin pestañas | — |
+
+Reglas: estados de `resolveHeroState` (§10.2). Nunca dos emerald. Lógica pura en `app/lib/routine-week.ts` (tests en `tests/unit/`). Motion: marco de pestaña activa con `layoutId`, crossfade corto al cambiar de día, `AnimatedNumber` en stats, parallax suave de la portada; todo neutralizado con reduced-motion.

@@ -75,20 +75,96 @@ De las refs no se toma: color de marca (amarillo de Ladder), anillos multicolor 
 7. **Verificar.** Playwright a 375, 390, 430 y 1280px, cada estado (datos de la cuenta admin de `.env.local` o una ruta temporal que después se borra), reduced-motion y 0 errores de consola. Correr `pnpm check` y `VALIDATE_BASE_URL=http://localhost:3001 pnpm validate:mobile`. Si cambia CSS global, comparar en build de prod (`pnpm exec next start -p 3002`): el dev puede seguir sirviendo CSS viejo.
 8. **Cierre.** `graphify update .`, marcar la ruta en §7 y commit convencional solo si se pide.
 
-## 7. Rutas
+## 7. Rutas y progreso
 
-| Ruta | Pantalla | Estado | Categorías de `/app-store-refs` |
-|---|---|---|---|
-| `/` | Inicio: qué toca hoy | Mobile rediseñado · desktop con cards | `dashboard` · `nutrition` |
-| `/rutinas` | Semana activa | Sin rediseñar | `routines` · `--apps ladder` |
-| `/rutinas/dia` | Entreno del día y registro de series | Sin rediseñar | `logging` · `exercise-detail` |
-| `/catalogo`, `/catalogo/rutinas/[id]` | Catálogo de rutinas y detalle | Sin rediseñar | `catalog --extra` · `routines` |
-| `/nutricion/registro` | Registro diario de comidas | Sin rediseñar | `nutrition --extra` |
-| `/alimentos` | Alimentos y macros | Sin rediseñar | `nutrition` |
-| `/recetas` | Recetas | Sin rediseñar | `recipes --extra` |
-| `/configuracion` | Perfil, objetivo y cuenta | Sin rediseñar | Sin categoría: la skill no trae pantallas de ajustes |
-| `/auth/login` | Acceso | Rediseñada en julio 2026, antes de esta dirección | Sin categoría |
-| `/admin/*` | Herramientas admin | Sin rediseñar | Sin categoría: la skill no trae pantallas de admin |
+Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se abre sin cambiar la URL (sheet, dialog, modo inline).
 
-- `/dashboard/*` y `/catalogo/rutinas` solo redirigen.
+**Progreso: 3 / 15 rutas**
+
+| # | Ruta | Pantalla | Estado | Categorías de `/app-store-refs` |
+|---|---|---|---|---|
+| 1 | `/` | Inicio: qué toca hoy | ✅ Mobile rediseñado · desktop con cards | `dashboard` · `nutrition` |
+| 2 | `/rutinas` | Semana activa | ✅ Mobile rediseñado · desktop sin tocar · mock https://claude.ai/artifact/53cupB98h4cLZAxbBcLGrg · `DESIGN.md` §12 | `routines` · `--apps ladder` |
+| 3 | `/rutinas/dia` | Entreno del día y registro de series | ✅ Mobile rediseñado · desktop sin tocar · mock https://claude.ai/artifact/A9wFreDnAKE6UJexN7Yd4H · `DESIGN.md` §11 | `logging` · `exercise-detail` |
+| 4 | `/catalogo` | Catálogo de rutinas | Sin rediseñar | `catalog --extra` · `routines` |
+| 5 | `/catalogo/rutinas/[id]` | Detalle de rutina | Sin rediseñar | `catalog --extra` · `routines` |
+| 6 | `/nutricion/registro` | Registro diario de comidas | Sin rediseñar | `nutrition --extra` |
+| 7 | `/alimentos` | Alimentos y macros | Sin rediseñar | `nutrition` |
+| 8 | `/recetas` | Recetas | Sin rediseñar | `recipes --extra` |
+| 9 | `/configuracion` | Perfil, objetivo y cuenta | Sin rediseñar | Sin categoría: la skill no trae pantallas de ajustes |
+| 10 | `/auth/login` | Acceso | Rediseñada en julio 2026, antes de esta dirección | Sin categoría |
+| 11–15 | `/admin/*` | Herramientas admin | Sin rediseñar | Sin categoría: la skill no trae pantallas de admin |
+
+### Checklist por ruta
+
+**Shell global** (todas menos `/auth`)
+- [ ] Bottom nav mobile (`MobileTabBar`): no se toca salvo pedido explícito (§3.10)
+  - [ ] ↳ Sheet "Más" izquierdo (`NavigationPanel`)
+- [ ] Sidebar desktop (`PrimaryNavigation`) con tooltips colapsada
+
+**Usuario**
+- [x] **1. `/`** (mobile)
+  - [x] ↳ Bottom sheet "Ejercicios de hoy" (`TodayExercisesSheet`)
+  - [x] ↳ Capa del mapa muscular al tocar un músculo (`MuscleAnatomy`)
+- [x] **2. `/rutinas`** (mobile) — decisiones 2026-09-15: R-D1 dirección C (pestañas + panel) · R-P portada de la rutina a sangre en gris · R-D2 sin `MobileHeader` · R-D3 figura muscular neutra · R-D4 CTA neutro si ya entrenó hoy · R-D5 sin "Anterior" en filas · R-D6 desktop sin tocar
+  - [x] ↳ Pestañas por día + panel deslizable (`RoutineWeekView`)
+  - [x] ↳ Edición inline del nombre de rutina (menú "…" en el sheet; desktop sigue con `RutinasOverview`)
+  - [x] ↳ Bottom sheet "Mis rutinas" (`RoutineSwitcher` + `MyRoutinesList withMenu`)
+    - [x] ↳ Confirmación inline de borrar rutina
+  - [x] ↳ Sheet Detalle de ejercicio desde las filas (`ExerciseDetailModal` compartido, se abre tal cual; su rediseño queda en la ruta 3)
+- [x] **3. `/rutinas/dia`** (mobile) — decisiones 2026-09-16: D-D1 dirección A "Foco" (un ejercicio por pantalla + pager) · D-D2 ilustración invertida a dark · D-D3 steppers −/+ con número tocable · D-D4 dock que se transforma en anillo de descanso · D-D5 "Terminar" neutro en el sheet y en ✕, emerald solo al completar · D-D6 sin `MobileHeader`, desktop sin tocar
+  - [x] ↳ Ejercicio por panel con la serie actual en Metric L (reemplaza la card expandible; el desktop la conserva)
+  - [x] ↳ Bottom sheet "N ejercicios" con salto de ejercicio y Terminar neutro
+  - [x] ↳ Confirmación inline "Terminar con series pendientes"
+  - [x] ↳ Resumen "Entreno completo" y día sin ejercicios
+  - [ ] ↳ Sheet Detalle de ejercicio + toggle imagen/GIF (`ExerciseDetailModal`, compartido): se abre tal cual, rediseño pendiente
+  - [ ] ↳ Bottom sheet Historial del ejercicio con gráfico (`ExerciseHistorySheet`): se abre tal cual, rediseño pendiente
+- [ ] **4. `/catalogo`**
+  - [ ] ↳ Sheet Filtros (`FilterPanel`, compartido)
+- [ ] **5. `/catalogo/rutinas/[id]`**
+  - [ ] ↳ Sheet Detalle de ejercicio (`ExerciseDetailModal`, compartido)
+- [ ] **6. `/nutricion/registro`**
+  - [ ] ↳ Selects de tipo de comida y fecha
+  - [ ] ↳ Bottom sheet "Nueva comida"
+    - [ ] ↳ Buscador de alimentos y recetas + select de medida (`FoodPicker`)
+  - [ ] ↳ Edición inline de comida
+    - [ ] ↳ Edición inline de ítem (cantidad/medida)
+    - [ ] ↳ `FoodPicker` para agregar ítems
+    - [ ] ↳ Confirmación inline de eliminar
+- [ ] **7. `/alimentos`**
+  - [ ] ↳ Sheet Filtros (`FilterPanel`, compartido)
+  - [ ] ↳ Sheet Detalle de alimento
+    - [ ] ↳ Confirmación inline de eliminar alimento propio
+  - [ ] ↳ Bottom sheet "Nuevo / Editar alimento"
+- [ ] **8. `/recetas`**
+  - [ ] ↳ Sheet Filtros (`FilterPanel`, compartido)
+  - [ ] ↳ Sheet Detalle de receta
+- [ ] **9. `/configuracion`**
+  - [ ] ↳ Toggle objetivo "Calculados / Los fijo yo" (manual muestra kcal y macros)
+  - [ ] ↳ Dialog "Borrar cuenta" con texto de confirmación
+- [ ] **10. `/auth/login`**
+  - [ ] ↳ Paso email → paso código OTP (`OtpLoginFlow`)
+
+**Admin**
+- [ ] **11. `/admin`**
+  - [ ] ↳ Actividad reciente "Ver más / Ver menos"
+  - [ ] ↳ Ejercicios recientes → Sheet Detalle de ejercicio
+- [ ] **12. `/admin/ejercicios`**
+  - [ ] ↳ Sheet Filtros · Sheet Detalle de ejercicio
+  - [ ] ↳ Sheet lateral "Nuevo / Editar ejercicio" (pasos, imagen/GIF, selects)
+  - [ ] ↳ Dialog "Eliminar ejercicio"
+- [ ] **13. `/admin/rutinas`**
+  - [ ] ↳ Sheet Filtros
+  - [ ] ↳ Sheet lateral "Nueva / Editar rutina" (dificultad, objetivo, ejercicio por ítem)
+  - [ ] ↳ Dialog "Archivar rutina" · Dialog "Eliminar rutina"
+- [ ] **14. `/admin/alimentos`**
+  - [ ] ↳ Sheet Filtros · Sheet lateral "Nuevo / Editar alimento" · Dialog "Eliminar alimento"
+- [ ] **15. `/admin/recetas`**
+  - [ ] ↳ Sheet Filtros · Sheet lateral "Nueva / Editar receta" · Dialog "Eliminar receta"
+
+### Notas
+- Componentes compartidos: `ExerciseDetailModal` (3, 5, admin) y `FilterPanel` (4, 7, 8, admin). Rediseñar una vez, en la primera ruta que los use, y marcar en todas.
+- `/dashboard`, `/dashboard/rutinas`, `/dashboard/rutinas/dia` y `/catalogo/rutinas` solo redirigen.
+- Sin `not-found` / `error` / `loading` propios: usan los de Next.
+- Sin uso: `app/components/shared/RoutineTablePreview.tsx` y `app/components/shared/FilterSheet.tsx` (reemplazado por `FilterPanel`).
 - `desing-refs/` tiene mocks HTML de junio 2026 (login, ejercicio, registro de nutrición), anteriores a esta dirección: sirven para contenido y flujo, no para jerarquía.
