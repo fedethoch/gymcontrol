@@ -671,7 +671,7 @@ Migraciones: `20260613_g18_nutrition_core.sql` (esquema + RLS + storage), `20260
 
 - `id uuid primary key`
 - `name text not null`
-- `image_url text not null default ''`: sin uso, los alimentos no tienen imagen (2026-09-16, `DESIGN.md` §13). Default `''` desde `20260916_nutrition_foods_image_default`; se dropea en `20260916_nutrition_foods_image_contract` (ver "Alimentos sin imagen")
+- sin `image_url`: los alimentos no tienen imagen desde 2026-09-16 (`DESIGN.md` §13); columna dropeada en `20260916_nutrition_foods_image_contract` (ver "Alimentos sin imagen")
 - `category text not null check (category in ('protein','carb','fat','vegetable','mixed','drink'))` (`drink` desde `20260915_nutrition_user_foods_recipes_targets`; bebidas se registran en ml, 1 ml ≈ 1 g)
 - `serving_g integer not null default 100 check (serving_g > 0)`
 - `measure text not null default 'g' check (measure in ('g','unit'))` (medida por defecto, g22)
@@ -701,9 +701,9 @@ Migraciones: `20260613_g18_nutrition_core.sql` (esquema + RLS + storage), `20260
 - `created_at`, `updated_at`
 - RLS: owner-only (`auth.uid() = user_id`) para select/insert/update/delete, mismo patron que `saved_routines`
 
-### Storage `food-images`
+### Storage `food-images` (eliminado 2026-09-16)
 
-Bucket publico (5MB, jpg/png/webp), con 4 policies `food_images_*` (lectura publica, escritura admin). Guardaba 203 fotos del catalogo (56 MB) que solo se mostraban en el detalle de `/alimentos`. Se borra junto con `foods.image_url` (ver "Alimentos sin imagen").
+Era un bucket publico (5MB, jpg/png/webp) con 4 policies `food_images_*` (lectura publica, escritura admin) y 203 fotos del catalogo (56 MB) que solo se mostraban en el detalle de `/alimentos`. Se borro junto con `foods.image_url` (ver "Alimentos sin imagen").
 
 ### Indices
 
@@ -821,8 +821,9 @@ Decision AL-D6 del rediseño de `/alimentos` (`DESIGN.md` §13): las fotos de al
 | Migracion | Cuando | Que hace |
 | --- | --- | --- |
 | `20260916_nutrition_foods_image_default` | aplicada 2026-09-16, antes del deploy | expand: `foods.image_url` pasa a `default ''` para que el codigo nuevo inserte sin la columna; el codigo anterior sigue funcionando |
-| `20260916_nutrition_foods_image_contract` | pendiente: solo con el codigo sin `image_url` en produccion | contract: drop de `foods.image_url` y de las 4 policies `food_images_*` |
+| `20260916_nutrition_foods_image_contract` | aplicada 2026-09-16, con el codigo sin `image_url` ya en produccion (deploy `90d628d`) | contract: drop de `foods.image_url` y de las 4 policies `food_images_*` |
 
-- los objetos y el bucket `food-images` se borran por la Storage API con service role: `storage.protect_delete` bloquea el `delete` por SQL y, aunque se habilitara, dejaria archivos huerfanos
+- los 203 objetos y el bucket `food-images` se borraron el 2026-09-16 por la Storage API con service role (`list` + `remove` + `deleteBucket`): `storage.protect_delete` bloquea el `delete` por SQL y, aunque se habilitara, dejaria archivos huerfanos
+- verificado despues del borrado: sin columna, 0 objetos, sin bucket, 0 policies `food_images_%`, 506 alimentos
 - despues del contract, un rollback de Vercel a un deploy anterior rompe `/alimentos`, `/nutricion/registro` y `/admin/alimentos` (leen la columna)
 - `private.foods_backup_20260915` conserva `image_url` con URLs que dejan de existir
