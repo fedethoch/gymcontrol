@@ -51,7 +51,6 @@ export async function saveFoodAction(payload: FoodFormPayload): Promise<SaveFood
 
   const food: Food = {
     id,
-    imageUrl: existingFood?.imageUrl ?? "",
     ...parsed.data,
     ownerUserId: null,
   };

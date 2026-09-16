@@ -55,7 +55,6 @@ export type Macros = {
 export type Food = {
   id: string;
   name: string;
-  imageUrl: string;
   category: FoodCategory;
   measure: FoodMeasure;
   servingG: number;

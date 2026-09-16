@@ -14,7 +14,6 @@ export type AdminFoodListItem = Food & {
 type FoodRow = {
   id: string;
   name: string;
-  image_url: string;
   category: FoodCategory;
   measure: FoodMeasure;
   serving_g: number;
@@ -28,7 +27,7 @@ type FoodRow = {
 };
 
 const FOOD_SELECT =
-  "id, name, image_url, category, measure, serving_g, grams_per_unit, calories, protein_g, carbs_g, fat_g, owner_user_id, created_at";
+  "id, name, category, measure, serving_g, grams_per_unit, calories, protein_g, carbs_g, fat_g, owner_user_id, created_at";
 
 const FOREIGN_KEY_VIOLATION = "23503";
 
@@ -139,7 +138,6 @@ export async function createFood(
     .from("foods")
     .insert({
       name: input.name,
-      image_url: "",
       category: input.category,
       measure: input.measure,
       serving_g: input.servingG,
@@ -206,7 +204,6 @@ function mapFood(row: FoodRow): Food {
   return {
     id: row.id,
     name: row.name,
-    imageUrl: row.image_url,
     category: row.category,
     measure: row.measure,
     servingG: row.serving_g,

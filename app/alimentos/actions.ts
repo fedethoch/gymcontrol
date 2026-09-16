@@ -49,7 +49,7 @@ export async function saveOwnFoodAction(payload: FoodFormPayload): Promise<SaveO
     status: "success",
     message: foodId ? "Alimento actualizado." : "Alimento creado.",
     fieldErrors: {},
-    food: { id, imageUrl: "", ...parsed.data, ownerUserId: auth.user.id },
+    food: { id, ...parsed.data, ownerUserId: auth.user.id },
   };
 }
 

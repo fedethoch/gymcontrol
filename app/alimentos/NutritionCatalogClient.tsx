@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-
 import { Pencil, Plus, Search, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -333,26 +331,16 @@ function FoodDetailSheet({
             className="relative flex h-44 shrink-0 items-end p-5"
             style={{ background: CATEGORY_GRADIENTS[displayFood.category] }}
           >
-            {displayFood.imageUrl ? (
-              <Image
-                src={displayFood.imageUrl}
-                alt={displayFood.name}
-                fill
-                className="object-cover opacity-40"
-                sizes="448px"
-              />
-            ) : (
-              <Icon
-                className="absolute right-5 top-5 size-12 opacity-30"
-                style={{ color: CATEGORY_ACCENT[displayFood.category] }}
-                aria-hidden="true"
-              />
-            )}
+            <Icon
+              className="absolute right-5 top-5 size-12 opacity-30"
+              style={{ color: CATEGORY_ACCENT[displayFood.category] }}
+              aria-hidden="true"
+            />
             <div>
               <SheetTitle className="font-display text-2xl font-bold tracking-[-0.05em] text-white">
                 {displayFood.name}
               </SheetTitle>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#b985ff]">
+              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--foreground-muted)]">
                 {FOOD_CATEGORY_LABELS[displayFood.category]}
                 {isOwn ? " · Tuyo" : ""}
               </p>
