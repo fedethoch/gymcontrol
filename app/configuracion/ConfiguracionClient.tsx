@@ -1,17 +1,21 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Beef, Check, Droplet, Flame, LogOut, TriangleAlert, Wheat } from "lucide-react";
 import { toast } from "sonner";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/app/components/ui/Accordion";
+import { AccountRows } from "@/app/components/configuracion/AccountRows";
+import { ActivitySheet } from "@/app/components/configuracion/ActivitySheet";
+import { BodySheet } from "@/app/components/configuracion/BodySheet";
+import { DeleteAccountSheet } from "@/app/components/configuracion/DeleteAccountSheet";
+import { GoalSheet } from "@/app/components/configuracion/GoalSheet";
+import { NameSheet } from "@/app/components/configuracion/NameSheet";
+import { PlanHero } from "@/app/components/configuracion/PlanHero";
+import { PlanRows, type PlanSheet } from "@/app/components/configuracion/PlanRows";
+import { ProfileIdentity } from "@/app/components/configuracion/ProfileIdentity";
+import { ProfileSetupFlow } from "@/app/components/configuracion/ProfileSetupFlow";
+import { SetupHero } from "@/app/components/configuracion/SetupHero";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
 import { BodyFatFigure } from "@/app/components/shared/BodyFatFigure";
 import { Button } from "@/app/components/ui/Button";
@@ -25,8 +29,8 @@ import {
 } from "@/app/components/ui/Dialog";
 import { Input } from "@/app/components/ui/Input";
 import { LoadingDots } from "@/app/components/ui/LoadingDots";
-import { deleteAccountAction, saveNutritionProfileAction, saveProfileNameAction } from "@/app/configuracion/actions";
-import { calculateNutritionPlan } from "@/app/lib/nutrition-calc";
+import { deleteAccountAction, saveProfileNameAction } from "@/app/configuracion/actions";
+import { useProfileForm } from "@/app/configuracion/useProfileForm";
 import { MACRO_COLORS, MACRO_LABELS } from "@/app/lib/nutrition-style";
 import {
   ACTIVITY_LEVEL_INFO,
@@ -35,15 +39,8 @@ import {
   GENDERS,
   GOAL_INFO,
   GOALS,
-  type ActivityLevel,
-  type Gender,
   type Goal,
-  type ManualTarget,
-  type NutritionPlan,
-  type NutritionProfileInput,
-  type TargetMode,
 } from "@/app/lib/nutrition-types";
-import { MOCK_PROFILE_DEFAULTS } from "@/app/lib/nutrition-mock";
 import type { NutritionProfile } from "@/app/lib/nutrition-profile";
 import { cn } from "@/app/lib/utils";
 import {
@@ -55,7 +52,6 @@ import {
 } from "@/app/components/ui/motion";
 
 const DELETE_CONFIRM_TEXT = "BORRAR";
-type ProfileSaveStatus = "idle" | "saving" | "saved" | "error";
 
 const GOAL_ADJ_LABELS: Record<Goal, string> = {
   bulk: "Superávit moderado aplicado",
@@ -63,131 +59,57 @@ const GOAL_ADJ_LABELS: Record<Goal, string> = {
   recomposition: "Sin ajuste calórico",
 };
 
+type MobileSheet = PlanSheet | "name" | "delete";
+
 export function ConfiguracionClient({
   initialProfile,
   initialDisplayName,
+  email,
 }: {
   initialProfile: NutritionProfile | null;
   initialDisplayName: string | null;
+  email: string | null;
 }) {
   const [displayName, setDisplayName] = useState(initialDisplayName ?? "");
   const savedNameRef = useRef(initialDisplayName ?? "");
-
-  const [gender, setGender] = useState<Gender>(initialProfile?.gender ?? MOCK_PROFILE_DEFAULTS.gender);
-  const [age, setAge] = useState(String(initialProfile?.age ?? MOCK_PROFILE_DEFAULTS.age));
-  const [heightCm, setHeightCm] = useState(String(initialProfile?.heightCm ?? MOCK_PROFILE_DEFAULTS.heightCm));
-  const [weightKg, setWeightKg] = useState(String(initialProfile?.weightKg ?? MOCK_PROFILE_DEFAULTS.weightKg));
-  const [bodyFatPct, setBodyFatPct] = useState<number | null>(initialProfile?.bodyFatPct ?? null);
-  const [activityLevel, setActivityLevel] = useState<ActivityLevel>(
-    initialProfile?.activityLevel ?? MOCK_PROFILE_DEFAULTS.activityLevel,
-  );
-  const [goal, setGoal] = useState<Goal>(initialProfile?.goal ?? MOCK_PROFILE_DEFAULTS.goal);
-  const initialManualPlan = initialProfile?.targetMode === "manual" ? initialProfile.plan : null;
-  const [targetMode, setTargetMode] = useState<TargetMode>(initialProfile?.targetMode ?? "auto");
-  const [manualKcal, setManualKcal] = useState(initialManualPlan ? String(initialManualPlan.targetKcal) : "");
-  const [manualProteinG, setManualProteinG] = useState(initialManualPlan ? String(initialManualPlan.macros.proteinG) : "");
-  const [manualCarbsG, setManualCarbsG] = useState(initialManualPlan ? String(initialManualPlan.macros.carbsG) : "");
-  const [manualFatG, setManualFatG] = useState(initialManualPlan ? String(initialManualPlan.macros.fatG) : "");
-  const [profileSaveStatus, setProfileSaveStatus] = useState<ProfileSaveStatus>("idle");
-  const [isRecalculating, setIsRecalculating] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState("");
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  // Mobile (DESIGN.md §15): sheet abierto y flujo de alta.
+  const [sheet, setSheet] = useState<MobileSheet | null>(null);
+  const [setupOpen, setSetupOpen] = useState(false);
 
-  const profileInput = useMemo<NutritionProfileInput>(() => {
-    const parsedAge = Number(age) || MOCK_PROFILE_DEFAULTS.age;
-    const parsedHeight = Number(heightCm) || MOCK_PROFILE_DEFAULTS.heightCm;
-    const parsedWeight = Number(weightKg) || MOCK_PROFILE_DEFAULTS.weightKg;
-
-    return {
-      gender,
-      age: parsedAge,
-      heightCm: parsedHeight,
-      weightKg: parsedWeight,
-      bodyFatPct,
-      activityLevel,
-      goal,
-    };
-  }, [gender, age, heightCm, weightKg, bodyFatPct, activityLevel, goal]);
-
-  // Objetivo manual: solo se guarda si los valores son coherentes (mismos límites que el servidor).
-  const manualTarget = useMemo<ManualTarget | null>(() => {
-    if (targetMode !== "manual") return null;
-
-    const kcal = Math.round(Number(manualKcal.replace(",", ".")));
-    const macros = [manualProteinG, manualCarbsG, manualFatG].map((value) => Math.round(Number(value.replace(",", "."))));
-
-    if (!manualKcal.trim() || !Number.isFinite(kcal) || kcal < 800 || kcal > 10000) return null;
-    if (macros.some((value) => !Number.isFinite(value) || value < 0 || value > 1500)) return null;
-
-    return { targetKcal: kcal, macros: { proteinG: macros[0], carbsG: macros[1], fatG: macros[2] } };
-  }, [targetMode, manualKcal, manualProteinG, manualCarbsG, manualFatG]);
-  const isManualInvalid = targetMode === "manual" && manualTarget === null;
-
-  const profileSignature = useMemo(
-    () => JSON.stringify({ profileInput, targetMode, manualTarget }),
-    [profileInput, targetMode, manualTarget],
-  );
-  const savedProfileSignatureRef = useRef(profileSignature);
-  const isFirstRender = useRef(true);
-  const calculatedPlan = useMemo(() => calculateNutritionPlan(profileInput), [profileInput]);
-  const plan: NutritionPlan = manualTarget
-    ? { ...calculatedPlan, targetKcal: manualTarget.targetKcal, macros: manualTarget.macros }
-    : calculatedPlan;
-
-  // Auto-save (unchanged behavior)
-  useEffect(() => {
-    if (profileSignature === savedProfileSignatureRef.current || isManualInvalid) {
-      setProfileSaveStatus("idle");
-      return;
-    }
-
-    setProfileSaveStatus("idle");
-    let ignore = false;
-
-    const timeout = window.setTimeout(() => {
-      setProfileSaveStatus("saving");
-
-      void saveNutritionProfileAction(profileInput, manualTarget)
-        .then(() => {
-          if (ignore) return;
-          savedProfileSignatureRef.current = profileSignature;
-          setProfileSaveStatus("saved");
-        })
-        .catch((error) => {
-          if (ignore) return;
-          setProfileSaveStatus("error");
-          toast.error(error instanceof Error ? error.message : "No se pudo guardar el perfil.");
-        });
-    }, 800);
-
-    return () => {
-      ignore = true;
-      window.clearTimeout(timeout);
-    };
-  }, [profileInput, profileSignature, manualTarget, isManualInvalid]);
-
-  function handleTargetModeChange(nextMode: TargetMode) {
-    if (nextMode === "manual" && !manualKcal.trim()) {
-      setManualKcal(String(calculatedPlan.targetKcal));
-      setManualProteinG(String(calculatedPlan.macros.proteinG));
-      setManualCarbsG(String(calculatedPlan.macros.carbsG));
-      setManualFatG(String(calculatedPlan.macros.fatG));
-    }
-
-    setTargetMode(nextMode);
-  }
-
-  // "Recalculando…" visual indicator — skips first render
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    setIsRecalculating(true);
-    const t = window.setTimeout(() => setIsRecalculating(false), 600);
-    return () => window.clearTimeout(t);
-  }, [profileSignature]);
+  const form = useProfileForm(initialProfile, { autosavePaused: setupOpen });
+  const {
+    gender,
+    handleGenderChange,
+    age,
+    setAge,
+    heightCm,
+    setHeightCm,
+    weightKg,
+    setWeightKg,
+    bodyFatPct,
+    setBodyFatPct,
+    activityLevel,
+    setActivityLevel,
+    goal,
+    setGoal,
+    targetMode,
+    handleTargetModeChange,
+    manualKcal,
+    setManualKcal,
+    manualProteinG,
+    setManualProteinG,
+    manualCarbsG,
+    setManualCarbsG,
+    manualFatG,
+    setManualFatG,
+    manualTarget,
+    isManualInvalid,
+    plan,
+    isRecalculating,
+  } = form;
 
   async function handleSaveName() {
     const trimmed = displayName.trim();
@@ -216,44 +138,17 @@ export function ConfiguracionClient({
 
   // ─── Derived state ──────────────────────────────────────────────────────────
 
-  const sectionStatus = useMemo(() => {
-    const parsedAge = Number(age);
-    const parsedHeight = Number(heightCm);
-    const parsedWeight = Number(weightKg);
-    return {
-      cuenta: displayName.trim().length > 0,
-      datos: parsedAge > 0 && parsedHeight > 0 && parsedWeight > 0,
-      grasa: bodyFatPct !== null,
-      actividad: true,
-      objetivo: true,
-    };
-  }, [displayName, age, heightCm, weightKg, bodyFatPct]);
-
-  const completedCount = useMemo(
-    () => Object.values(sectionStatus).filter(Boolean).length,
-    [sectionStatus],
-  );
-
-  const datosSuficientes = sectionStatus.cuenta && sectionStatus.datos;
-
+  const datosCompletos = Number(age) > 0 && Number(heightCm) > 0 && Number(weightKg) > 0;
   const bodyFatReferences = BODY_FAT_REFERENCES[gender];
-  const bodyFatRef = useMemo(
-    () => bodyFatReferences.find((r) => r.value === bodyFatPct) ?? null,
-    [bodyFatReferences, bodyFatPct],
-  );
 
-  // Ranges differ by sex: keep the same level (e.g. "Moderado") when switching.
-  function handleGenderChange(next: Gender) {
-    if (next === gender) return;
-    const level = BODY_FAT_REFERENCES[gender].findIndex((r) => r.value === bodyFatPct);
-    if (level !== -1) setBodyFatPct(BODY_FAT_REFERENCES[next][level].value);
-    setGender(next);
+  function handleSheetOpenChange(open: boolean) {
+    if (open) return;
+    form.flush();
+    setSheet(null);
   }
 
   const kcalDiff = plan.targetKcal - plan.maintenanceKcal;
 
-  const bodyFatSummary = bodyFatRef ? `${bodyFatRef.label} ${bodyFatRef.range}` : "Estimado";
-  const dataSummary = `${age}a · ${heightCm}cm · ${weightKg}kg`;
 
   // ─── Section bodies ─────────────────────────────────────────────────────────
 
@@ -304,7 +199,7 @@ export function ConfiguracionClient({
         </label>
       </div>
 
-      {sectionStatus.datos && (
+      {datosCompletos && (
         <p className="flex items-center gap-1 text-xs text-[var(--accent)]">
           <Check className="size-3" /> Datos completos
         </p>
@@ -340,88 +235,6 @@ export function ConfiguracionClient({
         ))}
       </div>
       <BodyFatFigure gender={gender} value={bodyFatPct} className="justify-self-center" />
-    </div>
-  );
-
-  // Compact body fat body — used in mobile accordion
-  const bodyFatBodyCompact = (
-    <div className="grid gap-3">
-      <div className="grid grid-cols-2 gap-2">
-        <ToggleOption
-          compact
-          active={bodyFatPct === null}
-          label="No lo sé"
-          onClick={() => setBodyFatPct(null)}
-        />
-        {bodyFatReferences.map((reference) => (
-          <ToggleOption
-            key={reference.range}
-            compact
-            active={bodyFatPct === reference.value}
-            label={`${reference.label} · ${reference.range}`}
-            onClick={() => setBodyFatPct(reference.value)}
-          />
-        ))}
-      </div>
-
-      {/* Description of active option only */}
-      <AnimatePresence mode="wait">
-        {bodyFatPct === null ? (
-          <motion.p
-            key="no-se"
-            variants={fadeScale}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="text-xs text-[var(--foreground-muted)]"
-          >
-            Usamos tu peso, altura, edad y sexo para estimar.
-          </motion.p>
-        ) : bodyFatRef ? (
-          <motion.p
-            key={String(bodyFatPct)}
-            variants={fadeScale}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="text-xs text-[var(--foreground-muted)]"
-          >
-            {bodyFatRef.description}
-          </motion.p>
-        ) : null}
-      </AnimatePresence>
-
-      {/* Estimation mini-card (replaces broken "?" block) */}
-      <div className="rounded-xl border border-[var(--border)] bg-[var(--card-alt)] px-3.5 py-2.5">
-        {bodyFatPct !== null && bodyFatRef ? (
-          <div className="flex items-center gap-3">
-            <Image
-              key={`${gender}-${bodyFatPct}`}
-              src={`/references/body-fat/${gender === "female" ? "female" : "male"}/${bodyFatPct}.png`}
-              alt={`Referencia visual de ${bodyFatPct}% de grasa corporal`}
-              width={112}
-              height={128}
-              className="h-32 w-28 shrink-0 object-contain"
-            />
-            <div className="min-w-0">
-              <p className="text-xs font-semibold text-white">
-                Grasa estimada: {bodyFatPct}% aprox.
-              </p>
-              <p className="mt-0.5 text-[10px] text-[var(--foreground-muted)]">
-                {bodyFatRef.label} · {bodyFatRef.range}
-              </p>
-              <p className="mt-2 text-[10px] text-[var(--foreground-muted)]">Referencia ilustrativa</p>
-            </div>
-          </div>
-        ) : (
-          <>
-            <p className="text-xs font-semibold text-white">Estimada automáticamente</p>
-            <p className="mt-0.5 text-[10px] text-[var(--foreground-muted)]">
-              Basado en peso, altura, edad y sexo
-            </p>
-          </>
-        )}
-      </div>
     </div>
   );
 
@@ -510,163 +323,74 @@ export function ConfiguracionClient({
 
   return (
     <div className="grid w-full min-w-0 grid-cols-[minmax(0,1fr)] gap-5">
-      {/* ── MOBILE: progress row + mini plan card + accordion ─────────────── */}
-      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-4 lg:hidden">
-        {/* A. Progress row */}
-        <div className="flex min-w-0 flex-wrap items-center gap-2">
-          <div className="flex gap-1">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <span
-                key={i}
-                className={cn(
-                  "size-2 rounded-full transition-colors duration-300",
-                  i < completedCount ? "bg-[var(--accent)]" : "bg-[var(--border)]",
-                )}
+      {/* ── MOBILE · DESIGN.md §15 ───────────────────────────────────────────── */}
+      <div className="flex min-w-0 flex-col lg:hidden">
+        <div aria-hidden="true" className="home-safe-top" />
+        <h1 className="sr-only">Configuración</h1>
+
+        {setupOpen ? (
+          <ProfileSetupFlow form={form} onExit={() => setSetupOpen(false)} onDone={() => setSetupOpen(false)} />
+        ) : (
+          <>
+            <ProfileIdentity
+              displayName={displayName}
+              email={email}
+              onEditName={() => setSheet("name")}
+              saveStatus={form.saveStatus}
+              saveCount={form.saveCount}
+              online={form.online}
+              onRetry={form.retry}
+            />
+
+            {form.hasProfile ? (
+              <>
+                <div className="mt-7">
+                  <PlanHero
+                    plan={plan}
+                    calculatedKcal={form.calculatedPlan.targetKcal}
+                    manualTarget={manualTarget}
+                    goal={goal}
+                  />
+                </div>
+                <div className="mt-10">
+                  <PlanRows input={form.profileInput} targetMode={targetMode} onOpen={setSheet} />
+                </div>
+              </>
+            ) : (
+              <div className="mt-7">
+                <SetupHero onStart={() => setSetupOpen(true)} />
+              </div>
+            )}
+
+            <div className="mt-10">
+              <AccountRows
+                displayName={displayName}
+                email={email}
+                onEditName={() => setSheet("name")}
+                onDeleteAccount={() => setSheet("delete")}
               />
-            ))}
-          </div>
-          <span className="text-xs text-[var(--foreground-muted)]">Perfil {completedCount}/5</span>
-          {datosSuficientes && (
-            <span className="flex items-center gap-1 rounded-full bg-[var(--accent)]/15 px-2 py-0.5 text-[10px] font-semibold text-[var(--accent)]">
-              <Check className="size-3" /> Datos suficientes para tu plan
-            </span>
-          )}
-        </div>
-
-        {/* B. Mini-card "Plan actual" */}
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] px-4 py-3">
-          <div className="flex items-center gap-3">
-            <AnimatedProgressRing value={100} size={52} strokeWidth={5} progressColor="var(--accent)">
-              <Flame className="size-4 text-[var(--accent)]" />
-            </AnimatedProgressRing>
-            <div className="min-w-0 flex-1">
-              <div className="flex items-baseline gap-1.5">
-                <span className="font-display text-xl font-bold text-white">
-                  <AnimatedNumber value={plan.targetKcal} />
-                </span>
-                <span className="text-xs text-[var(--foreground-muted)]">kcal</span>
-                <span className="ml-1 truncate text-xs font-semibold text-[var(--accent)]">
-                  {manualTarget ? "Objetivo manual" : GOAL_INFO[goal].label}
-                </span>
-              </div>
-              <p className="mt-0.5 text-[10px] text-[var(--foreground-muted)]">
-                <span style={{ color: MACRO_COLORS.protein }}>P</span>{" "}
-                <AnimatedNumber value={plan.macros.proteinG} />g
-                {" · "}
-                <span style={{ color: MACRO_COLORS.carbs }}>C</span>{" "}
-                <AnimatedNumber value={plan.macros.carbsG} />g
-                {" · "}
-                <span style={{ color: MACRO_COLORS.fat }}>G</span>{" "}
-                <AnimatedNumber value={plan.macros.fatG} />g
-              </p>
             </div>
-            {/* Save status chip */}
-            <AnimatePresence mode="wait">
-              {profileSaveStatus === "saving" && (
-                <motion.span
-                  key="saving"
-                  variants={fadeScale}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  className="shrink-0 rounded-full bg-[var(--card-alt)] px-2 py-0.5 text-[10px] text-[var(--foreground-muted)]"
-                >
-                  Guardando…
-                </motion.span>
-              )}
-              {profileSaveStatus === "saved" && (
-                <motion.span
-                  key="saved"
-                  variants={fadeScale}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  className="flex shrink-0 items-center gap-1 rounded-full bg-[var(--accent)]/10 px-2 py-0.5 text-[10px] text-[var(--accent)]"
-                >
-                  <Check className="size-2.5" /> Guardado
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
+          </>
+        )}
 
-        {/* C. Accordion sections with rich headers */}
-        <Accordion
-          type="multiple"
-          defaultValue={["cuenta", "datos", "grasa", "actividad", "objetivo"]}
-          className="grid gap-3"
-        >
-          <AccordionItem value="cuenta" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
-            <AccordionTrigger>
-              <div className="flex flex-1 items-center justify-between gap-2 pr-2">
-                <span className="font-semibold">Tu cuenta</span>
-                <div className="flex items-center gap-1.5">
-                  <span className="truncate text-xs text-[var(--foreground-muted)]">
-                    {displayName || "Sin nombre"}
-                  </span>
-                  {sectionStatus.cuenta && <Check className="size-3 shrink-0 text-[var(--accent)]" />}
-                </div>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>{accountBody}</AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="datos" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
-            <AccordionTrigger>
-              <div className="flex flex-1 items-center justify-between gap-2 pr-2">
-                <span className="font-semibold">Datos básicos</span>
-                <div className="flex items-center gap-1.5">
-                  <span className="truncate text-xs text-[var(--foreground-muted)]">{dataSummary}</span>
-                  {sectionStatus.datos && <Check className="size-3 shrink-0 text-[var(--accent)]" />}
-                </div>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>{basicsBody}</AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="grasa" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
-            <AccordionTrigger>
-              <div className="flex flex-1 items-center justify-between gap-2 pr-2">
-                <span className="font-semibold">Grasa corporal</span>
-                <div className="flex items-center gap-1.5">
-                  <span className="truncate text-xs text-[var(--foreground-muted)]">{bodyFatSummary}</span>
-                  {sectionStatus.grasa && <Check className="size-3 shrink-0 text-[var(--accent)]" />}
-                </div>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>{bodyFatBodyCompact}</AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="actividad" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
-            <AccordionTrigger>
-              <div className="flex flex-1 items-center justify-between gap-2 pr-2">
-                <span className="font-semibold">Actividad física</span>
-                <div className="flex items-center gap-1.5">
-                  <span className="truncate text-xs text-[var(--foreground-muted)]">
-                    {ACTIVITY_LEVEL_INFO[activityLevel].label}
-                  </span>
-                  <Check className="size-3 shrink-0 text-[var(--accent)]" />
-                </div>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>{activityBody}</AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="objetivo" className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4">
-            <AccordionTrigger>
-              <div className="flex flex-1 items-center justify-between gap-2 pr-2">
-                <span className="font-semibold">Objetivo</span>
-                <div className="flex items-center gap-1.5">
-                  <span className="truncate text-xs text-[var(--foreground-muted)]">
-                    {manualTarget ? `Manual · ${manualTarget.targetKcal} kcal` : GOAL_INFO[goal].label}
-                  </span>
-                  <Check className="size-3 shrink-0 text-[var(--accent)]" />
-                </div>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>{goalBody}</AccordionContent>
-          </AccordionItem>
-        </Accordion>
+        <BodySheet open={sheet === "body"} onOpenChange={handleSheetOpenChange} form={form} />
+        <ActivitySheet open={sheet === "activity"} onOpenChange={handleSheetOpenChange} form={form} />
+        <GoalSheet open={sheet === "goal"} onOpenChange={handleSheetOpenChange} form={form} />
+        <NameSheet
+          open={sheet === "name"}
+          onOpenChange={handleSheetOpenChange}
+          value={displayName}
+          onChange={setDisplayName}
+          onCommit={() => void handleSaveName()}
+          disabled={!form.online}
+        />
+        <DeleteAccountSheet
+          open={sheet === "delete"}
+          onOpenChange={handleSheetOpenChange}
+          confirmText={DELETE_CONFIRM_TEXT}
+          isDeleting={isDeleting}
+          onConfirm={() => void handleDeleteAccount()}
+        />
       </div>
 
       {/* ── DESKTOP: cards apiladas (sin cambios) ─────────────────────────── */}
@@ -708,129 +432,131 @@ export function ConfiguracionClient({
         </Card>
       </div>
 
-      {/* ── PLAN ESTIMADO (shared mobile + desktop, mejorado) ─────────────── */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            Tu plan estimado
-            <AnimatePresence>
-              {isRecalculating && (
-                <motion.span
-                  key="recalc"
-                  variants={fadeScale}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  className="rounded-full bg-[var(--card-alt)] px-2 py-0.5 text-[10px] font-normal text-[var(--foreground-muted)]"
-                >
-                  Recalculando…
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </CardTitle>
-          <p className="text-sm text-[var(--foreground-muted)]">
-            Estimación nutricional, no reemplaza el consejo de un profesional.
-          </p>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-6 lg:flex-row lg:items-center">
-          <div className="flex flex-col items-center gap-3">
-            <AnimatedProgressRing value={100} size={200} strokeWidth={16} progressColor="var(--accent)">
-              <div className="flex flex-col items-center">
-                <Flame className="mb-1 size-6 text-[var(--accent)]" />
-                <span className="font-display text-3xl font-bold tracking-[-0.04em] text-white">
-                  <AnimatedNumber value={plan.targetKcal} />
-                </span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#7887a6]">
-                  kcal objetivo
-                </span>
-              </div>
-            </AnimatedProgressRing>
+      {/* ── PLAN ESTIMADO (desktop) ───────────────────────────────────────── */}
+      <div className="hidden lg:block">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              Tu plan estimado
+              <AnimatePresence>
+                {isRecalculating && (
+                  <motion.span
+                    key="recalc"
+                    variants={fadeScale}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    className="rounded-full bg-[var(--card-alt)] px-2 py-0.5 text-[10px] font-normal text-[var(--foreground-muted)]"
+                  >
+                    Recalculando…
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </CardTitle>
+            <p className="text-sm text-[var(--foreground-muted)]">
+              Estimación nutricional, no reemplaza el consejo de un profesional.
+            </p>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-6 lg:flex-row lg:items-center">
+            <div className="flex flex-col items-center gap-3">
+              <AnimatedProgressRing value={100} size={200} strokeWidth={16} progressColor="var(--accent)">
+                <div className="flex flex-col items-center">
+                  <Flame className="mb-1 size-6 text-[var(--accent)]" />
+                  <span className="font-display text-3xl font-bold tracking-[-0.04em] text-white">
+                    <AnimatedNumber value={plan.targetKcal} />
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#7887a6]">
+                    kcal objetivo
+                  </span>
+                </div>
+              </AnimatedProgressRing>
 
-            {/* Plan desglose */}
-            <div className="w-full rounded-xl border border-[var(--border)] bg-[var(--card-alt)] px-3.5 py-2.5 text-xs">
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-[var(--foreground-muted)]">Mantenimiento estimado</span>
-                <span className="font-semibold text-white">
-                  <AnimatedNumber value={plan.maintenanceKcal} /> kcal
-                </span>
+              {/* Plan desglose */}
+              <div className="w-full rounded-xl border border-[var(--border)] bg-[var(--card-alt)] px-3.5 py-2.5 text-xs">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[var(--foreground-muted)]">Mantenimiento estimado</span>
+                  <span className="font-semibold text-white">
+                    <AnimatedNumber value={plan.maintenanceKcal} /> kcal
+                  </span>
+                </div>
+                <div className="mt-1.5 flex items-center justify-between gap-2">
+                  <span className="text-[var(--foreground-muted)]">Objetivo aplicado</span>
+                  <span
+                    className={cn(
+                      "font-semibold",
+                      kcalDiff > 0
+                        ? "text-emerald-400"
+                        : kcalDiff < 0
+                          ? "text-rose-400"
+                          : "text-white",
+                    )}
+                  >
+                    {kcalDiff > 0 ? "+" : ""}
+                    <AnimatedNumber value={kcalDiff} /> kcal
+                  </span>
+                </div>
+                <p className="mt-1.5 text-[10px] font-semibold text-[var(--accent)]">
+                  {manualTarget ? "Objetivo fijado a mano" : GOAL_ADJ_LABELS[goal]}
+                </p>
               </div>
-              <div className="mt-1.5 flex items-center justify-between gap-2">
-                <span className="text-[var(--foreground-muted)]">Objetivo aplicado</span>
-                <span
-                  className={cn(
-                    "font-semibold",
-                    kcalDiff > 0
-                      ? "text-emerald-400"
-                      : kcalDiff < 0
-                        ? "text-rose-400"
-                        : "text-white",
-                  )}
-                >
-                  {kcalDiff > 0 ? "+" : ""}
-                  <AnimatedNumber value={kcalDiff} /> kcal
-                </span>
-              </div>
-              <p className="mt-1.5 text-[10px] font-semibold text-[var(--accent)]">
-                {manualTarget ? "Objetivo fijado a mano" : GOAL_ADJ_LABELS[goal]}
-              </p>
             </div>
-          </div>
 
-          <div className="hidden h-full w-px self-stretch bg-[var(--border)] lg:block" />
+            <div className="hidden h-full w-px self-stretch bg-[var(--border)] lg:block" />
 
-          <div className="flex w-full flex-1 flex-col gap-4">
-            {(["protein", "carbs", "fat"] as const).map((key, index) => {
-              const grams =
-                key === "protein"
-                  ? plan.macros.proteinG
-                  : key === "carbs"
-                    ? plan.macros.carbsG
-                    : plan.macros.fatG;
-              const kcalPerG = key === "fat" ? 9 : 4;
-              const pct = Math.round(((grams * kcalPerG) / plan.targetKcal) * 100);
-              const Icon = key === "protein" ? Beef : key === "carbs" ? Wheat : Droplet;
+            <div className="flex w-full flex-1 flex-col gap-4">
+              {(["protein", "carbs", "fat"] as const).map((key, index) => {
+                const grams =
+                  key === "protein"
+                    ? plan.macros.proteinG
+                    : key === "carbs"
+                      ? plan.macros.carbsG
+                      : plan.macros.fatG;
+                const kcalPerG = key === "fat" ? 9 : 4;
+                const pct = Math.round(((grams * kcalPerG) / plan.targetKcal) * 100);
+                const Icon = key === "protein" ? Beef : key === "carbs" ? Wheat : Droplet;
 
-              return (
-                <div key={key} className="flex items-center gap-4">
-                  <AnimatedProgressRing value={pct} size={56} strokeWidth={6} progressColor={MACRO_COLORS[key]}>
-                    <span className="font-display text-xs font-bold text-white">{pct}%</span>
-                  </AnimatedProgressRing>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#7887a6]">
-                        <Icon className="size-3.5" style={{ color: MACRO_COLORS[key] }} />
-                        {MACRO_LABELS[key]}
-                      </span>
-                      <span className="font-display text-sm font-semibold text-white">
-                        <AnimatedNumber value={grams} /> g
-                      </span>
-                    </div>
-                    <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-[var(--card-alt)]">
-                      <motion.div
-                        className="h-full rounded-full"
-                        style={{ backgroundColor: MACRO_COLORS[key] }}
-                        animate={{ width: `${Math.min(100, pct)}%` }}
-                        transition={{
-                          duration: 0.6,
-                          ease: premiumEase,
-                          delay: index * 0.08,
-                        }}
-                      />
+                return (
+                  <div key={key} className="flex items-center gap-4">
+                    <AnimatedProgressRing value={pct} size={56} strokeWidth={6} progressColor={MACRO_COLORS[key]}>
+                      <span className="font-display text-xs font-bold text-white">{pct}%</span>
+                    </AnimatedProgressRing>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#7887a6]">
+                          <Icon className="size-3.5" style={{ color: MACRO_COLORS[key] }} />
+                          {MACRO_LABELS[key]}
+                        </span>
+                        <span className="font-display text-sm font-semibold text-white">
+                          <AnimatedNumber value={grams} /> g
+                        </span>
+                      </div>
+                      <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-[var(--card-alt)]">
+                        <motion.div
+                          className="h-full rounded-full"
+                          style={{ backgroundColor: MACRO_COLORS[key] }}
+                          animate={{ width: `${Math.min(100, pct)}%` }}
+                          transition={{
+                            duration: 0.6,
+                            ease: premiumEase,
+                            delay: index * 0.08,
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-            <p className="text-[11px] text-[var(--foreground-muted)]">
-              {manualTarget
-                ? "Objetivo manual: no cambia aunque modifiques tus datos."
-                : "Este plan se actualiza cuando modificás tus datos."}
-            </p>
-          </div>
-        </CardContent>
-      </Card>
+                );
+              })}
+              <p className="text-[11px] text-[var(--foreground-muted)]">
+                {manualTarget
+                  ? "Objetivo manual: no cambia aunque modifiques tus datos."
+                  : "Este plan se actualiza cuando modificás tus datos."}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="hidden flex-col gap-2 sm:flex-row sm:items-center sm:justify-between lg:flex">
         <form action="/auth/signout" method="post">
           <Button type="submit" variant="ghost" size="sm" className="text-[var(--foreground-muted)]">
             <LogOut className="size-3.5" />

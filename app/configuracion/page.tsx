@@ -7,8 +7,9 @@ export default async function ConfiguracionPage() {
   const profile = await getNutritionProfile(auth.user.id);
 
   return (
-    <section className="page-frame content-start bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.15),transparent_31%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
-      <div>
+    <section className="page-frame configuracion-frame content-start bg-[var(--background)] lg:bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.15),transparent_31%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
+      {/* Mobile trae su propio encabezado (DESIGN.md §15); desktop sin cambios. */}
+      <div className="hidden lg:block">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#b985ff]">
           Configuración
         </p>
@@ -20,7 +21,11 @@ export default async function ConfiguracionPage() {
         </p>
       </div>
 
-      <ConfiguracionClient initialProfile={profile} initialDisplayName={auth.profile.displayName} />
+      <ConfiguracionClient
+        initialProfile={profile}
+        initialDisplayName={auth.profile.displayName}
+        email={auth.user.email}
+      />
     </section>
   );
 }
