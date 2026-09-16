@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, CloudOff, List, LoaderCircle } from "lucide-react";
+import { Check, CloudOff, LoaderCircle } from "lucide-react";
 
 import { Button } from "@/app/components/ui/Button";
 import { cn } from "@/app/lib/utils";
@@ -8,50 +8,18 @@ import { cn } from "@/app/lib/utils";
 const RING_RADIUS = 31;
 const RING_LENGTH = 2 * Math.PI * RING_RADIUS;
 
-/** Z5 · dock sticky sobre la bottom nav (mismo offset que `/rutinas`). */
-export function WorkoutDock({ children }: { children: React.ReactNode }) {
+/** Z3b · marcar la serie actual, debajo de los steppers (único CTA emerald mientras se entrena). */
+export function SetDoneButton({ label, onDone }: { label: string; onDone: () => void }) {
   return (
-    <div className="sticky bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-20 -mx-4 grid gap-2 bg-[linear-gradient(to_top,var(--background)_62%,rgba(5,7,11,0))] px-4 pb-1 pt-7">
-      {children}
-    </div>
+    <Button type="button" onClick={onDone} className="h-14 w-full rounded-2xl text-base font-bold">
+      <Check aria-hidden="true" className="size-5" strokeWidth={3} />
+      {label}
+    </Button>
   );
 }
 
-/** Forma normal: lista del día + marcar la serie actual (único CTA emerald mientras se entrena). */
-export function SetDoneBar({
-  label,
-  exerciseCount,
-  onOpenList,
-  onDone,
-}: {
-  label: string;
-  exerciseCount: number;
-  onOpenList: () => void;
-  onDone: () => void;
-}) {
-  return (
-    <div className="flex gap-2.5">
-      <button
-        type="button"
-        onClick={onOpenList}
-        aria-label={`Ver los ${exerciseCount} ejercicios del día`}
-        className="pressable relative grid size-14 shrink-0 place-items-center rounded-2xl border border-[var(--border-strong)] bg-[var(--card-alt)] text-[var(--foreground)] outline-none focus-visible:shadow-[var(--focus-glow)]"
-      >
-        <List aria-hidden="true" className="size-5" />
-        <span className="absolute -right-1.5 -top-1.5 rounded-full bg-[var(--foreground)] px-1.5 font-mono text-[10px] text-[var(--background)]">
-          {exerciseCount}
-        </span>
-      </button>
-      <Button type="button" onClick={onDone} className="h-14 flex-1 rounded-2xl text-base font-bold">
-        <Check aria-hidden="true" className="size-5" strokeWidth={3} />
-        {label}
-      </Button>
-    </div>
-  );
-}
-
-/** Forma de descanso (D-D4): el CTA se convierte en el anillo y adelanta la próxima serie. */
-export function RestDock({
+/** Descanso: ocupa el lugar de los steppers y el CTA, con el anillo y la próxima serie. */
+export function RestCard({
   remainingSeconds,
   totalSeconds,
   nextLabel,
@@ -69,7 +37,7 @@ export function RestDock({
   const progress = totalSeconds > 0 ? Math.min(1, Math.max(0, remainingSeconds / totalSeconds)) : 0;
 
   return (
-    <DockCard>
+    <ActionCard>
       <div className="flex items-center gap-3.5">
         <svg viewBox="0 0 72 72" className="size-[72px] shrink-0" aria-hidden="true">
           <circle cx="36" cy="36" r={RING_RADIUS} fill="none" stroke="var(--border-strong)" strokeWidth="6" />
@@ -95,8 +63,8 @@ export function RestDock({
       </div>
 
       <div className="grid grid-cols-2 gap-2">
-        <DockButton onClick={onAdd}>+15 s</DockButton>
-        <DockButton onClick={onSkip}>Saltar</DockButton>
+        <ActionButton onClick={onAdd}>+15 s</ActionButton>
+        <ActionButton onClick={onSkip}>Saltar</ActionButton>
       </div>
 
       {nextLabel ? (
@@ -104,11 +72,11 @@ export function RestDock({
           Sigue: <b className="font-mono font-medium text-[var(--foreground)]">{nextLabel}</b>
         </p>
       ) : null}
-    </DockCard>
+    </ActionCard>
   );
 }
 
-/** Confirmación de terminar con series pendientes, inline en el dock (nunca dialog). */
+/** Confirmación de terminar con series pendientes, inline en el lugar de la acción (nunca dialog). */
 export function FinishConfirm({
   doneSets,
   plannedSets,
@@ -125,7 +93,7 @@ export function FinishConfirm({
   onConfirm: () => void;
 }) {
   return (
-    <DockCard>
+    <ActionCard>
       <p className="text-[16px] font-medium text-[var(--foreground)]">
         Hiciste {doneSets} de {plannedSets} series. ¿Terminar igual?
       </p>
@@ -136,25 +104,25 @@ export function FinishConfirm({
         </p>
       ) : null}
       <div className="grid grid-cols-2 gap-2">
-        <DockButton onClick={onCancel}>Seguir</DockButton>
-        <DockButton onClick={onConfirm} disabled={finishing}>
+        <ActionButton onClick={onCancel}>Seguir</ActionButton>
+        <ActionButton onClick={onConfirm} disabled={finishing}>
           {finishing ? <LoaderCircle aria-hidden="true" className="size-4 animate-spin" /> : null}
           Terminar
-        </DockButton>
+        </ActionButton>
       </div>
-    </DockCard>
+    </ActionCard>
   );
 }
 
-function DockCard({ children }: { children: React.ReactNode }) {
+function ActionCard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid gap-3 rounded-[24px] border border-[var(--border-strong)] bg-[var(--card-alt)] p-4 shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
+    <div className="grid gap-3 rounded-[24px] border border-[var(--border-strong)] bg-[var(--card-alt)] p-4">
       {children}
     </div>
   );
 }
 
-function DockButton({
+function ActionButton({
   onClick,
   disabled,
   children,

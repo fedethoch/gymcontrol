@@ -1,11 +1,11 @@
 "use client";
 
-import { Check, CloudOff, LoaderCircle, TriangleAlert, X } from "lucide-react";
+import { Check, CloudOff, List, LoaderCircle, TriangleAlert, X } from "lucide-react";
 
 import { cn } from "@/app/lib/utils";
 import type { SyncStatus } from "@/app/lib/workout-sync-queue";
 
-/** Z1 · salida, progreso por ejercicio y estado de guardado (DESIGN.md §11.1). */
+/** Z1 · salida, progreso por ejercicio, lista del día y estado de guardado (DESIGN.md §11.1). */
 export function WorkoutTopBar({
   fractions,
   doneSets,
@@ -13,7 +13,9 @@ export function WorkoutTopBar({
   subtitle,
   status,
   hasStarted,
+  exerciseCount,
   onExit,
+  onOpenList,
   onRetry,
 }: {
   fractions: number[];
@@ -22,7 +24,9 @@ export function WorkoutTopBar({
   subtitle: string;
   status: SyncStatus;
   hasStarted: boolean;
+  exerciseCount: number;
   onExit: () => void;
+  onOpenList: () => void;
   onRetry: () => void;
 }) {
   return (
@@ -58,6 +62,18 @@ export function WorkoutTopBar({
         <p className="shrink-0 font-mono text-[13px] tabular-nums text-[var(--foreground-muted)]">
           <b className="font-medium text-[var(--foreground)]">{doneSets}</b>/{plannedSets}
         </p>
+
+        <button
+          type="button"
+          onClick={onOpenList}
+          aria-label={`Ver los ${exerciseCount} ejercicios del día`}
+          className="pressable relative grid size-11 shrink-0 place-items-center rounded-full border border-[var(--border-strong)] bg-[var(--card)] text-[var(--foreground)] outline-none focus-visible:shadow-[var(--focus-glow)]"
+        >
+          <List aria-hidden="true" className="size-5" />
+          <span className="absolute -right-1 -top-1 rounded-full bg-[var(--foreground)] px-1.5 font-mono text-[10px] leading-4 text-[var(--background)]">
+            {exerciseCount}
+          </span>
+        </button>
       </div>
 
       <div className="flex items-center justify-between gap-3 pl-[3.5rem] text-[12px]">

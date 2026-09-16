@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { Check, ChevronRight } from "lucide-react";
-import { useCallback, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 
+import { CompactDayAction, DayAction } from "@/app/components/rutinas/DayAction";
 import { DayPanel, WeekStats, type WeekDay } from "@/app/components/rutinas/DayPanel";
 import { DayTabs } from "@/app/components/rutinas/DayTabs";
-import { StartDock } from "@/app/components/rutinas/StartDock";
 import { ExerciseDetailModal, type ExerciseDetail } from "@/app/components/shared/ExerciseDetailModal";
+import { premiumEase } from "@/app/components/ui/motion";
 import { resolveDockAction } from "@/app/lib/routine-week";
 
 const CHIP_CLASS =
@@ -18,7 +20,8 @@ const subscribeNothing = () => () => {};
 export type WeekSummary ={ completed: number; total: number; streak: number; series: number };
 
 /**
- * Z2–Z4 de la semana activa mobile (DESIGN.md §12): pestañas, panel por día con scroll-snap horizontal y dock.
+ * Z2–Z4 de la semana activa mobile (DESIGN.md §12): pestañas, panel por día con scroll-snap horizontal y acción.
+ * Cuando la acción del panel visible sale de la pantalla hacia arriba, aparece una barra compacta con la misma acción.
  * `initialIndex = null` = semana cerrada: abre un panel resumen antes de los días.
  */
 export function RoutineWeekView({
@@ -47,11 +50,22 @@ export function RoutineWeekView({
   // Antes de hidratar solo se pinta el panel inicial: sin salto desde el primer día.
   const mounted = useSyncExternalStore(subscribeNothing, () => true, () => false);
   const [detail, setDetail] = useState<ExerciseDetail | null>(null);
+  const [actionAbove, setActionAbove] = useState(false);
 
   useLayoutEffect(() => {
     const pager = pagerRef.current;
     if (mounted && pager) pager.scrollLeft = startPanel * pager.clientWidth;
   }, [mounted, startPanel]);
+
+  useEffect(() => {
+    const target = pagerRef.current?.querySelector(`#rutina-panel-${panel - offset} [data-day-action]`);
+    if (!target) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setActionAbove(!entry.isIntersecting && entry.boundingClientRect.top < (entry.rootBounds?.top ?? 0));
+    });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [mounted, panel, offset]);
 
   const goTo = useCallback((next: number) => {
     const pager = pagerRef.current;
@@ -73,6 +87,10 @@ export function RoutineWeekView({
 
   const selectedDay = panel - offset >= 0 ? days[panel - offset] : null;
   const total = days.length;
+
+  function actionFor(day: WeekDay) {
+    return resolveDockAction(day.tab, { trainedToday, todayDoneOrder });
+  }
 
   function chipFor(day: WeekDay) {
     switch (day.tab.state) {
@@ -105,12 +123,44 @@ export function RoutineWeekView({
     ...(hasSummary ? [{ key: "summary", node: <WeekDoneSummary days={days} summary={summary} /> }] : []),
     ...days.map((day) => ({
       key: day.id,
-      node: <DayPanel day={day} chip={chipFor(day)} onOpenExercise={setDetail} />,
+      node: (
+        <DayPanel
+          day={day}
+          chip={chipFor(day)}
+          action={<DayAction action={actionFor(day)} href={day.href} />}
+          onOpenExercise={setDetail}
+        />
+      ),
     })),
   ];
 
   return (
     <>
+      <div className="sticky top-[env(safe-area-inset-top)] z-30 -mx-4 h-0">
+        <AnimatePresence>
+          {actionAbove && selectedDay ? (
+            <motion.div
+              key="compact-bar"
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.18, ease: premiumEase }}
+              className="absolute inset-x-0 top-0 flex items-center gap-3 border-b border-[var(--border)] bg-[var(--background)] px-4 py-2"
+            >
+              <div className="grid min-w-0 flex-1 gap-0.5">
+                <p className="truncate font-display text-[15px] font-semibold text-[var(--foreground)]">
+                  {selectedDay.titleGroups.length > 0 ? selectedDay.titleGroups.join(" & ") : selectedDay.dayName}
+                </p>
+                <p className="truncate text-[12px] text-[var(--foreground-muted)]">
+                  Día {selectedDay.dayOrder} · {selectedDay.exercises.length} ejercicios · ~{selectedDay.minutes} min
+                </p>
+              </div>
+              <CompactDayAction action={actionFor(selectedDay)} href={selectedDay.href} />
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+      </div>
+
       <DayTabs
         tabs={days.map((day) => day.tab)}
         selected={selectedDay ? panel - offset : null}
@@ -140,13 +190,6 @@ export function RoutineWeekView({
           ) : null,
         )}
       </div>
-
-      {selectedDay ? (
-        <StartDock
-          action={resolveDockAction(selectedDay.tab, { trainedToday, todayDoneOrder })}
-          href={selectedDay.href}
-        />
-      ) : null}
 
       <ExerciseDetailModal
         exercise={detail}

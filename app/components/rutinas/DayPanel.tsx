@@ -36,14 +36,16 @@ export type WeekDay = {
   doneLabel: string | null;
 };
 
-/** Z3 · panel de un día: chip, grupos en Display XXL, figura, stats y ejercicios (DESIGN.md §12.1). */
+/** Z3 · panel de un día: chip, grupos en Display XXL, figura, stats, acción y ejercicios (DESIGN.md §12.1). */
 export function DayPanel({
   day,
   chip,
+  action,
   onOpenExercise,
 }: {
   day: WeekDay;
   chip: ReactNode;
+  action: ReactNode;
   onOpenExercise: (exercise: ExerciseDetail) => void;
 }) {
   return (
@@ -98,6 +100,8 @@ export function DayPanel({
           ]}
         />
       )}
+
+      {action}
 
       <section aria-label="Ejercicios" className="grid gap-2">
         <h3 className="font-display text-[1.375rem] font-bold leading-tight tracking-[-0.02em] text-[var(--foreground)]">

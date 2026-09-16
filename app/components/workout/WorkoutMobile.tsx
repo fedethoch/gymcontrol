@@ -9,10 +9,9 @@ import { SetFocus, type StepperField } from "@/app/components/workout/SetFocus";
 import { SetList, type SetRow } from "@/app/components/workout/SetList";
 import {
   FinishConfirm,
-  RestDock,
-  SetDoneBar,
-  WorkoutDock,
-} from "@/app/components/workout/WorkoutDock";
+  RestCard,
+  SetDoneButton,
+} from "@/app/components/workout/WorkoutAction";
 import {
   EmptyDay,
   WorkoutSummary,
@@ -60,7 +59,8 @@ type RestState = { remainingSeconds: number; totalSeconds: number } | null;
 
 /**
  * Registro del día en mobile (DESIGN.md §11): un ejercicio por pantalla, la serie actual como
- * protagonista y la lista completa en un sheet. El estado y la sincronización viven en el padre.
+ * protagonista, la acción debajo de los steppers y la lista completa en un sheet.
+ * El estado y la sincronización viven en el padre.
  */
 export function WorkoutMobile({
   exercises,
@@ -170,6 +170,64 @@ export function WorkoutMobile({
     return <EmptyDay eyebrow={eyebrow} />;
   }
 
+  const finishConfirm = (
+    <FinishConfirm
+      doneSets={doneSets}
+      plannedSets={plannedSets}
+      offline={syncStatus.state === "offline"}
+      finishing={finishing}
+      onCancel={() => setConfirming(false)}
+      onConfirm={onFinish}
+    />
+  );
+
+  function restCard(nextLabel: string | null) {
+    return rest ? (
+      <RestCard
+        remainingSeconds={rest.remainingSeconds}
+        totalSeconds={rest.totalSeconds}
+        nextLabel={nextLabel}
+        onAdd={onAddRest}
+        onSkip={onSkipRest}
+      />
+    ) : null;
+  }
+
+  /** Z3b · la acción de cada panel: confirmar terminar, descanso o marcar la serie activa. */
+  function actionFor(exercise: DayExercise) {
+    if (confirming) return finishConfirm;
+
+    const draft = drafts[exercise.routineItemId];
+    if (rest) return restCard(nextSetLabel(exercise, draft));
+
+    const index = activeSetIndex(exercise, draft, selectedSets);
+    const label = activeSetDone(exercise, draft, selectedSets)
+      ? `Deshacer serie ${index + 1}`
+      : `Serie ${index + 1} hecha`;
+
+    return (
+      <SetDoneButton
+        label={label}
+        onDone={() => {
+          // La selección manual sirve para editar una serie puntual: al tocar el CTA se vuelve al flujo normal.
+          setSelectedSets((current) => {
+            if (!(exercise.routineItemId in current)) return current;
+
+            const rest = { ...current };
+            delete rest[exercise.routineItemId];
+
+            return rest;
+          });
+          handlers.onToggleDone(
+            exercise,
+            index,
+            placeholderFor(exercise, draft, index)
+          );
+        }}
+      />
+    );
+  }
+
   const listRows: ExerciseListRow[] = exercises.map((exercise) => ({
     id: exercise.routineItemId,
     name: exercise.exercise.name,
@@ -190,16 +248,34 @@ export function WorkoutMobile({
           subtitle={subtitle}
           status={syncStatus}
           hasStarted={hasStarted}
+          exerciseCount={exercises.length}
           onExit={() => (doneSets > 0 ? setConfirming(true) : onExit())}
+          onOpenList={() => setListOpen(true)}
           onRetry={onRetrySync}
         />
 
         {state === "all_done" ? (
-          <WorkoutSummary
-            eyebrow={eyebrow}
-            plannedSets={plannedSets}
-            exerciseCount={exercises.length}
-          />
+          <>
+            <WorkoutSummary
+              eyebrow={eyebrow}
+              plannedSets={plannedSets}
+              exerciseCount={exercises.length}
+            />
+            {confirming ? (
+              finishConfirm
+            ) : rest ? (
+              restCard(null)
+            ) : (
+              <button
+                type="button"
+                onClick={onFinish}
+                disabled={finishing}
+                className="pressable flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] text-base font-bold text-[var(--accent-foreground)] outline-none focus-visible:shadow-[var(--focus-glow)]"
+              >
+                Terminar entrenamiento
+              </button>
+            )}
+          </>
         ) : (
           <>
             {repeatedThisWeek && !hasStarted ? (
@@ -227,6 +303,7 @@ export function WorkoutMobile({
                     position={`${index + 1} de ${exercises.length}`}
                     selectedSet={selectedSets[exercise.routineItemId]}
                     resting={rest !== null}
+                    action={actionFor(exercise)}
                     onSelectSet={(setIndex) =>
                       setSelectedSets((current) => ({
                         ...current,
@@ -241,85 +318,6 @@ export function WorkoutMobile({
           </>
         )}
       </div>
-
-      <WorkoutDock>
-        {confirming ? (
-          <FinishConfirm
-            doneSets={doneSets}
-            plannedSets={plannedSets}
-            offline={syncStatus.state === "offline"}
-            finishing={finishing}
-            onCancel={() => setConfirming(false)}
-            onConfirm={onFinish}
-          />
-        ) : rest ? (
-          <RestDock
-            remainingSeconds={rest.remainingSeconds}
-            totalSeconds={rest.totalSeconds}
-            nextLabel={
-              visible
-                ? nextSetLabel(visible, drafts[visible.routineItemId])
-                : null
-            }
-            onAdd={onAddRest}
-            onSkip={onSkipRest}
-          />
-        ) : state === "all_done" ? (
-          <button
-            type="button"
-            onClick={onFinish}
-            disabled={finishing}
-            className="pressable flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] text-base font-bold text-[var(--accent-foreground)] shadow-[0_8px_30px_rgba(0,0,0,0.5)] outline-none focus-visible:shadow-[var(--focus-glow)]"
-          >
-            Terminar entrenamiento
-          </button>
-        ) : visible ? (
-          <SetDoneBar
-            label={
-              activeSetDone(
-                visible,
-                drafts[visible.routineItemId],
-                selectedSets
-              )
-                ? `Deshacer serie ${
-                    activeSetIndex(
-                      visible,
-                      drafts[visible.routineItemId],
-                      selectedSets
-                    ) + 1
-                  }`
-                : `Serie ${
-                    activeSetIndex(
-                      visible,
-                      drafts[visible.routineItemId],
-                      selectedSets
-                    ) + 1
-                  } hecha`
-            }
-            exerciseCount={exercises.length}
-            onOpenList={() => setListOpen(true)}
-            onDone={() => {
-              const draft = drafts[visible.routineItemId];
-              const index = activeSetIndex(visible, draft, selectedSets);
-
-              // La selección manual sirve para editar una serie puntual: al tocar el CTA se vuelve al flujo normal.
-              setSelectedSets((current) => {
-                if (!(visible.routineItemId in current)) return current;
-
-                const rest = { ...current };
-                delete rest[visible.routineItemId];
-
-                return rest;
-              });
-              handlers.onToggleDone(
-                visible,
-                index,
-                placeholderFor(visible, draft, index)
-              );
-            }}
-          />
-        ) : null}
-      </WorkoutDock>
 
       <ExerciseListSheet
         open={listOpen}
@@ -350,6 +348,7 @@ function ExercisePanel({
   position,
   selectedSet,
   resting,
+  action,
   onSelectSet,
   handlers,
 }: {
@@ -358,6 +357,7 @@ function ExercisePanel({
   position: string;
   selectedSet: number | undefined;
   resting: boolean;
+  action: React.ReactNode;
   onSelectSet: (index: number) => void;
   handlers: WorkoutHandlers;
 }) {
@@ -497,6 +497,8 @@ function ExercisePanel({
         />
       )}
 
+      {action}
+
       <SetList rows={rows} onSelect={onSelectSet} />
     </div>
   );
@@ -517,7 +519,7 @@ function activeSetIndex(
   );
 }
 
-/** La serie sobre la que actúa el dock ya está registrada: el CTA deshace en vez de volver a marcar. */
+/** La serie sobre la que actúa el CTA ya está registrada: deshace en vez de volver a marcar. */
 function activeSetDone(
   exercise: DayExercise,
   draft: Drafts[string],
