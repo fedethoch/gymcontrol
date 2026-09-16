@@ -3,7 +3,7 @@ import { chromium } from "playwright";
 
 const DEFAULT_BASE_URL = "http://localhost:3000";
 const DEFAULT_VIEWPORT = { width: 390, height: 844 };
-const ROUTES = ["/", "/catalogo", "/nutricion/registro"];
+const ROUTES = ["/", "/rutinas", "/catalogo", "/nutricion/registro"];
 
 async function main() {
   const baseUrl = process.env.VALIDATE_BASE_URL ?? DEFAULT_BASE_URL;
@@ -124,6 +124,16 @@ async function validateRoutes(page, baseUrl) {
 
   for (const path of ROUTES.slice(0, 2)) {
     routes.push(await validateRoute(page, baseUrl, path));
+  }
+
+  // `/rutinas/dia` necesita query params: se toma el link del día desde la semana activa.
+  const dayPath = await page.evaluate(() => {
+    const link = Array.from(document.links).find((anchor) => anchor.pathname === "/rutinas/dia");
+    return link ? `${link.pathname}${link.search}` : null;
+  });
+
+  if (dayPath) {
+    routes.push(await validateRoute(page, baseUrl, dayPath));
   }
 
   const routineDetailPath = await page.evaluate(() => {

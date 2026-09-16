@@ -108,8 +108,13 @@ export function MobileHeader({
   const pathname = usePathname();
   const { badge } = useMobileHeaderState();
 
-  // El home tiene su propio saludo (DESIGN.md §6.1 / §10).
-  if (pathname.startsWith("/auth") || pathname === "/") {
+  // Home, semana activa y registro del día traen su propio encabezado (DESIGN.md §6.1 / §10 / §11 / §12).
+  if (
+    pathname.startsWith("/auth") ||
+    pathname === "/" ||
+    pathname === "/rutinas" ||
+    pathname === "/rutinas/dia"
+  ) {
     return null;
   }
 

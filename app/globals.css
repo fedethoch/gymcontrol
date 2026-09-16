@@ -543,9 +543,11 @@ body {
   padding-top: calc(4.75rem + env(safe-area-inset-top));
 }
 
-/* Home mobile: sin MobileHeader en "/" (DESIGN.md §6.1), el saludo vive en la página. */
+/* Home, semana activa y registro mobile: sin MobileHeader (DESIGN.md §6.1), el encabezado vive en la página. */
 @media (max-width: 1023px) {
-  .home-frame {
+  .home-frame,
+  .rutinas-frame,
+  .workout-frame {
     padding-top: calc(0.75rem + env(safe-area-inset-top));
   }
 }

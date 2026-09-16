@@ -23,23 +23,34 @@ import {
 } from "@/app/components/shared/ExerciseDetailModal";
 import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
+import { WorkoutMobile } from "@/app/components/workout/WorkoutMobile";
+import type { DayExercise } from "@/app/components/workout/types";
 import { ExerciseHistorySheet } from "@/app/rutinas/dia/ExerciseHistorySheet";
 import { cn } from "@/app/lib/utils";
 import {
-  formatKg,
+  buildPlaceholder,
+  countValidDrafts,
+  describeSuggestion,
+  formatCompactSet,
+  nextPendingExercise,
+  padSets,
+  sanitizeNumber,
+  timeFactor,
+  toDraftSet,
+  toLoggedSet,
+  type DraftSet,
+  type ExerciseDraft,
+} from "@/app/lib/day-workout";
+import {
   formatLoggedSet,
-  formatSeconds,
   getLoadStep,
   isValidSet,
   parsePlanTarget,
   parseRestSeconds,
   suggestNextTarget,
-  type ExerciseKind,
-  type LoggedSet,
   type PlanTarget,
   type Suggestion,
 } from "@/app/lib/workout-progression";
-import type { ExerciseHistoryEntry } from "@/app/lib/workout-tracking";
 import {
   enqueueFinish,
   enqueueItem,
@@ -54,19 +65,7 @@ import {
   type SyncStatus,
 } from "@/app/lib/workout-sync-queue";
 
-export type DayExercise = {
-  routineItemId: string;
-  number: number;
-  exercise: ExerciseDetail;
-  equipment: string | null;
-  series: number;
-  target: string;
-  rir: number;
-  rest: string;
-  kind: ExerciseKind;
-  saved: { id: string; sets: LoggedSet[]; rev: number } | null;
-  history: ExerciseHistoryEntry[];
-};
+export type { DayExercise };
 
 type DayWorkoutClientProps = {
   userId: string;
@@ -81,12 +80,7 @@ type DayWorkoutClientProps = {
   exercises: DayExercise[];
 };
 
-/** Lo que el usuario escribe, tal cual (strings), por serie. `secs` va en la unidad del plan (seg o min). */
-type DraftSet = { kg: string; reps: string; secs: string; done: boolean };
-
-type ExerciseDraft = { itemId: string | null; sets: DraftSet[]; rev: number };
-
-type RestTimer = { endsAt: number; now: number };
+type RestTimer = { endsAt: number; now: number; totalSeconds: number };
 
 const subscribeNothing = () => () => {};
 
@@ -113,6 +107,7 @@ function DayWorkoutLogger({
   const [historyExercise, setHistoryExercise] = useState<DayExercise | null>(null);
   const [rest, setRest] = useState<RestTimer | null>(null);
   const [confirmingFinish, setConfirmingFinish] = useState(false);
+  const [focusExerciseId, setFocusExerciseId] = useState<string | null>(null);
   const [finishing, setFinishing] = useState(false);
   const syncStatus = useSyncExternalStore(subscribeSyncStatus, getSyncStatus, getIdleSyncStatus);
 
@@ -251,13 +246,10 @@ function DayWorkoutLogger({
     }
 
     if (sets.filter((set) => isValidSet(toLoggedSet(set, exercise))).length >= exercise.series) {
-      const next = props.exercises.find(
-        (candidate) =>
-          candidate.routineItemId !== exercise.routineItemId &&
-          countValidDrafts(drafts[candidate.routineItemId], candidate) < candidate.series,
-      );
+      const next = nextPendingExercise(props.exercises, drafts, exercise.routineItemId);
 
       setExpandedId(next?.routineItemId ?? null);
+      setFocusExerciseId(next?.routineItemId ?? null);
     }
   }
 
@@ -281,8 +273,49 @@ function DayWorkoutLogger({
     router.refresh();
   }
 
+  const restSeconds = rest ? Math.max(0, Math.ceil((rest.endsAt - rest.now) / 1000)) : 0;
+
   return (
     <>
+      {/* Mobile (DESIGN.md §11) y desktop (cards, sin cambios) conviven: cada uno se oculta en el otro ancho. */}
+      <div className="h-full lg:hidden">
+        <section className="page-frame workout-frame relative isolate bg-[var(--background)]">
+          <div className="flex min-h-full flex-col">
+            <div aria-hidden="true" className="home-safe-top" />
+            <WorkoutMobile
+              exercises={props.exercises}
+              drafts={drafts}
+              handlers={{
+                onField: handleField,
+                onToggleDone: handleToggleDone,
+                onShowDetail: (exercise) => setDetailExercise(exercise.exercise),
+                onShowHistory: setHistoryExercise,
+              }}
+              subtitle={`Día ${props.dayOrder} · ${props.dayName}`}
+              eyebrow={`${props.routineName} · Día ${props.dayOrder}`}
+              focusExerciseId={focusExerciseId}
+              rest={rest ? { remainingSeconds: restSeconds, totalSeconds: rest.totalSeconds } : null}
+              syncStatus={syncStatus}
+              hasStarted={hasStarted}
+              repeatedThisWeek={props.completedThisWeek}
+              finishing={finishing}
+              onRetrySync={() => void flushNow(props.userId)}
+              onAddRest={() =>
+                setRest((current) =>
+                  current
+                    ? { ...current, endsAt: current.endsAt + 15_000, totalSeconds: current.totalSeconds + 15 }
+                    : current,
+                )
+              }
+              onSkipRest={() => setRest(null)}
+              onFinish={() => (doneSets > 0 ? void handleFinish() : router.push("/rutinas"))}
+              onExit={() => router.push("/rutinas")}
+            />
+          </div>
+        </section>
+      </div>
+
+      <div className="hidden lg:contents">
       <div className="page-frame auto-rows-max content-start gap-5 bg-[var(--background)] xl:p-6">
         <header className="grid gap-4">
           <div className="flex items-center gap-3">
@@ -417,6 +450,7 @@ function DayWorkoutLogger({
             ) : null}
           </div>
         ) : null}
+      </div>
       </div>
 
       <ExerciseDetailModal
@@ -731,79 +765,6 @@ function RestBar({
   );
 }
 
-function describeSuggestion({
-  suggestion,
-  target,
-  exercise,
-  hasHistory,
-}: {
-  suggestion: Suggestion | null;
-  target: PlanTarget | null;
-  exercise: DayExercise;
-  hasHistory: boolean;
-}) {
-  if (!hasHistory) {
-    return target ? `Primera vez: apuntá a ${exercise.target}${target.measure === "reps" ? " reps" : ""}.` : null;
-  }
-
-  switch (suggestion?.kind) {
-    case "increase_load":
-      return `Hoy: subí a ${formatKg(suggestion.kg)} kg y apuntá a ${suggestion.reps} reps.`;
-    case "increase_reps":
-      return suggestion.kg != null && suggestion.kg > 0
-        ? `Hoy: ${formatKg(suggestion.kg)} kg, buscá ${suggestion.reps} reps en cada serie.`
-        : `Hoy: buscá ${suggestion.reps} reps en cada serie.`;
-    case "increase_time":
-      return `Hoy: buscá ${formatSeconds(suggestion.secs)} por serie.`;
-    case "top_of_range":
-      return exercise.kind === "time"
-        ? "Llegaste al tope del rango: sumá dificultad."
-        : "Llegaste al tope del rango: sumá lastre o una variante más difícil.";
-    default:
-      return null;
-  }
-}
-
-function buildPlaceholder({
-  exercise,
-  suggestion,
-  target,
-  previousSet,
-}: {
-  exercise: DayExercise;
-  suggestion: Suggestion | null;
-  target: PlanTarget | null;
-  previousSet: LoggedSet | null;
-}): DraftSet {
-  const previous = previousSet && isValidSet(previousSet) ? previousSet : null;
-  const factor = timeFactor(exercise);
-
-  if (exercise.kind === "time") {
-    const secs =
-      suggestion?.kind === "increase_time"
-        ? suggestion.secs
-        : (previous?.secs ?? (target && target.measure !== "reps" ? target.min * factor : null));
-
-    return { kg: "", reps: "", secs: secs != null ? formatNumber(secs / factor) : "", done: false };
-  }
-
-  const kg =
-    suggestion?.kind === "increase_load" || suggestion?.kind === "increase_reps"
-      ? suggestion.kg
-      : (previous?.kg ?? null);
-  const reps =
-    suggestion?.kind === "increase_load" || suggestion?.kind === "increase_reps"
-      ? suggestion.reps
-      : (previous?.reps ?? (target?.measure === "reps" ? target.min : null));
-
-  return {
-    kg: kg != null && kg > 0 ? formatNumber(kg) : "",
-    reps: reps != null ? String(reps) : "",
-    secs: "",
-    done: false,
-  };
-}
-
 function buildInitialState(props: DayWorkoutClientProps, restoreQueue: boolean) {
   const queued = restoreQueue
     ? props.openSessionId
@@ -843,75 +804,9 @@ function buildInitialState(props: DayWorkoutClientProps, restoreQueue: boolean) 
   };
 }
 
-/** Serie anterior en la columna angosta: "40×10", "+10×8", "12", "45s". */
-function formatCompactSet(set: LoggedSet, kind: ExerciseKind) {
-  if (kind === "time") return set.secs != null ? `${set.secs}s` : "—";
-  if (set.kg == null || set.kg <= 0) return String(set.reps ?? "—");
-  return `${kind === "bodyweight" ? "+" : ""}${formatKg(set.kg)}×${set.reps}`;
-}
-
 /** El descanso se cuenta contra una hora de fin: sigue siendo correcto aunque la pantalla se bloquee. */
 function createRestTimer(seconds: number): RestTimer {
   const now = Date.now();
 
-  return { endsAt: now + seconds * 1000, now };
-}
-
-/** Objetivo en minutos ("30m") se carga en minutos y se guarda en segundos. */
-function timeFactor(exercise: DayExercise) {
-  return exercise.kind === "time" && parsePlanTarget(exercise.target)?.measure === "minutes" ? 60 : 1;
-}
-
-function padSets(sets: LoggedSet[], series: number): LoggedSet[] {
-  return Array.from(
-    { length: Math.max(series, sets.length) },
-    (_, index) => sets[index] ?? { kg: null, reps: null, secs: null, done: false },
-  );
-}
-
-function toDraftSet(set: LoggedSet, factor: number): DraftSet {
-  return {
-    kg: set.kg != null ? formatNumber(set.kg) : "",
-    reps: set.reps != null ? String(set.reps) : "",
-    secs: set.secs != null ? formatNumber(set.secs / factor) : "",
-    done: set.done,
-  };
-}
-
-function toLoggedSet(set: DraftSet, exercise: DayExercise): LoggedSet {
-  if (exercise.kind === "time") {
-    const value = Number.parseFloat(set.secs);
-
-    return {
-      kg: null,
-      reps: null,
-      secs: Number.isFinite(value) && value > 0 ? Math.round(value * timeFactor(exercise)) : null,
-      done: set.done,
-    };
-  }
-
-  const kg = Number.parseFloat(set.kg);
-  const reps = Number.parseInt(set.reps, 10);
-
-  return {
-    kg: Number.isFinite(kg) && kg > 0 ? Math.round(kg * 100) / 100 : null,
-    reps: Number.isFinite(reps) && reps > 0 ? reps : null,
-    secs: null,
-    done: set.done,
-  };
-}
-
-function countValidDrafts(draft: ExerciseDraft, exercise: DayExercise) {
-  return draft.sets.filter((set) => isValidSet(toLoggedSet(set, exercise))).length;
-}
-
-function sanitizeNumber(value: string, allowDecimal: boolean) {
-  const normalized = value.replace(",", ".").replace(allowDecimal ? /[^\d.]/g : /\D/g, "");
-  const [whole, ...decimals] = normalized.split(".");
-
-  return (decimals.length > 0 ? `${whole}.${decimals.join("").slice(0, 2)}` : whole).slice(0, 6);
-}
-
-function formatNumber(value: number) {
-  return String(Math.round(value * 100) / 100);
+  return { endsAt: now + seconds * 1000, now, totalSeconds: seconds };
 }
