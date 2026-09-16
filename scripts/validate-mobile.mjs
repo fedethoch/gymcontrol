@@ -3,7 +3,7 @@ import { chromium } from "playwright";
 
 const DEFAULT_BASE_URL = "http://localhost:3000";
 const DEFAULT_VIEWPORT = { width: 390, height: 844 };
-const ROUTES = ["/", "/rutinas", "/catalogo", "/nutricion/registro", "/alimentos"];
+const ROUTES = ["/", "/rutinas", "/catalogo", "/nutricion/registro", "/alimentos", "/configuracion"];
 
 async function main() {
   const baseUrl = process.env.VALIDATE_BASE_URL ?? DEFAULT_BASE_URL;

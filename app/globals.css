@@ -78,8 +78,10 @@ body {
   overflow: hidden;
 }
 
+/* ≥16px en mobile para que iOS no haga zoom al enfocar. Los números Metric (data-metric-input,
+   siempre ≥16px) quedan afuera: esta regla sin capa les ganaría a sus utilidades de Tailwind. */
 @media (max-width: 767px) {
-  input:not([type="hidden"]),
+  input:not([type="hidden"], [data-metric-input]),
   textarea,
   select,
   [data-slot="select-trigger"] {
@@ -548,7 +550,10 @@ body {
   .home-frame,
   .rutinas-frame,
   .workout-frame,
-  .alimentos-frame {
+  .alimentos-frame,
+  .registro-frame,
+  .catalogo-frame,
+  .configuracion-frame {
     padding-top: calc(0.75rem + env(safe-area-inset-top));
   }
 }
