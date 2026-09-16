@@ -437,11 +437,10 @@ Estado confirmado de storage despues de `G6`:
 Estado confirmado de imagenes generadas despues de `G29`:
 
 - existe el bucket publico `routine-images`
-- existe el bucket publico `recipe-images`
-- ambos buckets usan `file_size_limit = 5242880` y `allowed_mime_types = ['image/jpeg', 'image/png', 'image/webp']`
-- `storage.objects` permite lectura publica de ambos buckets y escritura, actualizacion y borrado solo para usuarios admin autenticados
+- el bucket usa `file_size_limit = 5242880` y `allowed_mime_types = ['image/jpeg', 'image/png', 'image/webp']`
+- `storage.objects` permite lectura publica del bucket y escritura, actualizacion y borrado solo para usuarios admin autenticados
 - `routine_templates.image_url` guarda la URL publica final de la portada de rutina
-- `recipes.image_url` guarda la URL publica final de la imagen de receta
+- el bucket `recipe-images` y `recipes.image_url` se eliminaron el 2026-09-16 (ver "Recetas sin imagen")
 - los tipos de comida (`desayuno`, `almuerzo`, `merienda`, `cena`, `snack`) usan assets locales versionados porque no son entidad global de catalogo
 
 Estado confirmado de tracking despues de la vista diaria interactiva:
@@ -760,8 +759,7 @@ Migracion: `20260613_g21_nutrition_fase3.sql`. Nota: las dietas predefinidas (`d
 - `id uuid primary key default gen_random_uuid()`
 - `name text not null`
 - `description text`
-- `image_url text`
-- en `G29`, apunta a la URL publica final del bucket `recipe-images` cuando la receta tiene imagen generada
+- sin `image_url`: las recetas no tienen imagen desde 2026-09-16 (`DESIGN.md` §18); columna dropeada en `20260916_recipes_image_contract` (ver "Recetas sin imagen")
 - `category text not null check (category in ('desayuno','comida','snack'))`
 - `serving_g numeric(7,1) not null check (> 0)`: gramos de una porcion (backfill = suma de ingredientes / el viejo `servings`, asi los gramos ya registrados no cambiaron; `servings` se elimino en `20260915_nutrition_recipes_contract`)
 - `total_weight_g numeric(8,1) check (> 0)`: peso final cocido opcional; peso base = `total_weight_g ?? suma de recipe_items.grams`
@@ -827,3 +825,16 @@ Decision AL-D6 del rediseño de `/alimentos` (`DESIGN.md` §13): las fotos de al
 - verificado despues del borrado: sin columna, 0 objetos, sin bucket, 0 policies `food_images_%`, 506 alimentos
 - despues del contract, un rollback de Vercel a un deploy anterior rompe `/alimentos`, `/nutricion/registro` y `/admin/alimentos` (leen la columna)
 - `private.foods_backup_20260915` conserva `image_url` con URLs que dejan de existir
+
+## Recetas sin imagen (2026-09-16)
+
+Decision RE-D2 del rediseño de `/recetas` (`DESIGN.md` §18): las imagenes de recetas se sacan de la app, del codigo y de la base, sin backup por decision del usuario (17 de las 25 no mostraban el plato). Los 25 PNG que las generaban quedan solo en el historial de git (`scripts/media/generated/recipes/`).
+
+| Migracion | Cuando | Que hace |
+| --- | --- | --- |
+| `20260916_recipes_category_fix` | aplicada 2026-09-16 | solo datos: "Avena con banana y maní" pasa a `desayuno` y "Yogur con almendras" a `snack` (quedan 7 desayuno, 13 comida, 5 snack) |
+| `20260916_recipes_image_contract` | aplicada 2026-09-16, con el codigo sin `image_url` ya en produccion (deploy `d2c0cfc`) | contract: `save_recipe` se reemplaza sin la columna (insertaba `''`, mismos permisos), drop de `recipes.image_url` y de las 4 policies `recipe_images_*` |
+
+- no hizo falta expand: la columna era nullable sin default y el unico que la escribia era `save_recipe`
+- los 25 objetos (5,9 MB) y el bucket `recipe-images` se borraron el 2026-09-16 por la Storage API con service role (`list` + `remove` + `deleteBucket`), igual que `food-images`
+- despues del contract, un rollback de Vercel a un deploy anterior rompe `/recetas`, `/nutricion/registro` y `/admin/recetas` (leen la columna)
