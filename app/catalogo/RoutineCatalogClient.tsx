@@ -115,7 +115,7 @@ export function RoutineCatalogClient({ routines, savedStatusByTemplateId }: Rout
     <section className="grid content-start gap-5">
       {/* Search + filter row */}
       <div className="flex items-center gap-2">
-        <label className="relative flex h-12 flex-1 items-center rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] transition-[border-color] duration-200 focus-within:border-[rgba(139,92,246,0.5)] motion-reduce:transition-none">
+        <label className="relative flex h-12 flex-1 items-center rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] transition-[border-color] duration-200 focus-within:border-[var(--accent)] motion-reduce:transition-none">
           <span className="sr-only">Buscar rutinas</span>
           <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#7d8697]" />
           <Input
@@ -234,7 +234,7 @@ export function RoutineCatalogClient({ routines, savedStatusByTemplateId }: Rout
                   variant="outline"
                   className={
                     pageNumber === page
-                      ? "size-11 rounded-xl border-[rgba(139,92,246,0.7)] bg-[rgba(124,58,237,0.16)] px-0 text-base text-white hover:bg-[rgba(124,58,237,0.2)]"
+                      ? "size-11 rounded-xl border-[var(--accent)] bg-[var(--accent)]/15 px-0 text-base text-white hover:bg-[var(--accent)]/20"
                       : "size-11 rounded-xl border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.02)] px-0 text-base text-[var(--foreground-muted)] hover:bg-[rgba(255,255,255,0.05)] hover:text-white"
                   }
                   onClick={() => setCurrentPage(pageNumber)}
@@ -282,16 +282,14 @@ function RoutineCatalogCard({
       whileHover={{ y: -2, transition: { duration: 0.18, ease: premiumEase } }}
       whileTap={{
         scale: 0.98,
-        boxShadow:
-          "0 0 0 1px rgba(139,92,246,0.5), 0 0 24px rgba(124,58,237,0.25)",
         transition: { duration: 0.1, ease: premiumEase },
       }}
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#111723_0%,#0b1017_100%)] shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-[border-color,box-shadow] duration-200 hover:border-[rgba(185,149,255,0.24)] motion-reduce:transition-none"
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#111723_0%,#0b1017_100%)] shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-[border-color,box-shadow] duration-200 hover:border-[var(--border-strong)] motion-reduce:transition-none"
     >
       {/* Stretched link — makes the whole card clickeable */}
       <Link
         href={`/catalogo/rutinas/${routine.id}`}
-        className="absolute inset-0 z-10 rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-[rgba(139,92,246,0.8)]"
+        className="absolute inset-0 z-10 rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--accent-bright)]"
         aria-label={`Ver rutina: ${routine.name}`}
       />
 
@@ -334,7 +332,7 @@ function RoutineCatalogCard({
           <span className="rounded-full border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] px-2 py-0.5 text-[9px] font-semibold text-[#9ea7b9] sm:text-[11px]">
             {dayCount} días
           </span>
-          <span className="rounded-full border border-[rgba(139,92,246,0.3)] bg-[rgba(124,58,237,0.08)] px-2 py-0.5 text-[9px] font-semibold text-[#b89aff] sm:text-[11px]">
+          <span className="rounded-full border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] px-2 py-0.5 text-[9px] font-semibold text-[#9ea7b9] sm:text-[11px]">
             {objective}
           </span>
         </div>
@@ -345,11 +343,11 @@ function RoutineCatalogCard({
         </p>
 
         {/* CTA liviana — pointer-events-none, el link absoluto maneja el click */}
-        <div className="pointer-events-none mt-auto flex items-center justify-between border-t border-[rgba(185,149,255,0.12)] pt-2">
-          <span className="text-[10px] font-semibold text-[rgba(185,149,255,0.9)] sm:text-xs">
+        <div className="pointer-events-none mt-auto flex items-center justify-between border-t border-[var(--border)] pt-2">
+          <span className="text-[10px] font-semibold text-[var(--accent-bright)] sm:text-xs">
             Ver rutina
           </span>
-          <ChevronRight className="size-3.5 text-[rgba(185,149,255,0.7)] transition-transform duration-150 group-active:translate-x-0.5 motion-reduce:transition-none sm:size-4" />
+          <ChevronRight className="size-3.5 text-[var(--accent-bright)] transition-transform duration-150 group-active:translate-x-0.5 motion-reduce:transition-none sm:size-4" />
         </div>
       </div>
     </motion.article>
