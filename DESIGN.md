@@ -118,6 +118,7 @@ Migración (Fase 1, en `layout.tsx`): quitar `IBM_Plex_Sans` / `IBM_Plex_Mono`, 
 
 | Nombre | Size / line-height | Peso | Fuente | Uso |
 |---|---|---|---|---|
+| Metric XXL | 7rem / 0.85 | 800 | Sora | Número protagonista de un selector (días del catálogo, §16), tracking −0.06em. Uno por pantalla |
 | Display XXL | 3.625rem / 0.88 | 800 | Sora | Título del hero del home (mayúsculas, tracking −0.05em). Uno por pantalla |
 | Metric L | 3rem / 1 | 700 | Sora | Número principal de una sección (ej. kcal restantes) |
 | Display XL | 2rem / 1.1 | 700 | Sora | Número hero de métrica |
@@ -134,6 +135,7 @@ Migración (Fase 1, en `layout.tsx`): quitar `IBM_Plex_Sans` / `IBM_Plex_Mono`, 
 | Mono | 0.875rem / 1.4 | 400–500 | Geist Mono | Números/datos |
 
 - Inputs en mobile ≥ **16px** para evitar zoom de iOS (ya forzado en `globals.css` `@media (max-width:767px)`).
+- **Excepción:** los números Metric editables (`NumberStepper` y `SetFocus`, atributo `data-metric-input`) quedan fuera de esa regla para conservar su tamaño. Nunca deben medir menos de 16px.
 - Números que se comparan en columna → `font-mono` + `tabular-nums`.
 
 ---
@@ -194,9 +196,10 @@ Base: **shadcn/ui** + Tailwind. Íconos: **lucide-react** únicamente. Microinte
 | Overflow de nav | Bottom sheet "más" (`.mobile-more-sheet`) — no tocar sin pedido |
 | Lista / feed | Filas ≥44px, separador por `--border`, no card-por-item salvo que aporte |
 | Empty state | Copy claro + acción. Animar entrada con `.motion-empty-state` |
-| Toast | `sonner`, `top-center`, respetando safe-area (ya configurado) |
+| Toast | `sonner`, `top-center`, `theme="dark"`, respetando safe-area (ya configurado) |
 | Loading | Skeleton con superficie `--card-alt`, o `.motion-dot` pulse. Nunca spinner solo en pantalla completa |
 | Select/control compacto | `.nutrition-compact-control` (h 2rem, radio md) |
+| Filtros | `FilterPanel` compartido: bottom sheet (vaul) con chips de 40px con conteo (en 0 se apagan), orden como filas con check y pie blanco "Ver N …" (§16.3) |
 
 Estados obligatorios por componente interactivo: **default · hover (desktop) · active/press · focus-visible · disabled · loading**.
 
@@ -231,7 +234,7 @@ La app es **instalable y standalone**. El diseño asume que el usuario la abre c
 - Regiones: `PrimaryNavigation` (sidebar desktop) · `.shell-workspace` (`MobileHeader` + `main.shell-main`) · `MobileTabBar` (bottom nav).
 - `viewport-fit: cover` + `env(safe-area-inset-*)` en todos los bordes (header top, tab bar bottom, toasts). Ver `.page-frame` padding-top/bottom con safe-area.
 - `theme_color` y `background_color` = `#05070b`. `apple-mobile-web-app-status-bar-style: black-translucent`.
-- **Excepción del home (`/`), la semana activa (`/rutinas`), el registro (`/rutinas/dia`) y alimentos (`/alimentos`)**: `MobileHeader` no se renderiza en esas rutas; el home tiene su propio saludo (§10), `/rutinas` su switcher de rutina (§12), `/rutinas/dia` su barra de entreno (§11.1 Z1) y `/alimentos` su título con buscador (§13). Para que el scroll no pase por debajo de la barra de estado en standalone, las cuatro fijan una franja `env(safe-area-inset-top)` con `--background` (`.home-safe-top`).
+- **Excepción del home (`/`), la semana activa (`/rutinas`), el registro (`/rutinas/dia`), alimentos (`/alimentos`), el catálogo (`/catalogo`) y la configuración (`/configuracion`)**: `MobileHeader` no se renderiza en esas rutas; el home tiene su propio saludo (§10), `/rutinas` su switcher de rutina (§12), `/rutinas/dia` su barra de entreno (§11.1 Z1), `/alimentos` su título con buscador (§13) `/catalogo` su barra con buscar y filtros (§16; el detalle `/catalogo/rutinas/[id]` conserva el header) y `/configuracion` su fila de identidad (§15). Para que el scroll no pase por debajo de la barra de estado en standalone, las seis fijan una franja `env(safe-area-inset-top)` con `--background` (`.home-safe-top`).
 
 ### 6.2 Bottom nav — **NO TOCAR sin pedido explícito**
 
@@ -340,23 +343,25 @@ Pantalla de una tarea: **hacer la serie que sigue**. Mobile (<1024) se rediseñ�
 
 | Zona | Contenido |
 |---|---|
-| Z1 Barra | ✕ de 44px (sale del entreno; con series pendientes ofrece terminar), barra segmentada con un segmento por ejercicio relleno según sus series hechas, contador `hechas/plan` en mono e indicador de guardado. Debajo, línea chica `Día N · Grupos` |
+| Z1 Barra | ✕ de 44px (sale del entreno; con series pendientes ofrece terminar), barra segmentada con un segmento por ejercicio relleno según sus series hechas, contador `hechas/plan` en mono y botón de lista de 44px con la cantidad de ejercicios (abre el sheet del día). Debajo, línea chica `Día N · Grupos` e indicador de guardado |
 | Z2 Ejercicio | Ilustración del ejercicio de 184px **invertida a dark** (`invert(1) hue-rotate(180deg)`: figura clara sobre negro, músculos rojizos), chip `N de M` y chip "Técnica" → `ExerciseDetailModal`. Debajo, nombre en H1 y `series × objetivo · RIR · descanso` |
-| Z3 Serie actual | Micro label `Serie N de M`, dos steppers −/+ con el valor en Metric L (kg y reps; en ejercicios de tiempo, una sola columna seg/min), "Anterior" en mono y la línea de sugerencia |
+| Z3 Serie actual | Micro label `Serie N de M`, dos steppers −/+ con el valor en Metric L (kg y reps; en ejercicios de tiempo, una sola columna seg/min), "Anterior" en mono y la línea de sugerencia. El número se achica al ancho que queda entre los botones según sus dígitos (entre 16px y 3rem; a 375px, "22.5" va a ~24px) |
+| Z3b Acción | Justo debajo de los steppers, en el flujo: CTA emerald "Serie N hecha" de 56px a todo el ancho. En descanso, el bloque steppers + CTA se reemplaza en el mismo lugar por la tarjeta de descanso; la confirmación de terminar parcial ocupa el mismo lugar |
 | Z4 Series | Filas de 40px por serie: hecha (check emerald + valores), actual (marcador y "Ahora"), pendiente (valores en `--foreground-subtle`). Tocar una fila la vuelve la actual. Acción de texto "Historial" → `ExerciseHistorySheet` |
-| Z5 Dock | `sticky` sobre la bottom nav (mismo offset que `/rutinas`): botón ≡ que abre el sheet del día + CTA emerald "Serie N hecha". Es la única forma del dock que usa acento |
+
+Nada fijo abajo salvo la bottom nav: la acción vive en el contenido y nunca tapa texto (2026-09-16, reemplaza al dock sticky; mock https://claude.ai/artifact/V5k2qjXaUdU6uPJspScm37, opción D-A).
 
 El pager se desliza horizontalmente entre ejercicios (scroll-snap) y se navega con ←/→; al completar un ejercicio avanza solo al próximo pendiente.
 
 ### 11.2 Estados
 
-| Estado | Condición | Protagonista | Dock |
+| Estado | Condición | Protagonista | Acción (Z3b) |
 |---|---|---|---|
 | `ready` | Sin series cargadas | Serie 1 del primer ejercicio; kg vacío si no hay historial | "Serie 1 hecha" emerald |
 | `active` | Hay series cargadas | Serie actual del ejercicio visible | "Serie N hecha" emerald |
-| `resting` | Descanso corriendo | Las series del ejercicio (los steppers se ocultan) | Anillo con el tiempo en Metric L, `+15 s`, `Saltar` y la próxima serie. Al llegar a 0 vibra y vuelve el CTA |
-| `all_done` | `hechas ≥ plan` | "Entreno completo" en Display XXL + stats series y ejercicios | "Terminar entrenamiento" emerald |
-| Terminar parcial | ✕ o sheet con series pendientes | — | Confirmación inline en el dock ("Hiciste X de N. ¿Terminar igual?"), nunca dialog |
+| `resting` | Descanso corriendo | Las series del ejercicio (los steppers se ocultan) | Tarjeta con anillo, el tiempo en Metric L, `+15 s`, `Saltar` y la próxima serie, en el lugar de los steppers. Al llegar a 0 vibra y vuelven steppers y CTA |
+| `all_done` | `hechas ≥ plan` | "Entreno completo" en Display XXL + stats series y ejercicios | "Terminar entrenamiento" emerald debajo de las stats |
+| Terminar parcial | ✕ o sheet con series pendientes | — | Confirmación inline en el lugar de la acción ("Hiciste X de N. ¿Terminar igual?"), nunca dialog |
 | `empty` | Día sin ejercicios | "Día vacío" en Display XXL | Botón neutro a `/rutinas`, sin barra ni pager |
 
 Reglas: **un solo CTA emerald** por pantalla; "Terminar entrenamiento" vive neutro al pie del sheet de ejercicios y en ✕ mientras falten series, y solo pasa a emerald en `all_done`. El resumen muestra únicamente lo que la base registra (series y ejercicios). Sin conexión o error: aviso en Z1 (`--warning` / `--danger`) y en la confirmación; nunca descarte silencioso. Si el día ya se registró esta semana, línea "se guarda como otro entreno".
@@ -385,17 +390,17 @@ Recorrer el plan entero sin salir de la pantalla: pestañas por día y un panel 
 | Z1 Portada | Imagen de la plantilla (`routine_templates.image_url`) a sangre detrás de Z1–Z3: gris, caja al 137% anclada abajo (tapa el 27% superior, donde las portadas traen el título), degradé a `--background`. Sin imagen: la foto del hero del home (`/images/hero.png`) sin recorte. Sin radio ni card: no es el hero del home |
 | Z1 Switcher | "Tu rutina · X de N esta semana" + nombre (H2) con chevron → bottom sheet "Mis rutinas" (activar, renombrar inline, desactivar, eliminar con confirmación). Pill de racha a la derecha solo si racha > 0 |
 | Z2 Pestañas | Una por día, 64px, número + etiqueta corta: check emerald y día de semana si está hecho ("Hoy" si fue hoy), "En curso", "Hoy"/"Próximo" para el siguiente, grupo principal para el resto. Flechas ←/→ con teclado |
-| Z3 Panel del día | Chip · grupos del día en Display XXL (máx. 2, `&` emerald) · figura `MuscleBodyView` frente/espalda de 40px con los grupos del día en `--foreground` (principales) y `--foreground-muted` (resto), sin acento ni rampa · stats en fila (duración, ejercicios, series) · filas de ejercicios 72px (orden, miniatura, nombre, `series × reps · RIR · descanso`) que abren `ExerciseDetailModal`. Sin "Anterior". El panel se desliza con scroll-snap horizontal |
-| Z4 Dock | Sticky sobre la bottom nav (mismo offset que `/rutinas/dia`) con la acción del panel visible |
+| Z3 Panel del día | Chip · grupos del día en Display XXL (máx. 2, `&` emerald) · figura `MuscleBodyView` frente/espalda de 40px con los grupos del día en `--foreground` (principales) y `--foreground-muted` (resto), sin acento ni rampa · stats en fila (duración, ejercicios, series) · acción del día (Z4) · filas de ejercicios 72px (orden, miniatura, nombre, `series × reps · RIR · descanso`) que abren `ExerciseDetailModal`. Sin "Anterior". El panel se desliza con scroll-snap horizontal |
+| Z4 Acción | En el panel, debajo de las stats: botón de 56px a todo el ancho (nota arriba si la hay). Cuando sale de la pantalla al scrollear, aparece arriba una barra compacta sólida (fondo `--background`, borde inferior `--border`) con el día, el resumen y la misma acción en tamaño chico; se va al volver al hero. Nada fijo abajo salvo la bottom nav (2026-09-16, reemplaza al dock sticky; mock https://claude.ai/artifact/V5k2qjXaUdU6uPJspScm37, opción R-A) |
 
 ### 12.2 Estados
 
-| Estado | Panel inicial | Dock |
+| Estado | Panel inicial | Acción (Z4) |
 |---|---|---|
 | `ready` | Próximo día pendiente | "Empezar" emerald en ese día; otros días "Empezar día N" neutro; días hechos "Ver entreno" neutro |
 | `in_progress` | Día con entreno sin terminar: barra "X de N ejercicios · sigue …" en lugar de stats, filas hechas con check | "Continuar" emerald |
 | `done_today` | Próximo día pendiente | "Empezar día N" neutro + línea "Hoy ya entrenaste" |
-| `week_done` | Resumen: "Semana cerrada" XXL, stats (entrenos, racha, series del plan) y filas por día con fecha. Tocar una pestaña abre ese día | Sin dock en el resumen |
+| `week_done` | Resumen: "Semana cerrada" XXL, stats (entrenos, racha, series del plan) y filas por día con fecha. Tocar una pestaña abre ese día | Sin acción en el resumen |
 | Sin rutina activa | Sin portada: "Elegí tu rutina" XXL + rutinas guardadas con "Activar" + link al catálogo | — |
 | Sin rutinas guardadas | Sin portada: "Elegí tu rutina" XXL | "Explorar catálogo" emerald |
 | Rutina sin días | Portada + "Rutina vacía" + botón neutro al catálogo, sin pestañas | — |
@@ -439,3 +444,138 @@ Reglas: la lista no tiene emerald; el emerald vive en los vacíos o dentro de un
 | Registrar | Con sesión: CTA emerald "Registrar 1 unidad" / "Registrar 100 g" → `/nutricion/registro?alimento=<id>&medida=<g\|unit>&cantidad=<n>`. El registro (§14) abre el día de hoy con ese alimento cargado y limpia la URL para no duplicar al recargar; el parser es `parseRegistroFoodParams` |
 | Propio | "Editar" (secondary) cambia el cuerpo del sheet al formulario, sin sheets apilados; "Eliminar" (ghost) pide confirmación inline. Si el alimento ya se usó en comidas, el servidor lo rechaza con un toast |
 | Nuevo alimento | Bottom sheet con `FoodForm` (sin caja interna, kcal estimadas por macros). Al guardar se limpia la búsqueda y se abre el detalle del nuevo |
+
+---
+
+## 14. Registro de comidas mobile (`/nutricion/registro`, <1024px)
+
+Registrar lo que se come en uno o dos toques. Mobile se rediseñó el 2026-09-16 combinando dos direcciones:
+- de la B, el presupuesto (medidor y anillos);
+- de la C, las comidas (pestañas por comida y un panel que se desliza).
+
+Desktop (≥1024) conserva sus cards sin cambios. Mock y decisiones N-D1…N-D9: https://claude.ai/artifact/HqtexQwHqppi4B25Ujw7LE (v3).
+
+### 14.1 Zonas (arriba → abajo)
+
+| Zona | Contenido |
+|---|---|
+| Z1 Encabezado | A la izquierda, el botón del día ("Hoy · mié 16", "Jueves · 20 nov 2025") con chevron: abre el sheet "Elegí el día". A la derecha, el pill de racha (`N días`, solo si es mayor que 0) o, en días pasados, "Hoy" para volver; después, ≡ de 44px que abre "Tu día" |
+| Z2 Presupuesto | Medidor semicircular (`ArcGauge`) con las kcal restantes en 2.875rem (`AnimatedNumber`) y la línea "Comiste N · Objetivo N" en mono. Debajo, 3 anillos de 48px con los gramos restantes de cada macro, en `MACRO_COLORS` (dato, no acento); lo que se pasa dice "+Xg de más" en `--warning`. Sin objetivo: `GoalSetupStep`, la misma pieza que el home |
+| Z3 Pestañas | Una por fila de `buildDayMealRows`, con el nombre y un estado: check y kcal si tiene alimentos, "Sigue" (`--accent-bright`) en la primera comida del día sin registrar, "—" en el resto. Entran 4; con más, la 5ª se asoma y la tira scrollea. Marco activo con `layoutId`; se navega con ←/→/Inicio/Fin |
+| Z4 Panel | Scroll-snap horizontal; el alto sigue al panel visible. Contenido de arriba abajo: nombre de la comida en Display XXL (escala menor si el nombre es largo); la meta (`780 kcal · P 52 · C 75 · G 22` o "Sin registrar · llevás…") con "…" a la derecha; el CTA en línea "Agregar a {comida}"; filas de alimentos de 60px que abren su sheet; y "Tus frecuentes" ("+" de 44px y "Buscar") en comidas vacías o que ya recibieron un "+" en la sesión |
+
+### 14.2 Estados
+
+| Estado | Condición | Presupuesto | Panel inicial | Emerald |
+|---|---|---|---|---|
+| Día vacío | Hoy sin comidas | Medidor vacío con el objetivo | Desayuno: "Tu primera comida del día." | "Agregar a desayuno" |
+| En curso | Restante > 5% | Blanco | La primera comida sin registrar | Su "Agregar" |
+| En objetivo | Restante entre 0 y 5% del objetivo | Arco y número en `--success` | Igual | Igual |
+| Por encima | Restante < 0 | Arco lleno; "+N" y "kcal por encima" en `--warning` | Igual | Igual |
+| Día cerrado | Desayuno, almuerzo, merienda y cena con alimentos | Según corresponda | "Día cerrado" (XXL) antes de las pestañas: meta, una fila por comida y "Otra comida" neutro | Ninguno |
+| Sin objetivo | Sin perfil nutricional | `GoalSetupStep` + "N kcal registradas hoy" | Igual | Su "Agregar" |
+| Día pasado | `?fecha=` | Igual, con textos en pasado ("ese día sumaste…") | Igual; vacío: "Sin registros el lunes." | Su "Agregar" |
+
+### 14.3 Sheets
+
+| Sheet | Regla |
+|---|---|
+| Agregar | Título "Agregar a {comida}". Buscador de 16px (`searchByName`, con el mismo boost que `FoodPicker`) y segmentado Frecuentes · Recetas · Mis alimentos. El "+" agrega al toque con la última cantidad (N-D3). Tocar el nombre abre el paso de cantidad: segmentado g/ml ↔ unidades o porciones (convierte el número), `NumberStepper` (pasos de 10 g, 50 ml o 0,5 u), aporte kcal/P/C/G y "Te quedarían N kcal". El pie muestra "N agregados · K kcal", "Deshacer" del último y "Listo". "Crear “…”" abre `FoodForm` |
+| Alimento | El mismo paso de cantidad, con la cantidad registrada. "Guardar" en blanco y "Quitar" con confirmación en línea; si es el único alimento, lo avisa y borra la comida |
+| Comida ("…") | Nombre editable en línea (Enter guarda; Esc cancela sin cerrar el sheet). Tipo en chips: si el nombre era el del tipo, cambia con él. Botones Antes/Después y eliminar con confirmación en línea |
+| Tu día | Una fila por comida (alimentos y kcal) que lleva a su pestaña, y "Otra comida": se elige nombre y tipo, y se abre Agregar para esa comida nueva |
+| Elegí el día | Semana L–D (verde = con comidas, blanco = el elegido, borde = hoy), ‹ › para cambiar de semana y "Otra fecha" (`input type=date`, hasta 365 días atrás) |
+
+Reglas:
+- **Un solo CTA emerald** por pantalla: el de la comida que sigue. **Nada fijo abajo** salvo la bottom nav.
+- **La comida se crea con su primer alimento** (N-D2), con su tipo, el nombre por defecto y el lugar que da `suggestAfterMealId`. Las acciones pasan por una cola, así dos "+" seguidos nunca crean dos comidas.
+- **Deshacer.** Fuera del sheet es un toast de 6 s; dentro, está en el pie. Borra la comida solo si la creó ese agregado y todavía no tiene otros alimentos.
+- **Enlaces** (solo hoy):
+  - `?tipo=` y `?comida=` abren Agregar para esa comida.
+  - `?alimento=&medida=&cantidad=` (desde §13) abre Agregar directo en el paso de cantidad, para la comida que sigue (con el día cerrado, un snack nuevo), y limpia la URL.
+  - En desktop `?alimento` se ignora; `?tipo` y `?comida` funcionan como antes.
+- **Fuera de esta pantalla**: el `MobileHeader` (§6.1), las ilustraciones de `meals/*.png`, la frase motivacional y la card de racha (N-D5…N-D7).
+- **Código.** La lógica pura está en `app/lib/meal-diary.ts` y `app/lib/meal-amounts.ts` (tests en `tests/unit/`); los componentes, en `app/components/registro/`.
+- **Motion.** Marco de pestaña y segmentado con `layoutId`, arco con `pathLength`, `AnimatedNumber` y anillos. Todo se neutraliza con reduced-motion.
+
+---
+
+## 15. Configuración mobile (`/configuracion`, <1024px)
+
+Ver y ajustar el objetivo diario. Mobile se rediseñó con la dirección "Tu plan" (2026-09-16): el resultado es la pantalla (kcal en Display XXL con la cuenta que lo explica) y los datos que lo causan son filas que abren bottom sheets. Sin perfil, un flujo de 6 pasos arma el plan. Desktop (≥1024) conserva sus cards sin cambios. Mock y decisiones C-D1…C-D10: https://claude.ai/artifact/VX3CrPmQLQctJXyb3YohJr (v2).
+
+### 15.1 Zonas (arriba → abajo)
+
+| Zona | Contenido |
+|---|---|
+| Z1 Identidad | Avatar de 44px (inicial o ícono), nombre en H3 (sin nombre: acción de texto "Agregá tu nombre") y email en caption. A la derecha, el indicador de guardado (`aria-live`) |
+| Z2 Plan | Micro label "Tu objetivo diario", kcal en Display XXL, ecuación `mantenimiento − ajuste = objetivo` en 3 celdas entre líneas (`border-y`), macros en Metric M con el punto de `MACRO_COLORS` y barra de reparto de 6px con el % en mono (dato, no acento) |
+| Z3 Cómo lo calculamos | H2 + filas de 72px que abren su sheet: Tu cuerpo (miniatura de la referencia de grasa y `28 a · 178 cm · 78 kg · 22%`), Actividad (medidor de 5 barras en tinta neutra) y Objetivo (ajuste `−20%` en mono). Caption "Estimación nutricional…" |
+| Z4 Cuenta | H2 + filas de 52px: Nombre (sheet), Email (solo lectura), Cerrar sesión (POST `/auth/signout`) y Borrar cuenta (rose, sheet) |
+
+### 15.2 Sheets
+
+Bottom sheets (vaul) con título a la izquierda y "Listo" a la derecha. Guardan solos: debounce de 800 ms y guardado inmediato al cerrar.
+
+| Sheet | Contenido |
+|---|---|
+| S1 Tu cuerpo | Sexo (`SegmentedControl`), edad, altura y peso con `NumberStepper` (−/+ y número tocable; peso de a 0,5), fila Grasa corporal y "Tu objetivo: N kcal" en vivo |
+| S2 Grasa corporal | Vista dentro de S1 con flecha atrás (sin sheets apilados): carrusel `radiogroup` con "No lo sé" y las 5 figuras del sexo elegido, la descripción de la elegida y una nota sobre la masa magra |
+| S3 Actividad | 5 opciones en filas con medidor y check |
+| S4 Objetivo | 3 opciones con las kcal que daría cada una y su ajuste, y "Calculados / Los fijo yo". En manual: kcal + 3 macros (precargados con lo calculado) y la suma de los macros (lime si coincide ±10%, ámbar si no) |
+| S5 Borrar cuenta | Escribir "BORRAR" habilita el botón rose; Cancelar neutro. Desktop sigue con dialog |
+| S6 Nombre | Input de 40 caracteres con contador; guarda al cerrar o con Enter |
+
+### 15.3 Estados
+
+| Estado | Condición | Qué cambia | Emerald |
+|---|---|---|---|
+| Plan calculado | Perfil en modo auto | Z1–Z4 | Ninguno: el acento queda para la selección y el guardado |
+| Fijado a mano | `targetMode = manual` | Z2: "· fijado a mano", la suma de macros reemplaza a la ecuación y "Calculado con tus datos daría N". Z3: Objetivo primero y el resto atenuado ("No cambia tu objetivo fijo") | Ninguno |
+| Sin perfil | Sin fila en `nutrition_profiles` | Z2: "Calculá tu plan" en Display XXL; sin Z3. Nunca se muestran valores por defecto como si fueran del usuario | "Empezar" |
+| Flujo de alta | "Empezar" | Reemplaza la pantalla: ✕, barra de 6 segmentos y `n/6`. Pasos: Sobre vos (sexo + edad) · Altura · Peso · Grasa ("No lo sé" preseleccionado) · Actividad · Objetivo. Pregunta en Display XXL con interlineado 1.02 (con 0.88 el "¿" y las tildes chocan entre líneas), `NumberStepper` grande y "Atrás" en texto. No guarda hasta el final | "Siguiente" / "Calcular mi plan", en el flujo debajo del control |
+| Guardando / error | Autosave | Z1: "Guardando…" → "Guardado" (2 s) · "No se guardó · Reintentar" | — |
+| Sin conexión | `navigator.onLine = false` | Z1: "Sin conexión" (`--warning`). Los controles de los sheets y el CTA del flujo se deshabilitan con nota; lo pendiente se guarda al volver la red | — |
+
+Reglas: sin `MobileHeader` (§6.1) y nada fijo abajo salvo la bottom nav. Lógica pura en `app/lib/profile-plan.ts` (tests en `tests/unit/`); estado y autosave en `app/configuracion/useProfileForm.ts`, compartido con desktop. Motion: `AnimatedNumber` en kcal, ecuación y macros, check de opción con `fadeScale` e indicador del `SegmentedControl` con `layoutId`; todo se neutraliza con reduced-motion.
+
+---
+
+## 16. Catálogo mobile (`/catalogo`, <1024px)
+
+Elegir una rutina según cuántos días por semana se puede entrenar. Mobile se rediseñó con la dirección "Planificador" (2026-09-16): una pregunta, el número como protagonista y resultados que se adaptan a la respuesta. Desktop (≥1024) conserva su grilla de cards con paginación, sin violeta. Mock y decisiones C-D1…C-D8 · B-D1…B-D5: https://claude.ai/artifact/CgEQL6GSTzxnM26BDBPYX2 (v3).
+
+En el catálogo actual cada cantidad de días corresponde a un solo nivel (2–3 principiante, 4–5 intermedio, 6 avanzado). Por eso "una por nivel" solo aplica con Todas.
+
+### 16.1 Zonas (arriba → abajo)
+
+| Zona | Contenido |
+|---|---|
+| Z1 Barra | "Catálogo" (13px, muted), Buscar y Filtros de 44px. Al buscar se vuelve campo `type=search` de 16px + Filtros + "Cancelar" |
+| Z2 Pregunta | H1 "¿Cuántos días por semana podés entrenar?" + rueda horizontal `Todas · 2…6` (solo cantidades con rutinas bajo los filtros): el número centrado en Metric XXL, los vecinos chicos y tocables (≥3:1), marcador de 28×4 y "días por semana" / "Deslizá para elegir días" |
+| Z3 Semana | Solo con un número: barra de 7 segmentos (N en `--foreground`, el resto en `--border`) + "N entrenos · 7−N descansos". Sin letras de días: la rutina no guarda días fijos |
+| Z4 Resultados | Todas: H2 "Para cada nivel" + carrusel con una card por nivel (la más reciente de cada uno; se oculta con menos de 2 niveles) y "Las N rutinas" en filas. Con número: H2 "N rutinas de D días" + nivel a la derecha, una card grande (la primera del orden) y el resto en filas; con 3 o menos, "¿Pocas opciones? Probá con …" y las cantidades vecinas |
+| Barra compacta | Aparece arriba al pasar la rueda, sólida (`--background`, borde inferior): "Catálogo", Buscar, Filtros y los días en fila (44px) para cambiar sin volver arriba |
+
+### 16.2 Estados
+
+| Estado | Condición | Qué cambia | Emerald |
+|---|---|---|---|
+| Todas | Al entrar | Carrusel por nivel + lista completa | CTA de la card visible |
+| Número | Rueda en 2…6 | Barra semanal, card grande + filas, pista si hay 3 o menos | CTA de la card grande |
+| Tu rutina | La card es tu rutina activa | Pill "Tu rutina activa" y CTA neutro | Ninguno |
+| Buscando | Buscar abierto | Sin pregunta, rueda, barra ni carrusel. Busca todas las palabras (sin tildes) en nombre y descripción, con los filtros del sheet; resalta la coincidencia; el conteo se anuncia con `role=status` | Ninguno |
+| Sin resultados | Búsqueda + filtros sin coincidencias | "Sin resultados", qué falla y cuántas hay sin filtros; "Quitar filtros" (neutro) y "Borrar búsqueda" | Ninguno |
+| Invitado | Sin sesión | Sin marcas de activa ni guardada | Igual que con sesión |
+| Catálogo vacío | Sin rutinas publicadas | "Pronto hay más" en Display XXL + "Ir a Rutina" neutro | Ninguno |
+
+### 16.3 Piezas
+
+| Pieza | Regla |
+|---|---|
+| Card grande | Radio 20, `--card`, portada de 170px con el recorte de §12.1 (gris, caja al 137% anclada abajo; sin portada, `/images/hero.png`), pill `[● Tu rutina activa ·] Nivel · N días`, nombre en H2, `Objetivo · N ejercicios · N series` y CTA de 56px a `/catalogo/rutinas/[id]` (toda la card es tocable) |
+| Fila | 92px: miniatura de 64px con el mismo recorte, nombre ("dias" → "días"), `Nivel · Objetivo · N ejercicios`, estado ("Tu rutina activa" con punto emerald, "Guardada" con check neutro) y chevron |
+| Rueda | `radiogroup` con scroll-snap. El scroll solo propone: confirma al asentarse si lo movió el usuario, con tap o con ←/→/Home/End. Escala y color siguen la posición sin re-render por frame |
+| Filtros | `FilterPanel` compartido (§4): nivel y objetivo con conteos (en 0 se apagan) y orden (Más recientes · Nombre A–Z · Más ejercicios) en filas con check. Pie blanco "Ver N rutinas" |
+
+Reglas: un solo emerald por pantalla; nada fijo abajo salvo la bottom nav. Lógica pura en `app/lib/routine-catalog.ts` (tests en `tests/unit/`). Motion: rueda ligada al scroll, marcador de la barra compacta con `layoutId` y fundido corto de resultados al cambiar de número; todo se neutraliza con reduced-motion. El filtro no se guarda en la URL: al volver del detalle arranca en Todas.
