@@ -113,7 +113,9 @@ export function MobileHeader({
     pathname.startsWith("/auth") ||
     pathname === "/" ||
     pathname === "/rutinas" ||
-    pathname === "/rutinas/dia"
+    pathname === "/rutinas/dia" ||
+    // Alimentos: título con buscador (DESIGN.md §13).
+    pathname === "/alimentos"
   ) {
     return null;
   }

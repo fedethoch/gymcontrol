@@ -33,7 +33,7 @@ export const CATEGORY_GRADIENTS: Record<FoodCategory, string> = {
   carb: "linear-gradient(140deg,#3a2a0c 0%,#1f1a16 50%,#0c0a08 100%)",
   fat: "linear-gradient(140deg,#0c2a3a 0%,#141c26 50%,#080c10 100%)",
   vegetable: "linear-gradient(140deg,#0e2612 0%,#0d1820 50%,#070a10 100%)",
-  mixed: "linear-gradient(140deg,#2e1a58 0%,#141828 55%,#08090f 100%)",
+  mixed: "linear-gradient(140deg,#262d3b 0%,#141828 55%,#08090f 100%)",
   drink: "linear-gradient(140deg,#0b2a33 0%,#101b24 50%,#070b10 100%)",
 };
 
@@ -42,7 +42,7 @@ export const CATEGORY_ACCENT: Record<FoodCategory, string> = {
   carb: MACRO_COLORS.carbs,
   fat: MACRO_COLORS.fat,
   vegetable: "#7adf9c",
-  mixed: "#b995ff",
+  mixed: "#cbd5e1",
   drink: "#67e8f9",
 };
 

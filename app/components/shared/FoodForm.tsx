@@ -8,6 +8,7 @@ import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
 import { LoadingDots } from "@/app/components/ui/LoadingDots";
 import type { FoodFormField } from "@/app/lib/foods-form";
+import { MACRO_COLORS } from "@/app/lib/nutrition-style";
 import {
   FOOD_CATEGORIES,
   FOOD_CATEGORY_LABELS,
@@ -121,7 +122,7 @@ export function FoodForm({ food, initialName = "", submitLabel, variant = "sheet
         </div>
       </fieldset>
 
-      <div className="grid gap-3 rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4">
+      <div className="grid gap-3 border-y border-[var(--border)] py-4">
         <Field label={`Valores nutricionales cada (${unitLabel})`} error={fieldErrors.servingG}>
           <Input inputMode="decimal" value={servingG} onChange={(event) => setServingG(event.target.value)} />
         </Field>
@@ -129,19 +130,23 @@ export function FoodForm({ food, initialName = "", submitLabel, variant = "sheet
           <Field label="Calorías (kcal)" error={fieldErrors.calories}>
             <Input inputMode="decimal" placeholder="0" value={calories} onChange={(event) => setCalories(event.target.value)} />
           </Field>
-          <Field label="Proteínas (g)" error={fieldErrors.proteinG}>
+          <Field label="Proteínas (g)" color={MACRO_COLORS.protein} error={fieldErrors.proteinG}>
             <Input inputMode="decimal" placeholder="0" value={proteinG} onChange={(event) => setProteinG(event.target.value)} />
           </Field>
-          <Field label="Carbohidratos (g)" error={fieldErrors.carbsG}>
+          <Field label="Carbohidratos (g)" color={MACRO_COLORS.carbs} error={fieldErrors.carbsG}>
             <Input inputMode="decimal" placeholder="0" value={carbsG} onChange={(event) => setCarbsG(event.target.value)} />
           </Field>
-          <Field label="Grasas (g)" error={fieldErrors.fatG}>
+          <Field label="Grasas (g)" color={MACRO_COLORS.fat} error={fieldErrors.fatG}>
             <Input inputMode="decimal" placeholder="0" value={fatG} onChange={(event) => setFatG(event.target.value)} />
           </Field>
         </div>
         {showKcalHint ? (
           <p className="text-xs leading-5 text-[var(--warning)]">
             Con esos macros serían ≈{Math.round(macrosKcal)} kcal. Revisá que las calorías sean de la misma porción.
+          </p>
+        ) : macrosKcal > 0 ? (
+          <p className="text-xs leading-5 text-[var(--foreground-muted)]">
+            ≈ {Math.round(macrosKcal)} kcal según los macros.
           </p>
         ) : null}
       </div>
@@ -195,16 +200,26 @@ function Field({
   label,
   hint,
   error,
+  color,
   children,
 }: {
   label: string;
   hint?: string;
   error?: string;
+  /** Punto de color del macro (mismo color que las barras y anillos). */
+  color?: string;
   children: ReactNode;
 }) {
   return (
     <label className="grid gap-1.5 text-[13px] font-medium text-[var(--foreground-muted)]">
-      {label}
+      {color ? (
+        <span className="flex items-center gap-1.5">
+          <span aria-hidden="true" className="size-2 shrink-0 rounded-full" style={{ backgroundColor: color }} />
+          {label}
+        </span>
+      ) : (
+        label
+      )}
       {children}
       {error ? (
         <span className="text-xs text-[var(--danger)]">{error}</span>
