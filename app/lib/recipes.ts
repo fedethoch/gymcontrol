@@ -22,7 +22,6 @@ type RecipeRow = {
   id: string;
   name: string;
   description: string | null;
-  image_url: string | null;
   category: RecipeCategory;
   serving_g: number | null;
   total_weight_g: number | null;
@@ -33,7 +32,7 @@ type RecipeRow = {
 };
 
 const RECIPE_SELECT =
-  "id, name, description, image_url, category, serving_g, total_weight_g, created_by, created_at, recipe_items(food_id, grams, foods(name, serving_g, calories, protein_g, carbs_g, fat_g))";
+  "id, name, description, category, serving_g, total_weight_g, created_by, created_at, recipe_items(food_id, grams, foods(name, serving_g, calories, protein_g, carbs_g, fat_g))";
 
 export type RecipeInput = {
   name: string;
@@ -157,7 +156,13 @@ function mapRecipe(row: RecipeRow): Recipe {
       continue;
     }
 
-    ingredients.push({ foodId: item.food_id, foodName: food.name, grams: Number(item.grams) });
+    const foodServingG = Number(food.serving_g);
+    ingredients.push({
+      foodId: item.food_id,
+      foodName: food.name,
+      grams: Number(item.grams),
+      kcal: foodServingG > 0 ? (Number(food.calories) * Number(item.grams)) / foodServingG : 0,
+    });
     nutritionInput.ingredients.push({
       grams: Number(item.grams),
       food: {
@@ -179,7 +184,6 @@ function mapRecipe(row: RecipeRow): Recipe {
     id: row.id,
     name: row.name,
     description: row.description ?? "",
-    imageUrl: row.image_url ?? "",
     category: row.category,
     servingG: nutritionInput.servingG,
     totalWeightG: nutritionInput.totalWeightG,

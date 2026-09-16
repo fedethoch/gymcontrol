@@ -1,7 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import { ImageIcon, PencilLine, Plus, Search, Trash2 } from "lucide-react";
+import { PencilLine, Plus, Search, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -25,11 +24,6 @@ import {
   SheetDescription,
   SheetTitle,
 } from "@/app/components/ui/Sheet";
-import {
-  RECIPE_CATEGORY_ACCENT,
-  RECIPE_CATEGORY_GRADIENTS,
-  RECIPE_CATEGORY_ICONS,
-} from "@/app/lib/nutrition-style";
 import { RECIPE_CATEGORIES, RECIPE_CATEGORY_LABELS, type Food, type Recipe } from "@/app/lib/nutrition-types";
 import {
   fadeUp,
@@ -218,26 +212,10 @@ function RecipeCard({ recipe, onSelect }: { recipe: Recipe; onSelect: () => void
       whileTap={tapFeedback}
       className="group flex h-full w-full flex-col gap-3 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] text-left transition-colors duration-200 hover:bg-[rgba(255,255,255,0.03)]"
     >
-      <div className="relative aspect-[16/9] w-full shrink-0 bg-[var(--card)]">
-        {recipe.imageUrl ? (
-          <Image
-            alt={recipe.name}
-            className="object-cover"
-            fill
-            sizes="(max-width: 1024px) 50vw, 33vw"
-            src={recipe.imageUrl}
-          />
-        ) : (
-          <div className="grid h-full w-full place-items-center">
-            <ImageIcon className="size-8 text-[#5b6577]" aria-hidden="true" />
-          </div>
-        )}
-        <span className="absolute right-2 top-2 rounded-full border border-[var(--border)] bg-[var(--card-alt)]/80 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.1em] text-[#9aa3b8] backdrop-blur-sm sm:right-2.5 sm:top-2.5 sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-[0.14em]">
+      <div className="flex flex-1 flex-col gap-2 p-3 sm:gap-3 sm:p-4">
+        <span className="self-start rounded-full border border-[var(--border)] px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.1em] text-[#9aa3b8] sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-[0.14em]">
           {formatGrams(recipe.servingG)} g/porción
         </span>
-      </div>
-
-      <div className="flex flex-1 flex-col gap-2 p-3 pt-0 sm:gap-3 sm:p-4">
         <div className="min-w-0 flex-1">
           <h3 className="font-display truncate text-sm font-semibold tracking-[-0.02em] text-white">
             {recipe.name}
@@ -301,8 +279,6 @@ function RecipeDetailSheet({
 
   if (!displayRecipe) return null;
 
-  const Icon = RECIPE_CATEGORY_ICONS[displayRecipe.category];
-
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
@@ -311,30 +287,12 @@ function RecipeDetailSheet({
         aria-describedby="recipe-detail-description"
       >
         <div className="flex h-full flex-col overflow-hidden">
-          <div
-            className="relative flex h-44 shrink-0 items-end p-5"
-            style={{ background: RECIPE_CATEGORY_GRADIENTS[displayRecipe.category] }}
-          >
-            {displayRecipe.imageUrl ? (
-              <Image
-                src={displayRecipe.imageUrl}
-                alt={displayRecipe.name}
-                fill
-                className="object-cover opacity-40"
-                sizes="448px"
-              />
-            ) : (
-              <Icon
-                className="absolute right-5 top-5 size-12 opacity-30"
-                style={{ color: RECIPE_CATEGORY_ACCENT[displayRecipe.category] }}
-                aria-hidden="true"
-              />
-            )}
+          <div className="relative flex shrink-0 items-end border-b border-[var(--border)] bg-[var(--card)] p-5 pt-14">
             <div>
               <SheetTitle className="font-display text-2xl font-bold tracking-[-0.05em] text-white">
                 {displayRecipe.name}
               </SheetTitle>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#b985ff]">
+              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--foreground-muted)]">
                 {RECIPE_CATEGORY_LABELS[displayRecipe.category]} · 1 porción = {formatGrams(displayRecipe.servingG)} g
               </p>
             </div>
@@ -366,7 +324,7 @@ function RecipeDetailSheet({
                 <div className="grid grid-cols-4 gap-2.5">
                   <SpecChip label="Calorías" value={`${displayRecipe.calories} kcal`} />
                   <SpecChip label="Proteína" value={`${displayRecipe.proteinG} g`} />
-                  <SpecChip label="Carbohidratos" value={`${displayRecipe.carbsG} g`} />
+                  <SpecChip label="Carbos" value={`${displayRecipe.carbsG} g`} />
                   <SpecChip label="Grasas" value={`${displayRecipe.fatG} g`} />
                 </div>
               </div>

@@ -237,11 +237,14 @@ export type DiaryDeepLink = {
   mealType?: MealType;
   /** Alimento que llega desde /alimentos (`?alimento=&medida=&cantidad=`). */
   food?: { foodId: string; measure: "g" | "unit"; quantity: number } | null;
+  /** Receta que llega desde /recetas (`?receta=&medida=&cantidad=`). */
+  recipe?: { recipeId: string; measure: "g" | "unit"; quantity: number } | null;
 };
 
 /**
- * `?comida=`, `?tipo=` y `?alimento=` (solo hoy): qué pestaña se abre y para qué comida se abre
- * "Agregar". El alimento va a la comida que sigue; con el día cerrado, a un snack nuevo.
+ * `?comida=`, `?tipo=`, `?alimento=` y `?receta=` (solo hoy): qué pestaña se abre y para qué comida se
+ * abre "Agregar". Sin `?tipo=`, el alimento o la receta van a la comida que sigue; con el día cerrado,
+ * a un snack nuevo.
  */
 export function resolveInitialDiary(
   meals: DiaryMeal[],
@@ -271,7 +274,7 @@ export function resolveInitialDiary(
     };
   }
 
-  if (link.food) {
+  if (link.food || link.recipe) {
     const next = day.tabs.find((tab) => tab.key === day.nextKey);
 
     if (next) {

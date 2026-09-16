@@ -16,6 +16,8 @@ import { cn } from "@/app/lib/utils";
 type RecipeFormProps = {
   /** Si viene, edita esa receta; si no, crea una nueva. */
   recipe?: Recipe | null;
+  /** Nombre precargado al crear ("Crear receta «…»"). */
+  initialName?: string;
   /** Solo alimentos del catálogo global: una receta pública no puede usar alimentos privados. */
   foods: Food[];
   onSaved: (recipe: Recipe) => void;
@@ -33,8 +35,8 @@ function toNumber(value: string) {
   return value.trim() && Number.isFinite(parsed) ? parsed : null;
 }
 
-export function RecipeForm({ recipe, foods, onSaved, onCancel }: RecipeFormProps) {
-  const [name, setName] = useState(recipe?.name ?? "");
+export function RecipeForm({ recipe, initialName = "", foods, onSaved, onCancel }: RecipeFormProps) {
+  const [name, setName] = useState(recipe?.name ?? initialName);
   const [description, setDescription] = useState(recipe?.description ?? "");
   const [category, setCategory] = useState<RecipeCategory>(recipe?.category ?? "comida");
   const [servingG, setServingG] = useState(recipe ? String(recipe.servingG) : "");

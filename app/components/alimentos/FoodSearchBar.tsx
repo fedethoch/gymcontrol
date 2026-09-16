@@ -14,19 +14,26 @@ import {
 import { FOOD_SORT_LABELS, FOOD_SORTS, type FoodSort } from "@/app/lib/food-catalog";
 import { cn } from "@/app/lib/utils";
 
-/** Z2 · buscador fijo bajo la franja segura (64px) con el menú de orden (DESIGN.md §13.1). */
+/** Z2 · buscador fijo bajo la franja segura (64px) con el menú de orden (DESIGN.md §13.1; recetas §18.1). */
 export function FoodSearchBar({
   inputRef,
   query,
   onQueryChange,
   sort,
   onSortChange,
+  label = "Buscar alimentos",
+  placeholder = "Buscar alimento",
+  sortNote = "cada 100 g",
 }: {
   inputRef: RefObject<HTMLInputElement | null>;
   query: string;
   onQueryChange: (value: string) => void;
   sort: FoodSort;
   onSortChange: (value: FoodSort) => void;
+  label?: string;
+  placeholder?: string;
+  /** Base de los órdenes por valor ("cada 100 g", "por porción"). */
+  sortNote?: string;
 }) {
   const inputId = useId();
 
@@ -34,7 +41,7 @@ export function FoodSearchBar({
     <div className="sticky top-[env(safe-area-inset-top)] z-10 -mx-4 mt-3 bg-[var(--background)] px-4 py-2">
       <div className="relative flex h-12 items-center">
         <label htmlFor={inputId} className="sr-only">
-          Buscar alimentos
+          {label}
         </label>
         <Search aria-hidden="true" className="pointer-events-none absolute left-3.5 size-[18px] text-[var(--foreground-muted)]" />
         <input
@@ -44,7 +51,7 @@ export function FoodSearchBar({
           enterKeyHint="search"
           autoComplete="off"
           spellCheck={false}
-          placeholder="Buscar alimento"
+          placeholder={placeholder}
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
           className={cn(
@@ -66,14 +73,14 @@ export function FoodSearchBar({
               <X aria-hidden="true" className="size-4" />
             </button>
           ) : null}
-          <SortMenu sort={sort} onSortChange={onSortChange} />
+          <SortMenu sort={sort} onSortChange={onSortChange} note={sortNote} />
         </div>
       </div>
     </div>
   );
 }
 
-function SortMenu({ sort, onSortChange }: { sort: FoodSort; onSortChange: (value: FoodSort) => void }) {
+function SortMenu({ sort, onSortChange, note }: { sort: FoodSort; onSortChange: (value: FoodSort) => void; note: string }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -101,7 +108,7 @@ function SortMenu({ sort, onSortChange }: { sort: FoodSort; onSortChange: (value
             <DropdownMenuRadioItem key={value} value={value}>
               <span className="flex-1">{FOOD_SORT_LABELS[value]}</span>
               {value !== "relevance" ? (
-                <span className="text-xs text-[var(--foreground-muted)]">cada 100 g</span>
+                <span className="text-xs text-[var(--foreground-muted)]">{note}</span>
               ) : null}
             </DropdownMenuRadioItem>
           ))}

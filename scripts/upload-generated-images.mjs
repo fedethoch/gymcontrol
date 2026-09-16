@@ -64,8 +64,6 @@ async function main() {
       await updateTable("exercises", asset.id, data.publicUrl);
     } else if (asset.kind === "routine") {
       await updateTable("routine_templates", asset.id, data.publicUrl);
-    } else if (asset.kind === "recipe") {
-      await updateTable("recipes", asset.id, data.publicUrl);
     }
 
     uploaded += 1;

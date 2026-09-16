@@ -7,7 +7,6 @@ const PROJECT_ROOT = process.cwd();
 const DEFAULT_OUT = path.join(PROJECT_ROOT, "scripts", "media", "generated-image-manifest.json");
 const EXERCISE_IMAGE_BUCKET = "exercise-images";
 const ROUTINE_IMAGE_BUCKET = "routine-images";
-const RECIPE_IMAGE_BUCKET = "recipe-images";
 
 loadDotEnvFile(path.join(PROJECT_ROOT, ".env.local"));
 
@@ -69,7 +68,7 @@ const DASHBOARD_ASSETS = [
 async function main() {
   const outPath = resolveArg("--out") ?? DEFAULT_OUT;
   const onlyKind = resolveArg("--kind");
-  const [exercises, recipes, routines] = await Promise.all([fetchExercises(), fetchRecipes(), fetchRoutines()]);
+  const [exercises, routines] = await Promise.all([fetchExercises(), fetchRoutines()]);
   const manifest = {
     generatedAt: new Date().toISOString(),
     defaults: {
@@ -98,7 +97,6 @@ async function main() {
       })),
       ...exercises.map((exercise) => exerciseToAsset(exercise)),
       ...routines.map((routine) => routineToAsset(routine)),
-      ...recipes.map((recipe) => recipeToAsset(recipe)),
     ].filter((asset) => !onlyKind || asset.kind === onlyKind),
   };
 
@@ -118,20 +116,6 @@ async function fetchExercises() {
   }
 
   return (data ?? []).filter((exercise) => !isTestExercise(exercise.name));
-}
-
-async function fetchRecipes() {
-  const { data, error } = await supabase
-    .from("recipes")
-    .select("id, name, description, image_url, category, serving_g, recipe_items(grams, foods(name))")
-    .order("category", { ascending: true })
-    .order("name", { ascending: true });
-
-  if (error) {
-    throw new Error(`Could not fetch recipes: ${error.message}`);
-  }
-
-  return data ?? [];
 }
 
 async function fetchRoutines() {
@@ -188,32 +172,6 @@ function routineToAsset(routine) {
       `Use case: photorealistic-natural. Asset type: routine catalog card. Primary request: ${routine.name}, ${routine.description ?? "gym training routine"}. ` +
       `Training context: ${routine.difficulty} level, objective ${routine.objective}, muscle groups ${muscleGroups.join(", ") || "full body"}, exercises ${exercises.map((exercise) => exercise.name).join(", ")}. ` +
       "Scene: coherent gym setup that matches the routine focus. Composition: horizontal 16:9, premium fitness photography, no text, no logo, no watermark.",
-  };
-}
-
-function recipeToAsset(recipe) {
-  const slug = slugify(recipe.name);
-  const ingredients = (recipe.recipe_items ?? [])
-    .map((item) => {
-      const food = Array.isArray(item.foods) ? item.foods[0] : item.foods;
-      return food?.name ? `${food.name} ${item.grams}g` : null;
-    })
-    .filter(Boolean)
-    .join(", ");
-
-  return {
-    kind: "recipe",
-    id: recipe.id,
-    name: recipe.name,
-    bucket: RECIPE_IMAGE_BUCKET,
-    storagePath: `${recipe.id}-${slug}.png`,
-    localPath: `scripts/media/generated/recipes/${recipe.id}-${slug}.png`,
-    publicUrl: recipe.image_url || null,
-    status: recipe.image_url ? "linked" : "needs-generation",
-    prompt:
-      `Use case: photorealistic-natural. Asset type: recipe catalog card. Primary request: ${recipe.name}. ` +
-      `Description: ${recipe.description ?? ""}. Category: ${recipe.category}. Portion: ${recipe.serving_g} g. Ingredients: ${ingredients}. ` +
-      "Scene: show the finished dish accurately matching the ingredients. Composition: horizontal 16:9, premium food photography, no text, no logo, no watermark.",
   };
 }
 

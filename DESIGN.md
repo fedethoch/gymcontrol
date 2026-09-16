@@ -234,7 +234,7 @@ La app es **instalable y standalone**. El diseño asume que el usuario la abre c
 - Regiones: `PrimaryNavigation` (sidebar desktop) · `.shell-workspace` (`MobileHeader` + `main.shell-main`) · `MobileTabBar` (bottom nav).
 - `viewport-fit: cover` + `env(safe-area-inset-*)` en todos los bordes (header top, tab bar bottom, toasts). Ver `.page-frame` padding-top/bottom con safe-area.
 - `theme_color` y `background_color` = `#05070b`. `apple-mobile-web-app-status-bar-style: black-translucent`.
-- **Excepción del home (`/`), la semana activa (`/rutinas`), el registro (`/rutinas/dia`), alimentos (`/alimentos`), el catálogo (`/catalogo`) y la configuración (`/configuracion`)**: `MobileHeader` no se renderiza en esas rutas; el home tiene su propio saludo (§10), `/rutinas` su switcher de rutina (§12), `/rutinas/dia` su barra de entreno (§11.1 Z1), `/alimentos` su título con buscador (§13) `/catalogo` su barra con buscar y filtros (§16; el detalle `/catalogo/rutinas/[id]` conserva el header) y `/configuracion` su fila de identidad (§15). Para que el scroll no pase por debajo de la barra de estado en standalone, las seis fijan una franja `env(safe-area-inset-top)` con `--background` (`.home-safe-top`).
+- **Excepción del home (`/`), la semana activa (`/rutinas`), el registro (`/rutinas/dia`), alimentos (`/alimentos`), recetas (`/recetas`), el catálogo (`/catalogo`) y la configuración (`/configuracion`)**: `MobileHeader` no se renderiza en esas rutas; el home tiene su propio saludo (§10), `/rutinas` su switcher de rutina (§12), `/rutinas/dia` su barra de entreno (§11.1 Z1), `/alimentos` su título con buscador (§13), `/recetas` también (§18), `/catalogo` su barra con buscar y filtros (§16; el detalle `/catalogo/rutinas/[id]` conserva el header) y `/configuracion` su fila de identidad (§15). Para que el scroll no pase por debajo de la barra de estado en standalone, todas fijan una franja `env(safe-area-inset-top)` con `--background` (`.home-safe-top`).
 
 ### 6.2 Bottom nav — **NO TOCAR sin pedido explícito**
 
@@ -579,3 +579,45 @@ En el catálogo actual cada cantidad de días corresponde a un solo nivel (2–3
 | Filtros | `FilterPanel` compartido (§4): nivel y objetivo con conteos (en 0 se apagan) y orden (Más recientes · Nombre A–Z · Más ejercicios) en filas con check. Pie blanco "Ver N rutinas" |
 
 Reglas: un solo emerald por pantalla; nada fijo abajo salvo la bottom nav. Lógica pura en `app/lib/routine-catalog.ts` (tests en `tests/unit/`). Motion: rueda ligada al scroll, marcador de la barra compacta con `layoutId` y fundido corto de resultados al cambiar de número; todo se neutraliza con reduced-motion. El filtro no se guarda en la URL: al volver del detalle arranca en Todas.
+
+---
+
+## 18. Recetas mobile (`/recetas`, <1024px)
+
+Encontrar una receta y registrarla. Mobile se rediseñó con la dirección "Buscador" (2026-09-16), la misma familia que alimentos (§13): título, buscador fijo, chips y filas densas; el detalle vive en un bottom sheet. Desktop (≥1024) conserva su grilla y el sheet lateral, sin imágenes ni violeta. Mock y decisiones RE-D1…RE-D10: https://claude.ai/artifact/LxJDDhEjaoWx6XCsQvqoz9 (v3).
+
+**Las recetas no tienen imágenes** en ninguna vista (RE-D2). Se borraron del código, de los scripts, la columna `recipes.image_url` y el bucket `recipe-images`. Sin foto, una receta se reconoce por su anillo de macros y la línea de ingredientes.
+
+### 18.1 Zonas (arriba → abajo)
+
+| Zona | Contenido |
+|---|---|
+| Z1 Encabezado | `h1` "Recetas" (2rem Sora 700), meta en mono (`25 recetas · 2 tuyas`; lo segundo solo si hay) y "+" redondo neutro de 44px (solo con sesión) que abre "Nueva receta" |
+| Z2 Buscador | Igual que §13.1 Z2: `sticky` de 64px, input de 48px y 16px con ✕ propio y ⇅ con el menú de orden (Relevancia · Más proteína · Menos calorías, por porción). Busca sin tildes en el nombre y en los ingredientes; lo que coincide en el nombre va primero |
+| Z3 Chips | Radios: Todas, Tuyas (solo con sesión) y las categorías con recetas (Desayuno · Comida · Snack) con su total. Reemplazan al `FilterPanel` en mobile |
+| Z4 Lista | En Explorar, agrupada por categoría con encabezado `sticky`; si no, plana con "N recetas" o "N resultados". Filas de 72px: `MacroRing` de 32px (dato, no acento), nombre en hasta 2 líneas + pill "Tuya", ingredientes en una línea, kcal de la porción en Sora 17 y `P · C · G` en mono 11. Sin paginación |
+
+### 18.2 Estados
+
+| Estado | Condición | Qué cambia | Emerald |
+|---|---|---|---|
+| Explorar | Sin búsqueda, chip Todas, orden Relevancia | Lista agrupada | Ninguno |
+| Buscando / filtrado / ordenado | Texto, chip ≠ Todas u orden ≠ Relevancia | Lista plana con conteo (`aria-live`); la coincidencia se subraya en emerald; con "Más proteína" se resalta la P; punto emerald en ⇅ | Ninguno |
+| Sin resultados | Nada coincide | "No encontramos «…»" + "Limpiar búsqueda" | "Crear receta «…»" (con sesión, nombre precargado) |
+| Tuyas vacía | Chip Tuyas sin recetas propias | Paso "Armá tu primera receta" | "Crear receta" |
+| Invitado | Sin sesión | Sin "+", Tuyas ni Registrar | Ninguno |
+| Catálogo vacío | Sin recetas publicadas | "Todavía no hay recetas" en Display, sin buscador ni chips | "Crear receta" (con sesión) |
+
+### 18.3 Detalle y alta
+
+| Pieza | Regla |
+|---|---|
+| Detalle | Bottom sheet (vaul): categoría + "Tuya" y ✕; nombre (1.625rem); ingredientes en una línea; kcal en Metric L con "N porciones · N g" y `MacroRing` de 88px al lado; 3 columnas de macros (gramos y % kcal) separadas por líneas |
+| Porciones | `NumberStepper` (`size="m"`) de a 0,5 entre 0,5 y 20. Recalcula kcal, macros y los gramos de cada ingrediente |
+| Comida | Fila "Comida · La que sigue" que se despliega en el lugar como radios: La que sigue · Desayuno · Almuerzo · Merienda · Cena · Snack |
+| Registrar | Con sesión: CTA emerald "Registrar 1 porción" / "Registrar 1,5 porciones en cena" → `/nutricion/registro?receta=<id>&medida=unit&cantidad=<n>[&tipo=<comida>]`. El registro (§14) abre hoy el paso de cantidad con la receta cargada: en la comida elegida o, sin `tipo`, en la que sigue; limpia la URL. El parser es `parseRegistroRecipeParams`. Invitado: botón neutro "Ingresá para registrar" → `/auth/login` |
+| Ingredientes | H2 + filas de 52px: nombre, gramos y kcal para las porciones elegidas (proporción `servingG / peso base`), con una barra de 4px en `--foreground-muted` del aporte de kcal |
+| Propia | Recetas propias (o admin): "Editar" (secondary) cambia el cuerpo del sheet a `RecipeForm`, sin sheets apilados; "Eliminar" (ghost) pide confirmación en línea y archiva |
+| Nueva receta | Bottom sheet con `RecipeForm` (nombre precargado desde "Crear receta «…»"). Al guardar se limpia la búsqueda y se abre el detalle de la nueva |
+
+Reglas: la lista no tiene emerald; el emerald vive en los vacíos o en el sheet. Nada fijo abajo salvo la bottom nav. Sin `MobileHeader` (§6.1). Lógica pura en `app/lib/recipe-catalog.ts` (tests en `tests/unit/`); componentes en `app/components/recetas/`. Motion: marcador de chip con `layoutId`, fundido corto al cambiar chip u orden y `AnimatedNumber` en las kcal del detalle; todo se neutraliza con reduced-motion.

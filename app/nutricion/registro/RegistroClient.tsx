@@ -130,6 +130,7 @@ export function RegistroClient({
   initialMealType,
   initialMealId,
   initialFoodItem,
+  initialRecipeItem,
 }: {
   foods: Food[];
   recipes: RecipeOption[];
@@ -148,6 +149,8 @@ export function RegistroClient({
   initialMealId?: string;
   /** Si viene (desde /alimentos): en mobile abre "Agregar" con ese alimento en la comida que sigue. */
   initialFoodItem?: { foodId: string; measure: FoodMeasure; quantity: number } | null;
+  /** Si viene (desde /recetas): en mobile abre "Agregar" con esa receta, en la comida de `?tipo=` o en la que sigue. */
+  initialRecipeItem?: { recipeId: string; measure: FoodMeasure; quantity: number } | null;
 }) {
   const router = useRouter();
   const [focusMealId] = useState(
@@ -830,7 +833,7 @@ export function RegistroClient({
               loggedDates={loggedDates}
               logDate={logDate}
               todayKey={todayKey}
-              deepLink={{ mealId: initialMealId, mealType: initialMealType, food: initialFoodItem }}
+              deepLink={{ mealId: initialMealId, mealType: initialMealType, food: initialFoodItem, recipe: initialRecipeItem }}
               sheetsEnabled={isDesktop === false}
             />
           </div>

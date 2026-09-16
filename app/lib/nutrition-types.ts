@@ -101,14 +101,16 @@ export type FrequentItem = {
 export type RecipeIngredient = {
   foodId: string;
   foodName: string;
+  /** Gramos en la receta entera. */
   grams: number;
+  /** Kcal que aportan esos gramos. */
+  kcal: number;
 };
 
 export type Recipe = {
   id: string;
   name: string;
   description: string;
-  imageUrl: string;
   category: RecipeCategory;
   /** Gramos de una porción (los define el creador). */
   servingG: number;

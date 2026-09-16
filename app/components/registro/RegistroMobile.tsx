@@ -126,15 +126,27 @@ export function RegistroMobile({
   const remainingKcal = budget.state === "no_profile" ? null : budget.remainingKcal;
 
   const [initial] = useState(() => resolveInitialDiary(meals, deepLink));
-  // Alimento que llega desde /alimentos: el primer "Agregar" abre directo en su cantidad.
-  const [linkedFood] = useState(() => {
-    const link = deepLink.food;
-    const food = link ? foods.find((candidate) => candidate.id === link.foodId) : undefined;
-    if (!link || !food) return null;
-    return {
-      option: { kind: "food" as const, id: food.id, name: food.name, food },
-      amount: { measure: link.measure, quantity: link.quantity },
-    };
+  // Alimento (desde /alimentos) o receta (desde /recetas): el primer "Agregar" abre directo en su cantidad.
+  const [linkedItem] = useState((): { option: PickerOption; amount: Amount } | null => {
+    const foodLink = deepLink.food;
+    const food = foodLink ? foods.find((candidate) => candidate.id === foodLink.foodId) : undefined;
+    if (foodLink && food) {
+      return {
+        option: { kind: "food", id: food.id, name: food.name, food },
+        amount: { measure: foodLink.measure, quantity: foodLink.quantity },
+      };
+    }
+
+    const recipeLink = deepLink.recipe;
+    const recipe = recipeLink ? recipes.find((candidate) => candidate.id === recipeLink.recipeId) : undefined;
+    if (recipeLink && recipe) {
+      return {
+        option: { kind: "recipe", id: recipe.id, name: recipe.name, recipe },
+        amount: { measure: recipeLink.measure, quantity: recipeLink.quantity },
+      };
+    }
+
+    return null;
   });
   const { pagerRef, onScroll, height, mounted, selectedKey, goTo, follow } = useDiaryPager({
     panelKeys: day.panelKeys,
@@ -185,10 +197,11 @@ export function RegistroMobile({
     }
   }
 
-  // Recargar no vuelve a abrir el alimento del enlace.
+  // Recargar no vuelve a abrir el alimento o la receta del enlace.
+  const hasLinkedItem = Boolean(deepLink.food || deepLink.recipe);
   useEffect(() => {
-    if (sheetsEnabled && deepLink.food) window.history.replaceState(null, "", registroHref(logDate, todayKey));
-  }, [sheetsEnabled, deepLink.food, logDate, todayKey]);
+    if (sheetsEnabled && hasLinkedItem) window.history.replaceState(null, "", registroHref(logDate, todayKey));
+  }, [sheetsEnabled, hasLinkedItem, logDate, todayKey]);
 
   useEffect(() => {
     const pending = timers.current;
@@ -440,7 +453,7 @@ export function RegistroMobile({
           frequentByKey={frequentByKey}
           lastAmounts={lastAmounts}
           remainingKcal={remainingKcal}
-          initialItem={addSheet.session === 0 ? linkedFood : null}
+          initialItem={addSheet.session === 0 ? linkedItem : null}
           onAdd={async (option, amount) => {
             const addTarget = addSheet.target;
             if (!addTarget) return null;

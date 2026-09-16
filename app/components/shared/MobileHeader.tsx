@@ -116,6 +116,8 @@ export function MobileHeader({
     pathname === "/rutinas/dia" ||
     // Alimentos: título con buscador (DESIGN.md §13).
     pathname === "/alimentos" ||
+    // Recetas: título con buscador (DESIGN.md §18).
+    pathname === "/recetas" ||
     // Registro de comidas: día, racha y "Tu día" (DESIGN.md §14).
     pathname === "/nutricion/registro" ||
     // Catálogo: barra con buscar y filtros (DESIGN.md §16). El detalle conserva el header.

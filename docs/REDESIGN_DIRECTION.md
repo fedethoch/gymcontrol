@@ -80,7 +80,7 @@ De las refs no se toma: color de marca (amarillo de Ladder), anillos multicolor 
 
 Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se abre sin cambiar la URL (sheet, dialog, modo inline).
 
-**Progreso: 7 / 15 rutas**
+**Progreso: 8 / 15 rutas**
 
 | # | Ruta | Pantalla | Estado | Categorías de `/app-store-refs` |
 |---|---|---|---|---|
@@ -91,7 +91,7 @@ Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se ab
 | 5 | `/catalogo/rutinas/[id]` | Detalle de rutina | Sin rediseñar | `catalog --extra` · `routines` |
 | 6 | `/nutricion/registro` | Registro diario de comidas | ✅ Mobile rediseñado · desktop sin tocar · mock https://claude.ai/artifact/HqtexQwHqppi4B25Ujw7LE · `DESIGN.md` §14 | `nutrition --extra` · `--search Lifesum` · `--search "Cal AI"` · `--search Cronometer` |
 | 7 | `/alimentos` | Alimentos y macros | ✅ Mobile rediseñado · desktop sin tocar (sin foto ni violeta) · mock https://claude.ai/artifact/CVsfSwXJ3WBA9wmViRL2TN · `DESIGN.md` §13 | `nutrition --extra` · `--search Cronometer` |
-| 8 | `/recetas` | Recetas | Sin rediseñar | `recipes --extra` |
+| 8 | `/recetas` | Recetas | ✅ Mobile rediseñado · desktop sin tocar (sin imágenes ni violeta) · mock https://claude.ai/artifact/LxJDDhEjaoWx6XCsQvqoz9 · `DESIGN.md` §18 | `recipes --extra` (Crouton, Mela: solo organizadores con foto) · sin fotos: `--apps macrofactor` + `--search` Cronometer, MyFitnessPal, "Carbon Diet Coach", Fitia |
 | 9 | `/configuracion` | Perfil, objetivo y cuenta | ✅ Mobile rediseñado · desktop sin tocar · mock https://claude.ai/artifact/VX3CrPmQLQctJXyb3YohJr · `DESIGN.md` §15 | Sin categoría (la skill no trae ajustes): `--apps macrofactor,yazio,whoop,future` + `--search` Lifesum, Cal AI, Oura, Strava, Gentler Streak |
 | 10 | `/auth/login` | Acceso | Rediseñada en julio 2026, antes de esta dirección | Sin categoría |
 | 11–15 | `/admin/*` | Herramientas admin | Sin rediseñar | Sin categoría: la skill no trae pantallas de admin |
@@ -154,9 +154,12 @@ Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se ab
   - [x] ↳ Bottom sheet Detalle de alimento con porción y "Registrar"
     - [x] ↳ Editar en el mismo sheet y confirmación inline de eliminar alimento propio
   - [x] ↳ Bottom sheet "Nuevo alimento" (también "Crear «búsqueda»")
-- [ ] **8. `/recetas`**
-  - [x] ↳ Sheet Filtros (`FilterPanel`, compartido; rediseñado en la ruta 4)
-  - [ ] ↳ Sheet Detalle de receta
+- [x] **8. `/recetas`** (mobile) — decisiones 2026-09-16: RE-D1 dirección B "Buscador" · RE-D2 sin imágenes (código, scripts, columna y bucket) · RE-D3 "Registrar" → `/nutricion/registro?receta=` · RE-D4 detalle "Ficha" · RE-D5 sin `MobileHeader` · RE-D6 desktop sin tocar salvo imágenes y violeta · RE-D7 dos recetas cambian de categoría · RE-D9 anillo de macros en las filas · RE-D10 ingredientes en la fila y en la búsqueda
+  - [x] ↳ Sheet Filtros (`FilterPanel`, compartido; rediseñado en la ruta 4; en mobile lo reemplazan chips + menú de orden)
+  - [x] ↳ Bottom sheet Detalle de receta: porciones, comida, "Registrar" e ingredientes con su aporte
+    - [x] ↳ Editar en el mismo sheet y confirmación inline de eliminar (creador o admin)
+  - [x] ↳ Bottom sheet "Nueva receta" (también "Crear receta «búsqueda»")
+  - [ ] ↳ Desktop (grilla y sheet lateral): solo sin imágenes ni violeta, rediseño pendiente
 - [x] **9. `/configuracion`** (mobile) — decisiones 2026-09-16: C-D1 dirección A "Tu plan" + flujo C solo sin perfil · C-D2 un sheet por grupo · C-D3 stepper −/+ (`NumberStepper`) · C-D4 carrusel de figuras de grasa · C-D5 hero con ecuación · C-D6 "Los fijo yo" dentro del sheet Objetivo · C-D7 sin `MobileHeader` · C-D8 borrar cuenta en bottom sheet · C-D9 email en solo lectura · C-D10 desktop sin tocar · flujo de alta de 6 pasos con grasa
   - [x] ↳ Sheet Tu cuerpo (S1) con vista interna Grasa corporal (S2)
   - [x] ↳ Sheet Actividad (S3)

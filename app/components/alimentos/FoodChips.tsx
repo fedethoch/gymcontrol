@@ -3,24 +3,27 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useId } from "react";
 
-import type { ChipOption, FoodChip } from "@/app/lib/food-catalog";
 
-/** Z3 · filtro por origen o categoría como radios nativos (flechas y un solo tab stop). */
-export function FoodChips({
+type Chip<T extends string> = { value: T; label: string; count: number | null };
+
+/** Z3 · filtro por origen o categoría como radios nativos (flechas y un solo tab stop). También en recetas. */
+export function FoodChips<T extends string>({
   options,
   value,
   onChange,
+  legend = "Filtrar alimentos",
 }: {
-  options: ChipOption[];
-  value: FoodChip;
-  onChange: (value: FoodChip) => void;
+  options: Chip<T>[];
+  value: T;
+  onChange: (value: T) => void;
+  legend?: string;
 }) {
   const name = useId();
   const reduceMotion = useReducedMotion();
 
   return (
     <fieldset className="min-w-0">
-      <legend className="sr-only">Filtrar alimentos</legend>
+      <legend className="sr-only">{legend}</legend>
       <div className="-mx-4 flex gap-2 overflow-x-auto scroll-px-4 px-4 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {options.map((option) => {
           const selected = option.value === value;

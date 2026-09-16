@@ -261,6 +261,19 @@ describe("resolveInitialDiary", () => {
     assert.equal(initial.addTarget.type, "snack");
   });
 
+  it("?receta= va a la comida que sigue y, con ?tipo=, a esa comida", () => {
+    const recipe = { recipeId: "r1", measure: "unit", quantity: 1.5 };
+    assert.deepEqual(resolveInitialDiary(meals, { recipe }), {
+      selectedKey: "empty-merienda",
+      addTarget: { kind: "slot", type: "merienda" },
+    });
+    assert.deepEqual(resolveInitialDiary(meals, { recipe, mealType: "cena" }), {
+      selectedKey: "empty-cena",
+      addTarget: { kind: "slot", type: "cena" },
+    });
+    assert.deepEqual(resolveInitialDiary(meals, { recipe, mealType: "almuerzo" }).addTarget, { kind: "meal", mealId: "a2" });
+  });
+
   it("?tipo=snack sin snack crea una comida nueva", () => {
     const initial = resolveInitialDiary(meals, { mealType: "snack" });
     assert.equal(initial.selectedKey, "empty-merienda");
