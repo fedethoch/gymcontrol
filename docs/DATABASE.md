@@ -671,7 +671,7 @@ Migraciones: `20260613_g18_nutrition_core.sql` (esquema + RLS + storage), `20260
 
 - `id uuid primary key`
 - `name text not null`
-- `image_url text not null` (sin uso por ahora, catalogo usa iconos por categoria)
+- `image_url text not null default ''`: sin uso, los alimentos no tienen imagen (2026-09-16, `DESIGN.md` §13). Default `''` desde `20260916_nutrition_foods_image_default`; se dropea en `20260916_nutrition_foods_image_contract` (ver "Alimentos sin imagen")
 - `category text not null check (category in ('protein','carb','fat','vegetable','mixed','drink'))` (`drink` desde `20260915_nutrition_user_foods_recipes_targets`; bebidas se registran en ml, 1 ml ≈ 1 g)
 - `serving_g integer not null default 100 check (serving_g > 0)`
 - `measure text not null default 'g' check (measure in ('g','unit'))` (medida por defecto, g22)
@@ -703,7 +703,7 @@ Migraciones: `20260613_g18_nutrition_core.sql` (esquema + RLS + storage), `20260
 
 ### Storage `food-images`
 
-Bucket publico (5MB, jpg/png/webp), mismas policies que `exercise-images` (lectura publica, escritura admin). Creado para uso futuro; el admin de alimentos actual no sube imagenes.
+Bucket publico (5MB, jpg/png/webp), con 4 policies `food_images_*` (lectura publica, escritura admin). Guardaba 203 fotos del catalogo (56 MB) que solo se mostraban en el detalle de `/alimentos`. Se borra junto con `foods.image_url` (ver "Alimentos sin imagen").
 
 ### Indices
 
@@ -813,3 +813,16 @@ Fuentes y decision por alimento: `docs/CATALOGO_ALIMENTOS_AR.md` (SARA 2 / ARGEN
 - por que dos fases: el codigo anterior rompe `/alimentos` y `/admin/alimentos` con `category = 'drink'` (icono inexistente) y arranca en 100 unidades los alimentos `unit`
 - backup previo: `private.foods_backup_20260915` (204 filas, schema no expuesto por la API)
 - la fase 1 termina con controles que revierten todo si falta un alimento del seed, si quedan duplicados o si "test" sigue en el catalogo global
+
+## Alimentos sin imagen (2026-09-16)
+
+Decision AL-D6 del rediseño de `/alimentos` (`DESIGN.md` §13): las fotos de alimentos se sacan de la app, del codigo y de la base, sin backup por decision del usuario. Los PNG que generaban las fotos quedan solo en el historial de git (`scripts/media/generated/foods/`).
+
+| Migracion | Cuando | Que hace |
+| --- | --- | --- |
+| `20260916_nutrition_foods_image_default` | aplicada 2026-09-16, antes del deploy | expand: `foods.image_url` pasa a `default ''` para que el codigo nuevo inserte sin la columna; el codigo anterior sigue funcionando |
+| `20260916_nutrition_foods_image_contract` | pendiente: solo con el codigo sin `image_url` en produccion | contract: drop de `foods.image_url` y de las 4 policies `food_images_*` |
+
+- los objetos y el bucket `food-images` se borran por la Storage API con service role: `storage.protect_delete` bloquea el `delete` por SQL y, aunque se habilitara, dejaria archivos huerfanos
+- despues del contract, un rollback de Vercel a un deploy anterior rompe `/alimentos`, `/nutricion/registro` y `/admin/alimentos` (leen la columna)
+- `private.foods_backup_20260915` conserva `image_url` con URLs que dejan de existir

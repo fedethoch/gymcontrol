@@ -7,6 +7,7 @@ Objetivo: abrir el area minima correcta.
 | Rutas publicas | `app/page.tsx`, `app/catalogo/`, `app/auth/` |
 | Home mobile (`/`, <1024) | `app/components/home/`, `app/lib/home-dashboard.ts`; reglas en `DESIGN.md` §10 |
 | Semana activa mobile (`/rutinas`, <1024) | `app/rutinas/page.tsx`, `app/components/rutinas/`, `app/lib/routine-week.ts` (lógica pura + `tests/unit/`); reglas en `DESIGN.md` §12. Desktop: `app/rutinas/RutinasOverview.tsx`, `WeekDaysList.tsx` |
+| Alimentos mobile (`/alimentos`, <1024) | `app/alimentos/page.tsx`, `app/components/alimentos/`, `app/lib/food-catalog.ts` (lógica pura + `tests/unit/`); reglas en `DESIGN.md` §13. Desktop: `app/alimentos/NutritionCatalogClient.tsx` |
 | Rutas de dashboard | `app/dashboard/` |
 | Registro de entrenamiento y progresión | `app/rutinas/dia/` (desktop: cards), `app/components/workout/` (mobile <1024), `app/lib/day-workout.ts` y `app/lib/workout-progression.ts` (lógica pura + `tests/unit/`), `app/lib/workout-tracking.ts` (lecturas); reglas en `DESIGN.md` §11 |
 | Sync offline del registro | contrato `app/lib/workout-sync-contract.ts` (versionado), `app/api/workouts/sync/`, `app/lib/workout-sync.ts`, `app/lib/workout-sync-queue.ts`; modelo en `docs/DATABASE.md` (F1) |

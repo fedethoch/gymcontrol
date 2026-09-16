@@ -231,7 +231,7 @@ La app es **instalable y standalone**. El diseño asume que el usuario la abre c
 - Regiones: `PrimaryNavigation` (sidebar desktop) · `.shell-workspace` (`MobileHeader` + `main.shell-main`) · `MobileTabBar` (bottom nav).
 - `viewport-fit: cover` + `env(safe-area-inset-*)` en todos los bordes (header top, tab bar bottom, toasts). Ver `.page-frame` padding-top/bottom con safe-area.
 - `theme_color` y `background_color` = `#05070b`. `apple-mobile-web-app-status-bar-style: black-translucent`.
-- **Excepción del home (`/`), la semana activa (`/rutinas`) y el registro (`/rutinas/dia`)**: `MobileHeader` no se renderiza en esas rutas; el home tiene su propio saludo (§10), `/rutinas` su switcher de rutina (§12) y `/rutinas/dia` su barra de entreno (§11.1 Z1). Para que el scroll no pase por debajo de la barra de estado en standalone, las tres fijan una franja `env(safe-area-inset-top)` con `--background` (`.home-safe-top`).
+- **Excepción del home (`/`), la semana activa (`/rutinas`), el registro (`/rutinas/dia`) y alimentos (`/alimentos`)**: `MobileHeader` no se renderiza en esas rutas; el home tiene su propio saludo (§10), `/rutinas` su switcher de rutina (§12), `/rutinas/dia` su barra de entreno (§11.1 Z1) y `/alimentos` su título con buscador (§13). Para que el scroll no pase por debajo de la barra de estado en standalone, las cuatro fijan una franja `env(safe-area-inset-top)` con `--background` (`.home-safe-top`).
 
 ### 6.2 Bottom nav — **NO TOCAR sin pedido explícito**
 
@@ -401,3 +401,41 @@ Recorrer el plan entero sin salir de la pantalla: pestañas por día y un panel 
 | Rutina sin días | Portada + "Rutina vacía" + botón neutro al catálogo, sin pestañas | — |
 
 Reglas: estados de `resolveHeroState` (§10.2). Nunca dos emerald. Lógica pura en `app/lib/routine-week.ts` (tests en `tests/unit/`). Motion: marco de pestaña activa con `layoutId`, crossfade corto al cambiar de día, `AnimatedNumber` en stats, parallax suave de la portada; todo neutralizado con reduced-motion.
+
+---
+
+## 13. Alimentos mobile (`/alimentos`, <1024px)
+
+Buscar un alimento y leer sus macros de un vistazo. Mobile se rediseñó con la dirección "Buscador" (2026-09-16): título grande, buscador fijo arriba, chips de categoría y filas densas; el detalle vive en un bottom sheet. Desktop (≥1024) conserva su lista y el sheet lateral, sin foto ni violeta. Los alimentos no tienen imagen en ninguna vista (AL-D6: sin imágenes en el código, y se borran la columna `foods.image_url` y el bucket `food-images`). Mock y decisiones AL-D1…AL-D7: https://claude.ai/artifact/CVsfSwXJ3WBA9wmViRL2TN
+
+### 13.1 Zonas (arriba → abajo)
+
+| Zona | Contenido |
+|---|---|
+| Z1 Encabezado | `h1` "Alimentos" (2rem Sora 700), meta en mono (`505 alimentos · 1 tuyo`) y "+" redondo neutro de 44px (solo con sesión) que abre "Nuevo alimento" |
+| Z2 Buscador | `sticky` bajo la franja segura (64px, fondo `--background`): input de 48px y 16px con ✕ propio y botón ⇅ de 48px con el menú de orden (Relevancia · Más proteína · Menos calorías, cada 100 g). Punto emerald en ⇅ si el orden no es Relevancia. El conteo de resultados se anuncia con `aria-live` |
+| Z3 Chips | Fila horizontal de radios: Todos, Tuyos (solo con sesión) y las 6 categorías con su total. Reemplazan al `FilterPanel` en mobile |
+| Z4 Frecuentes | Solo con sesión, con registros en los últimos 60 días y en el estado Explorar: H2 + tiles de 136px (nombre, kcal de la última porción, `150 g · 12 veces`). Tocar abre el detalle con esa medida |
+| Z5 Lista | En Explorar, agrupada por categoría con encabezado `sticky` (nombre + total); si no, plana con "N resultados". Filas de 64px: anillo de macros de 32px (% de kcal de P/C/G con `MACRO_COLORS`: dato, no acento), nombre + pill "Tuyo", `100 g · 1 u ≈ 50 g`, kcal en Sora 17 y `P · C · G` en mono 11. "Mostrar más" de a 60 |
+
+### 13.2 Estados
+
+| Estado | Condición | Qué cambia | Emerald |
+|---|---|---|---|
+| Explorar | Sin búsqueda, chip Todos, orden Relevancia | Frecuentes (si hay) + lista agrupada | Ninguno |
+| Sin historial | Sin registros en 60 días | Sin Frecuentes | Ninguno |
+| Buscando / filtrado / ordenado | Texto, chip ≠ Todos u orden ≠ Relevancia | Sin Frecuentes ni grupos; lista plana con conteo; con "Más proteína" se resalta la P | Ninguno |
+| Sin resultados | Nada coincide | "No encontramos «…»" + "Limpiar búsqueda" | "Crear «…»" (con sesión, nombre precargado) |
+| Tuyos vacío | Chip Tuyos sin alimentos propios | Paso "Cargá tu primer alimento" | "Crear alimento" |
+| Invitado | Sin sesión | Sin "+", Tuyos, Frecuentes, Registrar ni Editar | Ninguno |
+
+Reglas: la lista no tiene emerald; el emerald vive en los vacíos o dentro de un sheet. Nada fijo abajo salvo la bottom nav. Lógica pura en `app/lib/food-catalog.ts` (tests en `tests/unit/`). Motion: marcador de chip con `layoutId` y `AnimatedNumber` en las kcal; todo se neutraliza con reduced-motion.
+
+### 13.3 Detalle y alta
+
+| Pieza | Regla |
+|---|---|
+| Detalle | Bottom sheet (vaul): categoría + "Tuyo", nombre, porción (base `servingG` o `1 unidad · X g`), kcal en Metric L, barra apilada con el % de kcal y 3 columnas (gramos de la porción y % kcal) separadas por líneas, sin cajas |
+| Registrar | Con sesión: CTA emerald "Registrar 1 unidad" / "Registrar 100 g" → `/nutricion/registro?alimento=<id>&medida=<g\|unit>&cantidad=<n>`. El registro (§14) abre el día de hoy con ese alimento cargado y limpia la URL para no duplicar al recargar; el parser es `parseRegistroFoodParams` |
+| Propio | "Editar" (secondary) cambia el cuerpo del sheet al formulario, sin sheets apilados; "Eliminar" (ghost) pide confirmación inline. Si el alimento ya se usó en comidas, el servidor lo rechaza con un toast |
+| Nuevo alimento | Bottom sheet con `FoodForm` (sin caja interna, kcal estimadas por macros). Al guardar se limpia la búsqueda y se abre el detalle del nuevo |

@@ -46,6 +46,7 @@ Prueba rápida de una ruta: ¿qué es lo más grande y es la tarea principal? ¿
 | Secciones sin caja | Hevy · Fitbod · MacroFactor | Título de sección con acción de texto a la derecha; el contenido fluye sin card por bloque |
 | Stats medianas | Oura · Nike Run Club · WHOOP | Fila de 3 números medianos ("Esta semana") |
 | Diario en filas | YAZIO | Una fila por comida con "+" (D4-b) |
+| Buscador de alimentos | MacroFactor · Cronometer · Lose It | Buscador como pantalla, filas densas con kcal y macros en una línea, detalle con porción y kcal gigante (AL-D1, AL-D3) |
 | Mapa muscular | MuscleWiki · Setgraph · Liftoff · Gymverse | Cuerpo coloreado, etiquetas con líneas guía, vacío con silueta (D5-2, D6-A, D8-A) |
 | Descartada | Apple Fitness · Gentler Streak | Grilla de widgets de tamaños distintos: se sigue leyendo como grilla |
 
@@ -79,7 +80,7 @@ De las refs no se toma: color de marca (amarillo de Ladder), anillos multicolor 
 
 Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se abre sin cambiar la URL (sheet, dialog, modo inline).
 
-**Progreso: 3 / 15 rutas**
+**Progreso: 4 / 15 rutas**
 
 | # | Ruta | Pantalla | Estado | Categorías de `/app-store-refs` |
 |---|---|---|---|---|
@@ -89,7 +90,7 @@ Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se ab
 | 4 | `/catalogo` | Catálogo de rutinas | Sin rediseñar | `catalog --extra` · `routines` |
 | 5 | `/catalogo/rutinas/[id]` | Detalle de rutina | Sin rediseñar | `catalog --extra` · `routines` |
 | 6 | `/nutricion/registro` | Registro diario de comidas | Sin rediseñar | `nutrition --extra` |
-| 7 | `/alimentos` | Alimentos y macros | Sin rediseñar | `nutrition` |
+| 7 | `/alimentos` | Alimentos y macros | ✅ Mobile rediseñado · desktop sin tocar (sin foto ni violeta) · mock https://claude.ai/artifact/CVsfSwXJ3WBA9wmViRL2TN · `DESIGN.md` §13 | `nutrition --extra` · `--search Cronometer` |
 | 8 | `/recetas` | Recetas | Sin rediseñar | `recipes --extra` |
 | 9 | `/configuracion` | Perfil, objetivo y cuenta | Sin rediseñar | Sin categoría: la skill no trae pantallas de ajustes |
 | 10 | `/auth/login` | Acceso | Rediseñada en julio 2026, antes de esta dirección | Sin categoría |
@@ -131,11 +132,13 @@ Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se ab
     - [ ] ↳ Edición inline de ítem (cantidad/medida)
     - [ ] ↳ `FoodPicker` para agregar ítems
     - [ ] ↳ Confirmación inline de eliminar
-- [ ] **7. `/alimentos`**
+- [x] **7. `/alimentos`** (mobile) — decisiones 2026-09-16: AL-D1 dirección A "Buscador" · AL-D2 anillo de macros en las filas · AL-D3 "Registrar" con porción → `/nutricion/registro` · AL-D4 orden por proteína / kcal · AL-D5 sin `MobileHeader` · AL-D6 sin imágenes de alimentos (código, columna y bucket) · AL-D7 desktop sin tocar salvo foto y violeta
   - [ ] ↳ Sheet Filtros (`FilterPanel`, compartido)
-  - [ ] ↳ Sheet Detalle de alimento
-    - [ ] ↳ Confirmación inline de eliminar alimento propio
-  - [ ] ↳ Bottom sheet "Nuevo / Editar alimento"
+  - [x] ↳ Chips de categoría + menú de orden (en mobile reemplazan al `FilterPanel`; el desktop lo sigue usando)
+  - [x] ↳ Frecuentes (tiles horizontales)
+  - [x] ↳ Bottom sheet Detalle de alimento con porción y "Registrar"
+    - [x] ↳ Editar en el mismo sheet y confirmación inline de eliminar alimento propio
+  - [x] ↳ Bottom sheet "Nuevo alimento" (también "Crear «búsqueda»")
 - [ ] **8. `/recetas`**
   - [ ] ↳ Sheet Filtros (`FilterPanel`, compartido)
   - [ ] ↳ Sheet Detalle de receta

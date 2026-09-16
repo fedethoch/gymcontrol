@@ -16,6 +16,7 @@
 | Contrato de sync (`app/lib/workout-sync-contract.ts`) | cambio incompatible = version nueva; el servidor acepta la anterior hasta que no queden clientes viejos |
 | Nutricion: orden de comidas / recetas (`app/lib/meal-order.ts`, `app/lib/recipe-nutrition.ts`, `/nutricion/registro`, `/recetas`) | `pnpm test:unit` + Playwright con `pnpm dev`: crear "despues de…", mover ↑/↓, home en orden, receta por porcion y por gramos, editar (registro congelado), archivar; limpiar comidas/recetas de prueba de la cuenta admin |
 | Semana activa mobile (`/rutinas`, `app/lib/routine-week.ts`) | `pnpm test:unit` + Playwright a 375/390/430 (pestañas, swipe, sheet Mis rutinas, detalle) y 1280 sin cambios |
+| Alimentos mobile (`/alimentos`, `app/lib/food-catalog.ts`, deep link `?alimento=` del registro) | `pnpm test:unit` + Playwright a 375/390/430: buscar, chips, orden, sticky, detalle y porción, Registrar (drawer + URL limpia), crear/editar/eliminar propio, invitado; 1280 sin cambios; limpiar alimentos y comidas de prueba de la cuenta admin |
 | Docs | no correr tests |
 
 Fallback actual: `pnpm lint`, `pnpm build`, `pnpm validate:mobile` o validacion manual minima.
