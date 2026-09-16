@@ -10,6 +10,8 @@ import {
   createMealWithItems,
   deleteMeal,
   deleteMealItem,
+  emptyMealLog,
+  getMealLogForDate,
   moveMeal,
   updateMeal,
   updateMealItem,
@@ -117,4 +119,23 @@ export async function updateMealItemAction(input: z.input<typeof updateItemSchem
 
 export async function deleteMealItemAction(input: z.input<typeof itemRefSchema>) {
   return runMealLogAction(itemRefSchema, input, (data, userId) => deleteMealItem({ userId, ...data }));
+}
+
+const refreshSchema = z.object({ logDate: logDateSchema });
+
+/** Solo lectura: el registro del día como está en la base, para recuperarse de un estado viejo. */
+export async function refreshMealLogAction(input: z.input<typeof refreshSchema>): Promise<MealLogActionResult> {
+  const auth = await requireUser();
+  const parsed = refreshSchema.safeParse(input);
+
+  if (!parsed.success) {
+    return { ok: false, message: parsed.error.issues[0]?.message ?? "Revisá los datos." };
+  }
+
+  try {
+    const log = await getMealLogForDate({ userId: auth.user.id, logDate: parsed.data.logDate });
+    return { ok: true, log: log ?? emptyMealLog(parsed.data.logDate) };
+  } catch (error) {
+    return { ok: false, message: error instanceof Error ? error.message : "No se pudo actualizar el registro." };
+  }
 }

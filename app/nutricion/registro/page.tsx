@@ -1,5 +1,6 @@
 import { RegistroClient } from "@/app/nutricion/registro/RegistroClient";
 import { requireUser } from "@/app/lib/auth";
+import { parseRegistroFoodParams } from "@/app/lib/food-catalog";
 import { listFoodsForUser } from "@/app/lib/foods";
 import { addDaysToDateKey, getTodayDateKey, isDateKey } from "@/app/lib/local-date";
 import { getLoggedDatesForUser, getMealLogForDate, listFrequentItems } from "@/app/lib/meal-logs";
@@ -10,11 +11,18 @@ import { listRecipeCatalogItems } from "@/app/lib/recipes";
 export default async function RegistroNutricionPage({
   searchParams,
 }: {
-  searchParams: Promise<{ tipo?: string | string[]; fecha?: string | string[]; comida?: string | string[] }>;
+  searchParams: Promise<{
+    tipo?: string | string[];
+    fecha?: string | string[];
+    comida?: string | string[];
+    alimento?: string | string[];
+    medida?: string | string[];
+    cantidad?: string | string[];
+  }>;
 }) {
   const auth = await requireUser();
   const todayKey = getTodayDateKey();
-  const { tipo, fecha, comida } = await searchParams;
+  const { tipo, fecha, comida, alimento, medida, cantidad } = await searchParams;
   const logDate = resolveLogDate(fecha, todayKey);
   // Fila del home con una comida ya registrada: /nutricion/registro?comida=<id> (siempre hoy)
   const initialMealId = logDate === todayKey && typeof comida === "string" ? comida : undefined;
@@ -39,22 +47,25 @@ export default async function RegistroNutricionPage({
     macrosPerG: recipe.macrosPerG,
   }));
 
+  // RegistroClient arma sus dos árboles: mobile (<1024) y desktop.
   return (
-    <section className="page-frame content-start bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.15),transparent_31%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
-      <RegistroClient
-        key={logDate}
-        foods={foods}
-        recipes={recipeOptions}
-        frequentItems={frequentItems}
-        logDate={logDate}
-        todayKey={todayKey}
-        initialMeals={mealLog?.meals ?? []}
-        target={profile ? { kcal: profile.plan.targetKcal, macros: profile.plan.macros } : null}
-        loggedDates={[...loggedDates]}
-        initialMealType={initialMealType}
-        initialMealId={initialMealId}
-      />
-    </section>
+    <RegistroClient
+      key={logDate}
+      foods={foods}
+      recipes={recipeOptions}
+      frequentItems={frequentItems}
+      logDate={logDate}
+      todayKey={todayKey}
+      initialMeals={mealLog?.meals ?? []}
+      target={profile ? { kcal: profile.plan.targetKcal, macros: profile.plan.macros } : null}
+      loggedDates={[...loggedDates]}
+      initialMealType={initialMealType}
+      initialMealId={initialMealId}
+      // "Registrar" desde /alimentos: /nutricion/registro?alimento=…&medida=…&cantidad=… (siempre hoy)
+      initialFoodItem={
+        logDate === todayKey && !initialMealId ? parseRegistroFoodParams({ alimento, medida, cantidad }, foods) : null
+      }
+    />
   );
 }
 

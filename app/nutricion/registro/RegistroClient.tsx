@@ -30,7 +30,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/app/components/ui/Accordion";
-import { MobileHeaderBadgeSync } from "@/app/components/shared/MobileHeader";
+import { RegistroMobile } from "@/app/components/registro/RegistroMobile";
 import { Button } from "@/app/components/ui/Button";
 import { CardTitle } from "@/app/components/ui/Card";
 import {
@@ -57,6 +57,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/Select";
+import { useMediaQuery } from "@/app/components/ui/use-media-query";
 import {
   addMealItemAction,
   createMealAction,
@@ -67,15 +68,18 @@ import {
   updateMealItemAction,
   type MealLogActionResult,
 } from "@/app/nutricion/registro/actions";
+import { FoodPicker } from "@/app/nutricion/registro/FoodPicker";
+import { addDaysToDateKey, getWeekStartDateKey } from "@/app/lib/local-date";
 import {
-  FoodPicker,
+  formatItemAmount,
   formatQuantity,
+  formatServings,
   getFoodGramsPerUnit,
   parseQuantity,
   previewNutrition,
   type PickerOption,
-} from "@/app/nutricion/registro/FoodPicker";
-import { addDaysToDateKey, getWeekStartDateKey } from "@/app/lib/local-date";
+} from "@/app/lib/meal-amounts";
+import { calculateStreak, withCurrentDay } from "@/app/lib/meal-diary";
 import { MACRO_COLORS, MACRO_LABELS } from "@/app/lib/nutrition-style";
 import type { MealGroup, MealLogItem } from "@/app/lib/meal-logs";
 import { suggestAfterMealId } from "@/app/lib/meal-order";
@@ -125,6 +129,7 @@ export function RegistroClient({
   loggedDates,
   initialMealType,
   initialMealId,
+  initialFoodItem,
 }: {
   foods: Food[];
   recipes: RecipeOption[];
@@ -141,6 +146,8 @@ export function RegistroClient({
   initialMealType?: MealType;
   /** Si viene (desde una fila del home): abre esa comida. */
   initialMealId?: string;
+  /** Si viene (desde /alimentos): en mobile abre "Agregar" con ese alimento en la comida que sigue. */
+  initialFoodItem?: { foodId: string; measure: FoodMeasure; quantity: number } | null;
 }) {
   const router = useRouter();
   const [focusMealId] = useState(
@@ -160,12 +167,14 @@ export function RegistroClient({
   const [isSavingMeal, setIsSavingMeal] = useState(false);
   const [editingMealId, setEditingMealId] = useState<string | null>(focusMealId);
   const [newMealOpen, setNewMealOpen] = useState(Boolean(initialMealType) && !focusMealId);
+  // Los dos árboles (mobile y desktop) están montados: cada uno abre lo suyo según el ancho.
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   useEffect(() => {
-    if (focusMealId) {
+    if (isDesktop && focusMealId) {
       document.getElementById(`meal-${focusMealId}`)?.scrollIntoView({ block: "center" });
     }
-  }, [focusMealId]);
+  }, [isDesktop, focusMealId]);
 
   const totalKcal = meals.reduce((total, meal) => total + meal.kcal, 0);
   const totalMacros: Macros = meals.reduce<Macros>(
@@ -178,14 +187,7 @@ export function RegistroClient({
   );
 
   const isToday = logDate === todayKey;
-  const loggedSet = new Set(loggedDates);
-
-  if (meals.some((meal) => meal.items.length > 0)) {
-    loggedSet.add(logDate);
-  } else {
-    loggedSet.delete(logDate);
-  }
-
+  const loggedSet = withCurrentDay(loggedDates, logDate, meals.some((meal) => meal.items.length > 0));
   const streak = calculateStreak(loggedSet, todayKey);
   const macrosEmpty = totalMacros.proteinG === 0 && totalMacros.carbsG === 0 && totalMacros.fatG === 0;
   const dailyPhrase = NUTRITION_PHRASES[parseInt(logDate.replace(/-/g, ""), 10) % NUTRITION_PHRASES.length];
@@ -495,17 +497,9 @@ export function RegistroClient({
     </div>
   );
 
-  return (
+  const desktop = (
     <div className="grid gap-3">
-      <MobileHeaderBadgeSync
-        badge={{
-          label: String(streak),
-          ariaLabel: `${streak} días de racha de nutrición`,
-          tone: "warm",
-        }}
-      />
-
-      <Drawer open={newMealOpen} onOpenChange={setNewMealOpen}>
+      <Drawer open={isDesktop === true && newMealOpen} onOpenChange={setNewMealOpen}>
         <DrawerContent className="max-h-[82dvh]">
           {/* En desktop el sheet ocupa todo el ancho: el contenido queda centrado con ancho legible. */}
           <div className="mx-auto flex min-h-0 w-full max-w-xl flex-col">
@@ -816,6 +810,40 @@ export function RegistroClient({
         </motion.div>
       </motion.div>
     </div>
+  );
+
+  return (
+    <>
+      {/* Mobile (<1024): registro rediseñado (DESIGN.md §14). */}
+      <div className="h-full lg:hidden">
+        <section className="page-frame registro-frame relative isolate auto-rows-max content-start bg-[var(--background)]">
+          <div className="flex flex-col">
+            <div aria-hidden="true" className="home-safe-top" />
+            <RegistroMobile
+              meals={meals}
+              onMealsChange={setMeals}
+              foods={foodList}
+              onFoodCreated={handleFoodCreated}
+              recipes={recipes}
+              frequentItems={frequentItems}
+              target={target}
+              loggedDates={loggedDates}
+              logDate={logDate}
+              todayKey={todayKey}
+              deepLink={{ mealId: initialMealId, mealType: initialMealType, food: initialFoodItem }}
+              sheetsEnabled={isDesktop === false}
+            />
+          </div>
+        </section>
+      </div>
+
+      {/* Desktop (≥1024): cards de siempre. */}
+      <div className="hidden lg:contents">
+        <section className="page-frame content-start bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.15),transparent_31%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
+          {desktop}
+        </section>
+      </div>
+    </>
   );
 }
 
@@ -1363,10 +1391,6 @@ function resolveOption(item: MealItemInput, foods: Food[], recipes: RecipeOption
   return food ? { kind: "food", id: food.id, name: food.name, food } : null;
 }
 
-function formatServings(quantity: number) {
-  return `${formatQuantity(quantity)} ${quantity === 1 ? "porción" : "porciones"}`;
-}
-
 function formatDraftAmount(item: MealItemInput, option: PickerOption) {
   if (item.kind === "recipe" && item.measure === "unit") {
     return formatServings(item.quantity);
@@ -1377,18 +1401,6 @@ function formatDraftAmount(item: MealItemInput, option: PickerOption) {
   }
 
   return `${formatQuantity(item.quantity)} ${option.kind === "food" ? getAmountUnitLabel(option.food.category) : "g"}`;
-}
-
-function formatItemAmount(item: MealLogItem) {
-  if (item.kind === "recipe" && item.measure === "unit") {
-    return formatServings(item.quantity);
-  }
-
-  if (item.measure === "unit") {
-    return `${formatQuantity(item.quantity)} u`;
-  }
-
-  return `${formatQuantity(item.grams)} ${item.category ? getAmountUnitLabel(item.category) : "g"}`;
 }
 
 function formatMealFoods(meal: MealGroup) {
@@ -1432,122 +1444,4 @@ function formatDayTitle(logDate: string, todayKey: string) {
 
 function formatDayMonth(logDate: string) {
   return DAY_MONTH_FORMATTER.format(dateKeyToDate(logDate));
-}
-
-/** Días seguidos con comidas registradas, contando hacia atrás desde hoy. */
-function calculateStreak(loggedDates: Set<string>, todayKey: string) {
-  let streak = 0;
-  let cursor = todayKey;
-
-  while (loggedDates.has(cursor)) {
-    streak += 1;
-    cursor = addDaysToDateKey(cursor, -1);
-  }
-
-  return streak;
-}
-
-function NutritionTipCard({
-  totalKcal,
-  targetKcal,
-  mealsCount,
-}: {
-  totalKcal: number;
-  targetKcal: number;
-  mealsCount: number;
-}) {
-  const pct = targetKcal > 0 ? Math.round((totalKcal / targetKcal) * 100) : 0;
-  const remainingKcal = Math.max(0, targetKcal - totalKcal);
-  const { title, message } = getNutritionTip(pct, mealsCount, remainingKcal);
-
-  return (
-    <div className="flex h-full flex-col rounded-2xl border border-[var(--border)] bg-[var(--card-alt)] p-3">
-      <div className="flex items-center gap-2">
-        <span
-          aria-hidden="true"
-          className="grid size-9 shrink-0 place-items-center rounded-xl border border-[#34245b] bg-[#251640] text-[#b987ff]"
-        >
-          <Flame className="size-4" />
-        </span>
-        <h2 className="font-display text-sm font-semibold leading-tight text-white">{title}</h2>
-      </div>
-      <p className="mt-2 text-xs leading-5 text-[#c6cede]">{message}</p>
-    </div>
-  );
-}
-
-function getNutritionTip(pct: number, mealsCount: number, remainingKcal: number) {
-  if (mealsCount === 0) {
-    return {
-      title: "Empezá tu día",
-      message: "Sin comidas registradas. Usá \"Nueva comida\" para arrancar.",
-    };
-  }
-
-  if (pct >= 100) {
-    return {
-      title: "Objetivo alcanzado",
-      message: `Llegaste al ${pct}% con ${mealsCount} comida${mealsCount === 1 ? "" : "s"}. ¡Buen trabajo!`,
-    };
-  }
-
-  if (pct >= 70) {
-    return {
-      title: "Seguí así",
-      message: `Vas en ${pct}%. Te faltan ${remainingKcal} kcal para cerrar el día.`,
-    };
-  }
-
-  return {
-    title: "Vas en camino",
-    message: `Llevás ${pct}% · ${remainingKcal} kcal restantes.`,
-  };
-}
-
-function SummaryStat({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#6e7788]">{label}</p>
-      <p className="font-display mt-1 text-lg font-bold text-white">{value}</p>
-    </div>
-  );
-}
-
-function TargetBar({
-  icon: Icon,
-  label,
-  current,
-  target,
-  unit,
-  color,
-}: {
-  icon: LucideIcon;
-  label: string;
-  current: number;
-  target: number;
-  unit: string;
-  color: string;
-}) {
-  const pct = target > 0 ? Math.min(100, Math.round((current / target) * 100)) : 0;
-  const isOver = target > 0 && current > target;
-
-  return (
-    <div className="grid gap-1.5">
-      <div className="flex items-baseline justify-between text-xs">
-        <span className="flex items-center gap-1.5 font-semibold text-[#c2c8d6]">
-          <Icon className="size-3.5" style={{ color }} />
-          {label}
-        </span>
-        <span className={cn("font-semibold", isOver ? "text-[#f4717f]" : "text-[var(--foreground-muted)]")}>
-          {current} / {target} {unit}
-        </span>
-      </div>
-      <div className="h-2.5 w-full overflow-hidden rounded-full bg-[var(--card-alt)]">
-        <div
-          className="h-full rounded-full transition-[width] duration-300"
-          style={{ width: `${pct}%`, backgroundColor: color }}
-        />
-      </div>
-    </div>
-  );
 }

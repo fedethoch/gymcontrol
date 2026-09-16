@@ -17,7 +17,17 @@ import {
 } from "@/app/components/ui/Select";
 import { searchByName } from "@/app/lib/food-search";
 import {
-  FOOD_CATEGORY_LABELS,
+  describeOption,
+  formatQuantity,
+  getFoodGramsPerUnit,
+  optionKcalLabel,
+  optionKey,
+  parseQuantity,
+  previewNutrition,
+  resolveDefaultAmount,
+  type PickerOption,
+} from "@/app/lib/meal-amounts";
+import {
   getAmountUnitLabel,
   type Food,
   type FoodMeasure,
@@ -26,51 +36,8 @@ import {
   type RecipeOption,
 } from "@/app/lib/nutrition-types";
 
-export type PickerOption =
-  | { kind: "food"; id: string; name: string; food: Food }
-  | { kind: "recipe"; id: string; name: string; recipe: RecipeOption };
-
 const RESULT_LIMIT = 8;
 const FREQUENT_CHIPS_LIMIT = 6;
-
-/** Gramos (o ml) de 1 unidad, si el alimento se puede registrar por unidades. */
-export function getFoodGramsPerUnit(food: Food) {
-  return food.gramsPerUnit ?? (food.measure === "unit" ? food.servingG : null);
-}
-
-export function formatQuantity(value: number) {
-  return String(Math.round(value * 100) / 100);
-}
-
-export function parseQuantity(value: string) {
-  return Number(value.replace(",", ".").trim());
-}
-
-/** Kcal y macros aproximados de lo que se va a agregar (el valor final lo calcula el servidor). */
-export function previewNutrition(option: PickerOption, measure: FoodMeasure, quantity: number) {
-  if (option.kind === "recipe") {
-    const { recipe } = option;
-    const grams = measure === "unit" ? quantity * recipe.servingG : quantity;
-
-    return {
-      kcal: Math.round(recipe.kcalPerG * grams),
-      proteinG: Math.round(recipe.macrosPerG.proteinG * grams),
-      carbsG: Math.round(recipe.macrosPerG.carbsG * grams),
-      fatG: Math.round(recipe.macrosPerG.fatG * grams),
-    };
-  }
-
-  const { food } = option;
-  const grams = measure === "unit" ? quantity * (getFoodGramsPerUnit(food) ?? food.servingG) : quantity;
-  const ratio = food.servingG > 0 ? grams / food.servingG : 0;
-
-  return {
-    kcal: Math.round(food.calories * ratio),
-    proteinG: Math.round(food.proteinG * ratio),
-    carbsG: Math.round(food.carbsG * ratio),
-    fatG: Math.round(food.fatG * ratio),
-  };
-}
 
 export function FoodPicker({
   foods,
@@ -163,27 +130,13 @@ export function FoodPicker({
   }
 
   function selectOption(option: PickerOption) {
-    const frequent = frequentByKey.get(`${option.kind}:${option.id}`);
+    const amount = resolveDefaultAmount(option, frequentByKey.get(optionKey(option)));
 
     setSelected(option);
     setQuery(option.name);
     setIsOpen(false);
-
-    if (option.kind === "recipe") {
-      const nextMeasure: FoodMeasure = frequent?.lastMeasure ?? "unit";
-      setMeasure(nextMeasure);
-      setQuantity(formatQuantity(frequent?.lastQuantity ?? (nextMeasure === "unit" ? 1 : option.recipe.servingG)));
-      return;
-    }
-
-    const canUseUnits = getFoodGramsPerUnit(option.food) != null;
-    const preferredMeasure = frequent?.lastMeasure ?? option.food.measure;
-    const nextMeasure: FoodMeasure = preferredMeasure === "unit" && canUseUnits ? "unit" : "g";
-    const lastQuantity = frequent && frequent.lastMeasure === nextMeasure ? frequent.lastQuantity : null;
-
-    setMeasure(nextMeasure);
-    // Por defecto 1 unidad o la porción base (100 g): nunca "100 unidades".
-    setQuantity(formatQuantity(lastQuantity ?? (nextMeasure === "unit" ? 1 : option.food.servingG)));
+    setMeasure(amount.measure);
+    setQuantity(formatQuantity(amount.quantity));
   }
 
   function handleMeasureChange(nextMeasure: FoodMeasure) {
@@ -391,25 +344,4 @@ export function FoodPicker({
       ) : null}
     </div>
   );
-}
-
-function describeOption(option: PickerOption, isFrequent: boolean) {
-  const parts =
-    option.kind === "recipe"
-      ? ["Receta", `1 porción = ${formatQuantity(option.recipe.servingG)} g`]
-      : [option.food.ownerUserId ? "Tuyo" : null, FOOD_CATEGORY_LABELS[option.food.category]];
-
-  if (isFrequent) {
-    parts.push("Frecuente");
-  }
-
-  return parts.filter(Boolean).join(" · ");
-}
-
-function optionKcalLabel(option: PickerOption) {
-  if (option.kind === "recipe") {
-    return `${Math.round(option.recipe.kcalPerG * option.recipe.servingG)} kcal/porción`;
-  }
-
-  return `${option.food.calories} kcal/${option.food.servingG} ${getAmountUnitLabel(option.food.category)}`;
 }
