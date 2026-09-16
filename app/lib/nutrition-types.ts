@@ -183,13 +183,23 @@ export const GOAL_INFO: Record<Goal, { label: string; description: string; kcalA
   },
 };
 
-export const BODY_FAT_REFERENCES = [
-  { value: 12, range: "10-14%", label: "Muy bajo", description: "Definición atlética marcada, venas visibles." },
-  { value: 17, range: "15-19%", label: "Bajo", description: "Abdomen definido, poca grasa visible." },
-  { value: 22, range: "20-24%", label: "Moderado", description: "Contorno normal, definición leve." },
-  { value: 27, range: "25-29%", label: "Alto", description: "Sobrepeso leve, sin definición muscular." },
-  { value: 33, range: "30%+", label: "Muy alto", description: "Acumulación notoria de grasa corporal." },
-] as const;
+// Same five levels for both sexes, with ranges shifted to each sex's typical body fat.
+export const BODY_FAT_REFERENCES = {
+  male: [
+    { value: 12, range: "10-14%", label: "Muy bajo", description: "Definición atlética marcada, venas visibles." },
+    { value: 17, range: "15-19%", label: "Bajo", description: "Abdomen definido, poca grasa visible." },
+    { value: 22, range: "20-24%", label: "Moderado", description: "Contorno normal, definición leve." },
+    { value: 27, range: "25-29%", label: "Alto", description: "Sobrepeso leve, sin definición muscular." },
+    { value: 33, range: "30%+", label: "Muy alto", description: "Acumulación notoria de grasa corporal." },
+  ],
+  female: [
+    { value: 17, range: "15-19%", label: "Muy bajo", description: "Definición atlética marcada, abdomen marcado." },
+    { value: 22, range: "20-24%", label: "Bajo", description: "Tonificada, abdomen plano con leve definición." },
+    { value: 27, range: "25-29%", label: "Moderado", description: "Contorno normal, curvas suaves sin definición." },
+    { value: 32, range: "30-34%", label: "Alto", description: "Más grasa en abdomen, caderas y muslos." },
+    { value: 38, range: "35%+", label: "Muy alto", description: "Acumulación notoria de grasa corporal." },
+  ],
+} as const satisfies Record<Gender, readonly { value: number; range: string; label: string; description: string }[]>;
 
 export type NutritionProfileInput = {
   gender: Gender;

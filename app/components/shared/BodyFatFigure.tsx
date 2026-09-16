@@ -2,14 +2,12 @@
 
 import Image from "next/image";
 
-import type { Gender } from "@/app/lib/nutrition-types";
+import { BODY_FAT_REFERENCES, type Gender } from "@/app/lib/nutrition-types";
 import { cn } from "@/app/lib/utils";
-
-const BODY_FAT_VALUES = [12, 17, 22, 27, 33] as const;
 
 export function BodyFatFigure({ gender, value, className }: { gender: Gender; value: number | null; className?: string }) {
   const folder = gender === "female" ? "female" : "male";
-  const known = value !== null && BODY_FAT_VALUES.includes(value as (typeof BODY_FAT_VALUES)[number]);
+  const known = value !== null && BODY_FAT_REFERENCES[gender].some((r) => r.value === value);
 
   return (
     <div className={cn("grid place-items-center rounded-xl border border-[var(--border)] bg-[var(--card)] p-4", className)}>

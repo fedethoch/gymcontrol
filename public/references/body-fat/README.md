@@ -1,30 +1,22 @@
 # Body fat reference images
 
-Place the 10 reference PNG files here before deploying:
+Rendered 3D figures (MakeHuman via Blender MPFB; generated models are CC0) used by
+`app/components/shared/BodyFatFigure.tsx`.
 
 ```
-male/
-  12.png   (10-14% — athletic definition)
-  17.png   (15-19% — lean)
-  22.png   (20-24% — moderate)
-  27.png   (25-29% — above average)
-  33.png   (30%+ — high)
-
-female/
-  12.png
-  17.png
-  22.png
-  27.png
-  33.png
+male/    12.png 17.png 22.png 27.png 33.png
+female/  17.png 22.png 27.png 32.png 38.png
 ```
 
-## Style guidelines
+Values match `BODY_FAT_REFERENCES` in `app/lib/nutrition-types.ts` (ranges differ by sex; same five body shapes).
+560 × 640 PNG, transparent background, head-to-knees framing.
 
-- Generic 3D/illustrated silhouette — no real person, no face
-- Neutral background (white or very light grey)
-- Same framing and proportions across all 10 images
-- Consistent width × height (e.g. 280 × 320 px)
-- Format: PNG with transparency or solid bg
-- Male set: male body proportions; Female set: female body proportions
+## Regenerate
 
-These are served from `public/` and pre-cached by the PWA service worker.
+Requires Blender 4.5 LTS with the MPFB extension (`blender --online-mode -c extension install mpfb --enable`).
+
+```
+blender -b --python scripts/body-fat/render_body_fat.py -- public/references/body-fat
+```
+
+Body shape per level is set in `SHAPES` (MakeHuman weight/muscle macros) inside the script.

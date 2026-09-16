@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Beef, Check, Droplet, Flame, LogOut, TriangleAlert, Wheat } from "lucide-react";
@@ -235,10 +236,19 @@ export function ConfiguracionClient({
 
   const datosSuficientes = sectionStatus.cuenta && sectionStatus.datos;
 
+  const bodyFatReferences = BODY_FAT_REFERENCES[gender];
   const bodyFatRef = useMemo(
-    () => BODY_FAT_REFERENCES.find((r) => r.value === bodyFatPct) ?? null,
-    [bodyFatPct],
+    () => bodyFatReferences.find((r) => r.value === bodyFatPct) ?? null,
+    [bodyFatReferences, bodyFatPct],
   );
+
+  // Ranges differ by sex: keep the same level (e.g. "Moderado") when switching.
+  function handleGenderChange(next: Gender) {
+    if (next === gender) return;
+    const level = BODY_FAT_REFERENCES[gender].findIndex((r) => r.value === bodyFatPct);
+    if (level !== -1) setBodyFatPct(BODY_FAT_REFERENCES[next][level].value);
+    setGender(next);
+  }
 
   const kcalDiff = plan.targetKcal - plan.maintenanceKcal;
 
@@ -273,7 +283,7 @@ export function ConfiguracionClient({
               key={value}
               active={gender === value}
               label={value === "male" ? "Hombre" : "Mujer"}
-              onClick={() => setGender(value)}
+              onClick={() => handleGenderChange(value)}
             />
           ))}
         </div>
@@ -319,7 +329,7 @@ export function ConfiguracionClient({
           description="Usamos tu peso, altura, edad y género."
           onClick={() => setBodyFatPct(null)}
         />
-        {BODY_FAT_REFERENCES.map((reference) => (
+        {bodyFatReferences.map((reference) => (
           <ToggleOption
             key={reference.range}
             active={bodyFatPct === reference.value}
@@ -343,7 +353,7 @@ export function ConfiguracionClient({
           label="No lo sé"
           onClick={() => setBodyFatPct(null)}
         />
-        {BODY_FAT_REFERENCES.map((reference) => (
+        {bodyFatReferences.map((reference) => (
           <ToggleOption
             key={reference.range}
             compact
@@ -384,14 +394,25 @@ export function ConfiguracionClient({
       {/* Estimation mini-card (replaces broken "?" block) */}
       <div className="rounded-xl border border-[var(--border)] bg-[var(--card-alt)] px-3.5 py-2.5">
         {bodyFatPct !== null && bodyFatRef ? (
-          <>
-            <p className="text-xs font-semibold text-white">
-              Grasa estimada: {bodyFatPct}% aprox.
-            </p>
-            <p className="mt-0.5 text-[10px] text-[var(--foreground-muted)]">
-              {bodyFatRef.label} · {bodyFatRef.range}
-            </p>
-          </>
+          <div className="flex items-center gap-3">
+            <Image
+              key={`${gender}-${bodyFatPct}`}
+              src={`/references/body-fat/${gender === "female" ? "female" : "male"}/${bodyFatPct}.png`}
+              alt={`Referencia visual de ${bodyFatPct}% de grasa corporal`}
+              width={112}
+              height={128}
+              className="h-32 w-28 shrink-0 object-contain"
+            />
+            <div className="min-w-0">
+              <p className="text-xs font-semibold text-white">
+                Grasa estimada: {bodyFatPct}% aprox.
+              </p>
+              <p className="mt-0.5 text-[10px] text-[var(--foreground-muted)]">
+                {bodyFatRef.label} · {bodyFatRef.range}
+              </p>
+              <p className="mt-2 text-[10px] text-[var(--foreground-muted)]">Referencia ilustrativa</p>
+            </div>
+          </div>
         ) : (
           <>
             <p className="text-xs font-semibold text-white">Estimada automáticamente</p>
