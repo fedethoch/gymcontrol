@@ -79,7 +79,7 @@ export function RoutineDetailClient({ routine }: RoutineDetailClientProps) {
                         <motion.tr
                           key={item.id}
                           variants={fadeRow}
-                          className="border-b border-[rgba(148,163,184,0.13)] transition-colors hover:bg-[rgba(124,58,237,0.08)]"
+                          className="border-b border-[rgba(148,163,184,0.13)] transition-colors hover:bg-white/[0.03]"
                         >
                           <TableCell className="pl-3 pr-0 py-3 text-white">
                             <button

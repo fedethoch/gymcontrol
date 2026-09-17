@@ -57,12 +57,15 @@ const H2_CLASS = "font-display text-[1.375rem] font-bold leading-tight tracking-
 export function CatalogMobileView({
   routines,
   statusById,
+  initialDays = "all",
 }: {
   routines: CatalogRoutine[];
   statusById: Record<string, SavedStatus>;
+  /** `?dias=` al volver del detalle (DESIGN.md §19). */
+  initialDays?: DayOption;
 }) {
   const questionId = useId();
-  const [days, setDays] = useState<DayOption>("all");
+  const [days, setDays] = useState<DayOption>(initialDays);
   const [level, setLevel] = useState<LevelFilter>("all");
   const [objective, setObjective] = useState<ObjectiveFilter>("all");
   const [sort, setSort] = useState<CatalogSort>("recent");

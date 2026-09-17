@@ -120,8 +120,10 @@ export function MobileHeader({
     pathname === "/recetas" ||
     // Registro de comidas: día, racha y "Tu día" (DESIGN.md §14).
     pathname === "/nutricion/registro" ||
-    // Catálogo: barra con buscar y filtros (DESIGN.md §16). El detalle conserva el header.
+    // Catálogo: barra con buscar y filtros (DESIGN.md §16).
     pathname === "/catalogo" ||
+    // Detalle de rutina: barra sobre la portada (DESIGN.md §19).
+    pathname.startsWith("/catalogo/rutinas/") ||
     // Configuración: fila de identidad con el estado del guardado (DESIGN.md §15).
     pathname === "/configuracion"
   ) {

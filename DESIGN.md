@@ -234,7 +234,7 @@ La app es **instalable y standalone**. El diseño asume que el usuario la abre c
 - Regiones: `PrimaryNavigation` (sidebar desktop) · `.shell-workspace` (`MobileHeader` + `main.shell-main`) · `MobileTabBar` (bottom nav).
 - `viewport-fit: cover` + `env(safe-area-inset-*)` en todos los bordes (header top, tab bar bottom, toasts). Ver `.page-frame` padding-top/bottom con safe-area.
 - `theme_color` y `background_color` = `#05070b`. `apple-mobile-web-app-status-bar-style: black-translucent`.
-- **Excepción del home (`/`), la semana activa (`/rutinas`), el registro (`/rutinas/dia`), alimentos (`/alimentos`), recetas (`/recetas`), el catálogo (`/catalogo`) y la configuración (`/configuracion`)**: `MobileHeader` no se renderiza en esas rutas; el home tiene su propio saludo (§10), `/rutinas` su switcher de rutina (§12), `/rutinas/dia` su barra de entreno (§11.1 Z1), `/alimentos` su título con buscador (§13), `/recetas` también (§18), `/catalogo` su barra con buscar y filtros (§16; el detalle `/catalogo/rutinas/[id]` conserva el header) y `/configuracion` su fila de identidad (§15). Para que el scroll no pase por debajo de la barra de estado en standalone, todas fijan una franja `env(safe-area-inset-top)` con `--background` (`.home-safe-top`).
+- **Excepción del home (`/`), la semana activa (`/rutinas`), el registro (`/rutinas/dia`), alimentos (`/alimentos`), recetas (`/recetas`), el catálogo (`/catalogo`), el detalle de rutina (`/catalogo/rutinas/[id]`) y la configuración (`/configuracion`)**: `MobileHeader` no se renderiza en esas rutas; el home tiene su propio saludo (§10), `/rutinas` su switcher de rutina (§12), `/rutinas/dia` su barra de entreno (§11.1 Z1), `/alimentos` su título con buscador (§13), `/recetas` también (§18), `/catalogo` su barra con buscar y filtros (§16), el detalle de rutina su barra sobre la portada (§19) y `/configuracion` su fila de identidad (§15). Para que el scroll no pase por debajo de la barra de estado en standalone, todas fijan una franja `env(safe-area-inset-top)` con `--background` (`.home-safe-top`).
 
 ### 6.2 Bottom nav — **NO TOCAR sin pedido explícito**
 
@@ -633,3 +633,38 @@ Encontrar una receta y registrarla. Mobile se rediseñó con la dirección "Busc
 | Nueva receta | Bottom sheet con `RecipeForm` (nombre precargado desde "Crear receta «…»"). Al guardar se limpia la búsqueda y se abre el detalle de la nueva |
 
 Reglas: la lista no tiene emerald; el emerald vive en los vacíos o en el sheet. Nada fijo abajo salvo la bottom nav. Sin `MobileHeader` (§6.1). Lógica pura en `app/lib/recipe-catalog.ts` (tests en `tests/unit/`); componentes en `app/components/recetas/`. Motion: marcador de chip con `layoutId`, fundido corto al cambiar chip u orden y `AnimatedNumber` en las kcal del detalle; todo se neutraliza con reduced-motion.
+
+---
+
+## 19. Detalle de rutina mobile (`/catalogo/rutinas/[id]`, <1024px)
+
+Decidir si una rutina del catálogo sirve y empezar a usarla. Mobile se rediseñó el 2026-09-16 combinando dos direcciones del mock:
+- de la C ("Balance"), la parte de arriba: portada, nombre, acción, stats y qué músculos trabaja;
+- de la B ("Semana"), los días: pestañas y un panel que se desliza, como en `/rutinas` (§12).
+
+Desktop (≥1024) conserva su layout, sin violeta. Mock y decisiones RD-D1…RD-D11: https://claude.ai/artifact/Bo9UqSiyKT1kz9p2uWbxFU (v2).
+
+### 19.1 Zonas (arriba → abajo)
+
+| Zona | Contenido |
+|---|---|
+| Z1 Barra | ← de 44px a `/catalogo?dias=N` (el catálogo abre en esa cantidad de días) y, a la derecha, bookmark "Guardar para después" (solo en Nueva y Guardada) y "…", que abre un bottom sheet con Ver en Mis rutinas, Compartir y Desactivar. Sin `MobileHeader` |
+| Z2 Portada | `RoutineCover` de §12.1 (gris, recorte al 137%, parallax). Encima: pill de estado, nombre en **Display XXL** sin el sufijo "N días" cuando coincide con los días de la rutina (ya lo dice la pill) y la descripción |
+| Z3 Acción | CTA de 56px según el estado (§19.2). Cuando sale de la pantalla aparece arriba una barra compacta sólida con el nombre, `N días · ~M min` y la misma acción en chico (patrón R-A) |
+| Z4 Stats | `WeekStats`: Días · Por día (promedio de `estimateDayMinutes`, redondeado a 5) · Series por semana |
+| Z5 Qué trabajás | H2 + `MuscleBodyView` frente y espalda de 56px y una barra de 6px por grupo con sus series por semana. Tinta neutra: 8 o más series en `--foreground`, menos en `--foreground-muted`, sin trabajo en el gris del cuerpo. Fila de escala. Dato, no acento |
+| Z6 Los N días | H2 + `DayTabs` (grupo principal, sin estados de semana) y panel con scroll-snap: micro `Día N · nombre`, grupos en **H1** con el `&` emerald, meta en mono (`~35 min · 5 ejercicios · 16 series`) y filas de 72px (miniatura, `4×` en mono + nombre, `6–10 reps · RIR 1 · 2 min`) que abren `ExerciseDetailModal` (§11.4). El alto sigue al panel visible |
+| Pie | Objetivo y equipamiento en mono |
+
+### 19.2 Estados
+
+| Estado | Condición | Pill | Acción (Z3) |
+|---|---|---|---|
+| Invitado | Sin sesión | `Nivel · N días` | "Entrá para usarla" emerald → `/auth/login?reason=auth-required`. Sin bookmark |
+| Nueva | Con sesión, sin guardar | `Nivel · N días` | "Usar esta rutina" emerald (la guarda y la activa). El bookmark la guarda sin activar |
+| Guardada | Guardada, no activa | Bookmark + `Guardada · Nivel · N días` | "Activar rutina" emerald + "Ver en Mis rutinas" en texto. Bookmark lleno, lleva a `/rutinas` |
+| Activa | Es tu rutina activa | Punto emerald + `Tu rutina activa · N días` | "Ver mi semana" neutro. "Desactivar" vive en "…" |
+| Archivada | Fuera del catálogo y sin guardar | `Ya no disponible` en `--warning` | Aviso + "Ver rutinas de N días" neutro, sin emerald ni barra compacta |
+| Rutina sin días | La plantilla no tiene días | Según el estado | Sin Z4–Z6: "Esta rutina todavía no tiene días." |
+
+Reglas: un solo emerald por pantalla (el `&` del día es texto, no acción). El nombre propio no se pide acá: se renombra en Mis rutinas. Las acciones son las server actions de siempre (redirigen con `?status=` y `StatusToast` avisa); el botón muestra "Guardando…" mientras tanto. Nada fijo abajo salvo la bottom nav. Lógica pura en `app/lib/routine-detail.ts` (tests en `tests/unit/`), componentes en `app/components/rutina-detalle/`. Motion: parallax de portada, `AnimatedNumber` en stats, barras que crecen al entrar, marco de pestaña con `layoutId`; todo se neutraliza con reduced-motion.

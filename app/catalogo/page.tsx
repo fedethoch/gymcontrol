@@ -1,12 +1,12 @@
 import { RoutineCatalogClient } from "@/app/catalogo/RoutineCatalogClient";
 import { CatalogMobileView } from "@/app/components/catalogo/CatalogMobileView";
 import { getOptionalAuthContext } from "@/app/lib/auth";
-import { toCatalogRoutine } from "@/app/lib/routine-catalog";
+import { parseDayOption, toCatalogRoutine } from "@/app/lib/routine-catalog";
 import { listRoutineTemplates } from "@/app/lib/routines";
 import { listSavedRoutineStatusesForUser } from "@/app/lib/saved-routines";
 
-export default async function CatalogoPage() {
-  const [routines, auth] = await Promise.all([listRoutineTemplates(), getOptionalAuthContext()]);
+export default async function CatalogoPage({ searchParams }: { searchParams: Promise<{ dias?: string }> }) {
+  const [routines, auth, query] = await Promise.all([listRoutineTemplates(), getOptionalAuthContext(), searchParams]);
   const savedStatusByTemplateId = auth ? await listSavedRoutineStatusesForUser(auth.user.id) : {};
 
   return (
@@ -14,7 +14,11 @@ export default async function CatalogoPage() {
       {/* Mobile (<1024): planificador por días, DESIGN.md §16. */}
       <div className="flex flex-col lg:hidden">
         <div aria-hidden="true" className="home-safe-top" />
-        <CatalogMobileView routines={routines.map(toCatalogRoutine)} statusById={savedStatusByTemplateId} />
+        <CatalogMobileView
+          routines={routines.map(toCatalogRoutine)}
+          statusById={savedStatusByTemplateId}
+          initialDays={parseDayOption(query.dias)}
+        />
       </div>
 
       {/* Desktop: grilla de cards con paginación. */}

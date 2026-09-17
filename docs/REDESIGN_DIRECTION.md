@@ -80,7 +80,7 @@ De las refs no se toma: color de marca (amarillo de Ladder), anillos multicolor 
 
 Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se abre sin cambiar la URL (sheet, dialog, modo inline).
 
-**Progreso: 8 / 15 rutas**
+**Progreso: 9 / 15 rutas**
 
 | # | Ruta | Pantalla | Estado | Categorías de `/app-store-refs` |
 |---|---|---|---|---|
@@ -88,7 +88,7 @@ Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se ab
 | 2 | `/rutinas` | Semana activa | ✅ Mobile rediseñado · desktop sin tocar · mock https://claude.ai/artifact/53cupB98h4cLZAxbBcLGrg · `DESIGN.md` §12 | `routines` · `--apps ladder` |
 | 3 | `/rutinas/dia` | Entreno del día y registro de series | ✅ Mobile rediseñado · desktop sin tocar · mock https://claude.ai/artifact/A9wFreDnAKE6UJexN7Yd4H · `DESIGN.md` §11 (sheet del ejercicio §11.4) | `logging` · `exercise-detail` |
 | 4 | `/catalogo` | Catálogo de rutinas | ✅ Mobile rediseñado · desktop sin tocar (sin violeta) · mock https://claude.ai/artifact/CgEQL6GSTzxnM26BDBPYX2 · `DESIGN.md` §16 | `catalog --extra` · `routines` |
-| 5 | `/catalogo/rutinas/[id]` | Detalle de rutina | Sin rediseñar | `catalog --extra` · `routines` |
+| 5 | `/catalogo/rutinas/[id]` | Detalle de rutina | ✅ Mobile rediseñado · desktop sin tocar (sin violeta) · mock https://claude.ai/artifact/Bo9UqSiyKT1kz9p2uWbxFU · `DESIGN.md` §19 | `catalog --extra` · `routines` |
 | 6 | `/nutricion/registro` | Registro diario de comidas | ✅ Mobile rediseñado · desktop sin tocar · mock https://claude.ai/artifact/HqtexQwHqppi4B25Ujw7LE · `DESIGN.md` §14 | `nutrition --extra` · `--search Lifesum` · `--search "Cal AI"` · `--search Cronometer` |
 | 7 | `/alimentos` | Alimentos y macros | ✅ Mobile rediseñado · desktop sin tocar (sin foto ni violeta) · mock https://claude.ai/artifact/CVsfSwXJ3WBA9wmViRL2TN · `DESIGN.md` §13 | `nutrition --extra` · `--search Cronometer` |
 | 8 | `/recetas` | Recetas | ✅ Mobile rediseñado · desktop sin tocar (sin imágenes ni violeta) · mock https://claude.ai/artifact/LxJDDhEjaoWx6XCsQvqoz9 · `DESIGN.md` §18 | `recipes --extra` (Crouton, Mela: solo organizadores con foto) · sin fotos: `--apps macrofactor` + `--search` Cronometer, MyFitnessPal, "Carbon Diet Coach", Fitia |
@@ -125,8 +125,11 @@ Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se ab
   - [x] ↳ Sheet Filtros (`FilterPanel`, compartido): vaul con chips con conteo, orden en filas con check y pie "Ver N"
   - [x] ↳ Búsqueda inline (la barra superior se vuelve campo)
   - [x] ↳ Barra compacta con los días al pasar la rueda
-- [ ] **5. `/catalogo/rutinas/[id]`**
-  - [ ] ↳ Sheet Detalle de ejercicio (`ExerciseDetailModal`, compartido)
+- [x] **5. `/catalogo/rutinas/[id]`** (mobile) — decisiones 2026-09-16: RD-D1 arriba la dirección C (portada, CTA, stats, qué trabajás) y abajo la B (pestañas + panel) · RD-D2 bookmark en la barra · RD-D3 sin nombre propio (se renombra en Mis rutinas) · RD-D4 ejercicios en el panel, sin sheet del día · RD-D5 sheet del ejercicio compartido (§11.4) · RD-D6 sin `MobileHeader`, barra propia + barra compacta · RD-D7 Desactivar en "…" · RD-D8 título sin "N días" · RD-D9 ← a `/catalogo?dias=N` · RD-D10 desktop sin tocar salvo el violeta · RD-D11 día en H1 con `&` emerald
+  - [x] ↳ Pestañas por día + panel deslizable con los ejercicios (`DetailDays`)
+  - [x] ↳ Bottom sheet "…" (Ver en Mis rutinas · Compartir · Desactivar)
+  - [x] ↳ Barra compacta al pasar la acción
+  - [x] ↳ Sheet Detalle de ejercicio (`ExerciseDetailModal`, compartido; mobile rediseñado en la ruta 3, §11.4)
 - [x] **6. `/nutricion/registro`** (mobile). Decisiones del 2026-09-16:
   - N-D1: presupuesto de la dirección B (medidor + anillos) y comidas de la C (pestañas + panel)
   - N-D2: la comida se crea con su primer alimento

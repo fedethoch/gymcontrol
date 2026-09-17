@@ -153,6 +153,13 @@ export function highlightSegments(text: string, query: string): Array<{ text: st
   return segments;
 }
 
+/** `?dias=4` → 4. Lo que no es un número de 1 a 7 → "all". */
+export function parseDayOption(value: string | undefined): DayOption {
+  if (!value || !/^\d$/.test(value)) return "all";
+  const days = Number(value);
+  return days >= 1 && days <= 7 ? days : "all";
+}
+
 export function parseLevelFilter(value: string): LevelFilter {
   return (ROUTINE_DIFFICULTIES as readonly string[]).includes(value) ? (value as RoutineDifficulty) : "all";
 }

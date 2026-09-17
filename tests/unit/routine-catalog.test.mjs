@@ -19,6 +19,7 @@ import {
   normalizeSearch,
   optionCounts,
   parseCatalogSort,
+  parseDayOption,
   parseLevelFilter,
   parseObjectiveFilter,
   pickLevelFeatured,
@@ -211,6 +212,16 @@ describe("parsers", () => {
     assert.equal(parseObjectiveFilter("cardio"), "all");
     assert.equal(parseCatalogSort("name"), "name");
     assert.equal(parseCatalogSort("days"), "recent");
+  });
+
+  it("?dias= acepta solo 1 a 7", () => {
+    assert.equal(parseDayOption("4"), 4);
+    assert.equal(parseDayOption(undefined), "all");
+    assert.equal(parseDayOption("0"), "all");
+    assert.equal(parseDayOption("8"), "all");
+    assert.equal(parseDayOption("12"), "all");
+    assert.equal(parseDayOption("4.5"), "all");
+    assert.equal(parseDayOption("todas"), "all");
   });
 });
 

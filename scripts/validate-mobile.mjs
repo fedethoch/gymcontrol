@@ -136,17 +136,20 @@ async function validateRoutes(page, baseUrl) {
     routes.push(await validateRoute(page, baseUrl, dayPath));
   }
 
-  const routineDetailPath = await page.evaluate(() => {
-    const link = Array.from(document.links).find((anchor) => anchor.pathname.startsWith("/catalogo/rutinas/"));
-    return link ? `${link.pathname}${link.search}` : null;
-  });
-
-  if (routineDetailPath) {
-    routes.push(await validateRoute(page, baseUrl, routineDetailPath));
-  }
-
   for (const path of ROUTES.slice(2)) {
     routes.push(await validateRoute(page, baseUrl, path));
+
+    if (path !== "/catalogo") continue;
+
+    // El detalle de rutina (DESIGN.md §19) se toma del primer link del catálogo.
+    const routineDetailPath = await page.evaluate(() => {
+      const link = Array.from(document.links).find((anchor) => anchor.pathname.startsWith("/catalogo/rutinas/"));
+      return link ? `${link.pathname}${link.search}` : null;
+    });
+
+    if (routineDetailPath) {
+      routes.push(await validateRoute(page, baseUrl, routineDetailPath));
+    }
   }
 
   return routes;
