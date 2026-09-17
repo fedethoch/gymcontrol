@@ -258,6 +258,7 @@ Detalle: modo browser (`.pwa-browser` / `@media (display-mode: browser)`) usa ba
 ## 7. Accesibilidad (WCAG 2.2 AA — piso)
 
 - **Foco visible** en todo elemento interactivo: focus-ring `focus-glow` (`0 0 0 3px rgba(16,185,129,.35)`) + `--accent`. Nunca `outline:none` sin reemplazo.
+- **Excepción táctil:** en `(hover: none) and (pointer: coarse)` no se pinta ningún anillo de foco (outline, ring, `focus-glow`) ni tap-highlight: tocar no debe dejar nada "seleccionado". Se resuelve global en `app/globals.css`; el borde `--accent` de campos de texto activos se mantiene.
 - **Targets táctiles ≥ 44×44px** (WCAG 2.5.8). Ampliar área si el visual es menor.
 - **Contraste** según §1.5.
 - **Semántica**: HTML correcto (`nav`, `main`, `button` vs `a`, headings jerárquicos). `aria-current="page"` en nav activa (ya en tab bar). Labels reales en inputs (no solo placeholder).

@@ -470,6 +470,24 @@ body {
   }
 }
 
+/* Táctil: tocar no deja anillo de foco ni tap-highlight (DESIGN.md §7). */
+@media (hover: none) and (pointer: coarse) {
+  :root {
+    --focus-glow: 0 0 #0000;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :focus,
+  :focus-visible {
+    outline: none !important;
+    --tw-ring-shadow: 0 0 #0000 !important;
+    --tw-ring-offset-shadow: 0 0 #0000 !important;
+  }
+}
+
 @layer components {
   /* Feedback táctil para links/CTA que no son <Button>. Press > hover (mobile-first). */
   .pressable {
