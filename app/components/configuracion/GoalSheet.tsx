@@ -5,6 +5,7 @@ import { Check, TriangleAlert } from "lucide-react";
 
 import { OptionList } from "@/app/components/configuracion/OptionList";
 import { OfflineNote, ProfileSheet } from "@/app/components/configuracion/ProfileSheet";
+import { ProjectionPreview } from "@/app/components/configuracion/ProjectionSection";
 import { Input } from "@/app/components/ui/Input";
 import { SegmentedControl } from "@/app/components/ui/SegmentedControl";
 import type { ProfileForm } from "@/app/configuracion/useProfileForm";
@@ -19,7 +20,7 @@ const TARGET_MODE_OPTIONS: { value: TargetMode; label: string }[] = [
   { value: "manual", label: "Los fijo yo" },
 ];
 
-/** Los 3 objetivos con las kcal que daría cada uno (S4 y paso 6 del flujo de alta). */
+/** Los 3 objetivos con las kcal que daría cada uno y el peso a 12 semanas del elegido (S4 y paso 6 del flujo de alta). */
 export function GoalOptions({
   input,
   value,
@@ -51,7 +52,12 @@ export function GoalOptions({
     [input],
   );
 
-  return <OptionList label="Objetivo" options={options} value={value} onChange={onChange} disabled={disabled} />;
+  return (
+    <div className="grid gap-4">
+      <OptionList label="Objetivo" options={options} value={value} onChange={onChange} disabled={disabled} />
+      <ProjectionPreview input={input} goal={value} />
+    </div>
+  );
 }
 
 /** S4 · Objetivo, con "Calculados / Los fijo yo". */

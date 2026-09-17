@@ -15,6 +15,7 @@ import { PlanHero } from "@/app/components/configuracion/PlanHero";
 import { PlanRows, type PlanSheet } from "@/app/components/configuracion/PlanRows";
 import { ProfileIdentity } from "@/app/components/configuracion/ProfileIdentity";
 import { ProfileSetupFlow } from "@/app/components/configuracion/ProfileSetupFlow";
+import { ProjectionSection } from "@/app/components/configuracion/ProjectionSection";
 import { SetupHero } from "@/app/components/configuracion/SetupHero";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
 import { BodyFatFigure } from "@/app/components/shared/BodyFatFigure";
@@ -43,6 +44,7 @@ import {
 } from "@/app/lib/nutrition-types";
 import type { NutritionProfile } from "@/app/lib/nutrition-profile";
 import { cn } from "@/app/lib/utils";
+import { showsProjection } from "@/app/lib/weight-projection";
 import {
   AnimatedNumber,
   fadeScale,
@@ -352,6 +354,11 @@ export function ConfiguracionClient({
                     goal={goal}
                   />
                 </div>
+                {showsProjection(goal) ? (
+                  <div className="mt-10">
+                    <ProjectionSection input={form.profileInput} targetKcal={plan.targetKcal} manual={targetMode === "manual"} />
+                  </div>
+                ) : null}
                 <div className="mt-10">
                   <PlanRows input={form.profileInput} targetMode={targetMode} onOpen={setSheet} />
                 </div>
@@ -554,6 +561,18 @@ export function ConfiguracionClient({
             </div>
           </CardContent>
         </Card>
+        {showsProjection(goal) ? (
+          <Card className="mt-5">
+            <CardContent className="max-w-xl pt-5">
+              <ProjectionSection
+                input={form.profileInput}
+                targetKcal={plan.targetKcal}
+                manual={targetMode === "manual"}
+                headingLevel="h3"
+              />
+            </CardContent>
+          </Card>
+        ) : null}
       </div>
 
       <div className="hidden flex-col gap-2 sm:flex-row sm:items-center sm:justify-between lg:flex">

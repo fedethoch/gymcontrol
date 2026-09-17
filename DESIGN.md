@@ -524,6 +524,7 @@ Ver y ajustar el objetivo diario. Mobile se rediseñó con la dirección "Tu pla
 |---|---|
 | Z1 Identidad | Avatar de 44px (inicial o ícono), nombre en H3 (sin nombre: acción de texto "Agregá tu nombre") y email en caption. A la derecha, el indicador de guardado (`aria-live`) |
 | Z2 Plan | Micro label "Tu objetivo diario", kcal en Display XXL, ecuación `mantenimiento − ajuste = objetivo` en 3 celdas entre líneas (`border-y`), macros en Metric M con el punto de `MACRO_COLORS` y barra de reparto de 6px con el % en mono (dato, no acento) |
+| Z2b Tu proyección | Solo con Definición o Ganar masa muscular (§15.4): H2 + chip de ritmo, peso de la semana elegida en Metric L con el delta y el rango, horizonte 4 · 12 · 24 sem (`SegmentedControl`), gráfico y fila de 3 stats (Hoy · kg por semana · % de tu peso) |
 | Z3 Cómo lo calculamos | H2 + filas de 72px que abren su sheet: Tu cuerpo (miniatura de la referencia de grasa y `28 a · 178 cm · 78 kg · 22%`), Actividad (medidor de 5 barras en tinta neutra) y Objetivo (ajuste `−20%` en mono). Caption "Estimación nutricional…" |
 | Z4 Cuenta | H2 + filas de 52px: Nombre (sheet), Email (solo lectura), Cerrar sesión (POST `/auth/signout`) y Borrar cuenta (rose, sheet) |
 
@@ -536,7 +537,7 @@ Bottom sheets (vaul) con título a la izquierda y "Listo" a la derecha. Guardan 
 | S1 Tu cuerpo | Sexo (`SegmentedControl`), edad, altura y peso con `NumberStepper` (−/+ y número tocable; peso de a 0,5), fila Grasa corporal y "Tu objetivo: N kcal" en vivo |
 | S2 Grasa corporal | Vista dentro de S1 con flecha atrás (sin sheets apilados): carrusel `radiogroup` con "No lo sé" y las 5 figuras del sexo elegido, la descripción de la elegida y una nota sobre la masa magra |
 | S3 Actividad | 5 opciones en filas con medidor y check |
-| S4 Objetivo | 3 opciones con las kcal que daría cada una y su ajuste, y "Calculados / Los fijo yo". En manual: kcal + 3 macros (precargados con lo calculado) y la suma de los macros (lime si coincide ±10%, ámbar si no) |
+| S4 Objetivo | 3 opciones con las kcal que daría cada una y su ajuste, debajo la vista previa del peso a 12 semanas del objetivo elegido (número + forma de la curva, alto fijo; también en el paso 6 del alta), y "Calculados / Los fijo yo". En manual: kcal + 3 macros (precargados con lo calculado) y la suma de los macros (lime si coincide ±10%, ámbar si no) |
 | S5 Borrar cuenta | Escribir "BORRAR" habilita el botón rose; Cancelar neutro. Desktop sigue con dialog |
 | S6 Nombre | Input de 40 caracteres con contador; guarda al cerrar o con Enter |
 
@@ -552,6 +553,19 @@ Bottom sheets (vaul) con título a la izquierda y "Listo" a la derecha. Guardan 
 | Sin conexión | `navigator.onLine = false` | Z1: "Sin conexión" (`--warning`). Los controles de los sheets y el CTA del flujo se deshabilitan con nota; lo pendiente se guarda al volver la red | — |
 
 Reglas: sin `MobileHeader` (§6.1) y nada fijo abajo salvo la bottom nav. Lógica pura en `app/lib/profile-plan.ts` (tests en `tests/unit/`); estado y autosave en `app/configuracion/useProfileForm.ts`, compartido con desktop. Motion: `AnimatedNumber` en kcal, ecuación y macros, check de opción con `fadeScale` e indicador del `SegmentedControl` con `layoutId`; todo se neutraliza con reduced-motion.
+
+### 15.4 Proyección de peso
+
+Hacia dónde va el peso si se cumple el objetivo diario. Propuesta y referencias (MacroFactor, Future, Hevy, Whoop): https://claude.ai/artifact/BBn2Kvsn1SPZftt1zXEzKu. Vive solo en Z2b (mobile), en una card debajo de "Tu plan estimado" (desktop) y en la vista previa de S4 / paso 6. No va en el home ni en el registro: responden "¿cuánto me queda hoy?" y un día no se traduce en kg.
+
+| Pieza | Regla |
+|---|---|
+| Modelo | `app/lib/weight-projection.ts`: día a día `peso += (objetivo − mantenimiento(peso)) / 7700`, con el mantenimiento recalculado con el peso (la curva se aplana). Arranca hoy desde el peso del perfil (no hay historial de pesajes). En manual usa el objetivo fijado. Se detiene en el peso de IMC 18,5 |
+| Gráfico | `WeightProjectionChart` (SVG 343×170, sin librería). Tinta neutra como §11.4: curva punteada `--foreground-muted` (es futura), banda `--foreground` al 6% (±25% del cambio acumulado), hitos huecos cada 4 semanas, semana elegida llena con guía punteada, escala a la derecha con `chartScale` (`app/lib/chart-scale.ts`). `role="slider"`: tocar o arrastrar elige la semana, ←/→ · Home · End con foco; `touch-action: pan-y` |
+| Ritmo | % del peso por semana. Bajar: suave <0,5 · sostenible 0,5–1 · alto >1. Subir: suave <0,25 · sostenible 0,25–0,5 · alto >0,5. Alto = chip y nota `--warning` |
+| Estados | Recomposición o sin perfil: no se renderiza. Cambio <0,3 kg en 12 sem: texto "tu peso se mantiene". Manual que va al revés del objetivo: nota ámbar "Tu objetivo fijo da superávit/déficit". Piso de IMC: nota ámbar |
+| Motion | La curva se revela de izquierda a derecha (clip `scaleX`, 600 ms, `premiumEase`) al montar y al cambiar el horizonte; nada con reduced-motion |
+| Emerald | Ninguno: solo el anillo de foco |
 
 ---
 

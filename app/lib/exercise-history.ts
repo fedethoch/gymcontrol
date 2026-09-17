@@ -8,6 +8,8 @@ import {
 } from "@/app/lib/workout-progression";
 import type { ExerciseHistoryEntry } from "@/app/lib/workout-tracking";
 
+export { chartScale } from "@/app/lib/chart-scale";
+
 /**
  * Lógica pura del historial de un ejercicio (sheet del ejercicio, DESIGN.md §11.4).
  * Se testea con `node --test` (tests/unit/exercise-history.test.mjs).
@@ -113,22 +115,6 @@ export function bestSetLabel(entry: ExerciseHistoryEntry): string {
   return formatLoggedSet(top, entry.kind);
 }
 
-/** Escala del gráfico con ticks redondos (paso 1·2·2.5·5 × 10ⁿ) que cubren los valores. */
-export function chartScale(values: number[], targetTicks = 4): { min: number; max: number; ticks: number[] } {
-  const low = Math.min(...values);
-  const high = Math.max(...values);
-  const step = niceStep((high - low) / targetTicks || Math.max(Math.abs(high) * 0.05, 1));
-  const min = Math.floor(low / step) * step;
-  const max = Math.max(Math.ceil(high / step) * step, min + step);
-  const ticks: number[] = [];
-
-  for (let tick = min; tick <= max + step / 2; tick += step) {
-    ticks.push(Math.round(tick * 100) / 100);
-  }
-
-  return { min, max, ticks };
-}
-
 /** Texto del plan como número + unidad: `60-120s` → `60–120` `s` · `2-3m` → `2–3` `min` · `12 c/lado` · `fallo` → `Fallo`. */
 export function splitPlanValue(text: string): { value: string; unit: string } {
   const trimmed = text.trim();
@@ -149,14 +135,6 @@ export function formatShortDate(dateKey: string) {
   const [, month, day] = dateKey.split("-");
 
   return `${day}/${month}`;
-}
-
-function niceStep(raw: number) {
-  const magnitude = 10 ** Math.floor(Math.log10(raw));
-  const normalized = raw / magnitude;
-  const factor = [1, 2, 2.5, 5, 10].find((candidate) => candidate >= normalized) ?? 10;
-
-  return factor * magnitude;
 }
 
 function validSets(entry: ExerciseHistoryEntry) {
