@@ -4,13 +4,16 @@ import { ACTIVITY_LEVEL_INFO, type Goal, type NutritionProfileInput } from "@/ap
 /**
  * Proyección del peso si se cumple el objetivo diario (/configuracion, DESIGN.md §15.4).
  * Balance energético día a día con un mantenimiento que se recalcula con el peso:
- * la curva se aplana sola. Se testea con `node --test` (tests/unit/weight-projection.test.mjs).
+ * la curva se aplana sola. Con % de grasa en el perfil, cada kg se reparte entre grasa y magra
+ * (Forbes). Se testea con `node --test` (tests/unit/weight-projection.test.mjs).
  */
 
 export const PROJECTION_HORIZONS = [4, 12, 24] as const;
 export type ProjectionHorizon = (typeof PROJECTION_HORIZONS)[number];
 
 export type ProjectionPoint = { week: number; kg: number; low: number; high: number };
+/** `pct` con su banda; `fatKg` y `leanKg` son la grasa y la masa magra de esa semana. */
+export type FatPoint = { week: number; pct: number; low: number; high: number; fatKg: number; leanKg: number };
 export type ProjectionPace = "slow" | "steady" | "fast";
 export type ProjectionDirection = "down" | "up" | "flat";
 
@@ -24,6 +27,8 @@ export type WeightProjection = {
   pace: ProjectionPace;
   /** La curva tocó el peso de IMC 18,5 y se detuvo ahí. */
   floorReached: boolean;
+  /** % de grasa semana a semana; null si el perfil no tiene % de grasa. */
+  fat: FatPoint[] | null;
 };
 
 const KCAL_PER_KG = 7700;
@@ -36,6 +41,15 @@ const PACE_LIMITS: Record<Exclude<ProjectionDirection, "flat">, [number, number]
   down: [0.5, 1],
   up: [0.25, 0.5],
 };
+// Forbes: la parte magra de cada kg que cambia es 10,4 / (10,4 + kg de grasa).
+const FORBES_KG = 10.4;
+// Al bajar, entrenar con la proteína del plan protege el músculo: la parte magra se reduce a la mitad.
+const CUT_LEAN_FACTOR = 0.5;
+
+function leanShare(fatKg: number, changeKg: number): number {
+  const share = FORBES_KG / (FORBES_KG + fatKg);
+  return changeKg < 0 ? share * CUT_LEAN_FACTOR : share;
+}
 
 export function showsProjection(goal: Goal): boolean {
   return goal !== "recomposition";
@@ -48,10 +62,13 @@ export function projectWeight(input: NutritionProfileInput, targetKcal: number, 
   const start = input.weightKg;
 
   let weight = start;
+  let fatKg = input.bodyFatPct == null ? null : (start * input.bodyFatPct) / 100;
   let floorReached = false;
   const weights = [start];
+  const fats = [fatKg];
 
   for (let day = 1; day <= weeks * 7; day += 1) {
+    const previous = weight;
     const next = weight + (targetKcal - maintenance(weight)) / KCAL_PER_KG;
 
     if (next < floorKg && next < weight) {
@@ -61,7 +78,13 @@ export function projectWeight(input: NutritionProfileInput, targetKcal: number, 
       weight = next;
     }
 
-    if (day % 7 === 0) weights.push(weight);
+    const change = weight - previous;
+    if (fatKg != null) fatKg += change * (1 - leanShare(fatKg, change));
+
+    if (day % 7 === 0) {
+      weights.push(weight);
+      fats.push(fatKg);
+    }
   }
 
   const points = weights.map((kg, week) => {
@@ -73,7 +96,25 @@ export function projectWeight(input: NutritionProfileInput, targetKcal: number, 
   const direction: ProjectionDirection =
     Math.abs(weeklyKg) < FLAT_WEEKLY_KG ? "flat" : weeklyKg < 0 ? "down" : "up";
 
-  return { points, weeklyKg, weeklyPct, direction, pace: projectionPace(direction, weeklyPct), floorReached };
+  return {
+    points,
+    weeklyKg,
+    weeklyPct,
+    direction,
+    pace: projectionPace(direction, weeklyPct),
+    floorReached,
+    fat: input.bodyFatPct == null ? null : fatPoints(weights, fats as number[]),
+  };
+}
+
+function fatPoints(weights: number[], fats: number[]): FatPoint[] {
+  const startPct = (fats[0] / weights[0]) * 100;
+
+  return weights.map((kg, week) => {
+    const pct = (fats[week] / kg) * 100;
+    const spread = Math.abs(pct - startPct) * BAND_SHARE;
+    return { week, pct, low: pct - spread, high: pct + spread, fatKg: fats[week], leanKg: kg - fats[week] };
+  });
 }
 
 export function projectionPace(direction: ProjectionDirection, weeklyPct: number): ProjectionPace {

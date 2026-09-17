@@ -61,7 +61,9 @@ const GOAL_ADJ_LABELS: Record<Goal, string> = {
   recomposition: "Sin ajuste calórico",
 };
 
-type MobileSheet = PlanSheet | "name" | "delete";
+type MobileSheet = PlanSheet | "bodyFat" | "name" | "delete";
+
+const BODY_FAT_CARD_ID = "configuracion-grasa-corporal";
 
 export function ConfiguracionClient({
   initialProfile,
@@ -147,6 +149,12 @@ export function ConfiguracionClient({
     if (open) return;
     form.flush();
     setSheet(null);
+  }
+
+  function scrollToBodyFat() {
+    const card = document.getElementById(BODY_FAT_CARD_ID);
+    card?.scrollIntoView({ behavior: "smooth", block: "start" });
+    card?.querySelector<HTMLButtonElement>("button")?.focus({ preventScroll: true });
   }
 
   const kcalDiff = plan.targetKcal - plan.maintenanceKcal;
@@ -356,7 +364,12 @@ export function ConfiguracionClient({
                 </div>
                 {showsProjection(goal) ? (
                   <div className="mt-10">
-                    <ProjectionSection input={form.profileInput} targetKcal={plan.targetKcal} manual={targetMode === "manual"} />
+                    <ProjectionSection
+                      input={form.profileInput}
+                      targetKcal={plan.targetKcal}
+                      manual={targetMode === "manual"}
+                      onAddBodyFat={() => setSheet("bodyFat")}
+                    />
                   </div>
                 ) : null}
                 <div className="mt-10">
@@ -380,7 +393,12 @@ export function ConfiguracionClient({
           </>
         )}
 
-        <BodySheet open={sheet === "body"} onOpenChange={handleSheetOpenChange} form={form} />
+        <BodySheet
+          open={sheet === "body" || sheet === "bodyFat"}
+          onOpenChange={handleSheetOpenChange}
+          form={form}
+          initialView={sheet === "bodyFat" ? "fat" : "body"}
+        />
         <ActivitySheet open={sheet === "activity"} onOpenChange={handleSheetOpenChange} form={form} />
         <GoalSheet open={sheet === "goal"} onOpenChange={handleSheetOpenChange} form={form} />
         <NameSheet
@@ -416,7 +434,7 @@ export function ConfiguracionClient({
           <CardContent>{basicsBody}</CardContent>
         </Card>
 
-        <Card>
+        <Card id={BODY_FAT_CARD_ID} className="scroll-mt-6">
           <CardHeader>
             <CardTitle>Porcentaje de grasa corporal (opcional)</CardTitle>
             {bodyFatDescription}
@@ -569,6 +587,7 @@ export function ConfiguracionClient({
                 targetKcal={plan.targetKcal}
                 manual={targetMode === "manual"}
                 headingLevel="h3"
+                onAddBodyFat={scrollToBodyFat}
               />
             </CardContent>
           </Card>

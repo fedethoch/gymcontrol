@@ -5,14 +5,17 @@ import { useReducedMotion } from "framer-motion";
 
 import { motion, premiumEase } from "@/app/components/ui/motion";
 import { chartScale } from "@/app/lib/chart-scale";
-import { formatKg, type ProjectionPoint } from "@/app/lib/weight-projection";
+import type { ProjectionPoint } from "@/app/lib/weight-projection";
+
+/** Un punto de cualquier serie proyectada: peso en kg o grasa en %. */
+export type ChartPoint = { week: number; value: number; low: number; high: number };
 
 const WIDTH = 343;
 const HEIGHT = 170;
 const PAD = { top: 12, right: 40, bottom: 24, left: 8 };
 const MILESTONE_EVERY = 4;
 
-const bandPoints = (points: ProjectionPoint[], x: (index: number) => number, y: (value: number) => number) =>
+const bandPoints = (points: Array<Pick<ChartPoint, "low" | "high">>, x: (index: number) => number, y: (value: number) => number) =>
   [
     ...points.map((point, index) => `${x(index)},${y(point.high)}`),
     ...points.map((point, index) => `${x(index)},${y(point.low)}`).reverse(),
@@ -27,10 +30,13 @@ export function WeightProjectionChart({
   points,
   selected,
   onSelect,
+  formatValue,
 }: {
-  points: ProjectionPoint[];
+  points: ChartPoint[];
   selected: number;
   onSelect: (week: number) => void;
+  /** Valor con unidad para lectores de pantalla: "73,5 kg". */
+  formatValue: (value: number) => string;
 }) {
   const clipId = useId();
   const reduceMotion = useReducedMotion();
@@ -79,7 +85,7 @@ export function WeightProjectionChart({
       aria-valuemin={0}
       aria-valuemax={last}
       aria-valuenow={selected}
-      aria-valuetext={`${selected === 0 ? "Hoy" : `Semana ${selected}`}, ${formatKg(current.kg)} kg`}
+      aria-valuetext={`${selected === 0 ? "Hoy" : `Semana ${selected}`}, ${formatValue(current.value)}`}
       onKeyDown={onKeyDown}
       onPointerDown={(event) => {
         draggingRef.current = true;
@@ -126,7 +132,7 @@ export function WeightProjectionChart({
       <g clipPath={`url(#${clipId})`}>
         <polygon points={bandPoints(points, x, y)} fill="var(--foreground)" opacity={0.06} />
         <polyline
-          points={points.map((point, index) => `${x(index)},${y(point.kg)}`).join(" ")}
+          points={points.map((point, index) => `${x(index)},${y(point.value)}`).join(" ")}
           fill="none"
           stroke="var(--foreground-muted)"
           strokeWidth={2}
@@ -139,7 +145,7 @@ export function WeightProjectionChart({
             <circle
               key={point.week}
               cx={x(index)}
-              cy={y(point.kg)}
+              cy={y(point.value)}
               r={3.5}
               fill="var(--background)"
               stroke="var(--foreground-muted)"
@@ -152,16 +158,16 @@ export function WeightProjectionChart({
       <line
         x1={x(selected)}
         x2={x(selected)}
-        y1={y(current.kg) + 7}
+        y1={y(current.value) + 7}
         y2={plotBottom}
         stroke="var(--border-strong)"
         strokeDasharray="3 3"
       />
-      <circle cx={x(0)} cy={y(points[0].kg)} r={4.5} fill="var(--foreground)" />
+      <circle cx={x(0)} cy={y(points[0].value)} r={4.5} fill="var(--foreground)" />
       {selected > 0 ? (
         <circle
           cx={x(selected)}
-          cy={y(current.kg)}
+          cy={y(current.value)}
           r={5.5}
           fill="var(--foreground)"
           stroke="var(--background)"

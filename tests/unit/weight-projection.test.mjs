@@ -70,6 +70,46 @@ describe("projectWeight", () => {
   });
 });
 
+describe("projectWeight · grasa corporal", () => {
+  it("sin % de grasa no proyecta la grasa", () => {
+    assert.equal(project("cut", 12, { ...body, bodyFatPct: null }).fat, null);
+  });
+
+  it("arranca en el % del perfil y grasa + magra suman el peso", () => {
+    const { points, fat } = project("cut");
+    assert.equal(fat.length, points.length);
+    assert.ok(Math.abs(fat[0].pct - 22) < 1e-9);
+    assert.equal(fat[0].low, fat[0].high);
+    fat.forEach((point, week) => {
+      assert.ok(Math.abs(point.fatKg + point.leanKg - points[week].kg) < 1e-9);
+      assert.ok(point.low <= point.pct && point.pct <= point.high);
+    });
+  });
+
+  it("en definición la mayor parte de lo que baja es grasa y el % baja", () => {
+    const { points, fat } = project("cut");
+    const lost = points[0].kg - points[12].kg;
+    const fatLost = fat[0].fatKg - fat[12].fatKg;
+    assert.ok(fatLost / lost > 0.75 && fatLost / lost < 0.9, `grasa ${fatLost} de ${lost}`);
+    assert.equal(formatKg(fat[12].pct), "18,1");
+  });
+
+  it("en volumen el % sube: Forbes reparte sin el ajuste de definición", () => {
+    const { points, fat } = project("bulk");
+    const gained = points[12].kg - points[0].kg;
+    const leanGained = fat[12].leanKg - fat[0].leanKg;
+    assert.ok(Math.abs(leanGained / gained - 10.4 / (10.4 + 17.27)) < 0.02);
+    assert.ok(fat[12].pct > 22);
+  });
+
+  it("con menos grasa, más del cambio es magra", () => {
+    const lean = project("cut", 12, { ...body, bodyFatPct: 10 }).fat;
+    const high = project("cut", 12, body).fat;
+    const leanShare = (fat) => (fat[0].leanKg - fat[12].leanKg) / (fat[0].leanKg + fat[0].fatKg - fat[12].leanKg - fat[12].fatKg);
+    assert.ok(leanShare(lean) > leanShare(high));
+  });
+});
+
 describe("projectionPace", () => {
   it("usa límites distintos para bajar y para subir", () => {
     assert.equal(projectionPace("down", 0.4), "slow");

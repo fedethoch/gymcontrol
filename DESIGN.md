@@ -525,7 +525,7 @@ Ver y ajustar el objetivo diario. Mobile se rediseñó con la dirección "Tu pla
 |---|---|
 | Z1 Identidad | Avatar de 44px (inicial o ícono), nombre en H3 (sin nombre: acción de texto "Agregá tu nombre") y email en caption. A la derecha, el indicador de guardado (`aria-live`) |
 | Z2 Plan | Micro label "Tu objetivo diario", kcal en Display XXL, ecuación `mantenimiento − ajuste = objetivo` en 3 celdas entre líneas (`border-y`), macros en Metric M con el punto de `MACRO_COLORS` y barra de reparto de 6px con el % en mono (dato, no acento) |
-| Z2b Tu proyección | Solo con Definición o Ganar masa muscular (§15.4): H2 + chip de ritmo, peso de la semana elegida en Metric L con el delta y el rango, horizonte 4 · 12 · 24 sem (`SegmentedControl`), gráfico y fila de 3 stats (Hoy · kg por semana · % de tu peso) |
+| Z2b Tu proyección | Solo con Definición o Ganar masa muscular (§15.4): H2 + chip de ritmo, rótulo de la semana con el selector Peso · Grasa (`SegmentedControl` de 160px), peso o % de grasa de la semana elegida en Metric L con el delta y el rango, horizonte 4 · 12 · 24 sem (`SegmentedControl`), gráfico y fila de 3 stats (Peso: Hoy · kg por semana · % de tu peso. Grasa: Hoy % · kg de grasa · kg de magra, con el cambio hasta la semana elegida) |
 | Z3 Cómo lo calculamos | H2 + filas de 72px que abren su sheet: Tu cuerpo (miniatura de la referencia de grasa y `28 a · 178 cm · 78 kg · 22%`), Actividad (medidor de 5 barras en tinta neutra) y Objetivo (ajuste `−20%` en mono). Caption "Estimación nutricional…" |
 | Z4 Cuenta | H2 + filas de 52px: Nombre (sheet), Email (solo lectura), Cerrar sesión (POST `/auth/signout`) y Borrar cuenta (rose, sheet) |
 
@@ -562,11 +562,11 @@ Hacia dónde va el peso si se cumple el objetivo diario. Propuesta y referencias
 
 | Pieza | Regla |
 |---|---|
-| Modelo | `app/lib/weight-projection.ts`: día a día `peso += (objetivo − mantenimiento(peso)) / 7700`, con el mantenimiento recalculado con el peso (la curva se aplana). Arranca hoy desde el peso del perfil (no hay historial de pesajes). En manual usa el objetivo fijado. Se detiene en el peso de IMC 18,5 |
-| Gráfico | `WeightProjectionChart` (SVG 343×170, sin librería). Tinta neutra como §11.4: curva punteada `--foreground-muted` (es futura), banda `--foreground` al 6% (±25% del cambio acumulado), hitos huecos cada 4 semanas, semana elegida llena con guía punteada, escala a la derecha con `chartScale` (`app/lib/chart-scale.ts`). `role="slider"`: tocar o arrastrar elige la semana, ←/→ · Home · End con foco; `touch-action: pan-y` |
+| Modelo | `app/lib/weight-projection.ts`: día a día `peso += (objetivo − mantenimiento(peso)) / 7700`, con el mantenimiento recalculado con el peso (la curva se aplana). Arranca hoy desde el peso del perfil (no hay historial de pesajes). En manual usa el objetivo fijado. Se detiene en el peso de IMC 18,5. Grasa (solo con % en el perfil): cada día el cambio de peso se reparte con Forbes, parte magra = 10,4 / (10,4 + kg de grasa); al bajar esa parte se reduce a la mitad (se supone que entrena con la proteína del plan). El peso no depende de este reparto |
+| Gráfico | `WeightProjectionChart` (SVG 343×170, sin librería; recibe cualquier serie `{ value, low, high }`, la misma para peso y grasa). Tinta neutra como §11.4: curva punteada `--foreground-muted` (es futura), banda `--foreground` al 6% (±25% del cambio acumulado), hitos huecos cada 4 semanas, semana elegida llena con guía punteada, escala a la derecha con `chartScale` (`app/lib/chart-scale.ts`). `role="slider"`: tocar o arrastrar elige la semana, ←/→ · Home · End con foco; `touch-action: pan-y` |
 | Ritmo | % del peso por semana. Bajar: suave <0,5 · sostenible 0,5–1 · alto >1. Subir: suave <0,25 · sostenible 0,25–0,5 · alto >0,5. Alto = chip y nota `--warning` |
-| Estados | Recomposición o sin perfil: no se renderiza. Cambio <0,3 kg en 12 sem: texto "tu peso se mantiene". Manual que va al revés del objetivo: nota ámbar "Tu objetivo fijo da superávit/déficit". Piso de IMC: nota ámbar |
-| Motion | La curva se revela de izquierda a derecha (clip `scaleX`, 600 ms, `premiumEase`) al montar y al cambiar el horizonte; nada con reduced-motion |
+| Estados | Recomposición o sin perfil: no se renderiza. Cambio <0,3 kg en 12 sem: texto "tu peso se mantiene". Manual que va al revés del objetivo: nota ámbar "Tu objetivo fijo da superávit/déficit". Piso de IMC: nota ámbar. Grasa sin % en el perfil: sin rótulo, horizonte ni gráfico; texto + "Elegir mi grasa corporal" (secundario), que abre S1 directo en S2 (mobile) o baja a la card de grasa y la enfoca (desktop). La vista previa de S4 queda solo en peso |
+| Motion | La curva se revela de izquierda a derecha (clip `scaleX`, 600 ms, `premiumEase`) al montar y al cambiar el horizonte o entre Peso y Grasa; nada con reduced-motion |
 | Emerald | Ninguno: solo el anillo de foco |
 
 ---

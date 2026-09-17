@@ -35,19 +35,30 @@ export function fromStepperValue(value: number | null): string {
   return value === null ? "" : String(value);
 }
 
-/** S1 · Tu cuerpo, con la vista interna de grasa corporal (S2) en el mismo drawer. */
+/**
+ * S1 · Tu cuerpo, con la vista interna de grasa corporal (S2) en el mismo drawer.
+ * `initialView="fat"` abre directo en S2 (desde Tu proyección · Grasa).
+ */
 export function BodySheet({
   open,
   onOpenChange,
   form,
+  initialView = "body",
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   form: ProfileForm;
+  initialView?: "body" | "fat";
 }) {
-  const [view, setView] = useState<"body" | "fat">("body");
+  const [view, setView] = useState<"body" | "fat">(initialView);
+  const [wasOpen, setWasOpen] = useState(open);
   const disabled = !form.online;
   const reference = BODY_FAT_REFERENCES[form.gender].find((item) => item.value === form.bodyFatPct) ?? null;
+
+  if (open !== wasOpen) {
+    setWasOpen(open);
+    if (open) setView(initialView);
+  }
 
   function handleOpenChange(next: boolean) {
     if (!next) setView("body");
