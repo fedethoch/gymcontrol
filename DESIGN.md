@@ -494,7 +494,7 @@ Desktop (≥1024) conserva sus cards sin cambios. Mock y decisiones N-D1…N-D9:
 
 | Sheet | Regla |
 |---|---|
-| Agregar | Título "Agregar a {comida}". Buscador de 16px (`searchByName`, con el mismo boost que `FoodPicker`) y segmentado Frecuentes · Recetas · Mis alimentos. El "+" agrega al toque con la última cantidad (N-D3). Tocar el nombre abre el paso de cantidad: segmentado g/ml ↔ unidades o porciones (convierte el número), `NumberStepper` (pasos de 10 g, 50 ml o 0,5 u), aporte kcal/P/C/G y "Te quedarían N kcal". El pie muestra "N agregados · K kcal", "Deshacer" del último y "Listo". "Crear “…”" abre `FoodForm` |
+| Agregar | Título "Agregar a {comida}". Buscador de 16px (`searchByName`, con el mismo boost que `FoodPicker`) y segmentado Frecuentes · Recetas · Mis alimentos. El "+" agrega al toque con la última cantidad (N-D3). Tocar el nombre abre el paso de cantidad: segmentado g/ml ↔ unidades o porciones (convierte el número), `NumberStepper` (pasos de 10 g, 50 ml o 0,5 u), aporte kcal/P/C/G y "Te quedarían N kcal". El pie muestra "N agregados · K kcal", "Deshacer" del último y "Listo"; con el teclado abierto se oculta para que se vea la lista (`useKeyboardOpen`). "Crear “…”" abre `FoodForm` |
 | Alimento | El mismo paso de cantidad, con la cantidad registrada. "Guardar" en blanco y "Quitar" con confirmación en línea; si es el único alimento, lo avisa y borra la comida |
 | Comida ("…") | Nombre editable en línea (Enter guarda; Esc cancela sin cerrar el sheet). Tipo en chips: si el nombre era el del tipo, cambia con él. Botones Antes/Después y eliminar con confirmación en línea |
 | Tu día | Una fila por comida (alimentos y kcal) que lleva a su pestaña, y "Otra comida": se elige nombre y tipo, y se abre Agregar para esa comida nueva |
@@ -553,6 +553,7 @@ Bottom sheets (vaul) con título a la izquierda y "Listo" a la derecha. Guardan 
 | Sin conexión | `navigator.onLine = false` | Z1: "Sin conexión" (`--warning`). Los controles de los sheets y el CTA del flujo se deshabilitan con nota; lo pendiente se guarda al volver la red | — |
 
 Reglas: sin `MobileHeader` (§6.1) y nada fijo abajo salvo la bottom nav. Lógica pura en `app/lib/profile-plan.ts` (tests en `tests/unit/`); estado y autosave en `app/configuracion/useProfileForm.ts`, compartido con desktop. Motion: `AnimatedNumber` en kcal, ecuación y macros, check de opción con `fadeScale` e indicador del `SegmentedControl` con `layoutId`; todo se neutraliza con reduced-motion.
+
 
 ### 15.4 Proyección de peso
 

@@ -12,6 +12,7 @@ import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
 import { LoadingDots } from "@/app/components/ui/LoadingDots";
 import { SegmentedControl } from "@/app/components/ui/SegmentedControl";
+import { useKeyboardOpen } from "@/app/components/ui/use-keyboard-open";
 import { searchByName } from "@/app/lib/food-search";
 import {
   describeOption,
@@ -40,7 +41,8 @@ type Session = { count: number; kcal: number; last: { record: UndoRecord; name: 
 
 /**
  * Sheet "Agregar a {comida}" (DESIGN.md §14): buscar o elegir de una lista, "+" agrega al toque con la
- * última cantidad y tocar el nombre abre el paso de cantidad. Deshacer vive en el pie del sheet.
+ * última cantidad y tocar el nombre abre el paso de cantidad. Deshacer vive en el pie del sheet, que se
+ * oculta mientras el teclado está abierto para que se vea la lista.
  */
 export function AddFoodSheet({
   open,
@@ -84,6 +86,7 @@ export function AddFoodSheet({
   const [busyKey, setBusyKey] = useState<string | null>(null);
   const [addedKeys, setAddedKeys] = useState<ReadonlySet<string>>(new Set());
   const timers = useRef(new Set<number>());
+  const keyboardOpen = useKeyboardOpen();
 
   useEffect(() => {
     const pending = timers.current;
@@ -216,7 +219,7 @@ export function AddFoodSheet({
         {busyKey === optionKey(selected) ? <LoadingDots /> : <Plus aria-hidden="true" className="size-[18px]" />}
         {amount ? `Agregar ${formatAmount(amount, selectedSubject, ",")}` : "Agregar"}
       </Button>
-    ) : step === "search" ? (
+    ) : step === "search" && !keyboardOpen ? (
       <>
         <div aria-live="polite" className="flex min-h-11 items-center justify-between gap-3">
           <p className="min-w-0 text-sm text-[var(--foreground-muted)]">
