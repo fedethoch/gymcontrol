@@ -24,7 +24,7 @@ export function ExerciseStage({
   onHistory: () => void;
 }) {
   return (
-    <div className="relative h-[clamp(140px,22svh,184px)] overflow-hidden rounded-[20px] border border-[var(--border)]">
+    <div className="relative min-h-[120px] flex-1 short:min-h-[88px] overflow-hidden rounded-[20px] border border-[var(--border)]">
       <span
         aria-hidden="true"
         className="absolute inset-0 bg-white [filter:invert(1)_hue-rotate(180deg)]"

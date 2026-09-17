@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Pantallas bajas (SE, 360×640): el registro mobile se compacta para entrar sin scroll. */
+@custom-variant short (@media (max-height: 700px));
+
 :root {
   --background: #05070b;
   --sidebar: #080b10;

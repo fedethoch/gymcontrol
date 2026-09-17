@@ -11,7 +11,7 @@ const RING_LENGTH = 2 * Math.PI * RING_RADIUS;
 /** Z3b · marcar la serie actual, debajo de los steppers (único CTA emerald mientras se entrena). */
 export function SetDoneButton({ label, onDone }: { label: string; onDone: () => void }) {
   return (
-    <Button type="button" onClick={onDone} className="h-14 w-full rounded-2xl text-base font-bold">
+    <Button type="button" onClick={onDone} className="h-14 w-full rounded-2xl text-base font-bold short:h-12">
       <Check aria-hidden="true" className="size-5" strokeWidth={3} />
       {label}
     </Button>
@@ -39,7 +39,7 @@ export function RestCard({
   return (
     <ActionCard>
       <div className="flex items-center gap-3.5">
-        <svg viewBox="0 0 72 72" className="size-[72px] shrink-0" aria-hidden="true">
+        <svg viewBox="0 0 72 72" className="size-[72px] shrink-0 short:size-14" aria-hidden="true">
           <circle cx="36" cy="36" r={RING_RADIUS} fill="none" stroke="var(--border-strong)" strokeWidth="6" />
           <circle
             cx="36"
@@ -55,7 +55,7 @@ export function RestCard({
           />
         </svg>
         <p role="timer" aria-live="off" className="grid gap-1">
-          <span className="font-display text-[3rem] font-bold leading-none tracking-[-0.04em] tabular-nums text-[var(--foreground)]">
+          <span className="font-display text-[3rem] font-bold leading-none short:text-[2.5rem] tracking-[-0.04em] tabular-nums text-[var(--foreground)]">
             {minutes}:{seconds}
           </span>
           <span className="text-[13px] text-[var(--foreground-muted)]">descanso</span>
@@ -116,7 +116,7 @@ export function FinishConfirm({
 
 function ActionCard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid gap-3 rounded-[24px] border border-[var(--border-strong)] bg-[var(--card-alt)] p-4">
+    <div className="grid gap-3 rounded-[24px] border border-[var(--border-strong)] bg-[var(--card-alt)] p-4 short:gap-2 short:p-3">
       {children}
     </div>
   );

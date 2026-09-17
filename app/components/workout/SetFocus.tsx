@@ -34,7 +34,7 @@ export function SetFocus({
   onStep: (field: StepperField["field"], direction: 1 | -1) => void;
 }) {
   return (
-    <div className="grid gap-3 border-y border-[var(--border)] py-3.5">
+    <div className="grid gap-3 border-y border-[var(--border)] py-3.5 short:gap-2 short:py-2.5">
       <div className="flex items-baseline justify-between gap-3">
         <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--foreground-muted)]">
           {setLabel}

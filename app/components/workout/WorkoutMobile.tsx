@@ -240,7 +240,7 @@ export function WorkoutMobile({
 
   return (
     <div className="flex min-h-full flex-1 flex-col gap-4">
-      <div className="flex flex-1 flex-col gap-4">
+      <div className="flex flex-1 flex-col gap-4 short:gap-3">
         <WorkoutTopBar
           fractions={exerciseFractions(exercises, drafts)}
           doneSets={doneSets}
@@ -288,12 +288,12 @@ export function WorkoutMobile({
             <div
               ref={pagerRef}
               onScroll={onScroll}
-              className="-mx-4 flex snap-x snap-mandatory items-start overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              className="-mx-4 flex flex-1 snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
               {exercises.map((exercise, index) => (
                 <div
                   key={exercise.routineItemId}
-                  className="relative w-full shrink-0 snap-start px-4"
+                  className="relative flex w-full shrink-0 snap-start px-4"
                   aria-hidden={mounted ? index !== panel : undefined}
                   inert={mounted && index !== panel ? true : undefined}
                 >
@@ -442,62 +442,66 @@ function ExercisePanel({
   });
 
   return (
-    <div className="grid content-start gap-4">
-      <ExerciseStage
-        imageUrl={exercise.exercise.imageUrl}
-        name={exercise.exercise.name}
-        position={position}
-        hasHistory={exercise.history.length > 0}
-        onTechnique={() => handlers.onShowDetail(exercise)}
-        onHistory={() => handlers.onShowHistory(exercise)}
-      />
+    <div className="flex min-h-0 flex-1 flex-col gap-5 short:gap-3">
+      <div className="flex min-h-0 flex-1 flex-col gap-3 short:gap-2">
+        <ExerciseStage
+          imageUrl={exercise.exercise.imageUrl}
+          name={exercise.exercise.name}
+          position={position}
+          hasHistory={exercise.history.length > 0}
+          onTechnique={() => handlers.onShowDetail(exercise)}
+          onHistory={() => handlers.onShowHistory(exercise)}
+        />
 
-      <div className="grid gap-1">
-        <h1 className="font-display text-[1.75rem] font-bold leading-[1.05] tracking-[-0.03em] text-[var(--foreground)]">
-          {exercise.exercise.name}
-        </h1>
-        <p className="text-[13px] text-[var(--foreground-muted)]">
-          {exercise.series} × {exercise.target} · RIR {exercise.rir} · descanso{" "}
-          {exercise.rest}
-        </p>
+        <div className="grid gap-1">
+          <h1 className="font-display text-[1.75rem] font-bold leading-[1.05] tracking-[-0.03em] text-[var(--foreground)]">
+            {exercise.exercise.name}
+          </h1>
+          <p className="text-[13px] text-[var(--foreground-muted)]">
+            {exercise.series} × {exercise.target} · RIR {exercise.rir} · descanso{" "}
+            {exercise.rest}
+          </p>
+        </div>
       </div>
 
-      {resting ? null : (
-        <SetFocus
-          setLabel={`Serie ${index + 1} de ${exercise.series}`}
-          previousLabel={previousLabel}
-          suggestion={describeSuggestion({
-            suggestion,
-            target,
-            exercise,
-            hasHistory: Boolean(previous),
-          })}
-          fields={fields}
-          onChange={(field, value) =>
-            handlers.onField(exercise, index, field, value)
-          }
-          onStep={(field, direction) =>
-            handlers.onField(
+      <div className="grid gap-3 short:gap-2">
+        {resting ? null : (
+          <SetFocus
+            setLabel={`Serie ${index + 1} de ${exercise.series}`}
+            previousLabel={previousLabel}
+            suggestion={describeSuggestion({
+              suggestion,
+              target,
               exercise,
-              index,
-              field,
-              stepValue({
-                value:
-                  fields.find((candidate) => candidate.field === field)
-                    ?.value ?? "",
-                placeholder:
-                  fields.find((candidate) => candidate.field === field)
-                    ?.placeholder ?? "",
-                field,
+              hasHistory: Boolean(previous),
+            })}
+            fields={fields}
+            onChange={(field, value) =>
+              handlers.onField(exercise, index, field, value)
+            }
+            onStep={(field, direction) =>
+              handlers.onField(
                 exercise,
-                direction,
-              })
-            )
-          }
-        />
-      )}
+                index,
+                field,
+                stepValue({
+                  value:
+                    fields.find((candidate) => candidate.field === field)
+                      ?.value ?? "",
+                  placeholder:
+                    fields.find((candidate) => candidate.field === field)
+                      ?.placeholder ?? "",
+                  field,
+                  exercise,
+                  direction,
+                })
+              )
+            }
+          />
+        )}
 
-      {action}
+        {action}
+      </div>
 
       <SetList rows={rows} onSelect={onSelectSet} />
     </div>

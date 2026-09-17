@@ -344,12 +344,14 @@ Pantalla de una tarea: **hacer la serie que sigue**. Mobile (<1024) se rediseñ�
 | Zona | Contenido |
 |---|---|
 | Z1 Barra | ✕ de 44px (sale del entreno; con series pendientes ofrece terminar), barra segmentada con un segmento por ejercicio relleno según sus series hechas, contador `hechas/plan` en mono y botón de lista de 44px con la cantidad de ejercicios (abre el sheet del día). Debajo, línea chica `Día N · Grupos` e indicador de guardado |
-| Z2 Ejercicio | Ilustración del ejercicio de 184px **invertida a dark** (`invert(1) hue-rotate(180deg)`: figura clara sobre negro, músculos rojizos), chip `N de M` y chip "Técnica" → `ExerciseDetailModal`. Debajo, nombre en H1 y `series × objetivo · RIR · descanso` |
+| Z2 Ejercicio | Ilustración del ejercicio **invertida a dark** que absorbe el alto libre (mín. 120px; 88px en pantallas bajas) (`invert(1) hue-rotate(180deg)`: figura clara sobre negro, músculos rojizos), chip `N de M` y chip "Técnica" → `ExerciseDetailModal`. Debajo, nombre en H1 y `series × objetivo · RIR · descanso` |
 | Z3 Serie actual | Micro label `Serie N de M`, dos steppers −/+ con el valor en Metric L (kg y reps; en ejercicios de tiempo, una sola columna seg/min), "Anterior" en mono y la línea de sugerencia. El número se achica al ancho que queda entre los botones según sus dígitos (entre 16px y 3rem; a 375px, "22.5" va a ~24px) |
 | Z3b Acción | Justo debajo de los steppers, en el flujo: CTA emerald "Serie N hecha" de 56px a todo el ancho. En descanso, el bloque steppers + CTA se reemplaza en el mismo lugar por la tarjeta de descanso; la confirmación de terminar parcial ocupa el mismo lugar |
-| Z4 Series | Filas de 40px por serie: hecha (check emerald + valores), actual (marcador y "Ahora"), pendiente (valores en `--foreground-subtle`). Tocar una fila la vuelve la actual. Acción de texto "Historial" → `ExerciseHistorySheet` |
+| Z4 Series | Tira de alto fijo (56px) con una columna plana por serie, **sin cards** (patrón Ladder): segmento de 3px arriba como la barra de Z1 (`--accent-bright` hecha, `--foreground` actual, `--border-strong` pendiente), valor compacto en mono (`22.5×8`) y "Serie N" (✓ si está hecha). Tocar una columna la vuelve la actual. Entra con 2 a 5 series a 360px |
 
 Nada fijo abajo salvo la bottom nav: la acción vive en el contenido y nunca tapa texto (2026-09-16, reemplaza al dock sticky; mock https://claude.ai/artifact/V5k2qjXaUdU6uPJspScm37, opción D-A).
+
+**Pantalla completa sin scroll** (2026-09-17, mock https://claude.ai/artifact/2jK4BdCAVQ8ibv5CwcdjDC): el panel ocupa el alto entre Z1 y la bottom nav; solo la ilustración de Z2 crece o se achica. Ritmo por grupos: Z2 (imagen + nombre) · Z3/Z3b · Z4, con 12px adentro y 20px entre grupos. Con alto ≤700px (variante `short:` en `globals.css`) bajan espacios, CTA y tira a 48px y la tarjeta de descanso se compacta.
 
 El pager se desliza horizontalmente entre ejercicios (scroll-snap) y se navega con ←/→; al completar un ejercicio avanza solo al próximo pendiente.
 

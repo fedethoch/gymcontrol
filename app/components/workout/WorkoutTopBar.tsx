@@ -30,7 +30,7 @@ export function WorkoutTopBar({
   onRetry: () => void;
 }) {
   return (
-    <div className="grid gap-2.5">
+    <div className="grid gap-1.5">
       <div className="flex items-center gap-3">
         <button
           type="button"
