@@ -3,16 +3,31 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
+import { BODY_LIMITS } from "@/app/components/configuracion/BodySheet";
 import { useOnlineStatus } from "@/app/components/configuracion/use-online-status";
 import { saveNutritionProfileAction } from "@/app/configuracion/actions";
 import { calculateNutritionPlan } from "@/app/lib/nutrition-calc";
 import { MOCK_PROFILE_DEFAULTS } from "@/app/lib/nutrition-mock";
 import type { NutritionProfile } from "@/app/lib/nutrition-profile";
 import {
+  adjustCustomMacros,
+  customParamsFrom,
+  isVariantOf,
+  MAINTENANCE_OVERRIDE_RANGE,
+  macroBounds,
+  presetMacroGrams,
+  RECOMMENDED_PRESET,
+  referenceWeightKg,
+  resolveVariant,
+  type MacroKey,
+} from "@/app/lib/nutrition-plan-options";
+import {
   BODY_FAT_REFERENCES,
   type ActivityLevel,
   type Gender,
   type Goal,
+  type GoalVariant,
+  type MacroPreset,
   type ManualTarget,
   type NutritionPlan,
   type NutritionProfileInput,
@@ -23,6 +38,10 @@ import { parseManualTarget } from "@/app/lib/profile-plan";
 export type ProfileSaveStatus = "idle" | "saving" | "saved" | "error";
 
 const AUTOSAVE_DELAY_MS = 800;
+
+function inRange(value: number | null, [min, max]: readonly [number, number]): number | null {
+  return value != null && value >= min && value <= max ? value : null;
+}
 
 /**
  * Estado del perfil nutricional y su autosave. Lo comparten el árbol mobile (DESIGN.md §15)
@@ -41,7 +60,18 @@ export function useProfileForm(
   const [activityLevel, setActivityLevel] = useState<ActivityLevel>(
     initialProfile?.activityLevel ?? MOCK_PROFILE_DEFAULTS.activityLevel,
   );
-  const [goal, setGoal] = useState<Goal>(initialProfile?.goal ?? MOCK_PROFILE_DEFAULTS.goal);
+  const [goal, setGoalState] = useState<Goal>(initialProfile?.goal ?? MOCK_PROFILE_DEFAULTS.goal);
+  const [goalVariant, setGoalVariantState] = useState<GoalVariant | undefined>(initialProfile?.goalVariant);
+  const [kcalAdjustment, setKcalAdjustment] = useState<number | null>(initialProfile?.kcalAdjustment ?? null);
+  const [macroPreset, setMacroPresetState] = useState<MacroPreset>(initialProfile?.macroPreset ?? RECOMMENDED_PRESET);
+  const [customProteinGPerKg, setCustomProteinGPerKg] = useState<number | null>(
+    initialProfile?.customProteinGPerKg ?? null,
+  );
+  const [customFatPct, setCustomFatPct] = useState<number | null>(initialProfile?.customFatPct ?? null);
+  const [maintenanceOverrideKcal, setMaintenanceOverrideKcal] = useState<number | null>(
+    initialProfile?.maintenanceOverrideKcal ?? null,
+  );
+  const [targetWeightKg, setTargetWeightKg] = useState<number | null>(initialProfile?.targetWeightKg ?? null);
   const initialManualPlan = initialProfile?.targetMode === "manual" ? initialProfile.plan : null;
   const [targetMode, setTargetMode] = useState<TargetMode>(initialProfile?.targetMode ?? "auto");
   const [manualKcal, setManualKcal] = useState(initialManualPlan ? String(initialManualPlan.targetKcal) : "");
@@ -71,8 +101,31 @@ export function useProfileForm(
       bodyFatPct,
       activityLevel,
       goal,
+      goalVariant: goalVariant && isVariantOf(goal, goalVariant) ? goalVariant : undefined,
+      kcalAdjustment,
+      macroPreset,
+      customProteinGPerKg: macroPreset === "custom" ? customProteinGPerKg : null,
+      customFatPct: macroPreset === "custom" ? customFatPct : null,
+      // Mientras se escribe ("2" camino a "2600") el valor puede quedar fuera de rango: no se usa hasta que sea válido.
+      maintenanceOverrideKcal: inRange(maintenanceOverrideKcal, MAINTENANCE_OVERRIDE_RANGE),
+      targetWeightKg: inRange(targetWeightKg, [BODY_LIMITS.weightKg.min, BODY_LIMITS.weightKg.max]),
     };
-  }, [gender, age, heightCm, weightKg, bodyFatPct, activityLevel, goal]);
+  }, [
+    gender,
+    age,
+    heightCm,
+    weightKg,
+    bodyFatPct,
+    activityLevel,
+    goal,
+    goalVariant,
+    kcalAdjustment,
+    macroPreset,
+    customProteinGPerKg,
+    customFatPct,
+    maintenanceOverrideKcal,
+    targetWeightKg,
+  ]);
 
   // Objetivo manual: solo se guarda si los valores son coherentes (mismos límites que el servidor).
   const manualTarget = useMemo<ManualTarget | null>(
@@ -185,6 +238,49 @@ export function useProfileForm(
     setTargetMode(nextMode);
   }
 
+  /** Otro grupo de objetivo: vuelve a su variante recomendada y sin ajuste fino. */
+  function setGoal(next: Goal) {
+    if (next === goal) return;
+    setGoalState(next);
+    setGoalVariantState(undefined);
+    setKcalAdjustment(null);
+  }
+
+  function setGoalVariant(next: GoalVariant) {
+    setGoalVariantState(next);
+    setKcalAdjustment(null);
+  }
+
+  /** Personalizada arranca desde los macros que se ven ahora (sin salto). */
+  function setMacroPreset(next: MacroPreset) {
+    if (next === "custom" && macroPreset !== "custom") {
+      const params = customParamsFrom(
+        calculatedPlan.targetKcal,
+        referenceWeightKg(profileInput),
+        presetMacroGrams(calculatedPlan.targetKcal, profileInput),
+      );
+      setCustomProteinGPerKg(params.customProteinGPerKg);
+      setCustomFatPct(params.customFatPct);
+    }
+    setMacroPresetState(next);
+  }
+
+  /** Sliders de la Personalizada: mueve un macro y guarda el reparto resultante. */
+  function setCustomMacro(changed: MacroKey, value: number) {
+    const kcal = calculatedPlan.targetKcal;
+    const weight = referenceWeightKg(profileInput);
+    const next = adjustCustomMacros(
+      kcal,
+      presetMacroGrams(kcal, profileInput),
+      changed,
+      value,
+      macroBounds(kcal, weight),
+    );
+    const params = customParamsFrom(kcal, weight, next);
+    setCustomProteinGPerKg(params.customProteinGPerKg);
+    setCustomFatPct(params.customFatPct);
+  }
+
   // Ranges differ by sex: keep the same level (e.g. "Moderado") when switching.
   function handleGenderChange(next: Gender) {
     if (next === gender) return;
@@ -219,6 +315,17 @@ export function useProfileForm(
     setActivityLevel,
     goal,
     setGoal,
+    goalVariant: resolveVariant(goal, goalVariant),
+    setGoalVariant,
+    kcalAdjustment,
+    setKcalAdjustment,
+    macroPreset,
+    setMacroPreset,
+    setCustomMacro,
+    maintenanceOverrideKcal,
+    setMaintenanceOverrideKcal,
+    targetWeightKg,
+    setTargetWeightKg,
     targetMode,
     handleTargetModeChange,
     manualKcal,

@@ -5,5 +5,5 @@ export const MOCK_PROFILE_DEFAULTS = {
   weightKg: 78,
   bodyFatPct: null,
   activityLevel: "moderate" as const,
-  goal: "recomposition" as const,
+  goal: "maintenance" as const,
 };

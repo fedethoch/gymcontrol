@@ -4,7 +4,7 @@ import { parseRegistroFoodParams } from "@/app/lib/food-catalog";
 import { parseRegistroRecipeParams } from "@/app/lib/recipe-catalog";
 import { listFoodsForUser } from "@/app/lib/foods";
 import { addDaysToDateKey, getTodayDateKey, isDateKey } from "@/app/lib/local-date";
-import { getLoggedDatesForUser, getMealLogForDate, listFrequentItemsBySlot } from "@/app/lib/meal-logs";
+import { getLoggedDatesForUser, getMealLogForDate, getMealLogTarget, listFrequentItemsBySlot } from "@/app/lib/meal-logs";
 import { getNutritionProfile } from "@/app/lib/nutrition-profile";
 import { MEAL_LOG_MAX_PAST_DAYS, MEAL_TYPES, type MealType, type RecipeOption } from "@/app/lib/nutrition-types";
 import { listRecipeCatalogItems } from "@/app/lib/recipes";
@@ -32,10 +32,11 @@ export default async function RegistroNutricionPage({
   const initialMealType =
     logDate === todayKey ? (MEAL_TYPES.find((type) => type === tipo) as MealType | undefined) : undefined;
 
-  const [foods, recipes, mealLog, profile, loggedDates, frequentBySlot] = await Promise.all([
+  const [foods, recipes, mealLog, dayTarget, profile, loggedDates, frequentBySlot] = await Promise.all([
     listFoodsForUser(auth.user.id),
     listRecipeCatalogItems(),
     getMealLogForDate({ userId: auth.user.id, logDate }),
+    getMealLogTarget({ userId: auth.user.id, logDate }),
     getNutritionProfile(auth.user.id),
     getLoggedDatesForUser({ userId: auth.user.id, days: 70 }),
     listFrequentItemsBySlot({ userId: auth.user.id }),
@@ -55,6 +56,9 @@ export default async function RegistroNutricionPage({
   const initialRecipeItem =
     linkable && !initialFoodItem ? parseRegistroRecipeParams({ receta, medida, cantidad }, recipes) : null;
 
+  // Cada día muestra el objetivo con el que se registró (snapshot en meal_logs); sin registro, el vigente.
+  const target = profile ? (dayTarget ?? { kcal: profile.plan.targetKcal, macros: profile.plan.macros }) : null;
+
   // RegistroClient arma sus dos árboles: mobile (<1024) y desktop.
   return (
     <RegistroClient
@@ -65,7 +69,7 @@ export default async function RegistroNutricionPage({
       logDate={logDate}
       todayKey={todayKey}
       initialMeals={mealLog?.meals ?? []}
-      target={profile ? { kcal: profile.plan.targetKcal, macros: profile.plan.macros } : null}
+      target={target}
       loggedDates={[...loggedDates]}
       initialMealType={initialMealType}
       initialMealId={initialMealId}

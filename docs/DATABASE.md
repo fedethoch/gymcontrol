@@ -696,6 +696,13 @@ Migraciones: `20260613_g18_nutrition_core.sql` (esquema + RLS + storage), `20260
 - `activity_level text not null check (...)`, `goal text not null check (...)`
 - columnas cacheadas del calculo: `bmr_kcal`, `maintenance_kcal`, `target_kcal`, `protein_g`, `carbs_g`, `fat_g` (todas `integer >= 0`)
 - `target_mode text not null default 'auto' check (target_mode in ('auto','manual'))`: en `manual`, `target_kcal` y macros guardan el objetivo fijado por el usuario (no se recalculan); `bmr_kcal` y `maintenance_kcal` siguen siendo el calculo
+- opciones del plan (`20260917_nutrition_plan_options.sql`, logica en `app/lib/nutrition-plan-options.ts`):
+  - `goal` = grupo: `cut` / `maintenance` / `bulk`. `recomposition` es el valor viejo de `maintenance`: la app lo lee como `maintenance` + variante `recomposition`; `20260917_nutrition_goal_maintenance.sql` lo convierte y cierra el check
+  - `goal_variant text` (null = recomendada): cut `gentle|moderate|aggressive`, maintenance `recomposition|maintain`, bulk `lean|standard|aggressive`; check por par objetivo/variante
+  - `kcal_adjustment numeric(4,3)` (null = el de la variante; −0,30…0,25)
+  - `macro_preset text not null default 'balanced'` (`balanced|high_protein|high_carb|high_fat|keto|custom`); con `custom`: `custom_protein_g_per_kg numeric(4,2)` (1–4) y `custom_fat_pct numeric(4,1)` (10–90), los carbos se recalculan
+  - `maintenance_override_kcal integer` (1000–6000, reemplaza al mantenimiento calculado), `target_weight_kg numeric(5,1)` (corta la proyeccion)
+- trigger `sync_nutrition_profiles_today_target` (after insert/update de objetivo y macros): copia el objetivo al `meal_logs` de hoy (hora argentina)
 - sin fila de perfil la app no inventa objetivo: registro y home piden configurarlo
 - `created_at`, `updated_at`
 - RLS: owner-only (`auth.uid() = user_id`) para select/insert/update/delete, mismo patron que `saved_routines`
@@ -719,6 +726,7 @@ Migracion: `20260613_g21_nutrition_fase3.sql`. Nota: las dietas predefinidas (`d
 - `log_date date not null` (dia calendario en hora argentina, `app/lib/local-date.ts`; el servidor corre en UTC)
 - `created_at`, `updated_at`
 - unique por `(user_id, log_date)`
+- `target_kcal`, `target_protein_g`, `target_carbs_g`, `target_fat_g integer` (null = sin snapshot): objetivo congelado del dia. Trigger `snapshot_meal_logs_target` (before insert) lo copia de `nutrition_profiles`; el de hoy lo actualiza el trigger del perfil. `/nutricion/registro` lo usa y, si el dia no tiene registro, cae al objetivo vigente
 - se puede cargar/corregir hasta 365 dias hacia atras (validado en server actions)
 - RLS: owner-only, mismo patron que `workout_sessions`
 

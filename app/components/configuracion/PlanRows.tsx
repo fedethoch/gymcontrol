@@ -1,11 +1,13 @@
 import Image from "next/image";
-import { ChevronRight, PenLine, PersonStanding } from "lucide-react";
+import { ChevronRight, PenLine, PersonStanding, TriangleAlert } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { ActivityMeter } from "@/app/components/configuracion/ActivityMeter";
 import { bodyFatImageSrc } from "@/app/components/configuracion/BodyFatCarousel";
 import { HomeSectionHeader } from "@/app/components/home/HomeSectionHeader";
-import { GOAL_INFO, type NutritionProfileInput, type TargetMode } from "@/app/lib/nutrition-types";
+import { calculateNutritionPlan } from "@/app/lib/nutrition-calc";
+import { MACRO_PRESET_COPY, RECOMMENDED_PRESET, variantInfo } from "@/app/lib/nutrition-plan-options";
+import type { NutritionProfileInput, TargetMode } from "@/app/lib/nutrition-types";
 import { ACTIVITY_COPY, activityLevelIndex, bodySummary, formatAdjustment, GOAL_COPY } from "@/app/lib/profile-plan";
 import { cn } from "@/app/lib/utils";
 
@@ -25,6 +27,8 @@ export function PlanRows({
 }) {
   const manual = targetMode === "manual";
   const activity = ACTIVITY_COPY[input.activityLevel];
+  const plan = calculateNutritionPlan(input);
+  const preset = input.macroPreset ?? RECOMMENDED_PRESET;
 
   const body: Row = {
     key: "body",
@@ -55,13 +59,15 @@ export function PlanRows({
   const goalRow: Row = {
     key: "goal",
     title: "Objetivo",
-    detail: manual ? "Los fijo yo" : `${GOAL_COPY[input.goal].label} · calculado con tus datos`,
+    detail: manual
+      ? "Los fijo yo"
+      : `${GOAL_COPY[input.goal].label} · ${variantInfo(input.goal, input.goalVariant).label} · Dieta ${MACRO_PRESET_COPY[preset].label.toLowerCase()}`,
     dimmed: false,
     lead: manual ? (
       <PenLine className="size-4 text-[var(--foreground)]" />
     ) : (
       <span className="font-mono text-[13px] font-medium text-[var(--foreground)]">
-        {formatAdjustment(GOAL_INFO[input.goal].kcalAdjustment)}
+        {formatAdjustment(plan.adjustment)}
       </span>
     ),
   };
@@ -99,9 +105,20 @@ export function PlanRows({
           </li>
         ))}
       </ul>
+      {!manual && plan.clampedToBmr ? <BmrFloorNote /> : null}
       <p className="text-xs text-[var(--foreground-muted)]">
         Estimación nutricional. No reemplaza el consejo de un profesional.
       </p>
     </section>
+  );
+}
+
+/** El déficit elegido dejaba el objetivo por debajo del metabolismo basal. */
+export function BmrFloorNote() {
+  return (
+    <p className="flex items-start gap-2 text-[13px] leading-snug text-[var(--warning)]">
+      <TriangleAlert aria-hidden="true" className="mt-0.5 size-3.5 shrink-0" />
+      <span>Tu objetivo quedó en tu metabolismo basal: comer menos no es seguro sin seguimiento profesional.</span>
+    </p>
   );
 }

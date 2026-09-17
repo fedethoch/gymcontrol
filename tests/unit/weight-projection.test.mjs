@@ -39,10 +39,10 @@ describe("projectWeight", () => {
     assert.equal(formatKgDelta(result.weeklyKg, 2), "+0,24");
   });
 
-  it("recomposición queda plana y no se muestra", () => {
-    const result = project("recomposition");
+  it("mantenimiento queda plano y no se muestra", () => {
+    const result = project("maintenance");
     assert.equal(result.direction, "flat");
-    assert.equal(showsProjection("recomposition"), false);
+    assert.equal(showsProjection("maintenance"), false);
     assert.equal(showsProjection("cut"), true);
   });
 
@@ -67,6 +67,38 @@ describe("projectWeight", () => {
     const plan = planFor("cut");
     const result = projectWeight({ ...body, goal: "cut" }, Math.round(plan.maintenanceKcal * 0.6), 12);
     assert.equal(result.pace, "fast");
+  });
+});
+
+describe("projectWeight · avanzado", () => {
+  it("con el mismo objetivo, un mantenimiento real más bajo hace bajar menos", () => {
+    const plan = planFor("cut");
+    const base = projectWeight({ ...body, goal: "cut" }, plan.targetKcal, 12);
+    const lower = projectWeight({ ...body, goal: "cut", maintenanceOverrideKcal: plan.maintenanceKcal - 300 }, plan.targetKcal, 12);
+    const diff = lower.points[12].kg - base.points[12].kg;
+    // 300 kcal × 84 días / 7700 ≈ 3,3 kg, algo menos porque la curva base se aplana.
+    assert.ok(diff > 2.5 && diff < 3.3, `diferencia ${diff}`);
+  });
+
+  it("se detiene en el peso objetivo y dice en cuántas semanas llega", () => {
+    const result = project("cut", 12, { ...body, targetWeightKg: 76 });
+    assert.equal(result.targetKg, 76);
+    assert.ok(result.weeksToTarget >= 3 && result.weeksToTarget <= 6, `semanas ${result.weeksToTarget}`);
+    assert.equal(result.points[12].kg, 76);
+    assert.ok(result.points.every((point) => point.kg >= 76));
+    assert.equal(result.pace, "steady");
+  });
+
+  it("calcula la llegada aunque esté fuera del horizonte", () => {
+    const result = project("cut", 4, { ...body, targetWeightKg: 72 });
+    assert.equal(result.points.length, 5);
+    assert.ok(result.weeksToTarget > 12 && result.weeksToTarget < 30, `semanas ${result.weeksToTarget}`);
+  });
+
+  it("ignora un peso objetivo que va al revés del objetivo", () => {
+    const result = project("cut", 12, { ...body, targetWeightKg: 85 });
+    assert.equal(result.targetKg, null);
+    assert.equal(result.weeksToTarget, null);
   });
 });
 

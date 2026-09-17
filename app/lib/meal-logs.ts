@@ -208,6 +208,37 @@ export async function getMealLogForDate(args: { userId: string; logDate: string 
   return mapMealLog(data as unknown as MealLogRow);
 }
 
+/** Objetivo congelado del día (lo copia un trigger al crear el registro); null si el día no tiene registro. */
+export async function getMealLogTarget(args: {
+  userId: string;
+  logDate: string;
+}): Promise<{ kcal: number; macros: Macros } | null> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("meal_logs")
+    .select("target_kcal, target_protein_g, target_carbs_g, target_fat_g")
+    .eq("user_id", args.userId)
+    .eq("log_date", args.logDate)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`No se pudo leer el objetivo del dia: ${error.message}`);
+  }
+
+  if (!data || data.target_kcal == null) {
+    return null;
+  }
+
+  return {
+    kcal: data.target_kcal,
+    macros: {
+      proteinG: data.target_protein_g ?? 0,
+      carbsG: data.target_carbs_g ?? 0,
+      fatG: data.target_fat_g ?? 0,
+    },
+  };
+}
+
 async function getMealLogOrEmpty(args: { userId: string; logDate: string }): Promise<MealLog> {
   return (await getMealLogForDate(args)) ?? emptyMealLog(args.logDate);
 }

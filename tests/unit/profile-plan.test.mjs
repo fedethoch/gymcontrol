@@ -25,7 +25,7 @@ describe("plan de ejemplo (mock v2)", () => {
   });
 
   it("las kcal de cada objetivo para el sheet Objetivo", () => {
-    const kcal = ["cut", "recomposition", "bulk"].map((goal) => calculateNutritionPlan({ ...body, goal }).targetKcal);
+    const kcal = ["cut", "maintenance", "bulk"].map((goal) => calculateNutritionPlan({ ...body, goal }).targetKcal);
     assert.deepEqual(kcal, [2088, 2610, 2871]);
   });
 });

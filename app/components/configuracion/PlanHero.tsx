@@ -3,7 +3,7 @@ import { Check, TriangleAlert } from "lucide-react";
 
 import { AnimatedNumber } from "@/app/components/ui/motion";
 import { MACRO_COLORS } from "@/app/lib/nutrition-style";
-import { GOAL_INFO, type Goal, type ManualTarget, type NutritionPlan } from "@/app/lib/nutrition-types";
+import type { Goal, ManualTarget, NutritionPlan } from "@/app/lib/nutrition-types";
 import { checkManualTarget, GOAL_COPY, macroSplit } from "@/app/lib/profile-plan";
 import { cn } from "@/app/lib/utils";
 
@@ -95,7 +95,8 @@ export function PlanHero({
 }
 
 function Equation({ plan, goal }: { plan: NutritionPlan; goal: Goal }) {
-  const adjustment = GOAL_INFO[goal].kcalAdjustment;
+  // Si el déficit tocó el metabolismo basal, la cuenta muestra lo que realmente se aplicó.
+  const adjustment = plan.clampedToBmr ? plan.targetKcal / plan.maintenanceKcal - 1 : plan.adjustment;
   const pct = `${Math.round(Math.abs(adjustment) * 100)}%`;
   const sign = adjustment < 0 ? "−" : "+";
 

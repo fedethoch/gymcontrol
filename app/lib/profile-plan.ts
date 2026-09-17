@@ -18,9 +18,9 @@ export const ACTIVITY_COPY: Record<ActivityLevel, { label: string; hint: string 
 };
 
 export const GOAL_COPY: Record<Goal, { label: string; hint: string }> = {
-  cut: { label: "Definición", hint: "Bajar grasa manteniendo músculo" },
-  recomposition: { label: "Recomposición", hint: "Mismo peso, más músculo" },
-  bulk: { label: "Ganar masa muscular", hint: "Superávit moderado" },
+  cut: { label: "Déficit", hint: "Bajar grasa cuidando el músculo" },
+  maintenance: { label: "Mantenimiento", hint: "Mismo peso, mejor composición" },
+  bulk: { label: "Ganancia", hint: "Sumar masa muscular" },
 };
 
 // Mismos límites que `manualTargetSchema` en app/configuracion/actions.ts.

@@ -10,8 +10,7 @@ import {
 } from "@/app/components/configuracion/WeightProjectionChart";
 import { Button } from "@/app/components/ui/Button";
 import { SegmentedControl } from "@/app/components/ui/SegmentedControl";
-import { calculateNutritionPlan } from "@/app/lib/nutrition-calc";
-import type { Goal, NutritionProfileInput } from "@/app/lib/nutrition-types";
+import type { NutritionProfileInput } from "@/app/lib/nutrition-types";
 import {
   contradictsGoal,
   fastPaceNote,
@@ -38,7 +37,7 @@ const formatPctValue = (value: number) => `${formatKg(value)}% de grasa`;
 
 /**
  * Z2b · hacia dónde va el peso si se cumple el objetivo (DESIGN.md §15.4).
- * Solo con Definición o Ganar masa muscular; en manual sigue al objetivo fijado.
+ * Solo con Déficit o Ganancia; en manual sigue al objetivo fijado.
  * Grasa muestra el % proyectado; sin % en el perfil, `onAddBodyFat` lleva a cargarlo.
  */
 export function ProjectionSection({
@@ -222,6 +221,24 @@ export function ProjectionSection({
             </p>
           ) : null}
 
+          {projection.targetKg != null ? (
+            <p className="text-[15px] leading-snug text-[var(--foreground-muted)]">
+              {projection.weeksToTarget != null ? (
+                <>
+                  Llegás a <span className="font-mono text-[var(--foreground)]">{formatKg(projection.targetKg)} kg</span> en ~
+                  <span className="font-mono text-[var(--foreground)]">{projection.weeksToTarget}</span>{" "}
+                  {projection.weeksToTarget === 1 ? "semana" : "semanas"}.
+                </>
+              ) : (
+                <>
+                  Con este objetivo no llegás a{" "}
+                  <span className="font-mono text-[var(--foreground)]">{formatKg(projection.targetKg)} kg</span>: la curva se
+                  aplana antes.
+                </>
+              )}
+            </p>
+          ) : null}
+
           <p className="text-xs leading-snug text-[var(--foreground-muted)]">
             Aproximado, si cumplís <span className="font-mono text-[var(--foreground)]">{targetKcal}</span> kcal por día.{" "}
             {metric === "fat"
@@ -245,15 +262,12 @@ function Stat({ label, value, divided = false }: { label: string; value: string;
   );
 }
 
-/** Vista previa a 12 semanas con las kcal calculadas de cada objetivo (S4 y paso 6 del alta). */
-export function ProjectionPreview({ input, goal }: { input: NutritionProfileInput; goal: Goal }) {
-  const projection = useMemo(() => {
-    const goalInput = { ...input, goal };
-    return projectWeight(goalInput, calculateNutritionPlan(goalInput).targetKcal, PREVIEW_WEEKS);
-  }, [input, goal]);
+/** Vista previa a 12 semanas con las kcal calculadas del objetivo elegido (S4 y paso 6 del alta). */
+export function ProjectionPreview({ input, targetKcal }: { input: NutritionProfileInput; targetKcal: number }) {
+  const projection = useMemo(() => projectWeight(input, targetKcal, PREVIEW_WEEKS), [input, targetKcal]);
   const start = projection.points[0].kg;
   const end = projection.points[PREVIEW_WEEKS].kg;
-  const flat = !showsProjection(goal) || projection.direction === "flat";
+  const flat = !showsProjection(input.goal) || projection.direction === "flat";
 
   return (
     <div

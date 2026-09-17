@@ -1,4 +1,5 @@
 import { calculateBmr } from "@/app/lib/nutrition-calc";
+import { effectiveTargetWeight } from "@/app/lib/nutrition-plan-options";
 import { ACTIVITY_LEVEL_INFO, type Goal, type NutritionProfileInput } from "@/app/lib/nutrition-types";
 
 /**
@@ -29,6 +30,10 @@ export type WeightProjection = {
   floorReached: boolean;
   /** % de grasa semana a semana; null si el perfil no tiene % de grasa. */
   fat: FatPoint[] | null;
+  /** Peso objetivo válido para el objetivo (null si no hay o va al revés). */
+  targetKg: number | null;
+  /** Semanas hasta el peso objetivo; null si no se llega en 3 años. */
+  weeksToTarget: number | null;
 };
 
 const KCAL_PER_KG = 7700;
@@ -52,28 +57,40 @@ function leanShare(fatKg: number, changeKg: number): number {
 }
 
 export function showsProjection(goal: Goal): boolean {
-  return goal !== "recomposition";
+  return goal !== "maintenance";
 }
+
+// Hasta dónde se busca cuándo se llega al peso objetivo.
+const TARGET_SEARCH_WEEKS = 156;
 
 export function projectWeight(input: NutritionProfileInput, targetKcal: number, weeks: number): WeightProjection {
   const factor = ACTIVITY_LEVEL_INFO[input.activityLevel].factor;
-  const maintenance = (weightKg: number) => calculateBmr({ ...input, weightKg }) * factor;
-  const floorKg = MIN_BMI * (input.heightCm / 100) ** 2;
+  const calculated = (weightKg: number) => calculateBmr({ ...input, weightKg }) * factor;
   const start = input.weightKg;
+  // Con un mantenimiento real cargado, se mantiene su diferencia con el calculado a medida que cambia el peso.
+  const offset = input.maintenanceOverrideKcal == null ? 0 : input.maintenanceOverrideKcal - calculated(start);
+  const maintenance = (weightKg: number) => calculated(weightKg) + offset;
+  const floorKg = MIN_BMI * (input.heightCm / 100) ** 2;
+  const target = effectiveTargetWeight(input);
+  const crossed = (value: number) => target != null && (value - target) * (start - target) <= 0;
 
   let weight = start;
   let fatKg = input.bodyFatPct == null ? null : (start * input.bodyFatPct) / 100;
   let floorReached = false;
+  let targetDay: number | null = null;
   const weights = [start];
   const fats = [fatKg];
 
   for (let day = 1; day <= weeks * 7; day += 1) {
     const previous = weight;
-    const next = weight + (targetKcal - maintenance(weight)) / KCAL_PER_KG;
+    const next = targetDay != null ? weight : weight + (targetKcal - maintenance(weight)) / KCAL_PER_KG;
 
     if (next < floorKg && next < weight) {
       weight = Math.min(weight, floorKg);
       floorReached = true;
+    } else if (targetDay == null && crossed(next)) {
+      weight = target as number;
+      targetDay = day;
     } else {
       weight = next;
     }
@@ -91,10 +108,27 @@ export function projectWeight(input: NutritionProfileInput, targetKcal: number, 
     const spread = Math.abs(kg - start) * BAND_SHARE;
     return { week, kg, low: kg - spread, high: kg + spread };
   });
-  const weeklyKg = (weights[1] ?? start) - start;
+  // Ritmo con la primera semana completa, aunque el peso objetivo se alcance antes.
+  const weeklyKg =
+    targetDay != null && targetDay <= 7
+      ? ((targetKcal - maintenance(start)) * 7) / KCAL_PER_KG
+      : (weights[1] ?? start) - start;
   const weeklyPct = (Math.abs(weeklyKg) / start) * 100;
   const direction: ProjectionDirection =
     Math.abs(weeklyKg) < FLAT_WEEKLY_KG ? "flat" : weeklyKg < 0 ? "down" : "up";
+
+  // Si no se llegó dentro del horizonte, se sigue simulando solo para saber cuándo.
+  if (target != null && targetDay == null && !floorReached) {
+    for (let day = weeks * 7 + 1; day <= TARGET_SEARCH_WEEKS * 7; day += 1) {
+      const next = weight + (targetKcal - maintenance(weight)) / KCAL_PER_KG;
+      if (next < floorKg || Math.abs(next - weight) < 1e-6) break;
+      if (crossed(next)) {
+        targetDay = day;
+        break;
+      }
+      weight = next;
+    }
+  }
 
   return {
     points,
@@ -104,6 +138,8 @@ export function projectWeight(input: NutritionProfileInput, targetKcal: number, 
     pace: projectionPace(direction, weeklyPct),
     floorReached,
     fat: input.bodyFatPct == null ? null : fatPoints(weights, fats as number[]),
+    targetKg: target,
+    weeksToTarget: targetDay == null ? null : Math.ceil(targetDay / 7),
   };
 }
 

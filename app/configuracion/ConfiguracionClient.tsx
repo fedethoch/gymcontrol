@@ -40,8 +40,9 @@ import {
   GENDERS,
   GOAL_INFO,
   GOALS,
-  type Goal,
 } from "@/app/lib/nutrition-types";
+import { MACRO_PRESET_COPY, variantInfo } from "@/app/lib/nutrition-plan-options";
+import { formatAdjustment } from "@/app/lib/profile-plan";
 import type { NutritionProfile } from "@/app/lib/nutrition-profile";
 import { cn } from "@/app/lib/utils";
 import { showsProjection } from "@/app/lib/weight-projection";
@@ -54,12 +55,6 @@ import {
 } from "@/app/components/ui/motion";
 
 const DELETE_CONFIRM_TEXT = "BORRAR";
-
-const GOAL_ADJ_LABELS: Record<Goal, string> = {
-  bulk: "Superávit moderado aplicado",
-  cut: "Déficit calórico aplicado",
-  recomposition: "Sin ajuste calórico",
-};
 
 type MobileSheet = PlanSheet | "bodyFat" | "name" | "delete";
 
@@ -158,6 +153,8 @@ export function ConfiguracionClient({
   }
 
   const kcalDiff = plan.targetKcal - plan.maintenanceKcal;
+  // Desktop solo muestra variante, tipo de dieta y avanzado: se editan en mobile (DESIGN.md §15).
+  const adjustmentLabel = `${variantInfo(goal, form.goalVariant).label} · ${formatAdjustment(plan.adjustment)}`;
 
 
   // ─── Section bodies ─────────────────────────────────────────────────────────
@@ -275,8 +272,11 @@ export function ConfiguracionClient({
           />
         ))}
       </div>
-      <p className="text-xs">
-        <span className="font-semibold text-[var(--accent)]">{GOAL_ADJ_LABELS[goal]}</span>
+      <p className="text-xs text-[var(--foreground-muted)]">
+        <span className="font-semibold text-[var(--accent)]">{adjustmentLabel}</span> · Dieta{" "}
+        {MACRO_PRESET_COPY[form.macroPreset].label.toLowerCase()}
+        {form.maintenanceOverrideKcal != null ? ` · Mantenimiento real ${form.maintenanceOverrideKcal} kcal` : ""}.
+        La intensidad, el tipo de dieta y las opciones avanzadas se cambian desde el celular.
       </p>
 
       <div className="grid gap-2.5 border-t border-[var(--border)] pt-3">
@@ -521,7 +521,7 @@ export function ConfiguracionClient({
                   </span>
                 </div>
                 <p className="mt-1.5 text-[10px] font-semibold text-[var(--accent)]">
-                  {manualTarget ? "Objetivo fijado a mano" : GOAL_ADJ_LABELS[goal]}
+                  {manualTarget ? "Objetivo fijado a mano" : adjustmentLabel}
                 </p>
               </div>
             </div>

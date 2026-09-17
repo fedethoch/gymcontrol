@@ -172,26 +172,37 @@ export const ACTIVITY_LEVEL_INFO: Record<ActivityLevel, { label: string; descrip
   },
 };
 
-export const GOALS = ["cut", "recomposition", "bulk"] as const;
+/** Los 3 grupos de objetivo; cada uno tiene variantes (app/lib/nutrition-plan-options.ts). */
+export const GOALS = ["cut", "maintenance", "bulk"] as const;
 export type Goal = (typeof GOALS)[number];
 
-export const GOAL_INFO: Record<Goal, { label: string; description: string; kcalAdjustment: number }> = {
+export const GOAL_INFO: Record<Goal, { label: string; description: string }> = {
   cut: {
-    label: "Definición",
+    label: "Déficit",
     description: "Reducir grasa corporal manteniendo masa muscular.",
-    kcalAdjustment: -0.2,
   },
-  recomposition: {
-    label: "Recomposición corporal",
-    description: "Mantener peso mientras se gana músculo y se pierde grasa.",
-    kcalAdjustment: 0,
+  maintenance: {
+    label: "Mantenimiento",
+    description: "Mantener el peso: recomposición o sostener lo logrado.",
   },
   bulk: {
-    label: "Ganancia de masa muscular",
-    description: "Superávit calórico moderado para ganar músculo.",
-    kcalAdjustment: 0.1,
+    label: "Ganancia",
+    description: "Superávit calórico para ganar músculo.",
   },
 };
+
+export const GOAL_VARIANTS = ["gentle", "moderate", "aggressive", "recomposition", "maintain", "lean", "standard"] as const;
+export type GoalVariant = (typeof GOAL_VARIANTS)[number];
+
+/** Qué variantes tiene cada objetivo, en orden de menor a mayor intensidad. */
+export const VARIANTS_BY_GOAL = {
+  cut: ["gentle", "moderate", "aggressive"],
+  maintenance: ["recomposition", "maintain"],
+  bulk: ["lean", "standard", "aggressive"],
+} as const satisfies Record<Goal, readonly GoalVariant[]>;
+
+export const MACRO_PRESETS = ["balanced", "high_protein", "high_carb", "high_fat", "keto", "custom"] as const;
+export type MacroPreset = (typeof MACRO_PRESETS)[number];
 
 // Same five levels for both sexes, with ranges shifted to each sex's typical body fat.
 export const BODY_FAT_REFERENCES = {
@@ -219,6 +230,17 @@ export type NutritionProfileInput = {
   bodyFatPct: number | null;
   activityLevel: ActivityLevel;
   goal: Goal;
+  /** Sin valor: la recomendada del objetivo. */
+  goalVariant?: GoalVariant;
+  /** Ajuste fino sobre el mantenimiento (−0,2 = −20%); null = el de la variante. */
+  kcalAdjustment?: number | null;
+  macroPreset?: MacroPreset;
+  /** Solo con macroPreset "custom". */
+  customProteinGPerKg?: number | null;
+  customFatPct?: number | null;
+  /** Mantenimiento real conocido por el usuario; reemplaza al calculado. */
+  maintenanceOverrideKcal?: number | null;
+  targetWeightKg?: number | null;
 };
 
 export type NutritionPlan = {
@@ -226,6 +248,10 @@ export type NutritionPlan = {
   maintenanceKcal: number;
   targetKcal: number;
   macros: Macros;
+  /** Ajuste aplicado sobre el mantenimiento (−0,2 = −20%). */
+  adjustment: number;
+  /** El objetivo quedaba por debajo del metabolismo basal y se subió hasta él. */
+  clampedToBmr: boolean;
 };
 
 export const TARGET_MODES = ["auto", "manual"] as const;

@@ -1,10 +1,10 @@
 import {
   ACTIVITY_LEVEL_INFO,
-  GOAL_INFO,
   type Macros,
   type NutritionPlan,
   type NutritionProfileInput,
 } from "@/app/lib/nutrition-types";
+import { presetMacroGrams, resolveAdjustment, roundMacros } from "@/app/lib/nutrition-plan-options";
 
 /**
  * Calcula el metabolismo basal (BMR).
@@ -23,55 +23,38 @@ export function calculateBmr(input: NutritionProfileInput): number {
   return gender === "male" ? base + 5 : base - 161;
 }
 
+/** Mantenimiento calculado con la actividad (sin el valor real que pueda cargar el usuario). */
+export function calculateMaintenance(input: NutritionProfileInput): number {
+  return calculateBmr(input) * ACTIVITY_LEVEL_INFO[input.activityLevel].factor;
+}
+
 /**
  * Calcula plan nutricional completo: BMR, mantenimiento, objetivo y macros.
+ * En déficit, el objetivo nunca queda por debajo del metabolismo basal.
  */
 export function calculateNutritionPlan(input: NutritionProfileInput): NutritionPlan {
   const bmr = calculateBmr(input);
-  const maintenanceKcal = bmr * ACTIVITY_LEVEL_INFO[input.activityLevel].factor;
-  const targetKcal = maintenanceKcal * (1 + GOAL_INFO[input.goal].kcalAdjustment);
+  const maintenanceKcal = input.maintenanceOverrideKcal ?? calculateMaintenance(input);
+  const adjustment = resolveAdjustment(input);
+  let targetKcal = maintenanceKcal * (1 + adjustment);
 
-  const macros = calculateMacros(targetKcal, input.weightKg, input.goal);
+  const clampedToBmr = adjustment < 0 && targetKcal < bmr && maintenanceKcal > bmr;
+  if (clampedToBmr) targetKcal = bmr;
 
   return {
     bmr: Math.round(bmr),
     maintenanceKcal: Math.round(maintenanceKcal),
     targetKcal: Math.round(targetKcal),
-    macros,
+    macros: calculateMacros(targetKcal, input),
+    adjustment,
+    clampedToBmr,
   };
 }
 
 /**
- * Distribuye las calorías objetivo en macronutrientes (gramos).
- * Proteína y grasa se fijan por kg de peso corporal; el resto va a carbohidratos.
+ * Distribuye las calorías objetivo en macronutrientes (gramos) según el tipo de dieta.
+ * Proteína y grasa (o carbos) se fijan por el tipo; el resto completa las kcal dentro de límites seguros.
  */
-export function calculateMacros(targetKcal: number, weightKg: number, goal: NutritionProfileInput["goal"]): Macros {
-  const proteinPerKg = goal === "bulk" ? 2 : 2.2;
-  const fatPerKg = 0.9;
-
-  let proteinG = proteinPerKg * weightKg;
-  let fatG = fatPerKg * weightKg;
-
-  let carbsKcal = targetKcal - proteinG * 4 - fatG * 9;
-
-  // Piso de seguridad: grasa minima 20% de kcal totales
-  const minFatKcal = targetKcal * 0.2;
-  if (fatG * 9 < minFatKcal) {
-    fatG = minFatKcal / 9;
-    carbsKcal = targetKcal - proteinG * 4 - fatG * 9;
-  }
-
-  // Si los carbohidratos quedaran negativos, recortar proteína al minimo razonable
-  if (carbsKcal < 0) {
-    proteinG = Math.max(weightKg * 1.6, (targetKcal - fatG * 9) / 4 * 0.01);
-    carbsKcal = Math.max(0, targetKcal - proteinG * 4 - fatG * 9);
-  }
-
-  const carbsG = carbsKcal / 4;
-
-  return {
-    proteinG: Math.round(proteinG),
-    carbsG: Math.round(carbsG),
-    fatG: Math.round(fatG),
-  };
+export function calculateMacros(targetKcal: number, input: NutritionProfileInput): Macros {
+  return roundMacros(presetMacroGrams(targetKcal, input));
 }

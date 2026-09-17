@@ -5,27 +5,58 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { requireUser } from "@/app/lib/auth";
+import {
+  CUSTOM_FAT_PCT_RANGE,
+  CUSTOM_PROTEIN_RANGE,
+  isVariantOf,
+  MAINTENANCE_OVERRIDE_RANGE,
+  resolveAdjustment,
+} from "@/app/lib/nutrition-plan-options";
 import { saveNutritionProfile } from "@/app/lib/nutrition-profile";
 import { createSupabaseAdminClient } from "@/app/lib/supabase/admin";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 import {
   ACTIVITY_LEVELS,
   GENDERS,
+  GOAL_VARIANTS,
   GOALS,
+  MACRO_PRESETS,
   type ManualTarget,
   type NutritionPlan,
   type NutritionProfileInput,
 } from "@/app/lib/nutrition-types";
 
-const profileInputSchema = z.object({
-  gender: z.enum(GENDERS),
-  age: z.number().int().positive().max(120),
-  heightCm: z.number().positive().max(300),
-  weightKg: z.number().positive().max(500),
-  bodyFatPct: z.number().gt(0).lt(100).nullable(),
-  activityLevel: z.enum(ACTIVITY_LEVELS),
-  goal: z.enum(GOALS),
-});
+const profileInputSchema = z
+  .object({
+    gender: z.enum(GENDERS),
+    age: z.number().int().positive().max(120),
+    heightCm: z.number().positive().max(300),
+    weightKg: z.number().positive().max(500),
+    bodyFatPct: z.number().gt(0).lt(100).nullable(),
+    activityLevel: z.enum(ACTIVITY_LEVELS),
+    goal: z.enum(GOALS),
+    goalVariant: z.enum(GOAL_VARIANTS).optional(),
+    kcalAdjustment: z.number().min(-0.3).max(0.25).nullable().optional(),
+    macroPreset: z.enum(MACRO_PRESETS).optional(),
+    customProteinGPerKg: z.number().min(CUSTOM_PROTEIN_RANGE[0]).max(CUSTOM_PROTEIN_RANGE[1]).nullable().optional(),
+    customFatPct: z.number().min(CUSTOM_FAT_PCT_RANGE[0]).max(CUSTOM_FAT_PCT_RANGE[1]).nullable().optional(),
+    maintenanceOverrideKcal: z
+      .number()
+      .int()
+      .min(MAINTENANCE_OVERRIDE_RANGE[0])
+      .max(MAINTENANCE_OVERRIDE_RANGE[1])
+      .nullable()
+      .optional(),
+    targetWeightKg: z.number().positive().max(500).nullable().optional(),
+  })
+  .refine((input) => !input.goalVariant || isVariantOf(input.goal, input.goalVariant), {
+    message: "La variante no corresponde al objetivo.",
+  })
+  .transform((input) => ({
+    ...input,
+    // El ajuste fino se guarda redondeado a 1% y dentro del rango del objetivo.
+    kcalAdjustment: input.kcalAdjustment == null ? null : resolveAdjustment(input),
+  }));
 
 const macroGramsSchema = z.number().min(0, "Los macros no pueden ser negativos.").max(1500, "Revisá los macros.");
 
