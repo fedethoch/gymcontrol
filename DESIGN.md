@@ -594,6 +594,69 @@ Reglas: un solo emerald por pantalla; nada fijo abajo salvo la bottom nav. Lógi
 
 ---
 
+## 17. Acceso mobile (`/auth/login`, <1024px)
+
+Entrar a la app. Mobile se rediseñó con la dirección "Pasos" (2026-09-16):
+- La entrada es una portada con foto y dos acciones.
+- El email y el código se piden de a uno, dentro de un bottom sheet casi a pantalla completa.
+- Desktop (≥1024) conserva la card centrada. Solo cambian el copy, el logo blanco, la "G" de Google, la cuenta regresiva de reenvío y el aviso de error.
+- Mock y decisiones L-D1…L-D12: https://claude.ai/artifact/BQqaKjgprCBmZxQfVLAMkS (v2).
+
+La ruta no usa el app-shell: sin `MobileHeader`, sin bottom nav ni sidebar (§6).
+
+### 17.1 Entrada
+
+| Zona | Contenido |
+|---|---|
+| Z1 Portada | `hero.png` en gris (`grayscale`, brillo 0.62) a sangre, hasta 60dvh (máx. 520px), con fundido a `--background`. Arriba, el logo en blanco y "GymControl" en Sora 600. Abajo, el título en dos tonos "Tu semana, / bajo control." (Sora 600, 2.75rem/1.02, primera línea en `--foreground-muted`) y "Rutinas · Series · Comidas" en caption |
+| Z2 Aviso | Solo si corresponde: una línea entre bordes (`border-y`) con ícono y dos textos (ver §17.3) |
+| Z3 Acciones | "Continuar con Google" (blanco, con la "G" oficial) arriba y "Continuar con email" (emerald, el único CTA) abajo, de 56px y radio 14px. Debajo, "Sin contraseña. Te mandamos un código por mail." en caption `--foreground-muted`. Pegadas al pie con safe-area |
+
+En horizontal (`max-height: 500px`) la foto pasa a una columna izquierda del 40% y las acciones quedan a la derecha.
+
+### 17.2 Sheet de acceso
+
+Bottom sheet (vaul) al 92dvh con dos pasos. Arriba, una barra con `1 / 2` (Geist Sans con `tabular-nums`), el progreso en 2 segmentos de 2px y ✕.
+- Mientras hay un pedido en curso, el sheet no se cierra.
+- Si se cierra con el código ya enviado, al reabrirlo vuelve al paso 2.
+- Al cerrar, el foco vuelve al botón que lo abrió.
+
+| Paso | Contenido |
+|---|---|
+| 1 Email | Título "¿Con qué email / entrás?" (Sora 600, 1.875rem, primera línea muted). Campo de 68px con etiqueta "Email" arriba del valor (16px, la regla de §2.1 para iOS) y foco emerald. Mientras falta el dominio, chips `@gmail.com` · `@hotmail.com` · `@outlook.com` (filtrados por lo que va después de la "@") que lo completan. "Enviar código" emerald al final del flujo, así queda sobre el teclado |
+| 2 Código | ‹ vuelve al paso 1. Título "Revisá tu mail. / Escribí el código.". Fila entre bordes "Enviado a {email}" con "Cambiar". Seis dígitos en Sora 600 de 2.75rem con línea de 2px debajo y un hueco entre el tercero y el cuarto (`InputOtp variant="display"`). Al completar el sexto (o al pegar) se verifica solo. Debajo, el anillo de reenvío y "Abrir Gmail" (solo para `gmail.com`/`googlemail.com`, abre `mail.google.com`) |
+
+Números sin Geist Mono en esta ruta: su 0 lleva barra (pedido del usuario). Van en Sora o en Geist Sans con `tabular-nums`.
+
+### 17.3 Estados
+
+| Estado | Condición | Qué cambia |
+|---|---|---|
+| Sesión requerida | `?reason=auth-required` | Aviso Z2 `--info`: "Iniciá sesión para seguir" / "Esa pantalla necesita tu cuenta." |
+| Sesión cerrada | `?status=signed-out` | Toast "Cerraste sesión." (sonner) y se limpia el parámetro |
+| Error de Google | `?error=google-*` | Aviso Z2 `--danger` con el motivo y "entrá con tu email" |
+| Error de cuenta | `?error=missing-*` o la verificación lo devuelve | Aviso `--danger` "No pudimos abrir tu cuenta". En el sheet reemplaza al código, con "Volver a empezar" neutro |
+| Email inválido | Al tocar "Enviar" | Borde `--danger` y el motivo debajo del campo ("Falta la “@”.", "Falta el final del email (por ejemplo, .com)."). El botón nunca se deshabilita por esto |
+| Enviando / verificando | Pedido en curso | Botón con `LoadingDots` y "Enviando código" · dígitos atenuados y "Verificando…" |
+| Espera de reenvío | 60 s después de cada envío, o con `otp-rate-limited` | Anillo de 22px que se vacía y "Reenviar en 0:42". Con `otp-rate-limited` en el paso 1: nota `--warning` y "Enviar código" deshabilitado hasta que termina la cuenta |
+| Código enviado de nuevo | "Reenviar código" | Se vacía el código y aparece el toast "Te mandamos otro código." |
+| Código incorrecto | `invalid-or-expired-otp` | Dígitos y líneas en `--danger`, un temblor corto y "El código no coincide o venció. Revisalo o pedí otro.". Al borrar, el código se vacía |
+| Verificado | 200 | Título "Listo. / Entrando a tu semana.", dígitos en `--success` y "Código correcto". A los 550 ms, `location.assign` |
+| Sin conexión | `navigator.onLine = false` | Nota `--warning` "Sin conexión. Conectate para recibir el código." y acciones deshabilitadas |
+
+Reglas:
+- Los errores van junto al dato. En mobile, el toast queda solo para confirmaciones.
+- Un solo emerald por pantalla: "Continuar con email" y, en el sheet, "Enviar código". El foco y la línea activa de los dígitos son selección, no CTA.
+- La "G" multicolor de Google es la única excepción a "solo lucide" (§4), porque la marca la exige.
+- Código: la lógica pura está en `app/lib/auth-otp.ts` (textos, validación y dominios; tests en `tests/unit/`). El estado del flujo, compartido con desktop, está en `app/components/auth/useOtpFlow.ts`. Los componentes están en `app/components/auth/`.
+- Motion:
+  - Cambio de paso con `fadeUp`.
+  - Temblor de error con framer-motion.
+  - Anillo con transición lineal de 1 s.
+  - Todo se neutraliza con reduced-motion.
+
+---
+
 ## 18. Recetas mobile (`/recetas`, <1024px)
 
 Encontrar una receta y registrarla. Mobile se rediseñó con la dirección "Buscador" (2026-09-16), la misma familia que alimentos (§13): título, buscador fijo, chips y filas densas; el detalle vive en un bottom sheet. Desktop (≥1024) conserva su grilla y el sheet lateral, sin imágenes ni violeta. Mock y decisiones RE-D1…RE-D10: https://claude.ai/artifact/LxJDDhEjaoWx6XCsQvqoz9 (v3).

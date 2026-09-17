@@ -80,7 +80,7 @@ De las refs no se toma: color de marca (amarillo de Ladder), anillos multicolor 
 
 Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se abre sin cambiar la URL (sheet, dialog, modo inline).
 
-**Progreso: 9 / 15 rutas**
+**Progreso: 10 / 15 rutas**
 
 | # | Ruta | Pantalla | Estado | Categorías de `/app-store-refs` |
 |---|---|---|---|---|
@@ -93,7 +93,7 @@ Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se ab
 | 7 | `/alimentos` | Alimentos y macros | ✅ Mobile rediseñado · desktop sin tocar (sin foto ni violeta) · mock https://claude.ai/artifact/CVsfSwXJ3WBA9wmViRL2TN · `DESIGN.md` §13 | `nutrition --extra` · `--search Cronometer` |
 | 8 | `/recetas` | Recetas | ✅ Mobile rediseñado · desktop sin tocar (sin imágenes ni violeta) · mock https://claude.ai/artifact/LxJDDhEjaoWx6XCsQvqoz9 · `DESIGN.md` §18 | `recipes --extra` (Crouton, Mela: solo organizadores con foto) · sin fotos: `--apps macrofactor` + `--search` Cronometer, MyFitnessPal, "Carbon Diet Coach", Fitia |
 | 9 | `/configuracion` | Perfil, objetivo y cuenta | ✅ Mobile rediseñado · desktop sin tocar · mock https://claude.ai/artifact/VX3CrPmQLQctJXyb3YohJr · `DESIGN.md` §15 | Sin categoría (la skill no trae ajustes): `--apps macrofactor,yazio,whoop,future` + `--search` Lifesum, Cal AI, Oura, Strava, Gentler Streak |
-| 10 | `/auth/login` | Acceso | Rediseñada en julio 2026, antes de esta dirección | Sin categoría |
+| 10 | `/auth/login` | Acceso | ✅ Mobile rediseñado · desktop sin tocar salvo copy, logo, "G", reenvío y aviso · mock https://claude.ai/artifact/BQqaKjgprCBmZxQfVLAMkS · `DESIGN.md` §17 | Sin categoría (las capturas no traen login): `--apps ladder,future,whoop,macrofactor` + `--search` Oura, Strava, Cal AI, Opal, Revolut, Bevel, Ultrahuman, Copilot, Flighty, Monzo, Gentler Streak, Rise, Structured |
 | 11–15 | `/admin/*` | Herramientas admin | Sin rediseñar | Sin categoría: la skill no trae pantallas de admin |
 
 ### Checklist por ruta
@@ -171,8 +171,9 @@ Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se ab
   - [x] ↳ Bottom sheet "Borrar cuenta" con texto de confirmación (S5; desktop conserva el dialog)
   - [x] ↳ Sheet Nombre (S6)
   - [x] ↳ Sin perfil: "Calculá tu plan" + flujo de alta de 6 pasos
-- [ ] **10. `/auth/login`**
-  - [ ] ↳ Paso email → paso código OTP (`OtpLoginFlow`)
+- [x] **10. `/auth/login`** (mobile) — decisiones 2026-09-16: L-D1 dirección B "Pasos" refinada (dos tonos, `1 / 2`, campo de 68px con chips de dominio) · L-D2 `hero.png` en gris · L-D3 email y código en bottom sheet · L-D4 Google blanco arriba, email emerald abajo · L-D5 dígitos grandes con línea (3 + 3) · L-D6 verificación automática · L-D7 cuenta regresiva de 60 s · L-D8 "Abrir Gmail" solo para Gmail · L-D9 logo blanco · L-D10 "G" oficial · L-D11 errores junto al dato · L-D12 desktop sin tocar salvo copy, logo, "G", reenvío y aviso · sin Geist Mono (el 0 con barra)
+  - [x] ↳ Portada con Google y "Continuar con email", y avisos por URL (`LoginWelcome`, `LoginNotice`)
+  - [x] ↳ Bottom sheet de acceso: paso email con chips de dominio → paso código con dígitos grandes, anillo de reenvío y "Abrir Gmail" (`EmailLoginSheet`; desktop sigue con `OtpLoginFlow`, los dos sobre `useOtpFlow`)
 
 **Admin**
 - [ ] **11. `/admin`**
