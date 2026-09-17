@@ -10,12 +10,16 @@ import {
   DrawerTitle,
 } from "@/app/components/ui/Drawer";
 import {
+  formatMetric,
+  formatShortDate as formatDate,
+  metricLabel,
+  trendPoints,
+} from "@/app/lib/exercise-history";
+import {
   formatKg,
   formatLoggedSet,
-  formatSeconds,
   isValidSet,
   type ExerciseKind,
-  type LoggedSet,
 } from "@/app/lib/workout-progression";
 import type { ExerciseHistoryEntry } from "@/app/lib/workout-tracking";
 import { cn } from "@/app/lib/utils";
@@ -49,10 +53,7 @@ export function ExerciseHistorySheet({
 
 function HistoryContent({ exercise }: { exercise: HistoryExercise }) {
   const sessions = exercise.history;
-  const points = [...sessions]
-    .reverse()
-    .map((entry) => ({ date: entry.trainingDate, value: sessionMetric(entry) }))
-    .filter((point): point is { date: string; value: number } => point.value != null);
+  const points = trendPoints(sessions);
   const bestEver = sessions
     .map((entry) => entry.best)
     .filter((best) => best != null)
@@ -172,37 +173,4 @@ function TrendChart({ points, kind }: { points: Array<{ date: string; value: num
       </svg>
     </figure>
   );
-}
-
-/** Mejor marca de la sesión: 1RM estimado (reps), máximo de reps (peso corporal) o de segundos (tiempo). */
-function sessionMetric(entry: ExerciseHistoryEntry): number | null {
-  const valid = entry.sets.filter(isValidSet);
-
-  if (entry.kind === "reps") return entry.best?.e1rm ?? null;
-  if (entry.kind === "time") return maxOf(valid, (set) => set.secs);
-  return maxOf(valid, (set) => set.reps);
-}
-
-function maxOf(sets: LoggedSet[], pick: (set: LoggedSet) => number | null) {
-  const values = sets.map(pick).filter((value): value is number => value != null);
-
-  return values.length > 0 ? Math.max(...values) : null;
-}
-
-function metricLabel(kind: ExerciseKind) {
-  if (kind === "reps") return "1RM estimado";
-  if (kind === "time") return "Mejor tiempo";
-  return "Máximo de reps";
-}
-
-function formatMetric(value: number, kind: ExerciseKind) {
-  if (kind === "reps") return `${formatKg(value)} kg`;
-  if (kind === "time") return formatSeconds(value);
-  return `${value} reps`;
-}
-
-function formatDate(dateKey: string) {
-  const [, month, day] = dateKey.split("-");
-
-  return `${day}/${month}`;
 }

@@ -17,10 +17,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-import {
-  ExerciseDetailModal,
-  type ExerciseDetail,
-} from "@/app/components/shared/ExerciseDetailModal";
+import type { ExerciseSheetTab } from "@/app/components/exercise/ExerciseSheet";
+import { ExerciseDetailModal } from "@/app/components/shared/ExerciseDetailModal";
 import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
 import { WorkoutMobile } from "@/app/components/workout/WorkoutMobile";
@@ -103,7 +101,7 @@ function DayWorkoutLogger({
   const [sessionId, setSessionId] = useState(initial.sessionId);
   const [drafts, setDrafts] = useState(initial.drafts);
   const [expandedId, setExpandedId] = useState(initial.firstPendingId);
-  const [detailExercise, setDetailExercise] = useState<ExerciseDetail | null>(null);
+  const [detail, setDetail] = useState<{ exercise: DayExercise; tab: ExerciseSheetTab } | null>(null);
   const [historyExercise, setHistoryExercise] = useState<DayExercise | null>(null);
   const [rest, setRest] = useState<RestTimer | null>(null);
   const [confirmingFinish, setConfirmingFinish] = useState(false);
@@ -288,8 +286,8 @@ function DayWorkoutLogger({
               handlers={{
                 onField: handleField,
                 onToggleDone: handleToggleDone,
-                onShowDetail: (exercise) => setDetailExercise(exercise.exercise),
-                onShowHistory: setHistoryExercise,
+                onShowDetail: (exercise) => setDetail({ exercise, tab: "technique" }),
+                onShowHistory: (exercise) => setDetail({ exercise, tab: "history" }),
               }}
               subtitle={`Día ${props.dayOrder} · ${props.dayName}`}
               eyebrow={`${props.routineName} · Día ${props.dayOrder}`}
@@ -386,7 +384,7 @@ function DayWorkoutLogger({
                 }
                 onField={(index, field, value) => handleField(exercise, index, field, value)}
                 onToggleDone={(index, placeholder) => handleToggleDone(exercise, index, placeholder)}
-                onShowDetail={() => setDetailExercise(exercise.exercise)}
+                onShowDetail={() => setDetail({ exercise, tab: "technique" })}
                 onShowHistory={() => setHistoryExercise(exercise)}
               />
             ))}
@@ -454,10 +452,12 @@ function DayWorkoutLogger({
       </div>
 
       <ExerciseDetailModal
-        exercise={detailExercise}
-        open={detailExercise !== null}
+        exercise={detail?.exercise.exercise ?? null}
+        open={detail !== null}
+        history={detail ? { kind: detail.exercise.kind, entries: detail.exercise.history } : null}
+        initialTab={detail?.tab}
         onOpenChange={(open) => {
-          if (!open) setDetailExercise(null);
+          if (!open) setDetail(null);
         }}
       />
       <ExerciseHistorySheet

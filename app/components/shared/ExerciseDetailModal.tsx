@@ -5,6 +5,8 @@ import { Dumbbell, Pause, Play } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 
+import type { ExerciseHistoryData } from "@/app/components/exercise/ExerciseHistoryPanel";
+import { ExerciseSheet, type ExerciseSheetTab } from "@/app/components/exercise/ExerciseSheet";
 import { Badge } from "@/app/components/ui/Badge";
 import {
   Sheet,
@@ -12,6 +14,7 @@ import {
   SheetDescription,
   SheetTitle,
 } from "@/app/components/ui/Sheet";
+import { useMediaQuery } from "@/app/components/ui/use-media-query";
 import {
   MUSCLE_GRADIENTS,
   equipmentLabel,
@@ -40,13 +43,26 @@ type ExerciseDetailModalProps = {
   exercise: ExerciseDetail | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** Solo mobile: con historial, el sheet suma la pestaña Historial (DESIGN.md §11.4). */
+  history?: ExerciseHistoryData | null;
+  initialTab?: ExerciseSheetTab;
 };
 
-export function ExerciseDetailModal({
+/** Mobile (<1024): bottom sheet con pestañas (§11.4). Desktop: el sheet lateral, sin cambios (T-D5). */
+export function ExerciseDetailModal({ history, initialTab, ...props }: ExerciseDetailModalProps) {
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+
+  if (isDesktop === null) return null;
+  if (!isDesktop) return <ExerciseSheet {...props} history={history} initialTab={initialTab} />;
+
+  return <ExerciseDetailSidePanel {...props} />;
+}
+
+function ExerciseDetailSidePanel({
   exercise,
   open,
   onOpenChange,
-}: ExerciseDetailModalProps) {
+}: Omit<ExerciseDetailModalProps, "history" | "initialTab">) {
   const [heroImgFailed, setHeroImgFailed] = useState(false);
   const [showingGif, setShowingGif] = useState(false);
 

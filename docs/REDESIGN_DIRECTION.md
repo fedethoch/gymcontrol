@@ -86,7 +86,7 @@ Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se ab
 |---|---|---|---|---|
 | 1 | `/` | Inicio: qué toca hoy | ✅ Mobile rediseñado · desktop con cards | `dashboard` · `nutrition` |
 | 2 | `/rutinas` | Semana activa | ✅ Mobile rediseñado · desktop sin tocar · mock https://claude.ai/artifact/53cupB98h4cLZAxbBcLGrg · `DESIGN.md` §12 | `routines` · `--apps ladder` |
-| 3 | `/rutinas/dia` | Entreno del día y registro de series | ✅ Mobile rediseñado · desktop sin tocar · mock https://claude.ai/artifact/A9wFreDnAKE6UJexN7Yd4H · `DESIGN.md` §11 | `logging` · `exercise-detail` |
+| 3 | `/rutinas/dia` | Entreno del día y registro de series | ✅ Mobile rediseñado · desktop sin tocar · mock https://claude.ai/artifact/A9wFreDnAKE6UJexN7Yd4H · `DESIGN.md` §11 (sheet del ejercicio §11.4) | `logging` · `exercise-detail` |
 | 4 | `/catalogo` | Catálogo de rutinas | ✅ Mobile rediseñado · desktop sin tocar (sin violeta) · mock https://claude.ai/artifact/CgEQL6GSTzxnM26BDBPYX2 · `DESIGN.md` §16 | `catalog --extra` · `routines` |
 | 5 | `/catalogo/rutinas/[id]` | Detalle de rutina | Sin rediseñar | `catalog --extra` · `routines` |
 | 6 | `/nutricion/registro` | Registro diario de comidas | ✅ Mobile rediseñado · desktop sin tocar · mock https://claude.ai/artifact/HqtexQwHqppi4B25Ujw7LE · `DESIGN.md` §14 | `nutrition --extra` · `--search Lifesum` · `--search "Cal AI"` · `--search Cronometer` |
@@ -112,14 +112,15 @@ Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se ab
   - [x] ↳ Edición inline del nombre de rutina (menú "…" en el sheet; desktop sigue con `RutinasOverview`)
   - [x] ↳ Bottom sheet "Mis rutinas" (`RoutineSwitcher` + `MyRoutinesList withMenu`)
     - [x] ↳ Confirmación inline de borrar rutina
-  - [x] ↳ Sheet Detalle de ejercicio desde las filas (`ExerciseDetailModal` compartido, se abre tal cual; su rediseño queda en la ruta 3)
+  - [x] ↳ Sheet Detalle de ejercicio desde las filas (`ExerciseDetailModal` compartido; en mobile es el bottom sheet de la ruta 3, sin pestaña Historial)
 - [x] **3. `/rutinas/dia`** (mobile) — decisiones 2026-09-16: D-D1 dirección A "Foco" (un ejercicio por pantalla + pager) · D-D2 ilustración invertida a dark · D-D3 steppers −/+ con número tocable · D-D4 dock que se transforma en anillo de descanso · D-D5 "Terminar" neutro en el sheet y en ✕, emerald solo al completar · D-D6 sin `MobileHeader`, desktop sin tocar · 2026-09-16 D-A (reemplaza D-D4): CTA y descanso en el flujo debajo de los steppers, lista en la barra superior, sin dock flotante
   - [x] ↳ Ejercicio por panel con la serie actual en Metric L (reemplaza la card expandible; el desktop la conserva)
   - [x] ↳ Bottom sheet "N ejercicios" con salto de ejercicio y Terminar neutro
   - [x] ↳ Confirmación inline "Terminar con series pendientes"
   - [x] ↳ Resumen "Entreno completo" y día sin ejercicios
-  - [ ] ↳ Sheet Detalle de ejercicio + toggle imagen/GIF (`ExerciseDetailModal`, compartido): se abre tal cual, rediseño pendiente
-  - [ ] ↳ Bottom sheet Historial del ejercicio con gráfico (`ExerciseHistorySheet`): se abre tal cual, rediseño pendiente
+  - [x] ↳ Sheet del ejercicio con pestañas Técnica · Historial (`ExerciseDetailModal` → `app/components/exercise/`, `DESIGN.md` §11.4): ilustración invertida con selector Imagen · Animación, fila del plan y descripción
+  - [x] ↳ Pestaña Historial: última vs anterior, métrica del tipo con gráfico y sesiones (`ExerciseHistorySheet` queda solo para desktop)
+  - Decisiones 2026-09-16 (mock https://claude.ai/artifact/5A71A1ZcuZ9bPwmF4y8HpN): T-D1 dirección B, un bottom sheet con pestañas Técnica · Historial (los dos chips lo abren en su pestaña; sin historial no hay pestañas) · T-D2 imagen por defecto con selector Imagen · Animación · T-D3 sin `steps`/`tips` (texto genérico en la base) · T-D4 una métrica según el tipo · T-D5 desktop sin tocar (el lateral de hoy y `ExerciseHistorySheet` en `ExerciseCard`)
 - [x] **4. `/catalogo`** (mobile) — decisiones 2026-09-16: C-D1 dirección B "Planificador" (pregunta + rueda de días) · C-D2 una destacada por nivel en Todas · C-D3 días a la vista, con barra compacta al scrollear · C-D4 estado en la card y la fila, CTA neutro si es tu rutina activa · C-D5 sin paginación · C-D6 un solo emerald · C-D7 sin `MobileHeader` · C-D8 desktop sin tocar salvo el violeta · B-D1 rueda horizontal Todas·2…6 · B-D2 carrusel por nivel + lista · B-D3 barra semanal · B-D4 token Metric XXL (7rem) · B-D5 nivel, objetivo y orden en el sheet
   - [x] ↳ Sheet Filtros (`FilterPanel`, compartido): vaul con chips con conteo, orden en filas con check y pie "Ver N"
   - [x] ↳ Búsqueda inline (la barra superior se vuelve campo)
@@ -173,10 +174,10 @@ Marcar `[x]` la ruta y cada subparte al cerrar su rediseño (§6.8). ↳ = se ab
 **Admin**
 - [ ] **11. `/admin`**
   - [ ] ↳ Actividad reciente "Ver más / Ver menos"
-  - [ ] ↳ Ejercicios recientes → Sheet Detalle de ejercicio
+  - [ ] ↳ Ejercicios recientes → Sheet Detalle de ejercicio (el sheet ya está rediseñado en mobile, ruta 3; falta la lista)
 - [ ] **12. `/admin/ejercicios`**
   - [x] ↳ Sheet Filtros (`FilterPanel`, rediseñado en la ruta 4)
-  - [ ] ↳ Sheet Detalle de ejercicio
+  - [x] ↳ Sheet Detalle de ejercicio (mobile rediseñado en la ruta 3, §11.4)
   - [ ] ↳ Sheet lateral "Nuevo / Editar ejercicio" (pasos, imagen/GIF, selects)
   - [ ] ↳ Dialog "Eliminar ejercicio"
 - [ ] **13. `/admin/rutinas`**

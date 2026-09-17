@@ -14,6 +14,7 @@ Objetivo: abrir el area minima correcta.
 | Configuración mobile (`/configuracion`, <1024) | `app/configuracion/` (`page.tsx`, `ConfiguracionClient.tsx` con los dos árboles, `useProfileForm.ts` con estado y autosave compartidos), `app/components/configuracion/`, `app/lib/profile-plan.ts` (lógica pura + `tests/unit/`); reglas en `DESIGN.md` §15. Desktop: árbol `hidden lg:grid` de `ConfiguracionClient.tsx`. Usa `NumberStepper` y `SegmentedControl` de `app/components/ui/` |
 | Rutas de dashboard | `app/dashboard/` |
 | Registro de entrenamiento y progresión | `app/rutinas/dia/` (desktop: cards), `app/components/workout/` (mobile <1024), `app/lib/day-workout.ts` y `app/lib/workout-progression.ts` (lógica pura + `tests/unit/`), `app/lib/workout-tracking.ts` (lecturas); reglas en `DESIGN.md` §11 |
+| Sheet del ejercicio (mobile <1024) | `app/components/exercise/` (ficha, plan, gráfico, historial; lo abre `app/components/shared/ExerciseDetailModal.tsx`, que en ≥1024 conserva el sheet lateral), `app/lib/exercise-history.ts` (lógica pura + `tests/unit/`); reglas en `DESIGN.md` §11.4 |
 | Sync offline del registro | contrato `app/lib/workout-sync-contract.ts` (versionado), `app/api/workouts/sync/`, `app/lib/workout-sync.ts`, `app/lib/workout-sync-queue.ts`; modelo en `docs/DATABASE.md` (F1) |
 | Rutas admin | `app/admin/` |
 | Shell y navegacion | `app/layout.tsx`, `app/globals.css`, `app/components/ui/AppShell.tsx`, `app/components/shared/PrimaryNavigation.tsx`, `app/components/shared/navigation-config.ts` |
