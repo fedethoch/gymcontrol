@@ -89,9 +89,11 @@ import {
   MEAL_TYPE_IMAGES,
   MEAL_TYPE_LABELS,
   MEAL_TYPES,
+  frequentSlotOf,
   type Food,
   type FoodMeasure,
   type FrequentItem,
+  type FrequentItemsBySlot,
   type Macros,
   type MealItemInput,
   type MealType,
@@ -121,7 +123,7 @@ const DAY_MONTH_FORMATTER = new Intl.DateTimeFormat("es-AR", { day: "numeric", m
 export function RegistroClient({
   foods,
   recipes,
-  frequentItems,
+  frequentBySlot,
   logDate,
   todayKey,
   initialMeals,
@@ -134,7 +136,7 @@ export function RegistroClient({
 }: {
   foods: Food[];
   recipes: RecipeOption[];
-  frequentItems: FrequentItem[];
+  frequentBySlot: FrequentItemsBySlot;
   /** Día que se está viendo/cargando (YYYY-MM-DD). */
   logDate: string;
   /** Hoy en hora argentina (YYYY-MM-DD). */
@@ -420,7 +422,7 @@ export function RegistroClient({
       <FoodPicker
         foods={foodList}
         recipes={recipes}
-        frequentItems={frequentItems}
+        frequentItems={frequentBySlot[frequentSlotOf(mealType)]}
         actionLabel="Agregar"
         onAdd={handleAddDraftItem}
         onFoodCreated={handleFoodCreated}
@@ -735,7 +737,7 @@ export function RegistroClient({
                   onMove={(direction) => handleMoveMeal(meal.id, direction)}
                   foods={foodList}
                   recipes={recipes}
-                  frequentItems={frequentItems}
+                  frequentItems={frequentBySlot[frequentSlotOf(meal.type)]}
                   isEditing={editingMealId === meal.id}
                   onToggleEdit={() => setEditingMealId((current) => (current === meal.id ? null : meal.id))}
                   onDeleteMeal={() => handleDeleteMeal(meal.id)}
@@ -828,7 +830,7 @@ export function RegistroClient({
               foods={foodList}
               onFoodCreated={handleFoodCreated}
               recipes={recipes}
-              frequentItems={frequentItems}
+              frequentBySlot={frequentBySlot}
               target={target}
               loggedDates={loggedDates}
               logDate={logDate}

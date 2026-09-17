@@ -4,7 +4,7 @@ import { parseRegistroFoodParams } from "@/app/lib/food-catalog";
 import { parseRegistroRecipeParams } from "@/app/lib/recipe-catalog";
 import { listFoodsForUser } from "@/app/lib/foods";
 import { addDaysToDateKey, getTodayDateKey, isDateKey } from "@/app/lib/local-date";
-import { getLoggedDatesForUser, getMealLogForDate, listFrequentItems } from "@/app/lib/meal-logs";
+import { getLoggedDatesForUser, getMealLogForDate, listFrequentItemsBySlot } from "@/app/lib/meal-logs";
 import { getNutritionProfile } from "@/app/lib/nutrition-profile";
 import { MEAL_LOG_MAX_PAST_DAYS, MEAL_TYPES, type MealType, type RecipeOption } from "@/app/lib/nutrition-types";
 import { listRecipeCatalogItems } from "@/app/lib/recipes";
@@ -32,13 +32,13 @@ export default async function RegistroNutricionPage({
   const initialMealType =
     logDate === todayKey ? (MEAL_TYPES.find((type) => type === tipo) as MealType | undefined) : undefined;
 
-  const [foods, recipes, mealLog, profile, loggedDates, frequentItems] = await Promise.all([
+  const [foods, recipes, mealLog, profile, loggedDates, frequentBySlot] = await Promise.all([
     listFoodsForUser(auth.user.id),
     listRecipeCatalogItems(),
     getMealLogForDate({ userId: auth.user.id, logDate }),
     getNutritionProfile(auth.user.id),
     getLoggedDatesForUser({ userId: auth.user.id, days: 70 }),
-    listFrequentItems({ userId: auth.user.id }),
+    listFrequentItemsBySlot({ userId: auth.user.id }),
   ]);
 
   const recipeOptions: RecipeOption[] = recipes.map((recipe) => ({
@@ -61,7 +61,7 @@ export default async function RegistroNutricionPage({
       key={logDate}
       foods={foods}
       recipes={recipeOptions}
-      frequentItems={frequentItems}
+      frequentBySlot={frequentBySlot}
       logDate={logDate}
       todayKey={todayKey}
       initialMeals={mealLog?.meals ?? []}

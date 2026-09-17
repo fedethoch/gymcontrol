@@ -223,6 +223,12 @@ export function resolveTargetMeal<M extends DiaryMeal>(
   return mealId ? (meals.find((meal) => meal.id === mealId) ?? null) : null;
 }
 
+/** Tipo de la comida del destino (define qué frecuentes se muestran). */
+export function targetMealType(target: AddTarget, meals: DiaryMeal[]): MealType {
+  if (target.kind !== "meal") return target.type;
+  return meals.find((meal) => meal.id === target.mealId)?.type ?? "snack";
+}
+
 export function targetLabel(target: AddTarget, meals: DiaryMeal[], created: ReadonlyMap<string, string>) {
   const meal = resolveTargetMeal(target, meals, created);
   if (meal) return meal.name;

@@ -2,12 +2,16 @@
 // Sin React ni servidor: se testea con `node --test`.
 import {
   FOOD_CATEGORY_LABELS,
+  FREQUENT_SLOTS,
+  frequentSlotOf,
   getAmountUnitLabel,
   type Food,
   type FoodCategory,
   type FoodMeasure,
   type FrequentItem,
+  type FrequentItemsBySlot,
   type MealItemInput,
+  type MealType,
   type RecipeOption,
 } from "@/app/lib/nutrition-types";
 
@@ -112,6 +116,59 @@ export function resolveDefaultAmount(
   const lastQuantity = frequent && frequent.lastMeasure === measure ? frequent.lastQuantity : null;
 
   return { measure, quantity: lastQuantity ?? (measure === "unit" ? 1 : option.food.servingG) };
+}
+
+export type FrequentUsage = {
+  kind: FrequentItem["kind"];
+  id: string;
+  mealType: MealType;
+  measure: FoodMeasure;
+  quantity: number;
+  createdAt: string;
+};
+
+/** Lo más registrado, con la última cantidad usada. */
+export function rankFrequentItems(usages: readonly FrequentUsage[], limit: number): FrequentItem[] {
+  const byKey = new Map<string, { item: FrequentItem; lastUsedAt: string }>();
+
+  for (const usage of usages) {
+    const key = `${usage.kind}:${usage.id}`;
+    const entry = byKey.get(key);
+
+    if (!entry) {
+      byKey.set(key, {
+        item: { kind: usage.kind, id: usage.id, uses: 1, lastMeasure: usage.measure, lastQuantity: usage.quantity },
+        lastUsedAt: usage.createdAt,
+      });
+      continue;
+    }
+
+    entry.item.uses += 1;
+
+    if (usage.createdAt > entry.lastUsedAt) {
+      entry.lastUsedAt = usage.createdAt;
+      entry.item.lastMeasure = usage.measure;
+      entry.item.lastQuantity = usage.quantity;
+    }
+  }
+
+  return [...byKey.values()]
+    .sort((left, right) => right.item.uses - left.item.uses || right.lastUsedAt.localeCompare(left.lastUsedAt))
+    .slice(0, limit)
+    .map((entry) => entry.item);
+}
+
+/** Lo más registrado en cada grupo de comidas: lo de desayuno no aparece en merienda, etc. */
+export function rankFrequentItemsBySlot(usages: readonly FrequentUsage[], limit: number): FrequentItemsBySlot {
+  return Object.fromEntries(
+    FREQUENT_SLOTS.map((slot) => [
+      slot,
+      rankFrequentItems(
+        usages.filter((usage) => frequentSlotOf(usage.mealType) === slot),
+        limit,
+      ),
+    ]),
+  ) as FrequentItemsBySlot;
 }
 
 /** Pasa la cantidad de gramos a unidades o al revés, manteniendo lo que representa. */

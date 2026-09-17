@@ -3,6 +3,7 @@ import "server-only";
 import { addDaysToDateKey, getTodayDateKey } from "@/app/lib/local-date";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 import { getLocalTrainingDate } from "@/app/lib/workout-tracking";
+import { rankFrequentItems, rankFrequentItemsBySlot, type FrequentUsage } from "@/app/lib/meal-amounts";
 import { insertAfter, moveInOrder } from "@/app/lib/meal-order";
 import {
   buildRecipeSnapshot,
@@ -17,6 +18,7 @@ import {
   type FoodCategory,
   type FoodMeasure,
   type FrequentItem,
+  type FrequentItemsBySlot,
   type Macros,
   type MealItemInput,
   type MealType,
@@ -629,14 +631,13 @@ export async function getLoggedDatesForUser(args: { userId: string; days: number
   return dates;
 }
 
-/** Alimentos y recetas más registrados en los últimos días, con la última cantidad usada. */
-export async function listFrequentItems(args: { userId: string; days?: number; limit?: number }): Promise<FrequentItem[]> {
+async function listFrequentUsages(args: { userId: string; days?: number }): Promise<FrequentUsage[]> {
   const today = getTodayDateKey();
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("meal_logs")
     .select(
-      "log_date, meal_log_meals(meal_log_items(food_id, recipe_id, measure, quantity, created_at, recipe:recipes!meal_log_items_recipe_id_fkey(archived_at)))",
+      "log_date, meal_log_meals(type, meal_log_items(food_id, recipe_id, measure, quantity, created_at, recipe:recipes!meal_log_items_recipe_id_fkey(archived_at)))",
     )
     .eq("user_id", args.userId)
     .gte("log_date", addDaysToDateKey(today, -((args.days ?? 60) - 1)))
@@ -655,44 +656,48 @@ export async function listFrequentItems(args: { userId: string; days?: number; l
     recipe: One<{ archived_at: string | null }>;
   };
 
-  const usage = new Map<string, { item: FrequentItem; lastUsedAt: string }>();
+  const usages: FrequentUsage[] = [];
 
-  for (const row of (data ?? []) as Array<{ meal_log_meals: Array<{ meal_log_items: UsageRow[] | null }> | null }>) {
+  for (const row of (data ?? []) as Array<{
+    meal_log_meals: Array<{ type: string | null; meal_log_items: UsageRow[] | null }> | null;
+  }>) {
     for (const meal of row.meal_log_meals ?? []) {
+      const mealType = normalizeMealType(meal.type);
+
       for (const logItem of meal.meal_log_items ?? []) {
-        const kind = logItem.recipe_id ? "recipe" : "food";
         const id = logItem.recipe_id ?? logItem.food_id;
 
         if (!id || one(logItem.recipe)?.archived_at) {
           continue;
         }
 
-        const key = `${kind}:${id}`;
-        const entry = usage.get(key);
-
-        if (!entry) {
-          usage.set(key, {
-            item: { kind, id, uses: 1, lastMeasure: logItem.measure, lastQuantity: logItem.quantity },
-            lastUsedAt: logItem.created_at,
-          });
-          continue;
-        }
-
-        entry.item.uses += 1;
-
-        if (logItem.created_at > entry.lastUsedAt) {
-          entry.lastUsedAt = logItem.created_at;
-          entry.item.lastMeasure = logItem.measure;
-          entry.item.lastQuantity = logItem.quantity;
-        }
+        usages.push({
+          kind: logItem.recipe_id ? "recipe" : "food",
+          id,
+          mealType,
+          measure: logItem.measure,
+          quantity: logItem.quantity,
+          createdAt: logItem.created_at,
+        });
       }
     }
   }
 
-  return [...usage.values()]
-    .sort((left, right) => right.item.uses - left.item.uses || right.lastUsedAt.localeCompare(left.lastUsedAt))
-    .slice(0, args.limit ?? 8)
-    .map((entry) => entry.item);
+  return usages;
+}
+
+/** Alimentos y recetas más registrados en los últimos días, con la última cantidad usada. */
+export async function listFrequentItems(args: { userId: string; days?: number; limit?: number }): Promise<FrequentItem[]> {
+  return rankFrequentItems(await listFrequentUsages(args), args.limit ?? 8);
+}
+
+/** Lo mismo, separado por grupo de comidas (desayuno, almuerzo y cena, merienda, snack). */
+export async function listFrequentItemsBySlot(args: {
+  userId: string;
+  days?: number;
+  limit?: number;
+}): Promise<FrequentItemsBySlot> {
+  return rankFrequentItemsBySlot(await listFrequentUsages(args), args.limit ?? 8);
 }
 
 function mapMealLog(row: MealLogRow): MealLog {

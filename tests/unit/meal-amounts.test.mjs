@@ -11,6 +11,8 @@ import {
   previewItemNutrition,
   previewNutrition,
   quantityStep,
+  rankFrequentItems,
+  rankFrequentItemsBySlot,
   resolveDefaultAmount,
   toMealItemInput,
   validateAmount,
@@ -40,6 +42,54 @@ const recipeOption = {
   name: "Guiso",
   recipe: { id: "r1", name: "Guiso", servingG: 350, kcalPerG: 1.2, macrosPerG: { proteinG: 0.08, carbsG: 0.15, fatG: 0.03 } },
 };
+
+describe("frecuentes", () => {
+  const use = (id, mealType, createdAt, quantity = 100) => ({
+    kind: "food",
+    id,
+    mealType,
+    measure: "g",
+    quantity,
+    createdAt,
+  });
+
+  it("ordena por usos y guarda la última cantidad", () => {
+    const ranked = rankFrequentItems(
+      [use("pan", "desayuno", "2026-09-01", 50), use("pan", "desayuno", "2026-09-03", 80), use("arroz", "cena", "2026-09-02")],
+      8,
+    );
+    assert.deepEqual(ranked, [
+      { kind: "food", id: "pan", uses: 2, lastMeasure: "g", lastQuantity: 80 },
+      { kind: "food", id: "arroz", uses: 1, lastMeasure: "g", lastQuantity: 100 },
+    ]);
+  });
+
+  it("separa desayuno, almuerzo y cena, merienda y snack", () => {
+    const bySlot = rankFrequentItemsBySlot(
+      [
+        use("pan", "desayuno", "2026-09-01"),
+        use("pollo", "almuerzo", "2026-09-01"),
+        use("pollo", "cena", "2026-09-02"),
+        use("yogur", "merienda", "2026-09-01"),
+        use("barrita", "snack", "2026-09-01"),
+      ],
+      8,
+    );
+    const ids = Object.fromEntries(Object.entries(bySlot).map(([slot, items]) => [slot, items.map((item) => item.id)]));
+    assert.deepEqual(ids, { desayuno: ["pan"], comidas: ["pollo"], merienda: ["yogur"], snack: ["barrita"] });
+    assert.equal(bySlot.comidas[0].uses, 2);
+  });
+
+  it("los usos de un grupo no suman en otro", () => {
+    const bySlot = rankFrequentItemsBySlot(
+      [use("pan", "desayuno", "2026-09-01", 50), use("pan", "merienda", "2026-09-02", 30)],
+      8,
+    );
+    assert.equal(bySlot.desayuno[0].lastQuantity, 50);
+    assert.equal(bySlot.merienda[0].lastQuantity, 30);
+    assert.deepEqual(bySlot.comidas, []);
+  });
+});
 
 describe("getFoodGramsPerUnit", () => {
   it("usa los gramos por unidad si existen", () => {

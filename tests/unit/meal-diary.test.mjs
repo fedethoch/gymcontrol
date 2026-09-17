@@ -25,6 +25,7 @@ import {
   sumDay,
   targetKey,
   targetLabel,
+  targetMealType,
   titleScale,
   withCurrentDay,
 } from "../../app/lib/meal-diary.ts";
@@ -206,6 +207,13 @@ describe("destinos de agregado", () => {
     assert.equal(targetLabel({ kind: "meal", mealId: "d" }, meals, created), "Desayuno");
     assert.equal(targetLabel({ kind: "slot", type: "cena" }, meals, created), "Cena");
     assert.equal(targetLabel({ kind: "new", token: "t", name: "Postre", type: "snack" }, meals, created), "Postre");
+  });
+
+  it("tipo del destino", () => {
+    assert.equal(targetMealType({ kind: "meal", mealId: "m" }, meals), "merienda");
+    assert.equal(targetMealType({ kind: "slot", type: "cena" }, meals), "cena");
+    assert.equal(targetMealType({ kind: "new", token: "t", name: "Postre", type: "snack" }, meals), "snack");
+    assert.equal(targetMealType({ kind: "meal", mealId: "x" }, meals), "snack");
   });
 });
 

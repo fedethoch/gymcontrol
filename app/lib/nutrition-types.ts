@@ -98,6 +98,15 @@ export type FrequentItem = {
   lastQuantity: number;
 };
 
+/** Grupos de frecuentes: almuerzo y cena comparten; desayuno, merienda y snack van aparte. */
+export const FREQUENT_SLOTS = ["desayuno", "comidas", "merienda", "snack"] as const;
+export type FrequentSlot = (typeof FREQUENT_SLOTS)[number];
+export type FrequentItemsBySlot = Record<FrequentSlot, FrequentItem[]>;
+
+export function frequentSlotOf(type: MealType): FrequentSlot {
+  return type === "almuerzo" || type === "cena" ? "comidas" : type;
+}
+
 export type RecipeIngredient = {
   foodId: string;
   foodName: string;

@@ -41,6 +41,7 @@ import {
   sumDay,
   targetKey,
   targetLabel,
+  targetMealType,
   withCurrentDay,
   type AddTarget,
   type DiaryDeepLink,
@@ -48,10 +49,15 @@ import {
 } from "@/app/lib/meal-diary";
 import type { MealGroup, MealLogItem } from "@/app/lib/meal-logs";
 import {
+  FREQUENT_SLOTS,
   MEAL_TYPE_LABELS,
+  frequentSlotOf,
   type Food,
   type FrequentItem,
+  type FrequentItemsBySlot,
+  type FrequentSlot,
   type Macros,
+  type MealType,
   type RecipeOption,
 } from "@/app/lib/nutrition-types";
 
@@ -88,7 +94,7 @@ export function RegistroMobile({
   foods,
   onFoodCreated,
   recipes,
-  frequentItems,
+  frequentBySlot,
   target,
   loggedDates,
   logDate,
@@ -102,7 +108,7 @@ export function RegistroMobile({
   foods: Food[];
   onFoodCreated: (food: Food) => void;
   recipes: RecipeOption[];
-  frequentItems: FrequentItem[];
+  frequentBySlot: FrequentItemsBySlot;
   target: { kcal: number; macros: Macros } | null;
   loggedDates: string[];
   logDate: string;
@@ -157,7 +163,7 @@ export function RegistroMobile({
   const diary = useDiaryActions({ logDate, meals, onMealsChange, actions, onMealCreated: follow });
 
   // Frecuentes tomados al entrar: no se reordenan mientras se agregan.
-  const [frequentSnapshot] = useState(frequentItems);
+  const [frequentSnapshot] = useState(frequentBySlot);
   const [lastAmounts, setLastAmounts] = useState<ReadonlyMap<string, Amount>>(new Map());
   const [quickMeals, setQuickMeals] = useState<ReadonlySet<string>>(new Set());
   const [quickPending, setQuickPending] = useState<ReadonlySet<string>>(new Set());
@@ -228,33 +234,37 @@ export function RegistroMobile({
     ],
     [foods, recipes],
   );
-  const frequentByKey = useMemo(
-    () => new Map(frequentSnapshot.map((item) => [optionKey(item), item])),
-    [frequentSnapshot],
-  );
-  const frequentOptions = useMemo(() => {
-    const byKey = new Map(options.map((option) => [optionKey(option), option]));
-    return frequentSnapshot.flatMap((item) => {
-      const option = byKey.get(optionKey(item));
-      return option ? [option] : [];
-    });
+  // Cada grupo de comidas tiene sus frecuentes: lo de desayuno no aparece en merienda.
+  const frequent = useMemo(() => {
+    const byOptionKey = new Map(options.map((option) => [optionKey(option), option]));
+    const view = {} as Record<FrequentSlot, { byKey: ReadonlyMap<string, FrequentItem>; options: PickerOption[] }>;
+    for (const slot of FREQUENT_SLOTS) {
+      const items = frequentSnapshot[slot];
+      view[slot] = {
+        byKey: new Map(items.map((item) => [optionKey(item), item])),
+        options: items.flatMap((item) => {
+          const option = byOptionKey.get(optionKey(item));
+          return option ? [option] : [];
+        }),
+      };
+    }
+    return view;
   }, [frequentSnapshot, options]);
 
-  function amountFor(option: PickerOption): Amount {
-    const key = optionKey(option);
-    return lastAmounts.get(key) ?? resolveDefaultAmount(option, frequentByKey.get(key));
+  function quickRowsFor(type: MealType): QuickRow[] {
+    const slot = frequent[frequentSlotOf(type)];
+    return slot.options.slice(0, QUICK_LIMIT).map((option) => {
+      const key = optionKey(option);
+      const amount = lastAmounts.get(key) ?? resolveDefaultAmount(option, slot.byKey.get(key));
+      return {
+        key,
+        option,
+        amount,
+        amountLabel: formatAmount(amount, { kind: option.kind, category: optionCategory(option) }, ","),
+        kcal: previewNutrition(option, amount.measure, amount.quantity).kcal,
+      };
+    });
   }
-
-  const quickRows: QuickRow[] = frequentOptions.slice(0, QUICK_LIMIT).map((option) => {
-    const amount = amountFor(option);
-    return {
-      key: optionKey(option),
-      option,
-      amount,
-      amountLabel: formatAmount(amount, { kind: option.kind, category: optionCategory(option) }, ","),
-      kcal: previewNutrition(option, amount.measure, amount.quantity).kcal,
-    };
-  });
 
   function rememberAmount(key: string, amount: Amount) {
     setLastAmounts((current) => new Map(current).set(key, amount));
@@ -376,7 +386,7 @@ export function RegistroMobile({
           addPending={diary.pending.has(targetKey(addTarget))}
           quick={
             empty || quickMeals.has(meal.id)
-              ? { rows: quickRows, pendingKeys: quickPending, addedKeys }
+              ? { rows: quickRowsFor(tab.type), pendingKeys: quickPending, addedKeys }
               : null
           }
           onAdd={() => openAdd(addTarget)}
@@ -392,6 +402,8 @@ export function RegistroMobile({
       ),
     };
   });
+
+  const addFrequent = addSheet.target ? frequent[frequentSlotOf(targetMealType(addSheet.target, meals))] : null;
 
   return (
     <div className="grid gap-5 [@media(max-height:700px)]:gap-3">
@@ -441,7 +453,7 @@ export function RegistroMobile({
         </div>
       </div>
 
-      {addSheet.target ? (
+      {addSheet.target && addFrequent ? (
         <AddFoodSheet
           key={`agregar-${addSheet.session}`}
           open={sheetsEnabled && addSheet.open}
@@ -449,8 +461,8 @@ export function RegistroMobile({
           targetLabel={targetLabel(addSheet.target, meals, NO_CREATED)}
           isToday={isToday}
           options={options}
-          frequentOptions={frequentOptions}
-          frequentByKey={frequentByKey}
+          frequentOptions={addFrequent.options}
+          frequentByKey={addFrequent.byKey}
           lastAmounts={lastAmounts}
           remainingKcal={remainingKcal}
           initialItem={addSheet.session === 0 ? linkedItem : null}
