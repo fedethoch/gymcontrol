@@ -85,7 +85,8 @@ type RecipeRow = {
   serving_g: number | null;
   total_weight_g: number | null;
   archived_at?: string | null;
-  recipe_items: Array<{ grams: number; food: One<NutritionRow> }> | null;
+  /** Snapshot del alimento en cada ingrediente (puede ser privado del creador). */
+  recipe_items: Array<{ grams: number } & NutritionRow> | null;
 };
 
 type MealLogItemRow = {
@@ -163,10 +164,7 @@ const MEAL_LOG_SELECT = `
         name,
         serving_g,
         total_weight_g,
-        recipe_items (
-          grams,
-          food:foods!recipe_items_food_id_fkey (${NUTRITION_COLUMNS})
-        )
+        recipe_items (grams, ${NUTRITION_COLUMNS})
       )
     )
   )
@@ -310,7 +308,7 @@ async function buildItemValues(supabase: SupabaseServerClient, items: MealItemIn
     const { data, error } = await supabase
       .from("recipes")
       .select(
-        `id, name, serving_g, total_weight_g, archived_at, recipe_items(grams, food:foods!recipe_items_food_id_fkey(${NUTRITION_COLUMNS}))`,
+        `id, name, serving_g, total_weight_g, archived_at, recipe_items(grams, ${NUTRITION_COLUMNS})`,
       )
       .in("id", recipeIds)
       .is("archived_at", null);
@@ -830,22 +828,16 @@ function nutritionForGrams(food: NutritionRow, grams: number): ItemNutrition {
 }
 
 function toRecipeNutritionInput(recipe: RecipeRow) {
-  const ingredients = (recipe.recipe_items ?? []).map((recipeItem) => {
-    const food = one(recipeItem.food);
-
-    return {
-      grams: Number(recipeItem.grams),
-      food: food
-        ? {
-            servingG: Number(food.serving_g),
-            calories: Number(food.calories),
-            proteinG: Number(food.protein_g),
-            carbsG: Number(food.carbs_g),
-            fatG: Number(food.fat_g),
-          }
-        : null,
-    };
-  });
+  const ingredients = (recipe.recipe_items ?? []).map((recipeItem) => ({
+    grams: Number(recipeItem.grams),
+    food: {
+      servingG: Number(recipeItem.serving_g),
+      calories: Number(recipeItem.calories),
+      proteinG: Number(recipeItem.protein_g),
+      carbsG: Number(recipeItem.carbs_g),
+      fatG: Number(recipeItem.fat_g),
+    },
+  }));
   const rawGrams = ingredients.reduce((sum, ingredient) => sum + ingredient.grams, 0);
 
   return {

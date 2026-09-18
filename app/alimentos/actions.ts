@@ -44,6 +44,7 @@ export async function saveOwnFoodAction(payload: FoodFormPayload): Promise<SaveO
 
   revalidatePath("/alimentos");
   revalidatePath("/nutricion/registro");
+  revalidatePath("/recetas");
 
   return {
     status: "success",

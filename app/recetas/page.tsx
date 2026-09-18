@@ -3,13 +3,13 @@ import type { ReactNode } from "react";
 import { RecipesMobile } from "@/app/components/recetas/RecipesMobile";
 import { RecipeCatalogClient } from "@/app/recetas/RecipeCatalogClient";
 import { getOptionalAuthContext } from "@/app/lib/auth";
-import { listFoodCatalogItems } from "@/app/lib/foods";
+import { listFoodsForUser } from "@/app/lib/foods";
 import { listRecipeCatalogItems } from "@/app/lib/recipes";
 
 export default async function RecetasPage() {
   const auth = await getOptionalAuthContext();
-  // Ingredientes solo del catálogo global: una receta pública no puede usar alimentos privados.
-  const [recipes, foods] = await Promise.all([listRecipeCatalogItems(), auth ? listFoodCatalogItems() : Promise.resolve([])]);
+  // Ingredientes: alimentos propios y del catálogo (la receta guarda nombre y macros de cada uno).
+  const [recipes, foods] = await Promise.all([listRecipeCatalogItems(), auth ? listFoodsForUser(auth.user.id) : Promise.resolve([])]);
   const viewer = auth ? { profileId: auth.profile.id, isAdmin: auth.profile.role === "admin" } : null;
 
   return (

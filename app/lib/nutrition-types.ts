@@ -114,6 +114,8 @@ export type RecipeIngredient = {
   grams: number;
   /** Kcal que aportan esos gramos. */
   kcal: number;
+  /** Macros del alimento guardados en la receta (puede ser un alimento privado del creador). */
+  food: { servingG: number; calories: number; proteinG: number; carbsG: number; fatG: number };
 };
 
 export type Recipe = {

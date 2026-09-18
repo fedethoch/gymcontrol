@@ -10,12 +10,16 @@ export type AdminRecipeListItem = Recipe & {
   authorName: string | null;
 };
 
-type RecipeFoodRow = { name: string; serving_g: number; calories: number; protein_g: number; carbs_g: number; fat_g: number };
-
+/** Snapshot del alimento en el ingrediente: los alimentos privados no se leen desde otras cuentas. */
 type RecipeItemRow = {
   food_id: string;
   grams: number;
-  foods: RecipeFoodRow | RecipeFoodRow[] | null;
+  food_name: string;
+  serving_g: number;
+  calories: number;
+  protein_g: number;
+  carbs_g: number;
+  fat_g: number;
 };
 
 type RecipeRow = {
@@ -32,7 +36,7 @@ type RecipeRow = {
 };
 
 const RECIPE_SELECT =
-  "id, name, description, category, serving_g, total_weight_g, created_by, created_at, recipe_items(food_id, grams, foods(name, serving_g, calories, protein_g, carbs_g, fat_g))";
+  "id, name, description, category, serving_g, total_weight_g, created_by, created_at, recipe_items(food_id, grams, food_name, serving_g, calories, protein_g, carbs_g, fat_g)";
 
 export type RecipeInput = {
   name: string;
@@ -104,7 +108,7 @@ export async function getRecipeById(id: string): Promise<Recipe | null> {
   return mapRecipe(data as RecipeRow);
 }
 
-/** Crea o edita en una transacción (RPC `save_recipe`: valida dueño/admin e ingredientes del catálogo). */
+/** Crea o edita en una transacción (RPC `save_recipe`: valida dueño/admin, ingredientes del catálogo o propios y guarda su snapshot). */
 export async function saveRecipe(input: RecipeInput & { id: string | null }): Promise<string> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.rpc("save_recipe", {
@@ -150,29 +154,21 @@ function mapRecipe(row: RecipeRow): Recipe {
   const nutritionInput = { servingG: 0, totalWeightG: row.total_weight_g != null ? Number(row.total_weight_g) : null, ingredients: [] as Array<{ grams: number; food: { servingG: number; calories: number; proteinG: number; carbsG: number; fatG: number } | null }> };
 
   for (const item of row.recipe_items ?? []) {
-    const food = Array.isArray(item.foods) ? item.foods[0] : item.foods;
-
-    if (!food) {
-      continue;
-    }
-
-    const foodServingG = Number(food.serving_g);
+    const food = {
+      servingG: Number(item.serving_g),
+      calories: Number(item.calories),
+      proteinG: Number(item.protein_g),
+      carbsG: Number(item.carbs_g),
+      fatG: Number(item.fat_g),
+    };
     ingredients.push({
       foodId: item.food_id,
-      foodName: food.name,
+      foodName: item.food_name,
       grams: Number(item.grams),
-      kcal: foodServingG > 0 ? (Number(food.calories) * Number(item.grams)) / foodServingG : 0,
+      kcal: food.servingG > 0 ? (food.calories * Number(item.grams)) / food.servingG : 0,
+      food,
     });
-    nutritionInput.ingredients.push({
-      grams: Number(item.grams),
-      food: {
-        servingG: Number(food.serving_g),
-        calories: Number(food.calories),
-        proteinG: Number(food.protein_g),
-        carbsG: Number(food.carbs_g),
-        fatG: Number(food.fat_g),
-      },
-    });
+    nutritionInput.ingredients.push({ grams: Number(item.grams), food });
   }
 
   nutritionInput.servingG = row.serving_g != null ? Number(row.serving_g) : recipeRawGrams(nutritionInput);

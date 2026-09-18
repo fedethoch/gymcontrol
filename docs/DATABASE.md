@@ -776,15 +776,18 @@ Migracion: `20260613_g21_nutrition_fase3.sql`. Nota: las dietas predefinidas (`d
 - `created_by uuid references profiles(id)` (autor)
 - `created_at`, `updated_at`
 - RLS (`20260915_nutrition_meal_order_user_recipes`): lectura publica; insert `authenticated` con `created_by = private.current_profile_id()`; update creador o admin; delete solo admin
-- guardado atomico: RPC `public.save_recipe(p_recipe_id, p_name, p_description, p_category, p_serving_g, p_total_weight_g, p_items jsonb)` (security invoker; valida dueño/admin `P0002`, ingredientes del catalogo global y porcion <= peso base `22023`)
+- guardado atomico: RPC `public.save_recipe(p_recipe_id, p_name, p_description, p_category, p_serving_g, p_total_weight_g, p_items jsonb)` (security invoker; valida dueño/admin `P0002`, ingredientes del catalogo global o propios del usuario y porcion <= peso base `22023`; copia el snapshot del alimento en cada item y, si quien edita no puede leer un alimento privado ajeno (admin), conserva el snapshot anterior)
 ### `recipe_items`
 
 - `id uuid primary key default gen_random_uuid()`
 - `recipe_id uuid not null references recipes(id) on delete cascade`
 - `food_id uuid not null references foods(id) on delete restrict`
 - `grams numeric(7,1) not null check (grams > 0)`
-- macros del item se derivan en runtime: `food.{calories,protein_g,carbs_g,fat_g} * (grams / food.serving_g)`, mismo patron que `meal_log_items`
-- RLS: lectura publica; insert/update/delete si la receta es del usuario o es admin; insert/update exigen `foods.owner_user_id is null` (una receta publica no usa alimentos privados)
+- snapshot del alimento (`20260918_recipe_items_food_snapshot`): `food_name text`, `serving_g integer`, `calories integer`, `protein_g`, `carbs_g`, `fat_g numeric(6,1)`, todos not null. La app lee macros de aca, no de `foods`: un ingrediente puede ser un alimento privado del creador (RLS de `foods` lo oculta a otros) y la receta publica expone su nombre y valores
+- macros del item: `calories,protein_g,carbs_g,fat_g * (grams / serving_g)` del snapshot
+- trigger `foods_sync_recipe_items` (after update de nombre/macros en `foods`, `private.sync_recipe_items_food_snapshot()` security definer): propaga ediciones del alimento a todas las recetas que lo usan
+- RLS: lectura publica; insert/update/delete si la receta es del usuario o es admin; insert/update exigen alimento del catalogo o propio (`owner_user_id = auth.uid()`), o ser admin
+- borrar un alimento usado en una receta sigue bloqueado (`on delete restrict`)
 
 ### Indices
 
