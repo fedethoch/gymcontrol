@@ -192,6 +192,7 @@ Base: **shadcn/ui** + Tailwind. Íconos: **lucide-react** únicamente. Microinte
 | Patrón | Regla app-native |
 |---|---|
 | Modal / diálogo | En mobile → **bottom sheet** (drawer desde abajo, vaul). En desktop → dialog centrado. Ya hay animaciones `.motion-sheet-*` |
+| Sheet con campos | Con el teclado abierto el sheet se apoya sobre el teclado dentro del viewport visual (sigue al navegador si desplaza la vista) y puede crecer hasta la franja segura de arriba; la bajada del encabezado se oculta mientras se escribe. El campo con foco queda a la vista con su etiqueta; un buscador con resultados abajo sube al tope (`data-keyboard-scroll="start"`) y sus resultados van en el flujo, no flotando. En táctil, abrir un sheet nunca abre el teclado solo. Con el teclado abierto, tocar afuera solo cierra el teclado. Enter pasa al campo siguiente y "buscar"/"listo" cierran el teclado; nunca envían un formulario a medias. Campos y sliders no arrastran el sheet (`data-vaul-no-drag`). Código: `ui/use-sheet-viewport.ts` y `app/lib/sheet-keyboard.ts` (vaul no reposiciona: `repositionInputs` apagado) |
 | Navegación primaria | Mobile → bottom tab bar. Desktop → sidebar. Ver §6 |
 | Overflow de nav | Bottom sheet "más" (`.mobile-more-sheet`) — no tocar sin pedido |
 | Lista / feed | Filas ≥44px, separador por `--border`, no card-por-item salvo que aporte |

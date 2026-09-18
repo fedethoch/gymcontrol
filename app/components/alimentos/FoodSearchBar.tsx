@@ -54,6 +54,10 @@ export function FoodSearchBar({
           placeholder={placeholder}
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
+          onKeyDown={(event) => {
+            // "Buscar" cierra el teclado para ver los resultados (igual que el catálogo).
+            if (event.key === "Enter" && !event.nativeEvent.isComposing) event.currentTarget.blur();
+          }}
           className={cn(
             "h-12 w-full rounded-[14px] border border-[var(--border)] bg-[var(--card)] pl-10 text-base text-[var(--foreground)] outline-none transition-[border-color,box-shadow] duration-200 placeholder:text-[var(--foreground-subtle)] focus:border-[var(--accent)] focus:shadow-[var(--focus-glow)] motion-reduce:transition-none [&::-webkit-search-cancel-button]:appearance-none",
             query ? "pr-[5.75rem]" : "pr-12",

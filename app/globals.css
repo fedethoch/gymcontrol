@@ -226,6 +226,38 @@ body {
   --sheet-exit-y: 0.75rem;
 }
 
+/* vaul arrastra el sheet con un transform en línea: el relleno de la animación de entrada lo tapaba
+   y el sheet no seguía al dedo. */
+.motion-sheet-content[data-vaul-drawer][data-state="open"] {
+  animation-fill-mode: none;
+}
+
+/* Sheets y teclado en pantalla (DESIGN.md §4). useSheetViewport deja `--keyboard-inset`,
+   `--viewport-height` y `data-keyboard-open`: el sheet se apoya sobre el teclado dentro de lo visible. */
+[data-slot="drawer-content"][data-vaul-drawer-direction="bottom"] {
+  bottom: var(--keyboard-inset, 0px);
+}
+
+[data-slot="drawer-content"][data-vaul-drawer-direction="bottom"][data-keyboard-open] {
+  max-height: calc(var(--viewport-height) - max(env(safe-area-inset-top), 0.75rem) - 0.5rem);
+}
+
+/* Con el teclado abierto la franja del indicador de inicio queda debajo: el pie no la reserva. */
+[data-slot="drawer-content"][data-keyboard-open] [data-slot="drawer-footer"] {
+  padding-bottom: 0.75rem;
+}
+
+/* Mientras se escribe, la bajada del encabezado deja su lugar a los campos y resultados. */
+[data-slot="drawer-content"][data-keyboard-open] [data-slot="drawer-header"] [data-slot="drawer-description"]:not(.sr-only) {
+  display: none;
+}
+
+[data-slot="sheet-content"][data-keyboard-open]:is([data-side="left"], [data-side="right"]) {
+  top: auto;
+  bottom: var(--keyboard-inset, 0px);
+  height: calc(var(--viewport-height) - env(safe-area-inset-top));
+}
+
 @keyframes motion-soft-enter {
   from {
     opacity: 0;

@@ -118,6 +118,7 @@ export function NumberStepper({
         <input
           id={id}
           data-metric-input=""
+          data-vaul-no-drag=""
           inputMode="decimal"
           enterKeyHint="done"
           autoComplete="off"

@@ -87,6 +87,10 @@ export function DaySheet({
               enterKeyHint="done"
               value={name}
               onChange={(event) => setName(event.target.value)}
+              onKeyDown={(event) => {
+                // "Listo" cierra el teclado.
+                if (event.key === "Enter" && !event.nativeEvent.isComposing) event.currentTarget.blur();
+              }}
               placeholder="Ej. Post entreno"
             />
           </label>

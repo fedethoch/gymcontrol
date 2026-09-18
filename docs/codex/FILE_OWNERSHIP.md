@@ -17,6 +17,7 @@ Objetivo: abrir el area minima correcta.
 | Rutas de dashboard | `app/dashboard/` |
 | Registro de entrenamiento y progresión | `app/rutinas/dia/` (desktop: cards), `app/components/workout/` (mobile <1024), `app/lib/day-workout.ts` y `app/lib/workout-progression.ts` (lógica pura + `tests/unit/`), `app/lib/workout-tracking.ts` (lecturas); reglas en `DESIGN.md` §11 |
 | Sheet del ejercicio (mobile <1024) | `app/components/exercise/` (ficha, plan, gráfico, historial; lo abre `app/components/shared/ExerciseDetailModal.tsx`, que en ≥1024 conserva el sheet lateral), `app/lib/exercise-history.ts` (lógica pura + `tests/unit/`); reglas en `DESIGN.md` §11.4 |
+| Sheets con teclado (todas las rutas, mobile) | `app/components/ui/Drawer.tsx` (vaul) y `Sheet.tsx` (Radix) enganchan `app/components/ui/use-sheet-viewport.ts` (apoyo sobre el teclado, campo con foco visible, tocar afuera cierra el teclado); lógica pura en `app/lib/sheet-keyboard.ts` (+ `tests/unit/`); CSS en `app/globals.css`; reglas en `DESIGN.md` §4 |
 | Sync offline del registro | contrato `app/lib/workout-sync-contract.ts` (versionado), `app/api/workouts/sync/`, `app/lib/workout-sync.ts`, `app/lib/workout-sync-queue.ts`; modelo en `docs/DATABASE.md` (F1) |
 | Rutas admin | `app/admin/` |
 | Shell y navegacion | `app/layout.tsx`, `app/globals.css`, `app/components/ui/AppShell.tsx`, `app/components/shared/PrimaryNavigation.tsx`, `app/components/shared/navigation-config.ts` |

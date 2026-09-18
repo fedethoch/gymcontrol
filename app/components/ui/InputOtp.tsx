@@ -105,6 +105,7 @@ function InputOtp({
         inputMode="numeric"
         pattern="[0-9]*"
         autoComplete="one-time-code"
+        data-vaul-no-drag=""
         aria-label={ariaLabel}
         aria-invalid={invalid || undefined}
         aria-describedby={ariaDescribedBy}
@@ -137,6 +138,7 @@ function InputOtp({
       inputMode="numeric"
       pattern="[0-9]*"
       autoComplete="one-time-code"
+      data-vaul-no-drag=""
       aria-label={ariaLabel}
       containerClassName="group flex w-full items-center gap-2 has-[:disabled]:opacity-50"
       render={({ slots }) => (

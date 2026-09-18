@@ -280,6 +280,10 @@ export function AddFoodSheet({
                 placeholder="Buscá alimento o receta"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
+                onKeyDown={(event) => {
+                  // "Buscar" cierra el teclado para ver toda la lista.
+                  if (event.key === "Enter" && !event.nativeEvent.isComposing) event.currentTarget.blur();
+                }}
                 className="h-12 rounded-2xl pl-11 pr-11 [&::-webkit-search-cancel-button]:hidden"
               />
               {query ? (

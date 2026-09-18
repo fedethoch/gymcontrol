@@ -6,8 +6,10 @@ import { toast } from "sonner";
 
 import { FoodCreateDrawer, type FoodCreateRequest } from "@/app/components/alimentos/FoodCreateDrawer";
 import { Button } from "@/app/components/ui/Button";
+import { focusNextFieldOnEnter } from "@/app/components/ui/focus-next-field";
 import { Input } from "@/app/components/ui/Input";
 import { LoadingDots } from "@/app/components/ui/LoadingDots";
+import { useMediaQuery } from "@/app/components/ui/use-media-query";
 import { RECIPE_CATEGORIES, RECIPE_CATEGORY_LABELS, type Food, type Recipe, type RecipeCategory } from "@/app/lib/nutrition-types";
 import { buildRecipeSnapshot, nutritionFromSnapshot, recipeBaseGrams, type RecipeFoodNutrition } from "@/app/lib/recipe-nutrition";
 import type { RecipeFormField } from "@/app/lib/recipes-form";
@@ -51,6 +53,8 @@ export function RecipeForm({ recipe, initialName = "", foods, onSaved, onCancel 
   const [createdFoods, setCreatedFoods] = useState<Food[]>([]);
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<RecipeFormField, string>>>({});
   const [isSaving, setIsSaving] = useState(false);
+  // En táctil el teclado se abre al tocar un campo: abrirlo mientras el sheet sube lo hace saltar.
+  const finePointer = useMediaQuery("(pointer: fine)") === true;
 
   const matches = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -128,10 +132,11 @@ export function RecipeForm({ recipe, initialName = "", foods, onSaved, onCancel 
 
   return (
     <>
-      <form className="grid gap-4" onSubmit={handleSubmit} noValidate>
+      <form className="grid gap-4" onSubmit={handleSubmit} onKeyDown={focusNextFieldOnEnter} noValidate>
         <Field label="Nombre" error={fieldErrors.name}>
           <Input
-            autoFocus={!recipe}
+            autoFocus={!recipe && finePointer}
+            enterKeyHint="next"
             maxLength={80}
             placeholder="Ej. Bowl de pollo y arroz"
             value={name}
@@ -163,6 +168,7 @@ export function RecipeForm({ recipe, initialName = "", foods, onSaved, onCancel 
 
         <Field label="Descripción (opcional)" error={fieldErrors.description}>
           <textarea
+            data-vaul-no-drag=""
             className="min-h-20 rounded-xl border border-[var(--border)] bg-[var(--card-alt)] px-3 py-2 text-base font-normal text-[var(--foreground)] outline-none focus-visible:border-[var(--accent)] sm:text-sm"
             maxLength={280}
             placeholder="Cómo se prepara, tips…"
@@ -171,19 +177,31 @@ export function RecipeForm({ recipe, initialName = "", foods, onSaved, onCancel 
           />
         </Field>
 
-        <div className="grid gap-2">
+        {/* Con el teclado el buscador sube al tope y los resultados van en el flujo: se ven arriba del teclado. */}
+        <div className="grid gap-2" data-keyboard-scroll="start">
           <span className="text-[13px] font-medium text-[var(--foreground-muted)]">Ingredientes</span>
-          <div className="relative">
-            <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--foreground-muted)]" />
-            <Input
-              aria-label="Buscar alimento para agregar"
-              className="pl-9"
-              placeholder="Buscar alimento…"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-            />
+          <div className="grid gap-1">
+            <div className="relative">
+              <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--foreground-muted)]" />
+              <Input
+                aria-label="Buscar alimento para agregar"
+                className="pl-9"
+                placeholder="Buscar alimento…"
+                enterKeyHint="search"
+                autoComplete="off"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                onKeyDown={(event) => {
+                  // "Buscar" cierra el teclado para ver los resultados; nunca publica la receta a medias.
+                  if (event.key === "Enter" && !event.nativeEvent.isComposing) {
+                    event.preventDefault();
+                    event.currentTarget.blur();
+                  }
+                }}
+              />
+            </div>
             {query.trim() ? (
-              <div className="absolute inset-x-0 top-full z-10 mt-1 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] shadow-lg">
+              <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)]">
                 {matches.map((food) => (
                   <button
                     key={food.id}

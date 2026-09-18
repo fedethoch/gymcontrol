@@ -147,6 +147,7 @@ export function MyRoutinesList({ routines, withMenu = false }: { routines: MyRou
                 </label>
                 <input
                   id={`rename-${routine.id}`}
+                  data-vaul-no-drag=""
                   autoFocus
                   value={draft}
                   maxLength={80}

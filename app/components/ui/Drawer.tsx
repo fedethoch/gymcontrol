@@ -3,12 +3,26 @@
 import * as React from "react"
 import { Drawer as DrawerPrimitive } from "vaul"
 
+import {
+  blurFieldInsteadOfClosing,
+  focusSheetInsteadOfField,
+  useSheetViewport,
+} from "@/app/components/ui/use-sheet-viewport"
 import { cn } from "@/app/lib/utils"
 
+/** El sheet pide foco al abrir (`autoFocus`): en táctil va al sheet, no a un campo. */
+const DrawerAutoFocusContext = React.createContext(false)
+
 function Drawer({
+  autoFocus = false,
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) {
-  return <DrawerPrimitive.Root data-slot="drawer" {...props} />
+  return (
+    <DrawerAutoFocusContext.Provider value={autoFocus}>
+      {/* vaul reposiciona con el teclado sin ver si el navegador desplazó la vista y deja altos fijos: lo hace useSheetViewport. */}
+      <DrawerPrimitive.Root data-slot="drawer" autoFocus={autoFocus} {...props} repositionInputs={false} />
+    </DrawerAutoFocusContext.Provider>
+  )
 }
 
 function DrawerTrigger({
@@ -48,13 +62,27 @@ function DrawerOverlay({
 function DrawerContent({
   className,
   children,
+  onOpenAutoFocus,
+  onPointerDownOutside,
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Content>) {
+  const autoFocus = React.useContext(DrawerAutoFocusContext)
+  const viewportRef = useSheetViewport()
+
   return (
     <DrawerPortal data-slot="drawer-portal">
       <DrawerOverlay />
       <DrawerPrimitive.Content
+        ref={viewportRef}
         data-slot="drawer-content"
+        onOpenAutoFocus={(event) => {
+          onOpenAutoFocus?.(event)
+          if (autoFocus) focusSheetInsteadOfField(event)
+        }}
+        onPointerDownOutside={(event) => {
+          onPointerDownOutside?.(event)
+          if (!event.defaultPrevented && blurFieldInsteadOfClosing()) event.preventDefault()
+        }}
         className={cn(
           "motion-sheet-content group/drawer-content fixed z-50 flex h-auto max-h-[85vh] flex-col border-[var(--border)] bg-[#080b10] shadow-[0_-24px_60px_rgba(0,0,0,0.5)] outline-none",
           "data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mb-24 data-[vaul-drawer-direction=top]:max-h-[80vh] data-[vaul-drawer-direction=top]:rounded-b-2xl data-[vaul-drawer-direction=top]:border-b",

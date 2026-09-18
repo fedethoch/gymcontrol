@@ -150,13 +150,13 @@ export function EmailLoginSheet({ initialEmail }: { initialEmail: string }) {
           setOpen(next);
         }}
         dismissible={!locked}
-        repositionInputs
       >
         <DrawerContent
           className="h-[92dvh] max-h-[92dvh] rounded-t-3xl"
           onOpenAutoFocus={(event) => {
             event.preventDefault();
-            if (flow.step === "email") {
+            // En táctil el teclado se abre al tocar el campo: abrirlo mientras el sheet sube lo hace saltar.
+            if (flow.step === "email" && window.matchMedia("(pointer: fine)").matches) {
               emailRef.current?.focus({ preventScroll: true });
             }
           }}
@@ -237,6 +237,7 @@ export function EmailLoginSheet({ initialEmail }: { initialEmail: string }) {
                         <input
                           ref={emailRef}
                           id="login-email"
+                          data-vaul-no-drag=""
                           name="email"
                           type="email"
                           inputMode="email"

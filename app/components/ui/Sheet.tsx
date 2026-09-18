@@ -4,6 +4,11 @@ import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 
+import {
+  blurFieldInsteadOfClosing,
+  focusSheetInsteadOfField,
+  useSheetViewport,
+} from "@/app/components/ui/use-sheet-viewport";
 import { cn } from "@/app/lib/utils";
 
 function Sheet({
@@ -47,16 +52,30 @@ function SheetContent({
   className,
   children,
   side = "left",
+  onOpenAutoFocus,
+  onPointerDownOutside,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   side?: "top" | "right" | "bottom" | "left";
 }) {
+  const viewportRef = useSheetViewport();
+
   return (
     <SheetPortal>
       <SheetOverlay />
       <DialogPrimitive.Content
+        ref={viewportRef}
         data-slot="sheet-content"
         data-side={side}
+        onOpenAutoFocus={(event) => {
+          onOpenAutoFocus?.(event);
+          // Radix siempre enfoca lo primero al abrir (vaul solo con `autoFocus`).
+          focusSheetInsteadOfField(event);
+        }}
+        onPointerDownOutside={(event) => {
+          onPointerDownOutside?.(event);
+          if (!event.defaultPrevented && blurFieldInsteadOfClosing()) event.preventDefault();
+        }}
         className={cn(
           "motion-sheet-content fixed z-50 flex flex-col border-[var(--border)] bg-[#080b10] shadow-[0_24px_60px_rgba(0,0,0,0.5)] outline-none",
           side === "left" &&

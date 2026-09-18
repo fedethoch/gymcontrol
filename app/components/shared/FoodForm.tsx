@@ -5,8 +5,10 @@ import { toast } from "sonner";
 
 import { saveOwnFoodAction } from "@/app/alimentos/actions";
 import { Button } from "@/app/components/ui/Button";
+import { focusNextFieldOnEnter } from "@/app/components/ui/focus-next-field";
 import { Input } from "@/app/components/ui/Input";
 import { LoadingDots } from "@/app/components/ui/LoadingDots";
+import { useMediaQuery } from "@/app/components/ui/use-media-query";
 import type { FoodFormField } from "@/app/lib/foods-form";
 import { MACRO_COLORS } from "@/app/lib/nutrition-style";
 import {
@@ -50,6 +52,8 @@ export function FoodForm({ food, initialName = "", submitLabel, variant = "sheet
   const [measure, setMeasure] = useState<FoodMeasure>(food?.measure ?? "g");
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<FoodFormField, string>>>({});
   const [isSaving, setIsSaving] = useState(false);
+  // En táctil el teclado se abre al tocar un campo: abrirlo mientras el sheet sube lo hace saltar.
+  const finePointer = useMediaQuery("(pointer: fine)") === true;
 
   const unitLabel = getAmountUnitLabel(category);
   const hasUnitWeight = Number(toNumberText(gramsPerUnit)) > 0;
@@ -89,10 +93,11 @@ export function FoodForm({ food, initialName = "", submitLabel, variant = "sheet
   }
 
   return (
-    <form className="grid gap-4" onSubmit={handleSubmit} noValidate>
+    <form className="grid gap-4" onSubmit={handleSubmit} onKeyDown={focusNextFieldOnEnter} noValidate>
       <Field label="Nombre" error={fieldErrors.name}>
         <Input
-          autoFocus={!food}
+          autoFocus={!food && finePointer}
+          enterKeyHint="next"
           maxLength={80}
           placeholder="Ej. Tostadas de arroz marca X"
           value={name}

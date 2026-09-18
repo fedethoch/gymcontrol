@@ -54,6 +54,8 @@ export function Slider({
       step={step}
       inverted={inverted}
       disabled={disabled}
+      // Dentro de un sheet, mover el thumb no arrastra el sheet.
+      data-vaul-no-drag=""
       className={cn(
         "relative flex h-11 w-full touch-none select-none items-center data-[disabled]:opacity-50",
         className,
