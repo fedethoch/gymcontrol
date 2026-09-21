@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { CalendarDays, Check, ChevronRight, LogIn } from "lucide-react";
 import { useFormStatus } from "react-dom";
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 
 import {
   activateRoutineFromCatalogAction,
   saveRoutineFromCatalogAction,
 } from "@/app/catalogo/rutinas/[id]/actions";
+import { TrainingDaysButton, type TrainingDaysChoice } from "@/app/components/rutinas/TrainingDaysSheet";
 import type { DetailState } from "@/app/lib/routine-detail";
 import { cn } from "@/app/lib/utils";
 
@@ -25,6 +26,8 @@ export type ActionContext = {
   savedRoutineId: string | null;
   archivedHref: string;
   dayCount: number;
+  /** Activar pide los días de entreno (rutinas de 1 a 6 días); `null` = se activa directo. */
+  schedule: TrainingDaysChoice | null;
 };
 
 function SubmitButton({ className, pendingLabel, children }: { className: string; pendingLabel: string; children: ReactNode }) {
@@ -36,9 +39,50 @@ function SubmitButton({ className, pendingLabel, children }: { className: string
   );
 }
 
+/**
+ * Botón que envía el form. Si la rutina pide días, primero abre el selector y el sheet envía el form
+ * (queda dentro del `<form>` en el árbol de React, así el botón del sheet ve el estado de envío).
+ */
+function StartButton({
+  formId,
+  schedule,
+  className,
+  confirmLabel,
+  pendingLabel,
+  children,
+}: {
+  formId: string;
+  schedule: TrainingDaysChoice | null;
+  className: string;
+  confirmLabel: string;
+  pendingLabel: string;
+  children: ReactNode;
+}) {
+  if (!schedule) {
+    return (
+      <SubmitButton className={className} pendingLabel={pendingLabel}>
+        {children}
+      </SubmitButton>
+    );
+  }
+
+  return (
+    <TrainingDaysButton
+      className={className}
+      choice={schedule}
+      confirmLabel={confirmLabel}
+      pendingLabel={pendingLabel}
+      submit={{ formId }}
+    >
+      {children}
+    </TrainingDaysButton>
+  );
+}
+
 /** Formulario de la acción principal según el estado. `compact` = versión de la barra superior. */
 function ActionControl({ context, compact }: { context: ActionContext; compact: boolean }) {
   const size = compact ? SMALL : BIG;
+  const formId = useId();
 
   switch (context.state) {
     case "guest":
@@ -50,23 +94,35 @@ function ActionControl({ context, compact }: { context: ActionContext; compact: 
       );
     case "new":
       return (
-        <form action={saveRoutineFromCatalogAction} className={compact ? "shrink-0" : undefined}>
+        <form id={formId} action={saveRoutineFromCatalogAction} className={compact ? "shrink-0" : undefined}>
           <input type="hidden" name="routineTemplateId" value={context.routineId} />
           <input type="hidden" name="intent" value="use" />
-          <SubmitButton className={cn(size, PRIMARY)} pendingLabel="Guardando…">
+          <StartButton
+            formId={formId}
+            schedule={context.schedule}
+            className={cn(size, PRIMARY)}
+            confirmLabel="Usar rutina"
+            pendingLabel="Guardando…"
+          >
             {compact ? "Usar" : "Usar esta rutina"}
-          </SubmitButton>
+          </StartButton>
         </form>
       );
     case "saved":
       return (
-        <form action={activateRoutineFromCatalogAction} className={compact ? "shrink-0" : undefined}>
+        <form id={formId} action={activateRoutineFromCatalogAction} className={compact ? "shrink-0" : undefined}>
           <input type="hidden" name="routineTemplateId" value={context.routineId} />
           <input type="hidden" name="savedRoutineId" value={context.savedRoutineId ?? ""} />
-          <SubmitButton className={cn(size, PRIMARY)} pendingLabel="Activando…">
+          <StartButton
+            formId={formId}
+            schedule={context.schedule}
+            className={cn(size, PRIMARY)}
+            confirmLabel="Activar rutina"
+            pendingLabel="Activando…"
+          >
             <Check aria-hidden="true" className="size-4" strokeWidth={2.6} />
             {compact ? "Activar" : "Activar rutina"}
-          </SubmitButton>
+          </StartButton>
         </form>
       );
     case "active":

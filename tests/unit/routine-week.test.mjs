@@ -159,3 +159,53 @@ describe("resolveDockAction", () => {
     assert.equal(resolveDockAction(tabs[0], { trainedToday: true, todayDoneOrder: null }).note, "Hoy ya entrenaste");
   });
 });
+
+describe("con días elegidos", () => {
+  // Lun, Mar (hoy), Jue y Sáb.
+  const plannedDates = { d1: "2026-09-14", d2: TODAY, d3: "2026-09-17", d4: "2026-09-19" };
+
+  it("cada pendiente muestra su día y el de hoy es el próximo", () => {
+    const tabs = tabsFor({ plannedDates, completedDayIds: ["d1"], completedDayDates: { d1: "2026-09-14" } });
+    assert.deepEqual(
+      tabs.map(({ state, label }) => [state, label]),
+      [
+        ["done", "Lun"],
+        ["next", "Hoy"],
+        ["pending", "Jue"],
+        ["pending", "Sáb"],
+      ],
+    );
+    assert.equal(resolveDockAction(tabs[1], { trainedToday: false, todayDoneOrder: null }).tone, "primary");
+  });
+
+  it("si faltaste, el día queda pendiente con su día y el de hoy sigue siendo el próximo", () => {
+    const tabs = tabsFor({ plannedDates });
+    assert.deepEqual([tabs[0].state, tabs[0].label, tabs[0].missed], ["pending", "Lun", true]);
+    assert.deepEqual([tabs[1].state, tabs[1].label], ["next", "Hoy"]);
+  });
+
+  it("día libre: se ofrece el próximo día de entreno, neutro", () => {
+    const tabs = tabsFor({
+      plannedDates: { d1: "2026-09-14", d2: "2026-09-16", d3: "2026-09-18", d4: "2026-09-20" },
+      completedDayIds: ["d1"],
+      completedDayDates: { d1: "2026-09-14" },
+    });
+    assert.deepEqual([tabs[1].state, tabs[1].label], ["next", "Mié"]);
+    assert.equal(initialDayIndex(tabs), 1);
+    assert.deepEqual(resolveDockAction(tabs[1], { trainedToday: false, todayDoneOrder: null, restDay: true }), {
+      label: "Empezar día 2",
+      tone: "neutral",
+      note: "Hoy no toca entrenar",
+    });
+    assert.equal(primaryCount(tabs, { trainedToday: false, todayDoneOrder: null, restDay: true }), 0);
+  });
+
+  it("sin días por delante, se ofrece el primero que quedó atrás", () => {
+    const tabs = tabsFor({
+      todayKey: "2026-09-20", // domingo
+      plannedDates: { d1: "2026-09-14", d2: "2026-09-16", d3: "2026-09-18", d4: "2026-09-19" },
+    });
+    assert.deepEqual([tabs[0].state, tabs[0].label, tabs[0].missed], ["next", "Lun", true]);
+    assert.ok(tabs.slice(1).every((tab) => tab.state === "pending" && tab.missed));
+  });
+});

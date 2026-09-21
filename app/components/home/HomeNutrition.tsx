@@ -26,7 +26,7 @@ export function HomeNutrition({
   totalMacros: Macros;
   targetMacros: Macros;
   mealRows: MealRow[];
-  /** El CTA emerald de la pantalla vive acá (hoy ya entrenaste o semana cerrada). */
+  /** El CTA emerald de la pantalla vive acá (hoy ya entrenaste, semana cerrada o día de descanso). */
   primary: boolean;
 }) {
   const remaining = Math.round(targetKcal - totalKcal);

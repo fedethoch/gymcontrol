@@ -11,6 +11,7 @@ import { DayTabs } from "@/app/components/rutinas/DayTabs";
 import { ExerciseDetailModal, type ExerciseDetail } from "@/app/components/shared/ExerciseDetailModal";
 import { premiumEase } from "@/app/components/ui/motion";
 import { resolveDockAction } from "@/app/lib/routine-week";
+import { isoWeekday, weekdayTitle } from "@/app/lib/training-schedule";
 
 const CHIP_CLASS =
   "inline-flex h-[30px] w-fit items-center gap-1.5 rounded-full bg-[rgba(5,7,11,0.72)] px-3 text-xs font-semibold uppercase tracking-[0.06em] text-white";
@@ -28,6 +29,8 @@ export function RoutineWeekView({
   days,
   initialIndex,
   trainedToday,
+  restDay,
+  todayKey,
   todayDoneOrder,
   weekdayLabel,
   summary,
@@ -35,6 +38,9 @@ export function RoutineWeekView({
   days: WeekDay[];
   initialIndex: number | null;
   trainedToday: boolean;
+  /** Hay días elegidos y hoy no toca ninguno pendiente (§12.3). */
+  restDay: boolean;
+  todayKey: string;
   todayDoneOrder: number | null;
   weekdayLabel: string;
   summary: WeekSummary;
@@ -89,10 +95,18 @@ export function RoutineWeekView({
   const total = days.length;
 
   function actionFor(day: WeekDay) {
-    return resolveDockAction(day.tab, { trainedToday, todayDoneOrder });
+    return resolveDockAction(day.tab, { trainedToday, todayDoneOrder, restDay });
+  }
+
+  /** Con días elegidos: "Viernes · Día 3 de 3" o "Lunes · Te quedó". */
+  function plannedChip(day: WeekDay, plannedDate: string) {
+    const weekday = weekdayTitle(isoWeekday(plannedDate));
+    return <p className={CHIP_CLASS}>{day.tab.missed ? `${weekday} · Te quedó` : `${weekday} · Día ${day.dayOrder} de ${total}`}</p>;
   }
 
   function chipFor(day: WeekDay) {
+    const { plannedDate } = day.tab;
+
     switch (day.tab.state) {
       case "in_progress":
         return (
@@ -102,6 +116,7 @@ export function RoutineWeekView({
           </p>
         );
       case "next":
+        if (plannedDate && plannedDate !== todayKey) return plannedChip(day, plannedDate);
         return (
           <p className={CHIP_CLASS}>
             {trainedToday ? `Próximo · Día ${day.dayOrder} de ${total}` : `Hoy · ${weekdayLabel}`}
@@ -115,6 +130,7 @@ export function RoutineWeekView({
           </p>
         );
       default:
+        if (plannedDate) return plannedChip(day, plannedDate);
         return <p className={CHIP_CLASS}>Día {day.dayOrder} de {total}</p>;
     }
   }

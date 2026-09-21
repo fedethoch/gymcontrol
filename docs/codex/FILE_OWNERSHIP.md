@@ -5,7 +5,8 @@ Objetivo: abrir el area minima correcta.
 | Responsabilidad | Dueno principal |
 | --- | --- |
 | Rutas publicas | `app/page.tsx`, `app/catalogo/`, `app/auth/` |
-| Home mobile (`/`, <1024) | `app/components/home/`, `app/lib/home-dashboard.ts`; reglas en `DESIGN.md` §10 |
+| Home mobile (`/`, <1024) | `app/components/home/`, `app/lib/home-dashboard.ts`, `app/lib/home-hero.ts` (vistas del hero, puro + `tests/unit/`); reglas en `DESIGN.md` §10 |
+| Días de entreno (elegir, editar, qué toca hoy) | `app/lib/training-schedule.ts` (lógica pura + `tests/unit/`), `app/components/rutinas/TrainingDaysPicker.tsx`, `TrainingDaysSheet.tsx`, `TrainingDaysEditButton.tsx`; guardado en `app/lib/saved-routines.ts`; columna `saved_routines.training_weekdays`; reglas en `DESIGN.md` §12.3 |
 | Semana activa mobile (`/rutinas`, <1024) | `app/rutinas/page.tsx`, `app/components/rutinas/`, `app/lib/routine-week.ts` (lógica pura + `tests/unit/`); reglas en `DESIGN.md` §12. Desktop: `app/rutinas/RutinasOverview.tsx`, `WeekDaysList.tsx` |
 | Alimentos mobile (`/alimentos`, <1024) | `app/alimentos/page.tsx`, `app/components/alimentos/`, `app/lib/food-catalog.ts` (lógica pura + `tests/unit/`); reglas en `DESIGN.md` §13. Desktop: `app/alimentos/NutritionCatalogClient.tsx` |
 | Recetas mobile (`/recetas`, <1024) | `app/recetas/page.tsx` (árbol mobile + desktop `hidden lg:contents`), `app/components/recetas/`, `app/lib/recipe-catalog.ts` (lógica pura + `tests/unit/`); reglas en `DESIGN.md` §18. Desktop: `app/recetas/RecipeCatalogClient.tsx`. Reusa `FoodSearchBar`, `FoodChips` y `MacroRing` de `app/components/alimentos/` y `RecipeForm` de `app/components/shared/`. El link `?receta=` lo lee `app/nutricion/registro/page.tsx` |

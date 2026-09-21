@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Dumbbell } from "lucide-react";
+import { CalendarDays, Dumbbell } from "lucide-react";
 import type { ReactNode } from "react";
 
 import type { WeekDay } from "@/app/components/rutinas/DayPanel";
@@ -8,11 +8,14 @@ import { RoutineCover } from "@/app/components/rutinas/RoutineCover";
 import { ChooseRoutineMobile, EmptyRoutineMobile } from "@/app/components/rutinas/RoutineEmptyStates";
 import { RoutineSwitcher } from "@/app/components/rutinas/RoutineSwitcher";
 import { RoutineWeekView } from "@/app/components/rutinas/RoutineWeekView";
+import { TrainingDaysEditButton } from "@/app/components/rutinas/TrainingDaysEditButton";
+import type { TrainingDaysChoice } from "@/app/components/rutinas/TrainingDaysSheet";
 import { MobileHeaderBadgeSync } from "@/app/components/shared/MobileHeader";
-import { Button } from "@/app/components/ui/Button";
+import { RefreshOnDayChange } from "@/app/components/shared/RefreshOnDayChange";
+import { Button, buttonVariants } from "@/app/components/ui/Button";
 import { Card, CardContent } from "@/app/components/ui/Card";
 import { requireUser } from "@/app/lib/auth";
-import { formatMuscleGroup, getSessionProgress } from "@/app/lib/home-dashboard";
+import { formatDayGroups, formatMuscleGroup, getSessionProgress } from "@/app/lib/home-dashboard";
 import { ROUTINE_OBJECTIVE_LABELS, ROUTINE_DIFFICULTY_LABELS } from "@/app/lib/routine-metadata";
 import { buildDayTabs, dayMuscleGroups, initialDayIndex } from "@/app/lib/routine-week";
 import {
@@ -20,8 +23,21 @@ import {
   getSavedRoutineByIdForUser,
   listSavedRoutinesForUser,
 } from "@/app/lib/saved-routines";
+import {
+  WEEKDAYS,
+  planWeek,
+  resolveSchedule,
+  scheduleNeedsChoice,
+  suggestWeekdays,
+  summarizeWeek,
+} from "@/app/lib/training-schedule";
 import { estimateDayMinutes, isValidSet } from "@/app/lib/workout-progression";
-import { getLocalTrainingDate, getOpenSessionForRoutine, getTrainingOverview } from "@/app/lib/workout-tracking";
+import {
+  getLocalTrainingDate,
+  getOpenSessionForRoutine,
+  getTrainingOverview,
+  listRecentTrainingDates,
+} from "@/app/lib/workout-tracking";
 import { MyRoutinesList, MyRoutinesSheet, type MyRoutineRow } from "@/app/rutinas/MyRoutinesList";
 import { RutinasOverview } from "@/app/rutinas/RutinasOverview";
 import { WeekDaysList } from "@/app/rutinas/WeekDaysList";
@@ -53,15 +69,58 @@ function Responsive({ mobile, desktop }: { mobile: ReactNode; desktop: ReactNode
   );
 }
 
+/** Chip "Lu · Mi · Vi · Editar" (o "Elegí tus días") que abre el selector de días (DESIGN.md §12.3). */
+function TrainingDaysChip({
+  savedRoutineId,
+  choice,
+  weekdays,
+  className,
+}: {
+  savedRoutineId: string;
+  choice: TrainingDaysChoice;
+  weekdays: number[] | null;
+  className: string;
+}) {
+  return (
+    <TrainingDaysEditButton savedRoutineId={savedRoutineId} choice={choice} className={className}>
+      <CalendarDays aria-hidden="true" className="size-4 text-[var(--foreground-muted)]" />
+      {weekdays ? (
+        <>
+          <span className="sr-only">Tus días de entreno: </span>
+          <span className="font-display text-sm font-semibold text-[var(--foreground)]">
+            {weekdays.map((iso) => WEEKDAYS[iso - 1].short).join(" · ")}
+          </span>
+          <span className="text-[13px] text-[var(--foreground-muted)]">Editar</span>
+        </>
+      ) : (
+        <span className="font-display text-sm font-semibold text-[var(--accent-bright)]">Elegí tus días</span>
+      )}
+    </TrainingDaysEditButton>
+  );
+}
+
 export default async function RutinasPage() {
   const auth = await requireUser();
-  const routines = await listSavedRoutinesForUser(auth.user.id);
+  const [routines, recentTrainingDates] = await Promise.all([
+    listSavedRoutinesForUser(auth.user.id),
+    listRecentTrainingDates({ userId: auth.user.id, days: 28 }),
+  ]);
+  const todayKey = getLocalTrainingDate();
   const activeRoutineListItem = findActiveSavedRoutine(routines);
   const myRoutineRows: MyRoutineRow[] = routines.map((routine) => ({
     id: routine.id,
     displayName: routine.displayName,
     meta: `${routine.dayCount} ${routine.dayCount === 1 ? "día" : "días"} · ${ROUTINE_OBJECTIVE_LABELS[routine.objective]}`,
     isActive: routine.isActive,
+    schedule: scheduleNeedsChoice(routine.dayCount)
+      ? {
+          dayCount: routine.dayCount,
+          dayTitles: routine.dayOutlines.map((day) => formatDayGroups(day.muscleGroups, day.name)),
+          initialWeekdays:
+            resolveSchedule(routine.trainingWeekdays, routine.dayCount) ??
+            suggestWeekdays(routine.dayCount, recentTrainingDates, todayKey),
+        }
+      : null,
   }));
 
   if (!activeRoutineListItem && routines.length > 0) {
@@ -160,9 +219,26 @@ export default async function RutinasPage() {
       : null;
 
   // ── Mobile (DESIGN.md §12) ──
-  const todayKey = getLocalTrainingDate();
   const openDay = openSession
     ? (activeRoutine.days.find((day) => day.id === openSession.routineDayId) ?? null)
+    : null;
+  // Días de entreno (§12.3): cada día muestra en qué día de semana toca; en un día libre nada va en emerald.
+  const trainingWeekdays = resolveSchedule(activeRoutine.trainingWeekdays, totalDays);
+  const weekPlan = trainingWeekdays
+    ? planWeek({
+        weekdays: trainingWeekdays,
+        days: activeRoutine.days,
+        completedDayIds: overview.completedRoutineDayIds,
+        todayKey,
+      })
+    : null;
+  const restDay = weekPlan !== null && summarizeWeek(weekPlan).today === null;
+  const daysChoice: TrainingDaysChoice | null = scheduleNeedsChoice(totalDays)
+    ? {
+        dayCount: totalDays,
+        dayTitles: activeRoutine.days.map((day) => formatDayGroups(dayMuscleGroups(day.items), day.dayName)),
+        initialWeekdays: trainingWeekdays ?? suggestWeekdays(totalDays, recentTrainingDates, todayKey),
+      }
     : null;
   const tabs = buildDayTabs({
     days: activeRoutine.days.map((day) => {
@@ -174,6 +250,7 @@ export default async function RutinasPage() {
     openDayId: openDay?.id ?? null,
     trainedToday: overview.trainedToday,
     todayKey,
+    plannedDates: weekPlan ? Object.fromEntries(weekPlan.map((day) => [day.id, day.dateKey])) : null,
   });
   const weekDays: WeekDay[] = activeRoutine.days.map((day, index) => {
     const groups = dayMuscleGroups(day.items);
@@ -216,6 +293,7 @@ export default async function RutinasPage() {
   const mobile = (
     <>
       <h1 className="sr-only">Semana activa</h1>
+      <RefreshOnDayChange dateKey={todayKey} />
       <RoutineCover imageUrl={activeRoutine.imageUrl} />
       <RoutineSwitcher
         displayName={activeRoutine.displayName}
@@ -223,12 +301,22 @@ export default async function RutinasPage() {
         streak={currentStreak}
         routines={myRoutineRows}
       />
+      {daysChoice ? (
+        <TrainingDaysChip
+          savedRoutineId={activeRoutine.id}
+          choice={daysChoice}
+          weekdays={trainingWeekdays}
+          className="pressable relative mt-1 inline-flex h-11 w-fit items-center gap-2 rounded-full border border-white/15 bg-[rgba(5,7,11,0.62)] px-3.5 outline-none focus-visible:shadow-[var(--focus-glow)]"
+        />
+      ) : null}
       {totalDays > 0 ? (
         <div className="mt-2 grid gap-0">
           <RoutineWeekView
             days={weekDays}
             initialIndex={initialDayIndex(tabs)}
             trainedToday={overview.trainedToday}
+            restDay={restDay}
+            todayKey={todayKey}
             todayDoneOrder={tabs.find((tab) => tab.doneDate === todayKey)?.dayOrder ?? null}
             weekdayLabel={formatDayDate(todayKey, false)}
             summary={{
@@ -278,7 +366,17 @@ export default async function RutinasPage() {
             nextPendingDayMinutes={nextPendingDay ? estimateDayMinutes(nextPendingDay.items) : null}
             startHref={startHref}
             remaining={remaining}
+            restDay={restDay}
           />
+
+          {daysChoice ? (
+            <TrainingDaysChip
+              savedRoutineId={activeRoutine.id}
+              choice={daysChoice}
+              weekdays={trainingWeekdays}
+              className={buttonVariants({ variant: "outline", className: "h-11 w-fit gap-2" })}
+            />
+          ) : null}
 
           {/* Row 4: Days list */}
           {activeRoutine.days.length > 0 ? (

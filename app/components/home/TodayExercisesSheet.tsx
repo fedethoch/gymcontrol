@@ -30,19 +30,21 @@ export function TodayExercisesSheet({
   href,
   ctaLabel,
   exercises,
+  triggerLabel = "Ver ejercicios de hoy",
 }: {
   title: string;
   description: string;
   href: string;
   ctaLabel: string;
   exercises: SheetExercise[];
+  triggerLabel?: string;
 }) {
   return (
     <Drawer>
       <DrawerTrigger asChild>
         <button
           type="button"
-          aria-label="Ver ejercicios de hoy"
+          aria-label={triggerLabel}
           className="pressable grid size-14 shrink-0 place-items-center rounded-full bg-white/10 text-white hover:bg-white/15"
         >
           <List aria-hidden="true" className="size-[22px]" />

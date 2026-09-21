@@ -19,17 +19,23 @@ import { notFound } from "next/navigation";
 import { RoutineDetailClient } from "@/app/catalogo/rutinas/[id]/RoutineDetailClient";
 import { buildRoutineDetailView, catalogDaysHref } from "@/app/catalogo/rutinas/[id]/detail-view";
 import { RoutineDetailMobile } from "@/app/components/rutina-detalle/RoutineDetailMobile";
+import { TrainingDaysButton, type TrainingDaysChoice } from "@/app/components/rutinas/TrainingDaysSheet";
 import { StatusToast } from "@/app/components/shared/StatusToast";
-import { Button } from "@/app/components/ui/Button";
+import { Button, buttonVariants } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
 import { getOptionalAuthContext } from "@/app/lib/auth";
+import { formatDayGroups } from "@/app/lib/home-dashboard";
+import { getTodayDateKey } from "@/app/lib/local-date";
 import { resolveDetailState } from "@/app/lib/routine-detail";
 import {
   ROUTINE_DIFFICULTY_LABELS,
   ROUTINE_OBJECTIVE_LABELS,
 } from "@/app/lib/routine-metadata";
+import { dayMuscleGroups } from "@/app/lib/routine-week";
 import { getRoutineById } from "@/app/lib/routines";
 import { getSavedRoutineByTemplateForUser } from "@/app/lib/saved-routines";
+import { resolveSchedule, scheduleNeedsChoice, suggestWeekdays } from "@/app/lib/training-schedule";
+import { listRecentTrainingDates } from "@/app/lib/workout-tracking";
 import {
   activateRoutineFromCatalogAction,
   saveRoutineFromCatalogAction,
@@ -56,14 +62,27 @@ export default async function CatalogRoutineDetailPage({
     notFound();
   }
 
-  const savedRoutine = auth
-    ? await getSavedRoutineByTemplateForUser({
-        routineTemplateId: id,
-        userId: auth.user.id,
-      })
-    : null;
+  const [savedRoutine, recentTrainingDates] = await Promise.all([
+    auth
+      ? getSavedRoutineByTemplateForUser({
+          routineTemplateId: id,
+          userId: auth.user.id,
+        })
+      : null,
+    auth ? listRecentTrainingDates({ userId: auth.user.id, days: 28 }) : [],
+  ]);
 
   const dayCount = routine.days.length;
+  // Usar o activar la rutina pide los días de entreno (DESIGN.md §12.3).
+  const schedule: TrainingDaysChoice | null = scheduleNeedsChoice(dayCount)
+    ? {
+        dayCount,
+        dayTitles: routine.days.map((day) => formatDayGroups(dayMuscleGroups(day.items), day.dayName)),
+        initialWeekdays:
+          resolveSchedule(savedRoutine?.trainingWeekdays, dayCount) ??
+          suggestWeekdays(dayCount, recentTrainingDates, getTodayDateKey()),
+      }
+    : null;
   const itemCount = routine.days.reduce((total, day) => total + day.items.length, 0);
   const coverImageUrl = routine.imageUrl || routine.days[0]?.items[0]?.exercise.imageUrl || "";
   const objectiveLabel = ROUTINE_OBJECTIVE_LABELS[routine.objective];
@@ -105,6 +124,7 @@ export default async function CatalogRoutineDetailPage({
     savedRoutineId: savedRoutineId ?? null,
     archivedHref: catalogDaysHref(dayCount),
     dayCount,
+    schedule,
   };
 
   return (
@@ -255,22 +275,35 @@ export default async function CatalogRoutineDetailPage({
                         </Link>
                       </Button>
                     ) : null}
-                    <form action={activateRoutineFromCatalogAction}>
+                    <form id="catalogo-activar-xl" action={activateRoutineFromCatalogAction}>
                       <input type="hidden" name="savedRoutineId" value={savedRoutineId ?? ""} />
                       <input type="hidden" name="routineTemplateId" value={routine.id} />
-                      <Button
-                        type="submit"
-                        variant={isRoutineActive ? "ghost" : "default"}
-                        className="h-11 rounded-lg px-5 text-base"
-                        disabled={!savedRoutineId}
-                      >
-                        {isRoutineActive ? (
-                          <Power className="size-5" />
-                        ) : (
+                      {!isRoutineActive && schedule && savedRoutineId ? (
+                        <TrainingDaysButton
+                          className={buttonVariants({ className: "h-11 rounded-lg px-5 text-base" })}
+                          choice={schedule}
+                          confirmLabel="Activar rutina"
+                          pendingLabel="Activando…"
+                          submit={{ formId: "catalogo-activar-xl" }}
+                        >
                           <Check className="size-5" />
-                        )}
-                        {isRoutineActive ? "Desactivar" : "Activar rutina"}
-                      </Button>
+                          Activar rutina
+                        </TrainingDaysButton>
+                      ) : (
+                        <Button
+                          type="submit"
+                          variant={isRoutineActive ? "ghost" : "default"}
+                          className="h-11 rounded-lg px-5 text-base"
+                          disabled={!savedRoutineId}
+                        >
+                          {isRoutineActive ? (
+                            <Power className="size-5" />
+                          ) : (
+                            <Check className="size-5" />
+                          )}
+                          {isRoutineActive ? "Desactivar" : "Activar rutina"}
+                        </Button>
+                      )}
                     </form>
                     {isRoutineActive ? null : (
                       <Button
@@ -290,7 +323,7 @@ export default async function CatalogRoutineDetailPage({
                     Esta rutina ya no está disponible para guardar.
                   </p>
                 ) : (
-                  <form action={saveRoutineFromCatalogAction} className="grid gap-3">
+                  <form id="catalogo-usar-xl" action={saveRoutineFromCatalogAction} className="grid gap-3">
                     <input type="hidden" name="routineTemplateId" value={routine.id} />
                     <div className="grid gap-2">
                       <label
@@ -307,9 +340,20 @@ export default async function CatalogRoutineDetailPage({
                       />
                     </div>
                     <div className="grid gap-2 sm:grid-cols-2">
-                      <Button type="submit" name="intent" value="use" className="h-11 rounded-lg text-base">
-                        Usar esta rutina
-                      </Button>
+                      {schedule ? (
+                        <TrainingDaysButton
+                          className={buttonVariants({ className: "h-11 rounded-lg text-base" })}
+                          choice={schedule}
+                          confirmLabel="Usar rutina"
+                          submit={{ formId: "catalogo-usar-xl", name: "intent", value: "use" }}
+                        >
+                          Usar esta rutina
+                        </TrainingDaysButton>
+                      ) : (
+                        <Button type="submit" name="intent" value="use" className="h-11 rounded-lg text-base">
+                          Usar esta rutina
+                        </Button>
+                      )}
                       <Button
                         type="submit"
                         name="intent"
@@ -347,22 +391,35 @@ export default async function CatalogRoutineDetailPage({
                     </Link>
                   </Button>
                 ) : null}
-                <form action={activateRoutineFromCatalogAction} className="w-full">
+                <form id="catalogo-activar" action={activateRoutineFromCatalogAction} className="w-full">
                   <input type="hidden" name="savedRoutineId" value={savedRoutineId ?? ""} />
                   <input type="hidden" name="routineTemplateId" value={routine.id} />
-                  <Button
-                    type="submit"
-                    variant={isRoutineActive ? "ghost" : "default"}
-                    className="h-11 w-full rounded-lg px-4 text-sm"
-                    disabled={!savedRoutineId}
-                  >
-                    {isRoutineActive ? (
-                      <Power className="size-4" />
-                    ) : (
+                  {!isRoutineActive && schedule && savedRoutineId ? (
+                    <TrainingDaysButton
+                      className={buttonVariants({ className: "h-11 w-full rounded-lg px-4 text-sm" })}
+                      choice={schedule}
+                      confirmLabel="Activar rutina"
+                      pendingLabel="Activando…"
+                      submit={{ formId: "catalogo-activar" }}
+                    >
                       <Check className="size-4" />
-                    )}
-                    {isRoutineActive ? "Desactivar" : "Activar rutina"}
-                  </Button>
+                      Activar rutina
+                    </TrainingDaysButton>
+                  ) : (
+                    <Button
+                      type="submit"
+                      variant={isRoutineActive ? "ghost" : "default"}
+                      className="h-11 w-full rounded-lg px-4 text-sm"
+                      disabled={!savedRoutineId}
+                    >
+                      {isRoutineActive ? (
+                        <Power className="size-4" />
+                      ) : (
+                        <Check className="size-4" />
+                      )}
+                      {isRoutineActive ? "Desactivar" : "Activar rutina"}
+                    </Button>
+                  )}
                 </form>
                 {isRoutineActive ? null : (
                   <Button asChild variant="outline" className="h-11 w-full rounded-lg text-sm">
@@ -378,7 +435,7 @@ export default async function CatalogRoutineDetailPage({
                 Esta rutina ya no está disponible para guardar.
               </p>
             ) : (
-              <form action={saveRoutineFromCatalogAction} className="grid gap-3">
+              <form id="catalogo-usar" action={saveRoutineFromCatalogAction} className="grid gap-3">
                 <input type="hidden" name="routineTemplateId" value={routine.id} />
                 <div className="grid gap-2">
                   <label className="text-sm font-semibold text-white" htmlFor="customNameMobile">
@@ -391,9 +448,20 @@ export default async function CatalogRoutineDetailPage({
                     placeholder={routine.name}
                   />
                 </div>
-                <Button type="submit" name="intent" value="use" className="h-11 rounded-lg text-sm">
-                  Usar esta rutina
-                </Button>
+                {schedule ? (
+                  <TrainingDaysButton
+                    className={buttonVariants({ className: "h-11 rounded-lg text-sm" })}
+                    choice={schedule}
+                    confirmLabel="Usar rutina"
+                    submit={{ formId: "catalogo-usar", name: "intent", value: "use" }}
+                  >
+                    Usar esta rutina
+                  </TrainingDaysButton>
+                ) : (
+                  <Button type="submit" name="intent" value="use" className="h-11 rounded-lg text-sm">
+                    Usar esta rutina
+                  </Button>
+                )}
                 <Button
                   type="submit"
                   name="intent"

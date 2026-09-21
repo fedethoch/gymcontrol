@@ -15,14 +15,14 @@ import {
 
 import { HomeGreeting } from "@/app/components/home/HomeGreeting";
 import { HomeNutrition } from "@/app/components/home/HomeNutrition";
+import { HomeWeekPlanner, type DaySheet } from "@/app/components/home/HomeWeekPlanner";
 import { HomeWeekStats } from "@/app/components/home/HomeWeekStats";
-import { HomeWeekStrip } from "@/app/components/home/HomeWeekStrip";
 import { MuscleAnatomy } from "@/app/components/home/MuscleAnatomy";
-import { TodayExercisesSheet } from "@/app/components/home/TodayExercisesSheet";
-import { TodayHero } from "@/app/components/home/TodayHero";
+import { TrainingDaysEditButton } from "@/app/components/rutinas/TrainingDaysEditButton";
 import { BodyMuscleFigure } from "@/app/components/shared/BodyMuscleFigure";
+import { RefreshOnDayChange } from "@/app/components/shared/RefreshOnDayChange";
 import { WeekCombinedCard } from "@/app/components/shared/WeekCombinedCard";
-import { Button } from "@/app/components/ui/Button";
+import { Button, buttonVariants } from "@/app/components/ui/Button";
 import {
   AnimatedMacroBar,
   AnimatedNumber,
@@ -36,10 +36,12 @@ import { requireUser } from "@/app/lib/auth";
 import { addDaysToDateKey } from "@/app/lib/local-date";
 import {
   buildMealRows,
+  formatDayGroups,
   formatMuscleGroup,
   getSessionProgress,
   resolveHeroState,
 } from "@/app/lib/home-dashboard";
+import { buildHeroView, buildHomeHeroInputs, type HeroDay, type HeroView } from "@/app/lib/home-hero";
 import {
   getLoggedDatesForUser,
   getMealLogForDate,
@@ -55,6 +57,14 @@ import {
   getSavedRoutineByIdForUser,
   listSavedRoutinesForUser,
 } from "@/app/lib/saved-routines";
+import {
+  buildWeekStrip,
+  planWeek,
+  resolveSchedule,
+  scheduleNeedsChoice,
+  suggestWeekdays,
+  summarizeWeek,
+} from "@/app/lib/training-schedule";
 import { countDatesThisWeek } from "@/app/lib/week";
 import { estimateDayMinutes, isValidSet } from "@/app/lib/workout-progression";
 import {
@@ -115,7 +125,24 @@ export default async function Home() {
   const openDay = openSession
     ? (activeRoutine?.days.find((day) => day.id === openSession.routineDayId) ?? null)
     : null;
-  const heroDay = openDay ?? nextPendingDay;
+  // Días de entreno (DESIGN.md §10.2): con días elegidos, hoy toca el día fijo de hoy (o ninguno).
+  const routineDayCount = activeRoutine?.days.length ?? 0;
+  const trainingWeekdays = activeRoutine ? resolveSchedule(activeRoutine.trainingWeekdays, routineDayCount) : null;
+  const needsSchedule = Boolean(activeRoutine) && !trainingWeekdays && scheduleNeedsChoice(routineDayCount);
+  const weekPlan =
+    activeRoutine && trainingWeekdays
+      ? planWeek({
+          weekdays: trainingWeekdays,
+          days: activeRoutine.days,
+          completedDayIds: trainingOverview.completedRoutineDayIds,
+          todayKey: logDate,
+        })
+      : null;
+  const todayPlanned = weekPlan ? summarizeWeek(weekPlan).today : null;
+  const todayPlannedDay = todayPlanned
+    ? (activeRoutine?.days.find((day) => day.id === todayPlanned.id) ?? null)
+    : null;
+  const heroDay = openDay ?? todayPlannedDay ?? nextPendingDay;
 
   const primaryHref =
     activeRoutine && heroDay
@@ -172,67 +199,94 @@ export default async function Home() {
     hasPendingDay: Boolean(nextPendingDay),
     trainedToday: trainingOverview.trainedToday,
     hasOpenSession: Boolean(openDay),
+    needsSchedule,
+    restDay: weekPlan !== null && todayPlanned === null,
   });
-  const heroGroups = muscleGroups.slice(0, 2).map(formatMuscleGroup);
-  const heroTitle =
-    heroGroups.length === 2 ? `${heroGroups[0]} & ${heroGroups[1]}` : (heroGroups[0] ?? heroDay?.dayName ?? "");
-  const weekdayName = new Intl.DateTimeFormat("es-AR", { weekday: "long" }).format(
-    new Date(`${logDate}T00:00:00`),
+  const routineDays = activeRoutine?.days ?? [];
+  const dayHref = (dayOrder: number) => `/rutinas/dia?savedRoutineId=${activeRoutine?.id}&day=${dayOrder}`;
+  const heroInputs = buildHomeHeroInputs({
+    state: heroState,
+    todayKey: logDate,
+    hasSavedRoutines: savedRoutines.length > 0,
+    routineName: activeRoutine?.displayName ?? "",
+    days: routineDays.map(
+      (day): HeroDay => ({
+        id: day.id,
+        order: day.dayOrder,
+        total: routineDayCount,
+        name: day.dayName,
+        groups: dayMuscleGroups(day.items).slice(0, 2).map(formatMuscleGroup),
+        minutes: estimateDayMinutes(day.items),
+        exerciseCount: day.items.length,
+        seriesCount: day.items.reduce((sum, item) => sum + item.series, 0),
+        href: dayHref(day.dayOrder),
+      }),
+    ),
+    openDay:
+      openSession && openDay ? { id: openDay.id, progress: getSessionProgress(openDay.items, openSession) } : null,
+    nextPendingId: nextPendingDay?.id ?? null,
+    plan: weekPlan,
+    completedDayDates: trainingOverview.completedDayDates,
+  });
+  const heroViews: Record<string, HeroView> = {
+    [logDate]: buildHeroView(heroInputs.today),
+    ...Object.fromEntries(
+      Object.entries(heroInputs.previews).map(([dateKey, input]) => [dateKey, buildHeroView(input)]),
+    ),
+  };
+  const todayView = heroViews[logDate];
+  const daySheets: Record<string, DaySheet> = Object.fromEntries(
+    routineDays.map((day) => [
+      day.id,
+      {
+        title: formatDayGroups(dayMuscleGroups(day.items), day.dayName),
+        description: `${day.items.length} ejercicios · ~${estimateDayMinutes(day.items)} min`,
+        href: dayHref(day.dayOrder),
+        exercises: day.items.map((item) => ({
+          id: item.id,
+          name: item.exercise.name,
+          series: item.series,
+          repetitions: item.repetitions,
+          done:
+            openDay?.id === day.id &&
+            (openSession?.itemsByRoutineItemId[item.id]?.sets ?? []).filter(isValidSet).length >= item.series,
+        })),
+      },
+    ]),
   );
-  const canStartToday = heroState === "ready" || heroState === "in_progress";
+  // Rutina activa sin días elegidos: el hero pide elegirlos (precargados con lo que más entrenaste).
+  const scheduleChoice =
+    needsSchedule && activeRoutine
+      ? {
+          savedRoutineId: activeRoutine.id,
+          choice: {
+            dayCount: routineDayCount,
+            dayTitles: routineDays.map((day) => formatDayGroups(dayMuscleGroups(day.items), day.dayName)),
+            initialWeekdays: suggestWeekdays(routineDayCount, trainingOverview.completedDates, logDate),
+          },
+        }
+      : null;
+  const weekStrip = buildWeekStrip({ todayKey: logDate, trainedDates: completedTrainingDates, plan: weekPlan });
+  // Desktop: descanso y "elegí tus días" usan los textos del hero mobile.
+  const desktopScheduleView = heroState === "rest" || heroState === "needs_schedule" ? todayView : null;
 
   return (
     <section className="page-frame home-frame auto-rows-max content-start bg-[linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
       <h1 className="sr-only">Panel principal</h1>
 
+      <RefreshOnDayChange dateKey={logDate} />
+
       {/* ── Mobile (<1024) · DESIGN.md §10 ── */}
       <div className="flex flex-col lg:hidden">
         <div aria-hidden="true" className="home-safe-top" />
         <HomeGreeting displayName={auth.profile.displayName} streak={streak} />
-        <div className="mt-5">
-          <HomeWeekStrip completedDates={completedTrainingDates} />
-        </div>
-        <div className="mt-5">
-          <TodayHero
-            state={heroState}
-            weekdayLabel={weekdayName.charAt(0).toUpperCase() + weekdayName.slice(1)}
-            day={
-              heroDay
-                ? {
-                    order: heroDay.dayOrder,
-                    total: totalDaysCount,
-                    name: heroDay.dayName,
-                    groups: heroGroups,
-                    minutes: estimatedMinutes,
-                    exerciseCount,
-                    seriesCount: dayItems.reduce((sum, item) => sum + item.series, 0),
-                  }
-                : null
-            }
-            progress={openSession && openDay ? getSessionProgress(dayItems, openSession) : null}
-            startHref={primaryHref}
-            hasSavedRoutines={savedRoutines.length > 0}
-            exercisesSheet={
-              canStartToday && dayItems.length > 0 ? (
-                <TodayExercisesSheet
-                  title={heroTitle}
-                  description={`${exerciseCount} ejercicios · ~${estimatedMinutes} min`}
-                  href={primaryHref}
-                  ctaLabel={heroState === "in_progress" ? "Continuar" : "Empezar"}
-                  exercises={dayItems.map((item) => ({
-                    id: item.id,
-                    name: item.exercise.name,
-                    series: item.series,
-                    repetitions: item.repetitions,
-                    done:
-                      (openSession?.itemsByRoutineItemId[item.id]?.sets ?? []).filter(isValidSet).length >=
-                      item.series,
-                  }))}
-                />
-              ) : undefined
-            }
-          />
-        </div>
+        <HomeWeekPlanner
+          todayKey={logDate}
+          strip={weekStrip}
+          views={heroViews}
+          sheets={daySheets}
+          schedule={scheduleChoice}
+        />
         <div className="mt-9">
           <HomeNutrition
             hasProfile={Boolean(nutritionProfile)}
@@ -241,7 +295,7 @@ export default async function Home() {
             totalMacros={totalMacros}
             targetMacros={plan?.macros ?? { proteinG: 0, carbsG: 0, fatG: 0 }}
             mealRows={buildMealRows(meals)}
-            primary={heroState === "done_today" || heroState === "week_done"}
+            primary={heroState === "done_today" || heroState === "week_done" || heroState === "rest"}
           />
         </div>
         {activeRoutine ? (
@@ -292,14 +346,16 @@ export default async function Home() {
 
           {/* "Hoy toca" badge — inside image, top-left */}
           <span className="absolute left-3 top-3 z-10 rounded-full border border-[var(--accent)]/40 bg-[var(--accent)]/15 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-bright)]">
-            Hoy toca
+            {heroState === "rest" ? "Descanso" : heroState === "needs_schedule" ? "Tus días" : "Hoy toca"}
           </span>
 
           <div className="relative z-10 flex h-full flex-col justify-end gap-3 p-3 pb-3 pt-8 sm:gap-5 sm:p-4 sm:pb-4 sm:pt-12">
             {/* Muscle groups title + subtitle */}
             <div className="flex flex-col gap-2.5">
               <h2 className="font-display text-xl font-bold leading-tight tracking-[-0.01em] text-white">
-                {muscleGroups.length > 0 ? (
+                {desktopScheduleView ? (
+                  desktopScheduleView.title.map((part) => part.text).join("")
+                ) : muscleGroups.length > 0 ? (
                   muscleGroups.map((g, i) => (
                     <span key={g}>
                       {i > 0 && <span className="font-normal text-[var(--accent-bright)]"> · </span>}
@@ -314,16 +370,22 @@ export default async function Home() {
                   <span className="text-[var(--foreground-subtle)]">Sin rutina activa</span>
                 )}
               </h2>
-              {heroDay && (
+              {desktopScheduleView ? (
+                desktopScheduleView.line?.kind === "text" ? (
+                  <p className="text-xs font-medium text-[var(--foreground-muted)]">
+                    {desktopScheduleView.line.parts.map((part) => part.text).join("")}
+                  </p>
+                ) : null
+              ) : heroDay ? (
                 <p className="text-xs font-medium text-[var(--foreground-muted)]">
                   <span className="text-[var(--accent-bright)]">Día {heroDay.dayOrder}</span>
                   {" de tu rutina semanal"}
                 </p>
-              )}
+              ) : null}
             </div>
 
             {/* Stats row — icono izquierda, valor+desc apilados a la derecha */}
-            {heroDay && (
+            {heroDay && !desktopScheduleView && (
               <div className="flex items-center gap-5">
                 {estimatedMinutes > 0 && (
                   <HeroStat icon={Clock} value={`~${estimatedMinutes} min`} label="duración aprox." />
@@ -341,24 +403,43 @@ export default async function Home() {
 
             {/* CTAs */}
             <div className="flex items-center gap-2 flex-wrap">
-              <Button
-                asChild
-                size="default"
-                className="justify-center gap-1.5 px-4 normal-case tracking-normal"
-              >
-                <Link href={activeRoutine ? primaryHref : savedRoutines.length > 0 ? "/rutinas" : "/catalogo"}>
-                  {heroDay && <Play aria-hidden="true" className="size-3 fill-current" />}
-                  {openDay
-                    ? "Continuar entrenamiento"
-                    : heroDay
-                      ? "Comenzar entrenamiento"
-                      : activeRoutine
-                        ? "Ver progreso"
-                        : savedRoutines.length > 0
-                          ? "Elegir rutina"
-                          : "Explorar rutinas"}
-                </Link>
-              </Button>
+              {heroState === "needs_schedule" && scheduleChoice ? (
+                <TrainingDaysEditButton
+                  className={buttonVariants({ className: "justify-center gap-1.5 px-4 normal-case tracking-normal" })}
+                  savedRoutineId={scheduleChoice.savedRoutineId}
+                  choice={scheduleChoice.choice}
+                >
+                  Elegir días
+                </TrainingDaysEditButton>
+              ) : desktopScheduleView?.secondary ? (
+                <Button
+                  asChild
+                  variant="outline"
+                  size="default"
+                  className="justify-center gap-1.5 px-4 normal-case tracking-normal"
+                >
+                  <Link href={desktopScheduleView.secondary.href}>{desktopScheduleView.secondary.label}</Link>
+                </Button>
+              ) : (
+                <Button
+                  asChild
+                  size="default"
+                  className="justify-center gap-1.5 px-4 normal-case tracking-normal"
+                >
+                  <Link href={activeRoutine ? primaryHref : savedRoutines.length > 0 ? "/rutinas" : "/catalogo"}>
+                    {heroDay && <Play aria-hidden="true" className="size-3 fill-current" />}
+                    {openDay
+                      ? "Continuar entrenamiento"
+                      : heroDay
+                        ? "Comenzar entrenamiento"
+                        : activeRoutine
+                          ? "Ver progreso"
+                          : savedRoutines.length > 0
+                            ? "Elegir rutina"
+                            : "Explorar rutinas"}
+                  </Link>
+                </Button>
+              )}
 
               {activeRoutine && (
                 <Link

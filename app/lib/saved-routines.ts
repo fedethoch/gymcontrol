@@ -2,7 +2,9 @@ import "server-only";
 
 import type { RoutineDay, RoutineExerciseRef } from "@/app/lib/routines";
 import type { RoutineDifficulty, RoutineObjective } from "@/app/lib/routine-metadata";
+import { dayMuscleGroups } from "@/app/lib/routine-week";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
+import { parseWeekdays, resolveSchedule, scheduleNeedsChoice } from "@/app/lib/training-schedule";
 
 export type SavedRoutineListItem = {
   id: string;
@@ -22,6 +24,10 @@ export type SavedRoutineListItem = {
   updatedAtLabel: string;
   dayCount: number;
   itemCount: number;
+  /** Nombre y grupos musculares (por frecuencia) de cada día, en orden: para nombrarlos en el selector de días. */
+  dayOutlines: Array<{ name: string; muscleGroups: string[] }>;
+  /** Días de entreno guardados (ISO 1 = lunes); validarlos con `resolveSchedule`. */
+  trainingWeekdays: number[] | null;
 };
 
 export type SavedRoutineDetail = {
@@ -39,6 +45,8 @@ export type SavedRoutineDetail = {
   updatedAt: string;
   updatedAtLabel: string;
   days: RoutineDay[];
+  /** Días de entreno guardados (ISO 1 = lunes); validarlos con `resolveSchedule`. */
+  trainingWeekdays: number[] | null;
 };
 
 type RoutineDayRow = {
@@ -85,6 +93,7 @@ type RoutineTemplateSummaryRow = {
   routine_days: Array<{
     id: string;
     day_order: number;
+    day_name: string | null;
     routine_items: Array<{
       id: string;
       row_order: number;
@@ -110,6 +119,7 @@ type SavedRoutineListRow = {
   is_active: boolean;
   saved_at: string;
   updated_at: string;
+  training_weekdays: number[] | null;
   routine_template: RoutineTemplateSummaryRow | RoutineTemplateSummaryRow[] | null;
 };
 
@@ -119,6 +129,7 @@ type SavedRoutineDetailRow = {
   custom_name: string | null;
   saved_at: string;
   updated_at: string;
+  training_weekdays: number[] | null;
   routine_template: RoutineTemplateDetailRow | RoutineTemplateDetailRow[] | null;
 };
 
@@ -129,6 +140,7 @@ const SAVED_ROUTINE_LIST_SELECT = `
   is_active,
   saved_at,
   updated_at,
+  training_weekdays,
   routine_template:routine_templates!saved_routines_routine_template_id_fkey (
     id,
     name,
@@ -139,6 +151,7 @@ const SAVED_ROUTINE_LIST_SELECT = `
     routine_days (
       id,
       day_order,
+      day_name,
       routine_items (
         id,
         row_order,
@@ -168,6 +181,7 @@ const SAVED_ROUTINE_DETAIL_SELECT = `
   custom_name,
   saved_at,
   updated_at,
+  training_weekdays,
   routine_template:routine_templates!saved_routines_routine_template_id_fkey (
     id,
     name,
@@ -269,12 +283,16 @@ export async function getSavedRoutineByTemplateForUser(args: {
   return mapSavedRoutineListItem(data as unknown as SavedRoutineListRow);
 }
 
-/** Guarda la plantilla en la cuenta; con `activate` además la deja como rutina activa. */
+/**
+ * Guarda la plantilla en la cuenta; con `activate` además la deja como rutina activa con sus días de entreno
+ * (`trainingWeekdays`, obligatorios si la rutina tiene de 1 a 6 días).
+ */
 export async function saveRoutineForUser(args: {
   routineTemplateId: string;
   userId: string;
   customName?: string | null;
   activate: boolean;
+  trainingWeekdays?: readonly unknown[] | null;
 }): Promise<{ status: "created" | "already-saved"; routine: SavedRoutineListItem }> {
   const supabase = await createSupabaseServerClient();
   const normalizedCustomName = normalizeCustomName(args.customName);
@@ -344,16 +362,39 @@ export async function saveRoutineForUser(args: {
 
 async function activateIfRequested(
   routine: SavedRoutineListItem,
-  args: { userId: string; activate: boolean },
+  args: { userId: string; activate: boolean; trainingWeekdays?: readonly unknown[] | null },
 ) {
-  if (!args.activate || routine.isActive) {
+  if (!args.activate) {
     return routine;
   }
 
+  // Ya activa: igual guarda los días elegidos en el selector.
   return (
-    (await setSavedRoutineActiveForUser({ savedRoutineId: routine.id, userId: args.userId })) ??
-    routine
+    (await setSavedRoutineActiveForUser({
+      savedRoutineId: routine.id,
+      userId: args.userId,
+      trainingWeekdays: args.trainingWeekdays,
+    })) ?? routine
   );
+}
+
+/**
+ * Días a guardar para una rutina de `dayCount` días: exactamente esa cantidad si son de 1 a 6
+ * (si no, error para el usuario); con 7, todos; con más de 7 o sin días, ninguno.
+ */
+function weekdaysForRoutine(values: readonly unknown[] | null | undefined, dayCount: number): number[] | null {
+  if (!scheduleNeedsChoice(dayCount)) {
+    return resolveSchedule(null, dayCount);
+  }
+
+  const parsed = parseWeekdays(values ?? []);
+  const weekdays = parsed ? resolveSchedule(parsed, dayCount) : null;
+
+  if (!weekdays) {
+    throw new Error(`Elegí ${dayCount} ${dayCount === 1 ? "día" : "días"} de entreno.`);
+  }
+
+  return weekdays;
 }
 
 /** Estado de cada plantilla guardada por el usuario, para marcar el catálogo. */
@@ -405,9 +446,11 @@ export async function renameSavedRoutineForUser(args: {
   return mapSavedRoutineListItem(data as unknown as SavedRoutineListRow);
 }
 
+/** Activa la rutina con sus días de entreno (ver `weekdaysForRoutine`). */
 export async function setSavedRoutineActiveForUser(args: {
   savedRoutineId: string;
   userId: string;
+  trainingWeekdays?: readonly unknown[] | null;
 }): Promise<SavedRoutineListItem | null> {
   const supabase = await createSupabaseServerClient();
   const existing = await getSavedRoutineByIdForUser({
@@ -419,11 +462,14 @@ export async function setSavedRoutineActiveForUser(args: {
     return null;
   }
 
+  const trainingWeekdays = weekdaysForRoutine(args.trainingWeekdays, existing.days.length);
+
   const { error: clearError } = await supabase
     .from("saved_routines")
     .update({ is_active: false })
     .eq("user_id", args.userId)
-    .eq("is_active", true);
+    .eq("is_active", true)
+    .neq("id", args.savedRoutineId);
 
   if (clearError) {
     throw new Error(`No se pudo limpiar la rutina activa: ${clearError.message}`);
@@ -431,7 +477,7 @@ export async function setSavedRoutineActiveForUser(args: {
 
   const { data, error } = await supabase
     .from("saved_routines")
-    .update({ is_active: true })
+    .update({ is_active: true, training_weekdays: trainingWeekdays })
     .eq("id", args.savedRoutineId)
     .eq("user_id", args.userId)
     .select(SAVED_ROUTINE_LIST_SELECT)
@@ -467,6 +513,8 @@ export async function deactivateSavedRoutineForUser(args: {
 export async function toggleSavedRoutineActiveForUser(args: {
   savedRoutineId: string;
   userId: string;
+  /** Días de entreno para cuando la activa. */
+  trainingWeekdays?: readonly unknown[] | null;
 }): Promise<
   | { status: "activated"; routine: SavedRoutineListItem }
   | { status: "deactivated"; routine: null }
@@ -505,6 +553,38 @@ export async function toggleSavedRoutineActiveForUser(args: {
   const routine = await setSavedRoutineActiveForUser(args);
 
   return routine ? { status: "activated", routine } : null;
+}
+
+/** Cambia los días de entreno de una rutina guardada sin tocar si está activa. */
+export async function updateTrainingWeekdaysForUser(args: {
+  savedRoutineId: string;
+  userId: string;
+  trainingWeekdays: readonly unknown[];
+}): Promise<{ updated: boolean }> {
+  const existing = await getSavedRoutineByIdForUser({
+    savedRoutineId: args.savedRoutineId,
+    userId: args.userId,
+  });
+
+  if (!existing) {
+    return { updated: false };
+  }
+
+  const trainingWeekdays = weekdaysForRoutine(args.trainingWeekdays, existing.days.length);
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("saved_routines")
+    .update({ training_weekdays: trainingWeekdays })
+    .eq("id", args.savedRoutineId)
+    .eq("user_id", args.userId)
+    .select("id")
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`No se pudieron guardar los días de entreno: ${error.message}`);
+  }
+
+  return { updated: Boolean(data) };
 }
 
 /** Borra la rutina guardada. El historial de entrenamientos se conserva (FK set null). */
@@ -559,6 +639,18 @@ function mapSavedRoutineListItem(row: SavedRoutineListRow): SavedRoutineListItem
     updatedAtLabel: formatDateLabel(row.updated_at),
     dayCount,
     itemCount,
+    dayOutlines: [...(template.routine_days ?? [])]
+      .sort((left, right) => left.day_order - right.day_order)
+      .map((day) => ({
+        name: day.day_name?.trim() || `Dia ${day.day_order}`,
+        muscleGroups: dayMuscleGroups(
+          (day.routine_items ?? []).map((item) => {
+            const exercise = Array.isArray(item.exercise) ? item.exercise[0] : item.exercise;
+            return { exercise: { muscleGroup: exercise?.muscle_group ?? null } };
+          }),
+        ),
+      })),
+    trainingWeekdays: row.training_weekdays ?? null,
   };
 }
 
@@ -621,6 +713,7 @@ function mapSavedRoutineDetail(row: SavedRoutineDetailRow): SavedRoutineDetail {
     updatedAt: row.updated_at,
     updatedAtLabel: formatDateLabel(row.updated_at),
     days,
+    trainingWeekdays: row.training_weekdays ?? null,
   };
 }
 

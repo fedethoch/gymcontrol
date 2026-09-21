@@ -314,8 +314,8 @@ Jerarquía de escala fuerte: un solo elemento Display XXL por pantalla, títulos
 | Zona | Contenido |
 |---|---|
 | Z1 Saludo | Avatar (link a `/configuracion`), "Hola, {nombre}" (o "Bienvenido a GymControl"), campana y chip de racha (solo si racha > 0). Racha = semanas seguidas cumpliendo los días del plan activo |
-| Z2 Semana | 7 círculos de 38px L–D: emerald con check = entreno que cuenta (terminado o de un día anterior), borde claro = hoy |
-| Z3 Hero "Hoy toca" | Foto grayscale, radio 28px, alto `clamp(380px, 52svh, 470px)`, título Display XXL (máx. 2 grupos musculares), meta en una línea, CTA 56px + botón de lista que abre un bottom sheet con los ejercicios |
+| Z2 Semana | 7 círculos de 38px L–D: emerald con check = entreno que cuenta (terminado o de un día anterior), borde claro = hoy. Con días elegidos (§12.3): borde gris = día de entreno, punteado = quedó sin hacer, sin borde = descanso; cada día es una pestaña de 44px que muestra ese día en el hero (hacer el lunes un miércoles) y el elegido va relleno `--foreground`; tocar hoy vuelve. Sin días elegidos no se toca |
+| Z3 Hero "Hoy toca" | Foto grayscale, radio 28px, alto mínimo `clamp(380px, 52svh, 470px)`, título Display XXL (máx. 2 grupos musculares), meta en una línea, CTA 56px + botón de lista que abre un bottom sheet con los ejercicios |
 | Z4 Nutrición | Metric L (kcal restantes), 3 barras de macros, filas Desayuno/Almuerzo/Merienda/Cena (Snack solo si hay) con "+" de 44px → `/nutricion/registro?tipo=…` |
 | Z5 Esta semana | 3 stats Metric M (entrenos = días del plan hechos, racha en semanas "sem", comidas) de la semana calendario, separados por líneas |
 | Z6 Tus músculos | `BodyMuscleFigure` sin card: switch Frente/Espalda, figura 150×300, etiquetas con líneas guía (nombre, kg de la mejor serie, color del rango por 1RM estimado; la seleccionada suma el rango) y una fila de escala. Datos del usuario en todas sus rutinas |
@@ -324,13 +324,16 @@ Jerarquía de escala fuerte: un solo elemento Display XXL por pantalla, títulos
 
 | Estado | Condición | Hero | CTA emerald |
 |---|---|---|---|
-| `ready` | Día pendiente, sin entreno en curso | "Grupo & Grupo", meta min · ejercicios · series | "Empezar" en el hero |
+| `ready` | Toca un día pendiente: con días elegidos, el día fijo de hoy aunque haya quedado uno atrás; sin días elegidos, el primer pendiente | Chip `Miércoles · Día 2 de 3`, "Grupo & Grupo", meta min · ejercicios · series | "Empezar" en el hero |
 | `in_progress` | Entreno sin terminar de hoy (cualquier día de la rutina; manda sobre el próximo pendiente) | "X de N ejercicios" + barra | "Continuar" en el hero |
-| `done_today` | Entreno terminado hoy, queda día pendiente | Oscurecido, "Entreno hecho", próximo día | "Registrar comida" en Nutrición |
+| `done_today` | Entreno terminado hoy, queda día pendiente | Oscurecido, "Entreno hecho", próximo día (con días elegidos: "Próximo: viernes · Día 3 · …") | "Registrar comida" en Nutrición |
 | `week_done` | Sin día pendiente | Oscurecido, "Semana cerrada" | "Registrar comida" en Nutrición |
+| `needs_schedule` | Rutina activa de 1 a 6 días sin días elegidos (o la plantilla cambió de cantidad) | "¿Qué días vas al gym?" + "Elegí cuándo vas y cada día te decimos qué toca." + link "Entrenar ahora · Día N" | "Elegir días" en el hero (abre el selector, §12.3) |
+| `rest` | Hay días elegidos y hoy no toca ninguno pendiente | Oscurecido, chip `Martes · Descanso`, "Hoy toca descanso" + "Próximo: mañana · Día 2 · …" + "Entrenar igual" neutro. Si quedó un día sin hacer: "Hoy no toca" + "Te quedó el Día N · … y con los días que te quedan no cerrás la semana." + "Hacer el Día N hoy" neutro | "Registrar comida" en Nutrición |
 | `no_routine` | Sin rutina activa (estado válido: se puede desactivar) | "Elegí tu rutina"; con guardadas: "Activá una de tus rutinas guardadas" | Con guardadas: "Mis rutinas" → `/rutinas`; sin guardadas: "Explorar rutinas" → `/catalogo` |
+| Otro día (tocado en Z2) | Con días elegidos, un día que no es hoy | Pendiente: `Viernes · Día 3 de 3` o `Lunes · Te quedó`, grupos, meta, "Hacerlo hoy" neutro + lista. Hecho: `Lunes · hecho ✓`, grupos, "Lo hiciste el martes.", "Ver día N". Libre: "Día libre" | Nunca emerald |
 
-Reglas: **un solo CTA emerald por pantalla**. "Esta semana" y "Tus músculos" solo con rutina activa. Sin perfil nutricional, Nutrición muestra "Calculá tus kcal y macros" en lugar de números. Home y `/rutinas` usan la misma regla de rutina activa (`findActiveSavedRoutine`): sin marca no hay activa, nunca se toma la primera guardada.
+Reglas: **un solo CTA emerald por pantalla**. Orden de los estados (`resolveHeroState`): sin rutina → en curso → semana cerrada → hecho hoy → sin días → descanso → toca; un entreno de hoy nunca vuelve a "Hoy toca descanso". El alto del hero es mínimo, no fijo, y deja libre el lugar del chip (`pt-16`): si el contenido no entra, el hero crece en vez de pisar el chip. Si el título tiene una palabra de 8 letras o más ("DESCANSO"), baja a `clamp(2.25rem, 12vw, 3.625rem)` para no partirla a 360px. La vista sale de `buildHomeHeroInputs` + `buildHeroView` (`app/lib/home-hero.ts`, tests en `tests/unit/`). "Hoy" es la fecha en hora argentina y al volver a la app con otra fecha se recargan los datos (`RefreshOnDayChange`). "Esta semana" y "Tus músculos" solo con rutina activa. Sin perfil nutricional, Nutrición muestra "Calculá tus kcal y macros" en lugar de números. Home y `/rutinas` usan la misma regla de rutina activa (`findActiveSavedRoutine`): sin marca no hay activa, nunca se toma la primera guardada.
 
 ### 10.3 Tus músculos sin datos
 
@@ -406,8 +409,8 @@ Recorrer el plan entero sin salir de la pantalla: pestañas por día y un panel 
 | Zona | Contenido |
 |---|---|
 | Z1 Portada | Imagen de la plantilla (`routine_templates.image_url`) a sangre detrás de Z1–Z3: gris, caja al 137% anclada abajo (tapa el 27% superior, donde las portadas traen el título), degradé a `--background`. Sin imagen: la foto del hero del home (`/images/hero.png`) sin recorte. Sin radio ni card: no es el hero del home |
-| Z1 Switcher | "Tu rutina · X de N esta semana" + nombre (H2) con chevron → bottom sheet "Mis rutinas" (activar, renombrar inline, desactivar, eliminar con confirmación). Pill de racha a la derecha solo si racha > 0 |
-| Z2 Pestañas | Una por día, 64px, número + etiqueta corta: check emerald y día de semana si está hecho ("Hoy" si fue hoy), "En curso", "Hoy"/"Próximo" para el siguiente, grupo principal para el resto. Flechas ←/→ con teclado |
+| Z1 Switcher | "Tu rutina · X de N esta semana" + nombre (H2) con chevron → bottom sheet "Mis rutinas" (activar, renombrar inline, desactivar, eliminar con confirmación). Pill de racha a la derecha solo si racha > 0. Debajo, chip de 44px con los días de entreno (`Lu · Mi · Vi` + "Editar"; sin días: "Elegí tus días" en `--accent-bright`) que abre el selector (§12.3); solo en rutinas de 1 a 6 días |
+| Z2 Pestañas | Una por día, 64px, número + etiqueta corta: check emerald y día de semana si está hecho ("Hoy" si fue hoy), "En curso", "Hoy"/"Próximo" para el siguiente, grupo principal para el resto. Con días elegidos, cada pendiente muestra su día de semana ("Hoy" si toca hoy; el chip del panel dice `Viernes · Día 3 de 3` o `Lunes · Te quedó`). Flechas ←/→ con teclado |
 | Z3 Panel del día | Chip · grupos del día en Display XXL (máx. 2, `&` emerald) · figura `MuscleBodyView` frente/espalda de 40px con los grupos del día en `--foreground` (principales) y `--foreground-muted` (resto), sin acento ni rampa · stats en fila (duración, ejercicios, series) · acción del día (Z4) · filas de ejercicios 72px (orden, miniatura, nombre, `series × reps · RIR · descanso`) que abren `ExerciseDetailModal`. Sin "Anterior". El panel se desliza con scroll-snap horizontal |
 | Z4 Acción | En el panel, debajo de las stats: botón de 56px a todo el ancho (nota arriba si la hay). Cuando sale de la pantalla al scrollear, aparece arriba una barra compacta sólida (fondo `--background`, borde inferior `--border`) con el día, el resumen y la misma acción en tamaño chico; se va al volver al hero. Nada fijo abajo salvo la bottom nav (2026-09-16, reemplaza al dock sticky; mock https://claude.ai/artifact/V5k2qjXaUdU6uPJspScm37, opción R-A) |
 
@@ -415,15 +418,29 @@ Recorrer el plan entero sin salir de la pantalla: pestañas por día y un panel 
 
 | Estado | Panel inicial | Acción (Z4) |
 |---|---|---|
-| `ready` | Próximo día pendiente | "Empezar" emerald en ese día; otros días "Empezar día N" neutro; días hechos "Ver entreno" neutro |
+| `ready` | Próximo día pendiente (con días elegidos: el de hoy) | "Empezar" emerald en ese día; otros días "Empezar día N" neutro; días hechos "Ver entreno" neutro |
 | `in_progress` | Día con entreno sin terminar: barra "X de N ejercicios · sigue …" en lugar de stats, filas hechas con check | "Continuar" emerald |
 | `done_today` | Próximo día pendiente | "Empezar día N" neutro + línea "Hoy ya entrenaste" |
+| `rest` | Con días elegidos, hoy no toca ninguno: el próximo día de entreno (si no hay, el primero que quedó) | "Empezar día N" neutro + línea "Hoy no toca entrenar"; ningún emerald |
 | `week_done` | Resumen: "Semana cerrada" XXL, stats (entrenos, racha, series del plan) y filas por día con fecha. Tocar una pestaña abre ese día | Sin acción en el resumen |
 | Sin rutina activa | Sin portada: "Elegí tu rutina" XXL + rutinas guardadas con "Activar" + link al catálogo | — |
 | Sin rutinas guardadas | Sin portada: "Elegí tu rutina" XXL | "Explorar catálogo" emerald |
 | Rutina sin días | Portada + "Rutina vacía" + botón neutro al catálogo, sin pestañas | — |
 
 Reglas: estados de `resolveHeroState` (§10.2). Nunca dos emerald. Lógica pura en `app/lib/routine-week.ts` (tests en `tests/unit/`). Motion: marco de pestaña activa con `layoutId`, crossfade corto al cambiar de día, `AnimatedNumber` en stats, parallax suave de la portada; todo neutralizado con reduced-motion.
+
+### 12.3 Días de entreno
+
+Al elegir una rutina se eligen los días en que se va al gym (2026-09-21, mock https://claude.ai/artifact/V7QNseSvET4SQJhZjcFr5p; llm-council + decisiones del usuario: día fijo, navegar desde la semana del home, descanso con aviso, exactamente N).
+
+| Pieza | Regla |
+|---|---|
+| Semántica | **Día fijo**: el día k de la rutina va el k-ésimo día elegido (lunes → domingo). Si faltás, ese día queda pendiente ("Te quedó") y se hace a mano cualquier día: tocándolo en la semana del home (§10.1 Z2) o en su pestaña. La semana arranca de nuevo el lunes |
+| Cuándo se pide | Al activar: en el detalle del catálogo, "Usar esta rutina" y "Activar rutina" abren el selector y el botón del selector envía el form; en Mis rutinas, "Activar" despliega el selector en la fila (sin sheet dentro del sheet). Si la rutina activa no tiene días válidos, el hero pasa a `needs_schedule`. Se cambian sin reactivar desde el chip de §12.1 |
+| Selector | `TrainingDaysSheet`: bottom sheet en mobile y dialog en desktop. "¿Qué días vas al gym?" + "Tu rutina tiene N días: elegí cuándo vas." · 7 chips de 48px `Lu Ma Mi Ju Vi Sá Do` (elegido = relleno `--foreground`, como los chips de filtros; nunca emerald) · estado ("Te falta 1 día", "Sobra 1 día: sacá uno", "Listo" en `--accent-bright`) + contador mono `2 de 3` · lista "Así queda tu semana" (`Lun · Día 1 · Pecho & Tríceps`) · nota "Si faltás un día, lo hacés cuando puedas: tocalo en la semana del inicio." · CTA emerald de 56px, deshabilitado hasta tener exactamente N |
+| Precarga | Los días guardados si siguen valiendo; si no, los días de semana entrenados 2 veces o más en las últimas 4 semanas (los más frecuentes primero), completando con el reparto por defecto: 1 → L · 2 → L J · 3 → L Mi V · 4 → L M J V · 5 → L a V · 6 → L a S. Nunca se asignan solos: el usuario confirma |
+| Bordes | 7 días: todos, sin selector. Más de 7 o ninguno: sin calendario (vuelve el orden secuencial de antes). Si el admin cambia la cantidad de días, se vuelve a pedir |
+| Código | Datos en `saved_routines.training_weekdays` (docs/DATABASE.md); lógica pura en `app/lib/training-schedule.ts` (tests); componentes `TrainingDaysPicker`, `TrainingDaysSheet` y `TrainingDaysEditButton` en `app/components/rutinas/` |
 
 ---
 
@@ -748,8 +765,8 @@ Desktop (≥1024) conserva su layout, sin violeta. Mock y decisiones RD-D1…RD-
 | Estado | Condición | Pill | Acción (Z3) |
 |---|---|---|---|
 | Invitado | Sin sesión | `Nivel · N días` | "Entrá para usarla" emerald → `/auth/login?reason=auth-required`. Sin bookmark |
-| Nueva | Con sesión, sin guardar | `Nivel · N días` | "Usar esta rutina" emerald (la guarda y la activa). El bookmark la guarda sin activar |
-| Guardada | Guardada, no activa | Bookmark + `Guardada · Nivel · N días` | "Activar rutina" emerald + "Ver en Mis rutinas" en texto. Bookmark lleno, lleva a `/rutinas` |
+| Nueva | Con sesión, sin guardar | `Nivel · N días` | "Usar esta rutina" emerald: abre el selector de días (§12.3) y "Usar rutina" la guarda y la activa. El bookmark la guarda sin activar |
+| Guardada | Guardada, no activa | Bookmark + `Guardada · Nivel · N días` | "Activar rutina" emerald (abre el selector de días, §12.3) + "Ver en Mis rutinas" en texto. Bookmark lleno, lleva a `/rutinas` |
 | Activa | Es tu rutina activa | Punto emerald + `Tu rutina activa · N días` | "Ver mi semana" neutro. "Desactivar" vive en "…" |
 | Archivada | Fuera del catálogo y sin guardar | `Ya no disponible` en `--warning` | Aviso + "Ver rutinas de N días" neutro, sin emerald ni barra compacta |
 | Rutina sin días | La plantilla no tiene días | Según el estado | Sin Z4–Z6: "Esta rutina todavía no tiene días." |

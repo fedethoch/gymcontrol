@@ -48,6 +48,8 @@ export function DetailDays({ days }: { days: DetailDay[] }) {
     state: "pending",
     label: day.mainGroup ?? day.dayName,
     doneDate: null,
+    plannedDate: null,
+    missed: false,
   }));
 
   // El alto del pager sigue al panel visible: sin hueco debajo de los días cortos.

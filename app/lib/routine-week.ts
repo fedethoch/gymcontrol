@@ -11,6 +11,10 @@ export type DayTab = {
   label: string;
   /** Fecha (YYYY-MM-DD) del entreno que cuenta esta semana, si está hecho. */
   doneDate: string | null;
+  /** Fecha de esta semana en que toca, si la rutina tiene días elegidos. */
+  plannedDate: string | null;
+  /** Tocaba antes de hoy y no se hizo. */
+  missed: boolean;
 };
 
 export type DockAction = {
@@ -42,8 +46,31 @@ export function dayMuscleGroups(items: Array<{ exercise: { muscleGroup: string |
 }
 
 /**
+ * Día que se ofrece primero con días elegidos: el de hoy, si no el próximo de la semana,
+ * si no el primero que quedó atrás.
+ */
+function plannedNextId(
+  pending: Array<{ id: string }>,
+  plannedDates: Record<string, string>,
+  todayKey: string,
+): string | null {
+  const dated = pending
+    .map((day) => ({ id: day.id, date: plannedDates[day.id] }))
+    .filter((day): day is { id: string; date: string } => Boolean(day.date))
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  return (
+    dated.find((day) => day.date === todayKey)?.id ??
+    dated.find((day) => day.date > todayKey)?.id ??
+    dated[0]?.id ??
+    pending[0]?.id ??
+    null
+  );
+}
+
+/**
  * Pestañas de la semana. Un entreno en curso manda sobre el próximo pendiente (igual que el hero del home):
- * con sesión abierta no hay pestaña "next".
+ * con sesión abierta no hay pestaña "next". Con días elegidos (`plannedDates`), cada pendiente muestra su día.
  */
 export function buildDayTabs(args: {
   days: Array<{ id: string; dayOrder: number; mainGroup: string | null }>;
@@ -52,12 +79,20 @@ export function buildDayTabs(args: {
   openDayId: string | null;
   trainedToday: boolean;
   todayKey: string;
+  plannedDates?: Record<string, string> | null;
 }): DayTab[] {
   const done = new Set(args.completedDayIds);
-  const nextId = args.openDayId ? null : (args.days.find((day) => !done.has(day.id))?.id ?? null);
+  const planned = args.plannedDates ?? null;
+  const pending = args.days.filter((day) => !done.has(day.id));
+  const nextId = args.openDayId
+    ? null
+    : planned
+      ? plannedNextId(pending, planned, args.todayKey)
+      : (pending[0]?.id ?? null);
 
   return args.days.map((day): DayTab => {
-    const base = { id: day.id, dayOrder: day.dayOrder, doneDate: null };
+    const plannedDate = planned?.[day.id] ?? null;
+    const base = { id: day.id, dayOrder: day.dayOrder, doneDate: null, plannedDate, missed: false };
 
     if (day.id === args.openDayId) {
       return { ...base, state: "in_progress", label: "En curso" };
@@ -69,11 +104,19 @@ export function buildDayTabs(args: {
       return { ...base, state: "done", label, doneDate };
     }
 
+    const missed = plannedDate !== null && plannedDate < args.todayKey;
+    const plannedLabel = plannedDate === null ? null : plannedDate === args.todayKey ? "Hoy" : weekdayShort(plannedDate);
+
     if (day.id === nextId) {
-      return { ...base, state: "next", label: args.trainedToday ? "Próximo" : "Hoy" };
+      return {
+        ...base,
+        missed,
+        state: "next",
+        label: plannedLabel ?? (args.trainedToday ? "Próximo" : "Hoy"),
+      };
     }
 
-    return { ...base, state: "pending", label: day.mainGroup ?? `Día ${day.dayOrder}` };
+    return { ...base, missed, state: "pending", label: plannedLabel ?? day.mainGroup ?? `Día ${day.dayOrder}` };
   });
 }
 
@@ -85,14 +128,24 @@ export function initialDayIndex(tabs: DayTab[]): number | null {
   return next >= 0 ? next : null;
 }
 
-/** Acción del dock para el día visible. Solo el día en curso o el próximo (sin entreno hoy) llevan emerald. */
-export function resolveDockAction(tab: DayTab, context: { trainedToday: boolean; todayDoneOrder: number | null }): DockAction {
+/**
+ * Acción del dock para el día visible. Solo el día en curso o el próximo (sin entreno hoy) llevan emerald.
+ * `restDay` = hay días elegidos y hoy no toca ninguno pendiente: el próximo queda neutro.
+ */
+export function resolveDockAction(
+  tab: DayTab,
+  context: { trainedToday: boolean; todayDoneOrder: number | null; restDay?: boolean },
+): DockAction {
   if (tab.state === "in_progress") {
     return { label: "Continuar", tone: "primary", note: null };
   }
 
-  if (tab.state === "next" && !context.trainedToday) {
+  if (tab.state === "next" && !context.trainedToday && !context.restDay) {
     return { label: "Empezar", tone: "primary", note: null };
+  }
+
+  if (tab.state === "next" && !context.trainedToday) {
+    return { label: `Empezar día ${tab.dayOrder}`, tone: "neutral", note: "Hoy no toca entrenar" };
   }
 
   if (tab.state === "next") {

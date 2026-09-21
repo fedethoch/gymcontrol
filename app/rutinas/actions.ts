@@ -8,6 +8,7 @@ import {
   deleteSavedRoutineForUser,
   renameSavedRoutineForUser,
   setSavedRoutineActiveForUser,
+  updateTrainingWeekdaysForUser,
 } from "@/app/lib/saved-routines";
 
 type ActionResult = { ok: true } | { ok: false; message: string };
@@ -41,16 +42,34 @@ export async function renameSavedRoutineAction(
   }
 }
 
-export async function activateSavedRoutineAction(savedRoutineId: string): Promise<ActionResult> {
+export async function activateSavedRoutineAction(
+  savedRoutineId: string,
+  trainingWeekdays: number[] | null,
+): Promise<ActionResult> {
   const auth = await requireUser();
 
   return runSelectionChange(async () => {
-    const routine = await setSavedRoutineActiveForUser({ savedRoutineId, userId: auth.user.id });
+    const routine = await setSavedRoutineActiveForUser({ savedRoutineId, userId: auth.user.id, trainingWeekdays });
 
     if (!routine) {
       throw new Error("No se encontro la rutina.");
     }
   }, "No se pudo activar la rutina.");
+}
+
+export async function updateTrainingWeekdaysAction(
+  savedRoutineId: string,
+  trainingWeekdays: number[],
+): Promise<ActionResult> {
+  const auth = await requireUser();
+
+  return runSelectionChange(async () => {
+    const { updated } = await updateTrainingWeekdaysForUser({ savedRoutineId, userId: auth.user.id, trainingWeekdays });
+
+    if (!updated) {
+      throw new Error("No se encontro la rutina.");
+    }
+  }, "No se pudieron guardar tus días.");
 }
 
 export async function deactivateSavedRoutineAction(savedRoutineId: string): Promise<ActionResult> {

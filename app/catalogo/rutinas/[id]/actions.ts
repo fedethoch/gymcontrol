@@ -27,6 +27,7 @@ export async function saveRoutineFromCatalogAction(formData: FormData) {
       userId: auth.user.id,
       customName,
       activate,
+      trainingWeekdays: formData.getAll("trainingWeekdays"),
     });
 
     revalidateRoutineSelection(routineTemplateId);
@@ -56,6 +57,7 @@ export async function activateRoutineFromCatalogAction(formData: FormData) {
       ? await toggleSavedRoutineActiveForUser({
           savedRoutineId,
           userId: auth.user.id,
+          trainingWeekdays: formData.getAll("trainingWeekdays"),
         })
       : null;
 

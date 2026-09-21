@@ -477,6 +477,13 @@ Contract del registro por series (2026-09-15, despues del deploy de F0-F3 a prod
 - `exercise_id` sigue nullable a proposito: Postgres valida NOT NULL antes de resolver `on conflict`, y el upsert del esqueleto de un ejercicio ya registrado fallaria cuando el admin borra su fila de la rutina (el trigger no encuentra la fila y deja null)
 - `supabase/migrations/20260915_training_contract_drop_legacy.sql` (aplicada con ese codigo ya en produccion): drop de `performed_reps`, `used_weight` e `is_completed`
 
+Dias de entreno (2026-09-21, `supabase/migrations/20260921_saved_routines_training_weekdays.sql`):
+
+- `saved_routines.training_weekdays smallint[]` nullable + funcion inmutable `public.is_valid_training_weekdays(smallint[])` (search_path vacio) usada por el check `saved_routines_training_weekdays_check`: 1 a 7 dias ISO, ordenados y sin repetir, o null
+- migracion expand: el codigo anterior no la lee; las rutinas activas quedan en null y el home pide elegir los dias
+- se escribe al activar una rutina (catalogo y Mis rutinas) y al editar los dias desde `/rutinas`; las policies owner-only de `saved_routines` y el grant de update a `authenticated` ya la cubren
+- semantica en `DESIGN.md` §12.3 (dia fijo)
+
 Bootstrap admin minimo:
 
 - debe existir al menos un usuario verificable con `type_rol = admin` antes de validar G5, G5.5, G6 o G7
@@ -593,6 +600,7 @@ Esta seccion fija el criterio tecnico minimo para pasar el modelo a Supabase sin
 - `routine_template_id uuid not null references routine_templates(id) on delete restrict` (F0; antes cascade)
 - `custom_name text`
 - `is_active boolean not null default false`
+- `training_weekdays smallint[]` (2026-09-21): días de entreno elegidos, ISO 1 = lunes … 7 = domingo, ordenados y sin repetir (check `public.is_valid_training_weekdays`); el día k de la rutina va el k-ésimo. `null` = sin elegir. La app exige exactamente tantos días como la rutina (1 a 6; con 7 guarda todos, con más de 7 `null`) y trata como sin elegir un calendario que ya no coincide con la plantilla (`app/lib/training-schedule.ts`)
 - `saved_at timestamptz not null default now()`
 - `updated_at timestamptz not null default now()`
 - unique por usuario y rutina plantilla

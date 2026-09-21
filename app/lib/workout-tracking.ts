@@ -452,3 +452,21 @@ function resolveStrengthRange(
   if (e1rm >= base) return "base";
   return "sin_datos";
 }
+
+/** Fechas con algún entreno de los últimos `days` días (cualquier rutina): precarga del selector de días. */
+export async function listRecentTrainingDates(args: { userId: string; days: number }): Promise<string[]> {
+  const today = getTodayDateKey();
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("workout_sessions")
+    .select("training_date")
+    .eq("user_id", args.userId)
+    .gte("training_date", addDaysToDateKey(today, 1 - args.days))
+    .lte("training_date", today);
+
+  if (error) {
+    throw new Error(`No se pudieron leer tus entrenos recientes: ${error.message}`);
+  }
+
+  return [...new Set(((data ?? []) as Array<{ training_date: string }>).map((row) => row.training_date))];
+}

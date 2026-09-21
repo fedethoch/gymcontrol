@@ -26,6 +26,8 @@ type RutinasOverviewProps = {
   nextPendingDayMinutes: number | null;
   startHref: string | null;
   remaining: number;
+  /** Hay días elegidos y hoy no toca ninguno (DESIGN.md §12.3). */
+  restDay: boolean;
 };
 
 const fadeUp = (delay: number) => ({
@@ -50,6 +52,7 @@ export function RutinasOverview({
   nextPendingDayMinutes,
   startHref,
   remaining,
+  restDay,
 }: RutinasOverviewProps) {
   const weekComplete = totalDays > 0 && completedDayCount >= totalDays;
 
@@ -90,11 +93,13 @@ export function RutinasOverview({
 
   const contextText = weekComplete
     ? "¡Semana completa! 💪"
-    : completedDayCount === 0
-      ? `Todavía no completaste entrenamientos esta semana.${nextPendingDayOrder != null ? ` Empezá con Día ${nextPendingDayOrder}.` : ""}`
-      : `Vas ${completedDayCount} de ${totalDays}. Te faltan ${remaining} sesión${remaining === 1 ? "" : "es"}.`;
+    : `${restDay ? "Hoy no toca entrenar. " : ""}${
+        completedDayCount === 0
+          ? `Todavía no completaste entrenamientos esta semana.${nextPendingDayOrder != null ? ` Empezá con Día ${nextPendingDayOrder}.` : ""}`
+          : `Vas ${completedDayCount} de ${totalDays}. Te faltan ${remaining} sesión${remaining === 1 ? "" : "es"}.`
+      }`;
 
-  const ctaLabel = completedDayCount === 0 ? "Comenzar entrenamiento" : "Continuar";
+  const ctaLabel = restDay ? "Entrenar igual" : completedDayCount === 0 ? "Comenzar entrenamiento" : "Continuar";
 
   const nextLabel =
     nextPendingDayOrder != null

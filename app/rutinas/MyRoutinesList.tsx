@@ -12,6 +12,8 @@ import {
   deleteSavedRoutineAction,
   renameSavedRoutineAction,
 } from "@/app/rutinas/actions";
+import { TrainingDaysPicker } from "@/app/components/rutinas/TrainingDaysPicker";
+import type { TrainingDaysChoice } from "@/app/components/rutinas/TrainingDaysSheet";
 import { Button } from "@/app/components/ui/Button";
 import {
   Drawer,
@@ -29,6 +31,8 @@ export type MyRoutineRow = {
   displayName: string;
   meta: string;
   isActive: boolean;
+  /** Activarla pide los días de entreno (rutinas de 1 a 6 días); `null` = se activa directo. */
+  schedule: TrainingDaysChoice | null;
 };
 
 type RowAction = "activate" | "deactivate" | "delete";
@@ -36,7 +40,7 @@ type RowAction = "activate" | "deactivate" | "delete";
 /**
  * Rutinas guardadas con activar, desactivar y eliminar. Una fila por rutina, acción en la fila.
  * `withMenu` (sheet de la semana activa mobile, DESIGN.md §12): tocar la fila la activa y "…" abre
- * renombrar, activar/desactivar y eliminar inline.
+ * renombrar, activar/desactivar y eliminar inline. Activar despliega en la fila el selector de días (§12.3).
  */
 export function MyRoutinesList({ routines, withMenu = false }: { routines: MyRoutineRow[]; withMenu?: boolean }) {
   const router = useRouter();
@@ -44,17 +48,30 @@ export function MyRoutinesList({ routines, withMenu = false }: { routines: MyRou
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [menuId, setMenuId] = useState<string | null>(null);
   const [renamingId, setRenamingId] = useState<string | null>(null);
+  const [choosingId, setChoosingId] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
+  const [draftDays, setDraftDays] = useState<number[]>([]);
   const [, startTransition] = useTransition();
 
-  function run(routine: MyRoutineRow, action: RowAction) {
+  function activate(routine: MyRoutineRow) {
+    if (!routine.schedule) {
+      run(routine, "activate");
+      return;
+    }
+
+    setMenuId(null);
+    setDraftDays(routine.schedule.initialWeekdays);
+    setChoosingId(routine.id);
+  }
+
+  function run(routine: MyRoutineRow, action: RowAction, weekdays: number[] | null = null) {
     setPendingId(routine.id);
     setMenuId(null);
 
     startTransition(async () => {
       const result =
         action === "activate"
-          ? await activateSavedRoutineAction(routine.id)
+          ? await activateSavedRoutineAction(routine.id, weekdays)
           : action === "deactivate"
             ? await deactivateSavedRoutineAction(routine.id)
             : await deleteSavedRoutineAction(routine.id);
@@ -66,6 +83,8 @@ export function MyRoutinesList({ routines, withMenu = false }: { routines: MyRou
         toast.error(result.message);
         return;
       }
+
+      setChoosingId(null);
 
       toast.success(
         action === "activate"
@@ -138,6 +157,37 @@ export function MyRoutinesList({ routines, withMenu = false }: { routines: MyRou
           );
         }
 
+        if (choosingId === routine.id && routine.schedule) {
+          const { dayCount, dayTitles } = routine.schedule;
+
+          return (
+            <li key={routine.id} className="grid gap-4 border-b border-[var(--border)] py-4 last:border-b-0">
+              <div className="grid gap-0.5">
+                <p className="truncate font-display text-base font-semibold text-[var(--foreground)]">
+                  {routine.displayName}
+                </p>
+                <p className="text-[13px] text-[var(--foreground-muted)]">
+                  ¿Qué días vas al gym? Tiene {dayCount} {dayCount === 1 ? "día" : "días"}.
+                </p>
+              </div>
+              <TrainingDaysPicker dayCount={dayCount} dayTitles={dayTitles} value={draftDays} onChange={setDraftDays} />
+              <div className="flex gap-2">
+                <Button type="button" variant="outline" className="flex-1" onClick={() => setChoosingId(null)}>
+                  Cancelar
+                </Button>
+                <Button
+                  type="button"
+                  className="flex-1"
+                  disabled={isPending || draftDays.length !== dayCount}
+                  onClick={() => run(routine, "activate", draftDays)}
+                >
+                  {isPending ? "Activando…" : "Activar"}
+                </Button>
+              </div>
+            </li>
+          );
+        }
+
         if (withMenu) {
           if (renamingId === routine.id) {
             return (
@@ -193,7 +243,7 @@ export function MyRoutinesList({ routines, withMenu = false }: { routines: MyRou
                 <button
                   type="button"
                   disabled={isPending || routine.isActive}
-                  onClick={() => run(routine, "activate")}
+                  onClick={() => activate(routine)}
                   aria-label={routine.isActive ? `${routine.displayName}, rutina activa` : `Activar ${routine.displayName}`}
                   className="pressable flex min-h-14 min-w-0 flex-1 items-center gap-3 rounded-xl text-left outline-none focus-visible:shadow-[var(--focus-glow)] disabled:cursor-default"
                 >
@@ -243,7 +293,7 @@ export function MyRoutinesList({ routines, withMenu = false }: { routines: MyRou
                   </button>
                   <button
                     type="button"
-                    onClick={() => run(routine, routine.isActive ? "deactivate" : "activate")}
+                    onClick={() => (routine.isActive ? run(routine, "deactivate") : activate(routine))}
                     className="pressable flex min-h-12 items-center gap-2.5 border-t border-[var(--border)] px-3.5 text-left text-[15px] font-medium text-[var(--foreground)]"
                   >
                     <Power aria-hidden="true" className="size-4 text-[var(--foreground-muted)]" />
@@ -285,7 +335,7 @@ export function MyRoutinesList({ routines, withMenu = false }: { routines: MyRou
               variant={routine.isActive ? "ghost" : "outline"}
               className="shrink-0"
               disabled={isPending}
-              onClick={() => run(routine, routine.isActive ? "deactivate" : "activate")}
+              onClick={() => (routine.isActive ? run(routine, "deactivate") : activate(routine))}
             >
               {routine.isActive ? "Desactivar" : "Activar"}
             </Button>
