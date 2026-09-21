@@ -247,6 +247,8 @@ Tabs por rol (pedido explícito del usuario, 2026-09-15): usuario = Inicio · Ru
 
 Detalle: modo browser (`.pwa-browser` / `@media (display-mode: browser)`) usa barra alta con labels; standalone (`.pwa-standalone` / `@media (display-mode: standalone)`) usa barra fina pegada abajo. Respetar ambos.
 
+Superficie (pedido explícito del usuario, 2026-09-19): la barra es **opaca** `#05070b`, el mismo valor que `--background`, `themeColor` y `background_color` del manifest, para que no se note el corte contra la franja del home indicator en iPhone. Sin `backdrop-blur` ni alfa: con transparencia, un CTA emerald pasando por debajo teñía la barra. `html` y `body` también usan `var(--background)` sólido por la misma razón.
+
 ### 6.3 Estados offline / instalación
 
 - **Instalación**: prompt de instalación se maneja vía `PwaRuntime`. Cuando exista UI de "instalar app", debe ser no intrusiva (banner/sheet descartable), respetar safe-area, y no reaparecer si el usuario descartó. Ícono/copy con brand emerald.

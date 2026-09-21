@@ -64,7 +64,7 @@ export function MobileTabBar({ isAuthenticated, role }: MobileTabBarProps) {
   return (
     <nav
       aria-label="Navegación inferior"
-      className="mobile-tab-bar fixed inset-x-0 bottom-0 z-40 overflow-hidden border-t border-[#161d2b]/80 bg-[rgba(5,7,11,0.92)] shadow-[0_-18px_48px_rgba(0,0,0,0.36)] backdrop-blur-xl lg:hidden"
+      className="mobile-tab-bar fixed inset-x-0 bottom-0 z-40 overflow-hidden border-t border-[#161d2b]/80 bg-[#05070b] shadow-[0_-18px_48px_rgba(0,0,0,0.36)] lg:hidden"
     >
       <div className="mobile-tab-bar-grid grid h-full grid-cols-5">
         {tabs.map((tab) => {
