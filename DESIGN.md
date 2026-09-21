@@ -379,9 +379,10 @@ Reglas: **un solo CTA emerald** por pantalla; "Terminar entrenamiento" vive neut
 
 | Pieza | Regla |
 |---|---|
-| Sugerencia | Doble progresión contra el objetivo del plan; primera vez, "apuntá a {objetivo}" |
+| Sugerencia | Doble progresión contra el objetivo del plan; primera vez en el día, "Primera vez en este día: apuntá a {objetivo}" |
 | Placeholder | Sugerencia de hoy o, si no hay, la serie anterior o el mínimo del objetivo. Marcar con campos vacíos completa con el placeholder |
 | Anterior | Formato compacto en mono (`40×10`, `+10×8`, `45s`), etiqueta accesible completa |
+| Marcas por día | Anterior, sugerencia, placeholder e Historial salen solo de entrenos del mismo día de la rutina o de sus copias exactas: mismos ejercicios en el mismo orden, con las mismas series, reps, RIR y descanso (`sameWorkoutDayIds` en `app/lib/day-workout.ts`). El mismo ejercicio en otro día u otra rutina no aporta marcas (2026-09-21) |
 | Descanso | Se cuenta contra una hora de fin: sigue siendo correcto con la pantalla bloqueada |
 | Técnica e Historial | Un solo bottom sheet del ejercicio con pestañas (§11.4). El desktop conserva el sheet lateral de técnica y el bottom sheet de historial |
 | Desktop | Card colapsable por ejercicio con la tabla `Serie · Anterior · kg · reps · ✓` (inputs de 44px y 16px, sin zoom iOS) |
@@ -392,7 +393,7 @@ Reglas: **un solo CTA emerald** por pantalla; "Terminar entrenamiento" vive neut
 
 | Zona | Contenido |
 |---|---|
-| Cabecera | Nombre en H1 y `Grupo · Equipamiento` en muted. Debajo, segmentado de 48px `Técnica · Historial` (activo en `--card-alt` con borde, nunca emerald). Solo aparece si el ejercicio tiene historial (hoy, solo en `/rutinas/dia`); los chips "Técnica" e "Historial" del pager abren el sheet en su pestaña |
+| Cabecera | Nombre en H1 y `Grupo · Equipamiento` en muted. Debajo, segmentado de 48px `Técnica · Historial` (activo en `--card-alt` con borde, nunca emerald). Solo aparece si el ejercicio tiene historial en ese día (§11.3 Marcas por día; hoy, solo en `/rutinas/dia`); los chips "Técnica" e "Historial" del pager abren el sheet en su pestaña |
 | Técnica | Ilustración invertida como en Z2 (216px) con selector `Imagen · Animación` (pill de 44px) si hay `gif_url`; la imagen es la vista por defecto (T-D2) y con reduced-motion el GIF no se ofrece. Sin imagen: `--card` con mancuerna en `--foreground-subtle`. Fila del plan con `border-y`: Series · Reps · RIR · Descanso en Metric M (envuelve si no entra). Sin plan (admin): "Rango ideal" del ejercicio. Descripción con título H3 "Cómo se hace". No se muestran `steps` ni `tips`: son texto genérico (T-D3) |
 | Historial | "Última vez" con la fecha y una fila de tres números (series, reps o tiempo total, mejor serie) con la sesión anterior debajo en mono. Métrica del tipo en Metric L (1RM estimado · Máximo de reps · Mejor tiempo, T-D4) con la variación desde la primera sesión; cambia al tocar un punto. Gráfico de 150px con escala a la derecha, línea punteada en el mejor valor y puntos tocables de 44px (←/→ con teclado), en tinta neutra. Sesiones: fecha, objetivo y una fila por serie en mono; la mejor marca lleva "Mejor" |
 

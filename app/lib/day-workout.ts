@@ -24,6 +24,19 @@ export type ExercisePlan = {
   equipment: string | null;
 };
 
+/** Un día de la rutina con lo que define su entreno: las filas y su orden. */
+export type DayPrescription = {
+  id: string;
+  items: Array<{
+    exerciseId: string;
+    series: number;
+    repetitions: string;
+    rir: number | string;
+    rest: string;
+    rowOrder: number;
+  }>;
+};
+
 export type DayState = "empty" | "ready" | "resting" | "active" | "all_done";
 
 /** Ejercicio y serie donde está parado el usuario: primer ejercicio sin completar y su primera serie libre. */
@@ -151,7 +164,9 @@ export function describeSuggestion({
   hasHistory: boolean;
 }) {
   if (!hasHistory) {
-    return target ? `Primera vez: apuntá a ${exercise.target}${target.measure === "reps" ? " reps" : ""}.` : null;
+    return target
+      ? `Primera vez en este día: apuntá a ${exercise.target}${target.measure === "reps" ? " reps" : ""}.`
+      : null;
   }
 
   switch (suggestion?.kind) {
@@ -283,4 +298,34 @@ export function stepValue({
   if (next <= 0) return "";
 
   return formatNumber(Math.round(next / step) * step);
+}
+
+/**
+ * Días de la rutina que son el mismo entreno que `day`: él mismo y sus copias exactas (mismos ejercicios
+ * en el mismo orden, con las mismas series, reps, RIR y descanso). Las marcas de un ejercicio (anterior,
+ * sugerencia, placeholder e historial) salen solo de estos días: el mismo ejercicio en otro día es otro entreno.
+ */
+export function sameWorkoutDayIds(days: DayPrescription[], day: DayPrescription): string[] {
+  const signature = daySignature(day);
+
+  return days.filter((candidate) => daySignature(candidate) === signature).map((candidate) => candidate.id);
+}
+
+function daySignature(day: DayPrescription) {
+  return JSON.stringify(
+    [...day.items]
+      .sort((a, b) => a.rowOrder - b.rowOrder)
+      .map((item) => [
+        item.exerciseId,
+        item.series,
+        normalizePlanText(item.repetitions),
+        normalizePlanText(String(item.rir)),
+        normalizePlanText(item.rest),
+      ]),
+  );
+}
+
+/** "8 - 12" y "8-12" son el mismo plan. */
+function normalizePlanText(text: string) {
+  return text.replace(/\s+/g, "").toLowerCase();
 }

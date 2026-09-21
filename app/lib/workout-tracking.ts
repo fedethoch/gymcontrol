@@ -240,12 +240,14 @@ export async function getTrainingOverview(args: {
 }
 
 /**
- * Últimas sesiones con series válidas de cada ejercicio (cualquier rutina), de la más reciente a la más vieja.
+ * Últimas sesiones con series válidas de cada ejercicio en los días indicados (el día y sus copias exactas,
+ * ver `sameWorkoutDayIds`), de la más reciente a la más vieja. El mismo ejercicio en otro día no cuenta.
  * La primera entrada es "Anterior" y la base de la sugerencia de progresión.
  */
 export async function listExerciseHistory(args: {
   userId: string;
   exerciseIds: string[];
+  routineDayIds: string[];
   excludeSessionId: string | null;
   limitPerExercise?: number;
 }): Promise<Record<string, ExerciseHistoryEntry[]>> {
@@ -264,6 +266,7 @@ export async function listExerciseHistory(args: {
     )
     .in("exercise_id", exerciseIds)
     .eq("workout_sessions.user_id", args.userId)
+    .in("workout_sessions.routine_day_id", args.routineDayIds)
     // Orden de las filas por la fecha de su sesión (to-one): `referencedTable` ordenaría solo el embebido.
     .order("workout_sessions(training_date)", { ascending: false })
     .order("workout_sessions(created_at)", { ascending: false })

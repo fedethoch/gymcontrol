@@ -468,6 +468,7 @@ Estado del registro por series (F1, 2026-09-15, `supabase/migrations/20260915_tr
 - contrato cliente-servidor v1 en `app/lib/workout-sync-contract.ts`; se escribe solo por `POST /api/workouts/sync` (route handler estable: la cola offline sobrevive a los deploys)
 - IDs de sesion e item generados en el cliente; `workout_sessions.status = 'completed'` + `completed_at` = el usuario toco "Terminar entrenamiento"
 - que cuenta: una serie es valida si esta hecha y tiene reps o segundos; una sesion cuenta para la semana y la racha si tiene al menos una serie valida y ya se termino o es de un dia anterior; la racha cuenta semanas seguidas con sesiones contadas >= dias del plan activo
+- marcas por dia (2026-09-21, sin cambio de esquema): el historial de un ejercicio en `/rutinas/dia` (anterior, sugerencia, placeholder e Historial) filtra `workout_sessions.routine_day_id` por el dia y sus copias exactas dentro de la rutina (`sameWorkoutDayIds`); el mismo ejercicio en otro dia no aporta marcas y una sesion cuyo dia se borro (`routine_day_id` null) deja de aportarlas
 - policies sin cambios: las owner-only de `workout_session_items` cubren las columnas nuevas
 
 Contract del registro por series (2026-09-15, despues del deploy de F0-F3 a produccion):

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { DayWorkoutClient, type DayExercise } from "@/app/rutinas/dia/DayWorkoutClient";
 import { requireUser } from "@/app/lib/auth";
+import { sameWorkoutDayIds } from "@/app/lib/day-workout";
 import { getSavedRoutineByIdForUser } from "@/app/lib/saved-routines";
 import {
   estimateDayMinutes,
@@ -47,6 +48,7 @@ export default async function RutinaDiaPage({ searchParams }: DayPageProps) {
     listExerciseHistory({
       userId: auth.user.id,
       exerciseIds: selectedDay.items.map((item) => item.exerciseId),
+      routineDayIds: sameWorkoutDayIds(routine.days, selectedDay),
       excludeSessionId: openSession?.id ?? null,
     }),
     getTrainingOverview({

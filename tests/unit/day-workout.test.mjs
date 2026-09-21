@@ -6,10 +6,12 @@ import {
   countDoneSets,
   currentPosition,
   currentSetIndex,
+  describeSuggestion,
   exerciseFractions,
   formatCompactSet,
   nextPendingExercise,
   resolveDayState,
+  sameWorkoutDayIds,
   sanitizeNumber,
   stepValue,
   timeFactor,
@@ -189,5 +191,62 @@ describe("placeholders y formato", () => {
   it("sanea lo que se escribe", () => {
     assert.equal(sanitizeNumber("42,567", true), "42.56");
     assert.equal(sanitizeNumber("8a", false), "8");
+  });
+
+  it("sin historial en el día invita a apuntar al objetivo", () => {
+    const text = describeSuggestion({
+      suggestion: null,
+      target: { measure: "reps", min: 8, max: 10 },
+      exercise: press,
+      hasHistory: false,
+    });
+    assert.equal(text, "Primera vez en este día: apuntá a 8-10 reps.");
+  });
+});
+
+describe("marcas por día", () => {
+  const row = (exerciseId, rowOrder, plan = {}) => ({
+    exerciseId,
+    rowOrder,
+    series: 3,
+    repetitions: "8-12",
+    rir: "1",
+    rest: "2-3m",
+    ...plan,
+  });
+  // Semana día 1 · día 2 · día 1: el sábado repite el lunes; el miércoles comparte ejercicios pero es otro entreno.
+  const lunes = { id: "lunes", items: [row("press", 1), row("jalon", 2), row("laterales", 3)] };
+  const miercoles = { id: "miercoles", items: [row("remo", 1), row("press", 2), row("laterales", 3)] };
+  const sabado = { id: "sabado", items: [row("press", 1), row("jalon", 2), row("laterales", 3)] };
+  const days = [lunes, miercoles, sabado];
+
+  it("un día repetido comparte las marcas con su copia exacta", () => {
+    assert.deepEqual(sameWorkoutDayIds(days, lunes), ["lunes", "sabado"]);
+    assert.deepEqual(sameWorkoutDayIds(days, sabado), ["lunes", "sabado"]);
+  });
+
+  it("otro día con los mismos ejercicios solo usa sus propias marcas", () => {
+    assert.deepEqual(sameWorkoutDayIds(days, miercoles), ["miercoles"]);
+  });
+
+  it("no es copia si cambia el orden o el plan de alguna fila", () => {
+    const reordenado = { id: "reordenado", items: [row("jalon", 1), row("press", 2), row("laterales", 3)] };
+    const otroRango = { id: "otroRango", items: [row("press", 1), row("jalon", 2), row("laterales", 3, { repetitions: "12-15" })] };
+    const otrasSeries = { id: "otrasSeries", items: [row("press", 1, { series: 4 }), row("jalon", 2), row("laterales", 3)] };
+    const otroRir = { id: "otroRir", items: [row("press", 1), row("jalon", 2, { rir: "fallo" }), row("laterales", 3)] };
+    const otroDescanso = { id: "otroDescanso", items: [row("press", 1), row("jalon", 2), row("laterales", 3, { rest: "90s" })] };
+
+    assert.deepEqual(
+      sameWorkoutDayIds([lunes, reordenado, otroRango, otrasSeries, otroRir, otroDescanso], lunes),
+      ["lunes"],
+    );
+  });
+
+  it("compara por orden de fila, no por cómo llegan las filas, e ignora espacios y mayúsculas del plan", () => {
+    const mismoDesordenado = {
+      id: "copia",
+      items: [row("laterales", 3), row("press", 1, { repetitions: "8 - 12", rest: "2-3M" }), row("jalon", 2)],
+    };
+    assert.deepEqual(sameWorkoutDayIds([lunes, mismoDesordenado], lunes), ["lunes", "copia"]);
   });
 });
