@@ -1,16 +1,16 @@
 # Graph Report - gymcontrol  (2026-09-21)
 
 ## Corpus Check
-- 709 files · ~1,686,882 words
+- 709 files · ~1,688,213 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 6221 nodes · 10795 edges · 498 communities (456 shown, 42 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 175 edges (avg confidence: 0.74)
+- 6229 nodes · 10815 edges · 494 communities (452 shown, 42 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 177 edges (avg confidence: 0.74)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `4a8e78f8`
+- Built from commit: `ce48a0ef`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -24,13 +24,13 @@
 - ARCHITECTURE.md
 - G5.5 - RLS And Policies
 - AGENTS.md (Gymcontrol)
-- routine-catalog.ts
-- RoutineDetailClient.tsx
+- routine-metadata.ts
+- foods.ts
 - graphify Skill (/graphify)
-- motion.tsx
+- Sheet.tsx
 - PLAN.md (MVP Execution Plan)
 - Tabla de rutina y modal de ejercicio
-- saved-routines.ts
+- createSupabaseServerClient
 - G13-auth-transition/README.md
 - RecipesMobile.tsx
 - AGENTS.md Project Router
@@ -38,14 +38,14 @@
 - DATABASE.md - data model source of truth
 - WorkoutMobile.tsx
 - day-workout.ts
-- foods.ts
+- app/alimentos/actions.ts
 - Globe Icon
 - routine-catalog.test.mjs
 - exercise-demo.ts
 - routine-validation.ts
 - Next.js Logo
-- ExerciseAdminClient.tsx
-- ProfileSetupFlow.tsx
+- exercise-validation.ts
+- BodySheet
 - auth-otp.ts
 - app/page.tsx
 - requireUser
@@ -120,7 +120,7 @@
 - Revisar permisos para evitar acciones admin desde no admin: validar la seguridad funcional del MVP
 - Revisar consistencia visual minima entre vistas: unificar la experiencia del MVP
 - Resolver bugs detectados en pruebas finales: cerrar problemas funcionales antes del cierre del MVP
-- DaySheet.tsx
+- MealPanel.tsx
 - Ejecutar validacion tecnica final del MVP: confirmar que la base esta lista para cierre
 - Actualizar README y documentos principales: alinear la documentacion con el estado real del MVP
 - Registrar decisiones finales y desvios del plan: dejar trazabilidad del recorrido del MVP
@@ -314,7 +314,7 @@
 - Plan: rediseño login + ejercicios clickeables + reestructura day-workout
 - G2.1 - Implementacion de G2 en Supabase
 - Plan: 3 mejoras de UI (configuración, admin/alimentos, nutrición/registro)
-- RoutineAdminClient.tsx
+- ExerciseAdminClient.tsx
 - use-sheet-viewport.ts
 - recetas/actions.ts
 - Confirmar stack final y dependencias necesarias: cerrar la base tecnica del MVP
@@ -333,8 +333,8 @@
 - Grupo "G11" - Integracion y QA del MVP
 - Grupo "G1" - Arquitectura
 - NumberStepper.tsx
-- home-dashboard.ts
-- GoalSheet.tsx
+- home-hero.ts
+- exercises.ts
 - Grupo "G7" - Rutinas admin
 - FoodsMobile.tsx
 - Development Workflow
@@ -358,7 +358,7 @@
 - graphify reference: extra exports and benchmark
 - sync-exercise-images.mjs
 - Fases
-- registro/actions.ts
+- app/alimentos/page.tsx
 - DayWorkoutClient.tsx
 - Plan: Fixes responsive mobile (Home cuerpo + Nutrición registro)
 - Codex context layer maintenance rules
@@ -404,8 +404,8 @@
 - @radix-ui/react-dropdown-menu
 - @radix-ui/react-separator
 - @radix-ui/react-slot
-- utils.ts
-- nutrition-types.ts
+- routine-catalog.ts
+- useProfileForm.ts
 - Card.tsx
 - vaul
 - app/dashboard/page.tsx (Dashboard Route)
@@ -423,30 +423,30 @@
 - Ciclo AUDITAR ⇄ EJECUTAR — 2 prompts
 - README.md (repo)
 - Redesign Playbook (Gymcontrol)
-- Button.tsx
-- app/alimentos/page.tsx
+- utils.ts
+- RoutineFormSheet
 - useProfileForm
 - admin/rutinas/actions.ts
 - ExerciseDetailModal.tsx
 - routines.ts
-- CompactDayBar.tsx
+- CatalogMobileView.tsx
 - recipes.ts
 - Crear tabla `exercises`
 - Fases
 - Crear tabla `routine_items`
-- ConfiguracionClient.tsx
+- nutrition-types.ts
 - zod
 - DATABASE.md
 - Plan — Huecos de la auditoría (Ejercitación + Alimentación)
 - Plan — Variantes de objetivo, tipos de dieta y ajuste manual (/configuracion)
-- meal-diary.ts
-- FilterPanel.tsx
+- registro/page.tsx
+- RoutineCatalogClient.tsx
 - alias-hooks.mjs
-- useDiaryActions.ts
+- useDiaryActions
 - Enfoque
-- profile-plan.ts
+- GoalSheet.tsx
 - Rediseño mobile de `/catalogo`: B · Planificador
-- RecipeAdminClient.tsx
+- Button.tsx
 - auth.ts
 - 05-crear-tablas-routine-templates-y-routine-days.md
 - Grupo "G4.5" - Frontend base y experiencia
@@ -457,7 +457,7 @@
 - cn
 - react
 - 1. Color
-- meal-diary.test.mjs
+- archiveRecipeAction
 - ExerciseFormSheet
 - Navegacion base
 - GymControl
@@ -472,22 +472,18 @@
 - 6. PWA
 - 12. Semana activa mobile (`/rutinas`, <1024px)
 - RecipeList.tsx
-- MealCard
-- MuscleAnatomy.tsx
-- RoutineCoverImage.tsx
+- PlanRows.tsx
+- BodyMuscleFigure.tsx
+- Grupo "G6" - Ejercicios admin
 - react-dom
 - Integrar acceso admin en el shell general: unificar la entrada administrativa sin duplicar la experiencia base
 - Integrar type_rol al flujo de acceso y sesion: distinguir admin de usuario normal
-- WorkoutAction.tsx
-- RoutineDetailMobile.tsx
 - start/route.ts
 - 17. Acceso mobile (`/auth/login`, <1024px)
 - 18. Recetas mobile (`/recetas`, <1024px)
 - 19. Detalle de rutina mobile (`/catalogo/rutinas/[id]`, <1024px)
 - food-catalog.ts
-- highlightSegments
 - ExercisePlanRow.tsx
-- MealMenuSheet
 - Grupo "G2" - Base de datos
 - Grupo "G13" - Transicion de auth dual
 - Grupo "G5" - Autenticacion y roles
@@ -505,7 +501,7 @@
 4. `requireUser()` - 37 edges
 5. `DATABASE.md - data model source of truth` - 37 edges
 6. `RegistroMobile()` - 35 edges
-7. `isValidSet()` - 33 edges
+7. `isValidSet()` - 35 edges
 8. `Home()` - 31 edges
 9. `addDaysToDateKey()` - 29 edges
 10. `CatalogMobileView()` - 28 edges
@@ -546,7 +542,7 @@
 - **Admin routine builder flow: form, multi-day, multi-row support** — g7_admin_routines_05_builder_formulario_rutina_semanal, g7_admin_routines_06_multiples_dias_rutina, g7_admin_routines_07_multiples_filas_ejercicios_dia [INFERRED 0.85]
 - **Routine persistence chain: templates -> days -> items -> exercises** — g7_admin_routines_routine_templates_table, g7_admin_routines_routine_days_table, g7_admin_routines_routine_items_table, g6_admin_exercises_exercises_table [INFERRED 0.90]
 
-## Communities (498 total, 42 thin omitted)
+## Communities (494 total, 42 thin omitted)
 
 ### Community 1 - "PLAN.md"
 Cohesion: 0.09
@@ -580,21 +576,21 @@ Nodes (7): Dependencias, Estado final, G5.5 - RLS And Policies, Objetivo del gru
 Cohesion: 0.13
 Nodes (14): Admin account, Agentes, AGENTS.md (Gymcontrol), Codex context layer maintenance, Context router, Formato de salida, Frontend, Fuentes de verdad (+6 more)
 
-### Community 9 - "routine-catalog.ts"
-Cohesion: 0.14
-Nodes (28): CatalogEmpty(), CatalogNoResults(), CatalogFeatureCard(), CatalogRoutineList(), CompactDayBar(), LevelCarousel(), handleScroll(), updateCurrent() (+20 more)
+### Community 9 - "routine-metadata.ts"
+Cohesion: 0.13
+Nodes (19): CatalogFeatureCard(), CatalogRoutineList(), CatalogRoutineRow(), LevelCarousel(), handleScroll(), updateCurrent(), RoutineCover(), RoutineCoverImage() (+11 more)
 
-### Community 10 - "RoutineDetailClient.tsx"
-Cohesion: 0.15
-Nodes (17): RecentExercisesTable(), fadeRow, RoutineDetailClient(), RoutineDetailClientProps, Accordion(), AccordionContent(), AccordionItem(), AccordionTrigger() (+9 more)
+### Community 10 - "foods.ts"
+Cohesion: 0.18
+Nodes (11): FoodAdminClient(), confirmDelete(), AdminFoodsPage(), AdminFoodListItem, createAnonClient(), FoodInput, FoodRow, formatDateLabel() (+3 more)
 
 ### Community 11 - "graphify Skill (/graphify)"
 Cohesion: 0.09
 Nodes (24): graphify add <url>, graphify --watch, graphify benchmark (token reduction), graphify export neo4j / neo4j-push, graphify export svg / graphml, graphify export wiki, graphify.serve MCP server, Confidence Score Rubric (+16 more)
 
-### Community 12 - "motion.tsx"
+### Community 12 - "Sheet.tsx"
 Cohesion: 0.15
-Nodes (12): HomeNutrition(), BudgetBlock(), MACROS, GoalSetupStep(), ArcGauge(), AnimatedMacroBar(), listItemHover, microTransition (+4 more)
+Nodes (14): FilterSheetProps, ADMIN_TABS, GUEST_TABS, MobileTabBarProps, TabItem, USER_TABS, NavigationPanel(), Sheet() (+6 more)
 
 ### Community 13 - "PLAN.md (MVP Execution Plan)"
 Cohesion: 0.16
@@ -604,9 +600,9 @@ Nodes (19): Grupo G10 - Modal de ejercicio, Grupo G11 - Integracion y QA del MVP
 Cohesion: 0.47
 Nodes (6): Modal de ejercicio, Pantalla `Ejercicio`, Relacion entre tabla y modal, Tabla de rutina, Tabla de rutina y modal de ejercicio, Pantalla Detalle diario de rutina
 
-### Community 15 - "saved-routines.ts"
-Cohesion: 0.14
-Nodes (26): activateRoutineFromCatalogAction(), revalidateRoutineSelection(), saveRoutineFromCatalogAction(), activateIfRequested(), ExerciseRow, formatDateLabel(), getSavedRoutineByTemplateForUser(), mapExercise() (+18 more)
+### Community 15 - "createSupabaseServerClient"
+Cohesion: 0.12
+Nodes (32): POST(), activateRoutineFromCatalogAction(), revalidateRoutineSelection(), saveRoutineFromCatalogAction(), activateIfRequested(), ExerciseRow, formatDateLabel(), getSavedRoutineByTemplateForUser() (+24 more)
 
 ### Community 16 - "G13-auth-transition/README.md"
 Cohesion: 0.22
@@ -614,23 +610,23 @@ Nodes (10): Google OAuth, Magic link (flujo legado de auth), OTP por email de 6 
 
 ### Community 17 - "RecipesMobile.tsx"
 Cohesion: 0.09
-Nodes (19): Chip, FoodChips(), FoodSearchBar(), RecipeCreateDrawer(), RecipeCreateRequest, RecipeDetailDrawer(), RecipesEmpty(), RecipesHeader() (+11 more)
+Nodes (18): Chip, FoodChips(), FoodSearchBar(), RecipeCreateDrawer(), RecipeCreateRequest, RecipesEmpty(), RecipesHeader(), RecipesMobile() (+10 more)
 
 ### Community 20 - "DATABASE.md - data model source of truth"
 Cohesion: 0.08
 Nodes (31): Acuerdo de minima manipulacion, Campos que se mantienen fuera por ahora, DATABASE.md - data model source of truth, Decisiones de simplicidad aprobadas, exercise-images storage bucket (G6), exercises table, routine_days table, routine_items table (+23 more)
 
 ### Community 21 - "WorkoutMobile.tsx"
-Cohesion: 0.12
-Nodes (37): ExerciseStage(), SetList(), SetRow, activeSetDone(), activeSetIndex(), clampSet(), describeSet(), ExercisePanel() (+29 more)
+Cohesion: 0.08
+Nodes (44): ExerciseListRow, ExerciseListSheet(), ExerciseStage(), SetFocus(), StepperField, StepperValue(), SetList(), SetRow (+36 more)
 
 ### Community 22 - "day-workout.ts"
-Cohesion: 0.12
-Nodes (25): DayExercise, Drafts, WorkoutHandlers, DayPrescription, daySignature(), DayState, DraftSet, ExerciseDraft (+17 more)
+Cohesion: 0.10
+Nodes (35): DayExercise, Drafts, WorkoutHandlers, DayPrescription, daySignature(), DayState, DraftSet, ExerciseDraft (+27 more)
 
-### Community 23 - "foods.ts"
-Cohesion: 0.11
-Nodes (30): deleteFoodAction(), saveFoodAction(), SaveFoodResult, FoodAdminClient(), confirmDelete(), FoodFormSheet(), handleSubmit(), AdminFoodsPage() (+22 more)
+### Community 23 - "app/alimentos/actions.ts"
+Cohesion: 0.17
+Nodes (20): deleteFoodAction(), saveFoodAction(), SaveFoodResult, FoodFormSheet(), handleSubmit(), saveOwnFoodAction(), SaveOwnFoodResult, createFood() (+12 more)
 
 ### Community 24 - "Globe Icon"
 Cohesion: 0.67
@@ -638,7 +634,7 @@ Nodes (3): File Icon, Globe Icon, Window Icon
 
 ### Community 25 - "routine-catalog.test.mjs"
 Cohesion: 0.12
-Nodes (29): CatalogMobileView(), changeDays(), changeLevel(), changeObjective(), clearFilters(), markInteracted(), openFilters(), openSearch() (+21 more)
+Nodes (28): CatalogMobileView(), changeDays(), changeLevel(), changeObjective(), clearFilters(), markInteracted(), openFilters(), openSearch() (+20 more)
 
 ### Community 26 - "exercise-demo.ts"
 Cohesion: 0.13
@@ -646,15 +642,15 @@ Nodes (26): dynamic, GET(), noStoreHeaders(), dynamic, GET(), noStoreHeaders(), 
 
 ### Community 27 - "routine-validation.ts"
 Cohesion: 0.12
-Nodes (25): INITIAL_ROUTINE_FORM_STATE, RoutineDayWriteInput, RoutineFormDayPayload, RoutineFormField, RoutineFormItemPayload, RoutineFormPayload, RoutineFormState, RoutineItemFormField (+17 more)
+Nodes (23): INITIAL_ROUTINE_FORM_STATE, RoutineDayWriteInput, RoutineFormDayPayload, RoutineFormField, RoutineFormItemPayload, RoutineItemFormField, RoutineItemWriteInput, RoutineStructureErrors (+15 more)
 
-### Community 29 - "ExerciseAdminClient.tsx"
-Cohesion: 0.08
-Nodes (36): deleteExerciseAction(), saveExerciseAction(), ExerciseAdminClientProps, handleSubmit(), ExerciseFormSheetProps, SortColumn, SortDirection, UploadStatus (+28 more)
+### Community 29 - "exercise-validation.ts"
+Cohesion: 0.10
+Nodes (24): EXERCISE_IMAGE_ACCEPT, EXERCISE_IMAGE_ALLOWED_EXTENSIONS, EXERCISE_IMAGE_ALLOWED_MIME_TYPES, EXERCISE_IMAGE_BUCKET, EXERCISE_IMAGE_MAX_SIZE_BYTES, EQUIPMENT_LABELS, EXERCISE_EQUIPMENT_OPTIONS, EXERCISE_MUSCLE_GROUPS (+16 more)
 
-### Community 30 - "ProfileSetupFlow.tsx"
-Cohesion: 0.27
-Nodes (7): ActivityOptions(), BodySheet(), fromStepperValue(), GENDER_OPTIONS, toStepperValue(), ProfileSetupFlow(), STEPS
+### Community 30 - "BodySheet"
+Cohesion: 0.40
+Nodes (4): BodySheet(), fromStepperValue(), toStepperValue(), ProfileSetupFlow()
 
 ### Community 31 - "auth-otp.ts"
 Cohesion: 0.05
@@ -662,11 +658,11 @@ Nodes (62): isSupabaseRateLimitError(), json(), POST(), json(), POST(), OtpLogin
 
 ### Community 32 - "app/page.tsx"
 Cohesion: 0.10
-Nodes (43): HomeWeekPlanner(), RefreshOnDayChange(), buttonVariants, buildMealRows(), formatDayGroups(), formatMuscleGroup(), getSessionProgress(), buildHomeHeroInputs() (+35 more)
+Nodes (30): HomeWeekPlanner(), ChooseRoutineMobile(), EmptyRoutineMobile(), ROUTINE_XXL_CLASS, RefreshOnDayChange(), buttonVariants, buildMealRows(), formatDayGroups() (+22 more)
 
 ### Community 33 - "requireUser"
-Cohesion: 0.11
-Nodes (23): ChooseRoutineMobile(), EmptyRoutineMobile(), ROUTINE_XXL_CLASS, DashboardLayout(), requireUser(), deactivateSavedRoutineForUser(), deleteSavedRoutineForUser(), updateTrainingWeekdaysForUser() (+15 more)
+Cohesion: 0.13
+Nodes (20): DashboardLayout(), requireUser(), deactivateSavedRoutineForUser(), deleteSavedRoutineForUser(), updateTrainingWeekdaysForUser(), ActionResult, activateSavedRoutineAction(), deactivateSavedRoutineAction() (+12 more)
 
 ### Community 35 - "dependencies"
 Cohesion: 0.09
@@ -709,8 +705,8 @@ Cohesion: 0.09
 Nodes (21): Archivos a modificar, Archivos a modificar (FASE 4-6), Context, Context (FASE 4-6), Dashboard principal — Rearquitectura de layout (FASE 2) + Piel premium (FASE 3), Decisiones de agrupamiento / jerarquía / densidad, FASE 2 — Sistema de distribución espacial, FASE 3 — Piel premium (solo si FASE 2 aprobada; NO cambia layout) (+13 more)
 
 ### Community 45 - "RegistroClient.tsx"
-Cohesion: 0.09
-Nodes (30): calculateStreak(), withCurrentDay(), FrequentItemsBySlot, addMealItemAction(), createMealAction(), deleteMealAction(), deleteMealItemAction(), moveMealAction() (+22 more)
+Cohesion: 0.06
+Nodes (56): DiaryActions, serverDiaryActions, AddResult, STALE_MESSAGES, calculateStreak(), UndoRecord, withCurrentDay(), deleteMeal() (+48 more)
 
 ### Community 46 - "Mapa de vistas y transiciones"
 Cohesion: 0.25
@@ -777,8 +773,8 @@ Cohesion: 0.22
 Nodes (9): app/lib/supabase/ (clientes Supabase), eslint-config-next, Next.js 16, React 19, @supabase/supabase-js, @supabase/ssr, Tailwind CSS 4, TypeScript (+1 more)
 
 ### Community 62 - "workout-sync.ts"
-Cohesion: 0.12
-Nodes (25): fail(), POST(), getOptionalAuthContext, applyWorkoutSync(), ExerciseKind, exerciseKindSchema, MAX_SETS_PER_EXERCISE, SyncErrorCode (+17 more)
+Cohesion: 0.13
+Nodes (24): fail(), POST(), applyWorkoutSync(), ExerciseKind, exerciseKindSchema, MAX_SETS_PER_EXERCISE, SyncErrorCode, SyncItem (+16 more)
 
 ### Community 63 - "Project Foundations"
 Cohesion: 0.15
@@ -881,8 +877,8 @@ Cohesion: 0.32
 Nodes (7): docs/DATABASE.md (esquema G2), Esquema G2: 6 tablas (profiles, exercises, routine_templates, routine_days, routine_items, saved_routines), docs/MCP_SUPABASE_SETUP.md, PLAN.md, docs/PROJECT_FOUNDATIONS.md, alias supabase_gymcontrol (MCP), supabase/migrations/
 
 ### Community 88 - "[id]/page.tsx"
-Cohesion: 0.17
-Nodes (21): buildRoutineDetailView(), catalogDaysHref(), CatalogRoutineDetailPage(), CatalogRoutineDetailPageProps, StatPillProps, check(), getTodayDateKey(), averageMinutes() (+13 more)
+Cohesion: 0.09
+Nodes (34): buildRoutineDetailView(), catalogDaysHref(), CatalogRoutineDetailPage(), CatalogRoutineDetailPageProps, StatPillProps, ActionContext, ActionControl(), CompactDetailAction() (+26 more)
 
 ### Community 89 - "Disenar e implementar componente base de modal: crear la pieza reutilizable del detalle de ejercicio"
 Cohesion: 0.20
@@ -948,9 +944,9 @@ Nodes (9): Archivos, Criterios de aceptacion, Estado, Estado final, Objetivo, Pa
 Cohesion: 0.20
 Nodes (9): Archivos, Criterios de aceptacion, Estado, Estado final, Objetivo, Pasos, Resolucion, Resolver bugs detectados en pruebas finales: cerrar problemas funcionales antes del cierre del MVP (+1 more)
 
-### Community 105 - "DaySheet.tsx"
+### Community 105 - "MealPanel.tsx"
 Cohesion: 0.14
-Nodes (20): AmountDraft, DayClosedPanel(), DaySheet(), ItemSheet(), RegistroSheet(), CHOICE_CHIP_CLASS, ICON_BUTTON_CLASS, NEUTRAL_BUTTON_CLASS (+12 more)
+Nodes (21): DayClosedPanel(), DaySheet(), FrequentRows(), QuickRow, MealMenuSheet(), remove(), saveName(), withBusy() (+13 more)
 
 ### Community 106 - "Ejecutar validacion tecnica final del MVP: confirmar que la base esta lista para cierre"
 Cohesion: 0.20
@@ -1201,12 +1197,12 @@ Cohesion: 0.14
 Nodes (13): Acceso a datos y entorno, Acciones y logica de aplicacion, Base visual compartida, Cierre de arquitectura, Componentes compartidos, Criterio de simplicidad, Estrategia de implementacion, Nota (+5 more)
 
 ### Community 169 - "meal-logs.ts"
-Cohesion: 0.10
-Nodes (40): POST(), FrequentUsage, addMealItems(), buildItemValues(), createMealWithItems(), deleteMeal(), deleteMealItem(), ensureMealLogId() (+32 more)
+Cohesion: 0.08
+Nodes (42): FrequentUsage, resolveAfterMealId(), addMealItems(), buildItemValues(), createMealWithItems(), emptyMealLog(), ensureMealLogId(), findMealLogId() (+34 more)
 
 ### Community 170 - "meal-amounts.ts"
-Cohesion: 0.08
-Nodes (56): AddFoodSheet(), add(), amountFor(), choose(), markAdded(), Segment, Session, Step (+48 more)
+Cohesion: 0.06
+Nodes (64): AddFoodSheet(), add(), amountFor(), choose(), markAdded(), Segment, Session, Step (+56 more)
 
 ### Community 171 - "Plan: arreglar registro de nutrición + UX cards + centrado figura grasa + backfill porciones"
 Cohesion: 0.15
@@ -1269,8 +1265,8 @@ Cohesion: 0.17
 Nodes (11): 1. Home — `app/page.tsx`, 2. `/dashboard/rutinas` — `app/dashboard/rutinas/page.tsx` (+ `WeekDaysList.tsx`), 3. `/nutricion/registro` — `app/nutricion/registro/RegistroClient.tsx`, 4. Remove "Mis rutinas" from dashboard — `app/dashboard/page.tsx`, 5. `/catalogo` — shrink "Ver rutina" — `app/catalogo/RoutineCatalogClient.tsx` (~298-307), 6. `/catalogo/rutinas/[id]` — `page.tsx` + `RoutineDetailClient.tsx`, Context, Files to modify (+3 more)
 
 ### Community 186 - "workout-tracking.ts"
-Cohesion: 0.12
-Nodes (18): CountedSessionRow, HistoryRow, isCountedSession(), isPrincipalStrengthExercise(), ItemRow, listMuscleStrengthSummaries(), MuscleStrengthSummary, normalizeStrengthGroup() (+10 more)
+Cohesion: 0.09
+Nodes (29): CALLOUTS, MuscleAnatomy(), changeView(), MuscleStrengthPoint, Side, strongestGroup(), getMuscleCentroid(), STRENGTH_RANGE_COLORS (+21 more)
 
 ### Community 187 - "Dirección de rediseño (GymControl)"
 Cohesion: 0.18
@@ -1557,8 +1553,8 @@ Cohesion: 0.20
 Nodes (8): FoodList(), SelectFood, MACRO_KEYS, MacroRing(), FoodGroup, FoodSort, MacroGrams, splitMacroKcal()
 
 ### Community 258 - "RoutineWeekView.tsx"
-Cohesion: 0.09
-Nodes (26): CompactDayAction(), DayAction(), DayPanel(), WeekDay, WeekExercise, WeekStats(), DayTabs(), RoutineWeekView() (+18 more)
+Cohesion: 0.08
+Nodes (31): DetailDay, DetailDays(), DetailExercise, subscribeNothing(), CompactDayAction(), DayAction(), DayPanel(), WeekDay (+23 more)
 
 ### Community 259 - "graphify reference: extra exports and benchmark"
 Cohesion: 0.25
@@ -1669,12 +1665,12 @@ Cohesion: 0.24
 Nodes (13): delay(), DIRECT_SLUGS, EXERCISE_SEARCH_TERMS, extractGifUrl(), fetchHtml(), findExerciseUrl(), getRequiredEnv(), HEADERS (+5 more)
 
 ### Community 288 - "Plan - indice y orden de ejecucion"
-Cohesion: 0.20
-Nodes (10): Estado actual, Grupo "G6" - Ejercicios admin, Grupo "G8" - Catalogo de rutinas, Lectura recomendada, Plan - indice y orden de ejecucion, Subgrupo "G6.1" - Acceso a datos y validacion, Subgrupo "G6.2" - Admin UI, Subgrupo "G6.3" - Integracion y permisos (+2 more)
+Cohesion: 0.33
+Nodes (6): Estado actual, Grupo "G8" - Catalogo de rutinas, Lectura recomendada, Plan - indice y orden de ejecucion, Subgrupo "G8.1" - Exploracion, Subgrupo "G8.2" - Consumo del contenido
 
 ### Community 289 - "RegistroMobile.tsx"
-Cohesion: 0.07
-Nodes (34): serverDiaryActions, MealTabs(), NAV_KEYS, addLabelFor(), DEFAULT_LABELS, ItemSheetState, NO_CREATED, registroHref() (+26 more)
+Cohesion: 0.05
+Nodes (57): MealPanel(), MealTabs(), NAV_KEYS, addLabelFor(), DEFAULT_LABELS, ItemSheetState, NO_CREATED, registroHref() (+49 more)
 
 ### Community 290 - "Crear vista de listado de ejercicios en admin dashboard: exponer el recurso al administrador"
 Cohesion: 0.20
@@ -1690,7 +1686,7 @@ Nodes (10): DropdownMenu(), DropdownMenuContent(), DropdownMenuItem(), DropdownM
 
 ### Community 294 - "nutrition-plan-options.ts"
 Cohesion: 0.13
-Nodes (26): DietView(), KCAL_PER_G, MACROS, MacroSliders(), setCustomMacro(), setMacroPreset(), adjustCustomMacros(), clamp() (+18 more)
+Nodes (24): KCAL_PER_G, MACROS, MacroSliders(), setCustomMacro(), setMacroPreset(), adjustCustomMacros(), ADJUSTMENT_RANGE, clamp() (+16 more)
 
 ### Community 295 - "media-manifest.mjs"
 Cohesion: 0.18
@@ -1712,17 +1708,17 @@ Nodes (5): G2.1 - Implementacion de G2 en Supabase, Limites del grupo, Objetivo 
 Cohesion: 0.22
 Nodes (8): Context, Orden de ejecución, Plan: 3 mejoras de UI (configuración, admin/alimentos, nutrición/registro), Riesgos, Tarea 1 — Rediseño "Tu plan estimado" /configuracion, Tarea 2 — Fix searchbar /admin/alimentos (la más simple, hacer primero), Tarea 3 — Rediseño /nutricion/registro, Verificación (playwright-cli, app local)
 
-### Community 300 - "RoutineAdminClient.tsx"
-Cohesion: 0.10
-Nodes (20): FoodAdminClientProps, FoodFormSheetProps, SortColumn, SortDirection, DIFFICULTY_BADGE_STYLES, OBJECTIVE_BADGE_STYLES, OBJECTIVE_DOT_STYLES, RoutineAdminClientProps (+12 more)
+### Community 300 - "ExerciseAdminClient.tsx"
+Cohesion: 0.06
+Nodes (47): FoodAdminClientProps, FoodFormSheetProps, SortColumn, SortDirection, ExerciseAdminClientProps, ExerciseFormSheetProps, SortColumn, SortDirection (+39 more)
 
 ### Community 301 - "use-sheet-viewport.ts"
 Cohesion: 0.22
 Nodes (15): attachSheetViewport(), onFocusIn(), reveal(), update(), focusSheetInsteadOfField(), isTextField(), rememberFieldAtPointerDown(), scrollParent() (+7 more)
 
 ### Community 302 - "recetas/actions.ts"
-Cohesion: 0.11
-Nodes (24): RecipeAdminClient(), confirmDelete(), handleDelete(), handleSubmit(), RECIPE_CATEGORIES, RecipeCategory, archiveRecipe(), INITIAL_RECIPE_FORM_STATE (+16 more)
+Cohesion: 0.17
+Nodes (17): handleSubmit(), RecipeCategory, INITIAL_RECIPE_FORM_STATE, ParsedRecipePayload, RecipeFormField, RecipeFormPayload, RecipeFormState, RecipeIngredientPayload (+9 more)
 
 ### Community 303 - "Confirmar stack final y dependencias necesarias: cerrar la base tecnica del MVP"
 Cohesion: 0.22
@@ -1773,8 +1769,8 @@ Cohesion: 0.25
 Nodes (7): 1. Issue Analysis, 2. Implementation Phase, 3. Resolution Excellence, Communication Protocol, Debugging Context, Development Workflow, Project Overlay
 
 ### Community 315 - "recipe-catalog.ts"
-Cohesion: 0.09
-Nodes (39): MACROS, RecipeDetailBody(), View, MAX_LOG_QUANTITY, RECIPE_CATEGORY_LABELS, countRecipesByChip(), filterRecipesByChip(), firstParam() (+31 more)
+Cohesion: 0.08
+Nodes (42): MACROS, RecipeDetailBody(), RecipeDetailDrawer(), View, formatQuantity(), MAX_LOG_QUANTITY, registroFoodHref(), FOOD_MEASURES (+34 more)
 
 ### Community 316 - "Grupo "G11" - Integracion y QA del MVP"
 Cohesion: 0.50
@@ -1788,13 +1784,13 @@ Nodes (4): Grupo "G1" - Arquitectura, Subgrupo "G1.1" - Alcance y modulos, Subgr
 Cohesion: 0.26
 Nodes (15): NumberStepper(), commit(), handleInput(), handleStep(), NumberStepperProps, SIZES, StepButton(), canStep() (+7 more)
 
-### Community 319 - "home-dashboard.ts"
+### Community 319 - "home-hero.ts"
 Cohesion: 0.08
-Nodes (28): DaySheet, HomeWeekStrip(), HEIGHT, titleSize(), TodayHero(), HeroState, MUSCLE_GROUP_LABELS, resolveHeroState() (+20 more)
+Nodes (39): DaySheet, HomeWeekStrip(), HEIGHT, titleSize(), TodayHero(), BASE, buildHeroView(), buildHomeHeroInputs() (+31 more)
 
-### Community 320 - "GoalSheet.tsx"
-Cohesion: 0.12
-Nodes (17): dietSummary(), formatKcalDelta(), GoalOptions(), GoalSheet(), GoalView, SplitPreview(), TARGET_MODE_OPTIONS, VariantPicker() (+9 more)
+### Community 320 - "exercises.ts"
+Cohesion: 0.20
+Nodes (15): deleteExerciseAction(), saveExerciseAction(), confirmDelete(), AdminExercisesPage(), ExerciseFormPayload, createExercise(), CreateExerciseInput, deleteExercise() (+7 more)
 
 ### Community 322 - "Grupo "G7" - Rutinas admin"
 Cohesion: 0.50
@@ -1802,7 +1798,7 @@ Nodes (4): Grupo "G7" - Rutinas admin, Subgrupo "G7.1" - Acceso a datos e integr
 
 ### Community 323 - "FoodsMobile.tsx"
 Cohesion: 0.09
-Nodes (19): FoodCreateDrawer(), FoodCreateRequest, FoodDetailDrawer(), FoodsEmpty(), FoodsHeader(), FoodsMobile(), handleCreated(), handleEdited() (+11 more)
+Nodes (18): FoodCreateDrawer(), FoodDetailDrawer(), FoodsEmpty(), FoodsHeader(), FoodsMobile(), handleCreated(), handleEdited(), upsertFood() (+10 more)
 
 ### Community 324 - "Development Workflow"
 Cohesion: 0.25
@@ -1856,13 +1852,13 @@ Nodes (13): EQUIPMENT_TERMS, EXERCISE_SEARCH_TERMS, exerciseImageSlug(), fetchDb
 Cohesion: 0.12
 Nodes (15): Arquitectura, Casos borde (resumen), Contexto, Coordinación con otras sesiones (mismo worktree), F0 · Línea base (sin tocar código), F1 · Lógica pura + tests (el desktop se comporta igual), F2 · Shell (al cerrar, el desktop tiene que coincidir con F0), F3 · Zonas (+7 more)
 
-### Community 345 - "registro/actions.ts"
-Cohesion: 0.08
-Nodes (30): firstParam(), parseRegistroFoodParams(), listFoodsForUser(), isDateKey(), emptyMealLog(), getMealLogForDate(), getMealLogTarget(), listFrequentItemsBySlot() (+22 more)
+### Community 345 - "app/alimentos/page.tsx"
+Cohesion: 0.18
+Nodes (10): NutritionCatalogClient(), AlimentosPage(), readFrequentItems(), getOptionalAuthContext, listFoodCatalogItems, listFoodsForUser(), listFrequentItems(), listRecipeCatalogItems() (+2 more)
 
 ### Community 346 - "DayWorkoutClient.tsx"
 Cohesion: 0.08
-Nodes (50): WorkoutSyncRunner(), WorkoutTopBar(), describeSuggestion(), nextPendingExercise(), padSets(), sanitizeNumber(), toDraftSet(), parseRestSeconds() (+42 more)
+Nodes (51): WorkoutSyncRunner(), SyncIndicator(), WorkoutTopBar(), describeSuggestion(), nextPendingExercise(), padSets(), sanitizeNumber(), toDraftSet() (+43 more)
 
 ### Community 347 - "Plan: Fixes responsive mobile (Home cuerpo + Nutrición registro)"
 Cohesion: 0.29
@@ -1937,8 +1933,8 @@ Cohesion: 0.08
 Nodes (24): 0. Estado actual en código, 10. Escala de niveles (decidido 2026-09-17), 11. Decisiones abiertas para el rediseño, 1. Fuentes y metodología, 2. Ratios 1RM ÷ peso corporal (StrengthLevel), 3. Tabla de trabajo: kg de 1RM por grupo, sexo y edad, 4. Edad, 5. Sexo (+16 more)
 
 ### Community 366 - "PrimaryNavigation.tsx"
-Cohesion: 0.06
-Nodes (40): isStandaloneDisplay(), PwaRuntime(), MobileHeader(), MobileHeaderBadge, MobileHeaderBadgeSync(), MobileHeaderContext, MobileHeaderProps, MobileHeaderState (+32 more)
+Cohesion: 0.07
+Nodes (39): isStandaloneDisplay(), PwaRuntime(), MobileHeader(), MobileHeaderBadge, MobileHeaderBadgeSync(), MobileHeaderContext, MobileHeaderProps, MobileHeaderState (+31 more)
 
 ### Community 367 - "G8 - Routine Catalog"
 Cohesion: 0.40
@@ -1984,17 +1980,17 @@ Nodes (13): Alcance, Arquitectura, Context, Decisiones cerradas (2026-09-16), F0
 Cohesion: 0.22
 Nodes (17): handleKeyDown(), DayCountWheel(), handleBlur(), handleKeyDown(), handleScroll(), handleSelect(), scheduleSettle(), settle() (+9 more)
 
-### Community 395 - "utils.ts"
-Cohesion: 0.15
-Nodes (13): OtpLoginFlowProps, DiaryHeader(), FrequentRows(), QuickRow, FoodFormProps, DraftIngredient, RecipeFormProps, focusNextFieldOnEnter() (+5 more)
+### Community 395 - "routine-catalog.ts"
+Cohesion: 0.20
+Nodes (15): WeekBar(), CATALOG_SORTS, catalogAnnouncement(), CatalogFilters, catalogResultLabel(), CatalogSort, countLabel(), dayCountLabel() (+7 more)
 
-### Community 396 - "nutrition-types.ts"
-Cohesion: 0.11
-Nodes (35): macroGramsSchema, manualTargetSchema, profileInputSchema, saveNutritionProfileAction(), ConfiguracionPage(), calculateBmr(), calculateMacros(), calculateMaintenance() (+27 more)
+### Community 396 - "useProfileForm.ts"
+Cohesion: 0.12
+Nodes (30): macroGramsSchema, manualTargetSchema, profileInputSchema, saveNutritionProfileAction(), ConfiguracionPage(), calculateBmr(), calculateMacros(), calculateMaintenance() (+22 more)
 
 ### Community 397 - "Card.tsx"
-Cohesion: 0.09
-Nodes (26): dayLabel(), formatDateLabel(), formatDateOnly(), NutritionCalendarCard(), WEEK_LABELS, PlaceholderPanelProps, dayLabel(), formatDateLabel() (+18 more)
+Cohesion: 0.10
+Nodes (20): dayLabel(), formatDateLabel(), formatDateOnly(), NutritionCalendarCard(), WEEK_LABELS, PlaceholderPanelProps, dayLabel(), formatDateLabel() (+12 more)
 
 ### Community 402 - "backfill-exercise-static-frames.mjs"
 Cohesion: 0.47
@@ -2028,37 +2024,37 @@ Nodes (7): Ciclo AUDITAR ⇄ EJECUTAR — 2 prompts, Cierre de sección, Prompt 
 Cohesion: 0.18
 Nodes (10): Anti-patrón que esto corrige, Compresión: 7 fases → 3 prompts, Ejecución encadenada (pegar arriba de cada prompt agrupado), Principios, PROMPT 1 — Referencia + Audit (read-only, no toca código), PROMPT 2 — Layout + Piel, PROMPT 3 — A11y + Micro + Verify, Redesign Playbook (Gymcontrol) (+2 more)
 
-### Community 423 - "Button.tsx"
-Cohesion: 0.11
-Nodes (25): MACROS, View, DeleteAccountSheet(), SetupHero(), SheetExercise, RoutineSwitcher(), TrainingDaysPicker(), DaysForm() (+17 more)
+### Community 423 - "utils.ts"
+Cohesion: 0.15
+Nodes (21): MACROS, View, SheetExercise, RoutineSwitcher(), TrainingDaysPicker(), FilterOption, FilterPanelProps, Drawer() (+13 more)
 
-### Community 424 - "app/alimentos/page.tsx"
-Cohesion: 0.32
-Nodes (4): NutritionCatalogClient(), AlimentosPage(), readFrequentItems(), listFrequentItems()
+### Community 424 - "RoutineFormSheet"
+Cohesion: 0.21
+Nodes (8): saveRoutineAction(), createEmptyDay(), createEmptyItem(), RoutineFormSheet(), handleAddDay(), handleAddItem(), handleSubmit(), saveRoutine()
 
 ### Community 425 - "useProfileForm"
 Cohesion: 0.19
 Nodes (10): deleteAccountAction(), saveProfileNameAction(), ConfiguracionClient(), handleDeleteAccount(), handleSaveName(), inRange(), useProfileForm(), handleGenderChange() (+2 more)
 
 ### Community 426 - "admin/rutinas/actions.ts"
-Cohesion: 0.11
-Nodes (18): AdminLayout(), deleteRoutineAction(), restoreRoutineAction(), revalidateRoutinePaths(), saveRoutineAction(), createEmptyDay(), createEmptyItem(), RoutineAdminClient() (+10 more)
+Cohesion: 0.20
+Nodes (10): deleteRoutineAction(), restoreRoutineAction(), revalidateRoutinePaths(), RoutineAdminClient(), confirmDelete(), handleRestore(), RoutineFormPayload, RoutineFormState (+2 more)
 
 ### Community 427 - "ExerciseDetailModal.tsx"
-Cohesion: 0.11
-Nodes (19): ExerciseHistoryData, ExerciseMedia(), MediaView, ExerciseSheet(), ExerciseSheetTab, DetailDay, DetailDays(), DetailExercise (+11 more)
+Cohesion: 0.16
+Nodes (14): ExerciseAdminClient(), ExerciseHistoryData, ExerciseMedia(), MediaView, ExerciseSheet(), ExerciseSheetTab, SheetBody(), TrainingDaysSheet() (+6 more)
 
 ### Community 428 - "routines.ts"
-Cohesion: 0.10
-Nodes (29): AdminExercisesPage(), AdminRoutinesPage(), createAnonClient(), CreateExerciseInput, ExerciseCatalogItem, ExerciseRow, formatExerciseDate(), getExerciseById() (+21 more)
+Cohesion: 0.13
+Nodes (18): AdminRoutinesPage(), createAnonClient(), ExerciseCatalogItem, listExerciseCatalogItems, AdminRoutineListItem, ExerciseRow, formatRoutineDate(), listAdminRoutines() (+10 more)
 
-### Community 429 - "CompactDayBar.tsx"
-Cohesion: 0.47
-Nodes (4): CATALOG_ICON_BUTTON, CatalogTopBar(), FilterTrigger(), DayOption
+### Community 429 - "CatalogMobileView.tsx"
+Cohesion: 0.27
+Nodes (9): CatalogEmpty(), CatalogNoResults(), CATALOG_ICON_BUTTON, CatalogTopBar(), CompactDayBar(), FilterGroup, FilterTrigger(), premiumEase (+1 more)
 
 ### Community 430 - "recipes.ts"
-Cohesion: 0.10
-Nodes (29): AdminRecetasPage(), formatOneDecimal(), RecipeForm(), addIngredient(), handleFoodCreated(), toNumber(), createAnonClient(), listFoodCatalogItems (+21 more)
+Cohesion: 0.13
+Nodes (22): AdminRecetasPage(), mapMealLogItem(), nutritionForGrams(), RecipeIngredient, buildRecipeSnapshot(), isRecipeSnapshot(), NutritionAmount, nutritionFromSnapshot() (+14 more)
 
 ### Community 431 - "Crear tabla `exercises`"
 Cohesion: 0.25
@@ -2072,9 +2068,9 @@ Nodes (14): Archivos, Context, Enfoque, F0 · Docs (fuente de verdad primero), F
 Cohesion: 0.25
 Nodes (8): Archivos, Crear tabla `routine_items`, Criterios de aceptacion, Estado, Estado final, Objetivo, Pasos, Validacion
 
-### Community 434 - "ConfiguracionClient.tsx"
+### Community 434 - "nutrition-types.ts"
 Cohesion: 0.08
-Nodes (33): AccountRows(), ActivityMeter(), BAR_HEIGHTS, ACTIVITY_OPTIONS, ActivitySheet(), BodyFatCarousel(), bodyFatImageSrc(), BodyFatOption (+25 more)
+Nodes (33): ACTIVITY_OPTIONS, ActivityOptions(), ActivitySheet(), BodyFatCarousel(), bodyFatImageSrc(), BodyFatOption, UNKNOWN_OPTION, BODY_LIMITS (+25 more)
 
 ### Community 436 - "DATABASE.md"
 Cohesion: 0.33
@@ -2088,37 +2084,37 @@ Nodes (10): Context, Docs, F0 — Migración expand (no rompe código viejo en p
 Cohesion: 0.15
 Nodes (12): Archivos críticos, Context, F1 — Lógica pura + tests, F2 — DB + persistencia (migración `supabase/migrations/20260917_nutrition_plan_options.sql`), F3 — UI mobile (GoalSheet en 3 capas), F4 — Docs + cierre, Fases, Modelo y reglas (fuente: `app/lib/nutrition-plan-options.ts`, nuevo, puro y testeado) (+4 more)
 
-### Community 439 - "meal-diary.ts"
-Cohesion: 0.08
-Nodes (38): DayPickerSheet(), WEEKDAY_NAMES, buildWeek(), DayCell, WeekCombinedCard(), WeekCombinedCardProps, addDaysToDateKey(), APP_TIME_ZONE (+30 more)
+### Community 439 - "registro/page.tsx"
+Cohesion: 0.10
+Nodes (35): DayPickerSheet(), WEEKDAY_NAMES, check(), buildWeek(), DayCell, WeekCombinedCard(), WeekCombinedCardProps, firstParam() (+27 more)
 
-### Community 440 - "FilterPanel.tsx"
-Cohesion: 0.11
-Nodes (19): getRoutineCoverImage(), getRoutineItemCount(), getVisiblePages(), RoutineCatalogCard(), RoutineCatalogClient(), handleClearFilters(), handleFilterChange(), RoutineCatalogClientProps (+11 more)
+### Community 440 - "RoutineCatalogClient.tsx"
+Cohesion: 0.20
+Nodes (11): getRoutineCoverImage(), getRoutineItemCount(), getVisiblePages(), RoutineCatalogCard(), RoutineCatalogClient(), handleClearFilters(), handleFilterChange(), RoutineCatalogClientProps (+3 more)
 
-### Community 443 - "useDiaryActions.ts"
-Cohesion: 0.15
-Nodes (28): DiaryActions, STALE_MESSAGES, useDiaryActions(), addItem(), apply(), changeMealType(), deleteMeal(), enqueue() (+20 more)
+### Community 443 - "useDiaryActions"
+Cohesion: 0.40
+Nodes (14): useDiaryActions(), addItem(), apply(), changeMealType(), deleteMeal(), enqueue(), moveMeal(), refresh() (+6 more)
 
 ### Community 444 - "Enfoque"
 Cohesion: 0.14
 Nodes (13): Archivos, Context, Coordinación con otras sesiones (mismo árbol, en paralelo), Enfoque, F0 · Docs primero, F1 · Lógica pura + hook (sin cambio visual), F2 · Shell mobile, F3 · Zonas y sheets (`app/components/configuracion/`) (+5 more)
 
-### Community 445 - "profile-plan.ts"
-Cohesion: 0.16
-Nodes (15): ManualTargetFields(), MACRO_SHORT_LABELS, ManualCheck(), PlanHero(), Goal, ManualTarget, activityLevelIndex(), checkManualTarget() (+7 more)
+### Community 445 - "GoalSheet.tsx"
+Cohesion: 0.07
+Nodes (39): dietSummary(), DietView(), formatKcalDelta(), GoalOptions(), GoalSheet(), GoalView, ManualField(), ManualTargetFields() (+31 more)
 
 ### Community 446 - "Rediseño mobile de `/catalogo`: B · Planificador"
 Cohesion: 0.15
 Nodes (12): Archivos, Contexto, Coordinación con sesiones en paralelo (pedido del usuario), `DayCountWheel`: la pieza de mayor riesgo, Desktop: solo colores (C-D8), Fases (cada una con su chequeo), FilterPanel (compartido por 7 consumidores), Lib puro: `app/lib/routine-catalog.ts` (+4 more)
 
-### Community 447 - "RecipeAdminClient.tsx"
-Cohesion: 0.09
-Nodes (32): AdminRecipe, RecipeAdminClientProps, FoodRow(), FormState, NutritionCatalogClientProps, FilterSheetProps, MacroBar(), ADMIN_TABS (+24 more)
+### Community 447 - "Button.tsx"
+Cohesion: 0.05
+Nodes (52): FoodRow(), FormState, NutritionCatalogClientProps, OtpLoginFlowProps, FoodCreateRequest, DeleteAccountSheet(), SetupHero(), HomeNutrition() (+44 more)
 
 ### Community 448 - "auth.ts"
-Cohesion: 0.25
-Nodes (12): GET(), redirectToLogin(), AppRole, AuthContext, getPostLoginRedirectPath(), loadAuthContext(), loadProfileRecord(), ProfileRecord (+4 more)
+Cohesion: 0.21
+Nodes (14): AdminLayout(), GET(), redirectToLogin(), AppRole, AuthContext, getPostLoginRedirectPath(), loadAuthContext(), loadProfileRecord() (+6 more)
 
 ### Community 449 - "05-crear-tablas-routine-templates-y-routine-days.md"
 Cohesion: 0.47
@@ -2141,24 +2137,24 @@ Cohesion: 0.50
 Nodes (4): Grupo "G3" - Skills y agentes, Subgrupo "G3.1" - Necesidad real, Subgrupo "G3.2" - Diseno minimo, Subgrupo "G3.3" - Documento de referencia
 
 ### Community 454 - "admin/page.tsx"
-Cohesion: 0.16
-Nodes (17): AdminPage(), DIFFICULTY_BADGE_VARIANT, quickActions, ACTIVITY_ICONS, formatActivityDate(), RecentActivityEntry, RecentActivityTable(), startOfDay() (+9 more)
+Cohesion: 0.10
+Nodes (25): AdminPage(), DIFFICULTY_BADGE_VARIANT, quickActions, ACTIVITY_ICONS, formatActivityDate(), RecentActivityEntry, RecentActivityTable(), startOfDay() (+17 more)
 
 ### Community 455 - "cn"
 Cohesion: 0.06
-Nodes (37): ManualField(), NavRow(), Note(), TextButton(), HomeGreeting(), TodayExercisesSheet(), BookmarkSubmit(), DeactivateSubmit() (+29 more)
+Nodes (37): fadeRow, RoutineDetailClient(), RoutineDetailClientProps, HomeGreeting(), TodayExercisesSheet(), BudgetBlock(), MACROS, BookmarkSubmit() (+29 more)
 
 ### Community 457 - "1. Color"
 Cohesion: 0.29
 Nodes (7): 1.1 Superficies (se mantienen), 1.2 Texto, 1.3 Acento — Emerald (NUEVO, reemplaza violeta), 1.4 Semánticos de estado (hue distinto al brand), 1.5 Contraste (piso obligatorio), 1.6 Rampa de fuerza (dato, no estado), 1. Color
 
-### Community 458 - "meal-diary.test.mjs"
-Cohesion: 0.14
-Nodes (11): MealPanel(), resolveAfterMealId(), titleScale(), buildDayMealRows(), DayMealRow, DEFAULT_DAY_MEAL_TYPES, insertAfter(), moveInOrder() (+3 more)
+### Community 458 - "archiveRecipeAction"
+Cohesion: 0.29
+Nodes (7): RecipeAdminClient(), confirmDelete(), handleDelete(), archiveRecipe(), archiveRecipeAction(), RecipeDetailSheet(), handleArchive()
 
 ### Community 459 - "ExerciseFormSheet"
-Cohesion: 0.21
-Nodes (11): ExerciseAdminClient(), confirmDelete(), ExerciseFormSheet(), clearObjectUrl(), handleFileChange(), SheetBody(), ExerciseDetailSidePanel(), equipmentLabel() (+3 more)
+Cohesion: 0.53
+Nodes (6): ExerciseFormSheet(), clearObjectUrl(), handleFileChange(), handleSubmit(), validateExerciseImageFile(), createSupabaseBrowserClient()
 
 ### Community 460 - "Navegacion base"
 Cohesion: 0.18
@@ -2169,8 +2165,8 @@ Cohesion: 0.18
 Nodes (7): Alcance operativo del MVP, Configuracion de auth dual, Documentos clave, GymControl, Que hace hoy el MVP, Siguiente frente de trabajo, Stack principal
 
 ### Community 462 - "catalogo/page.tsx"
-Cohesion: 0.36
-Nodes (9): CatalogoPage(), displayRoutineName(), parseDayOption(), toCatalogRoutine(), listSavedRoutineStatusesForUser(), Catalogo Desktop Full Page (Sidebar + Filters + Routine Catalog Header), Catalogo Desktop Card Layout (Routine Cards Grid), Catalogo Mobile Full Page (Header + Filters + Routine List) (+1 more)
+Cohesion: 0.33
+Nodes (10): CatalogoPage(), parseDayOption(), toCatalogRoutine(), createAnonClient(), listRoutineTemplates, listSavedRoutineStatusesForUser(), Catalogo Desktop Full Page (Sidebar + Filters + Routine Catalog Header), Catalogo Desktop Card Layout (Routine Cards Grid) (+2 more)
 
 ### Community 463 - "10. Home mobile (`/`, <1024px)"
 Cohesion: 0.50
@@ -2212,17 +2208,17 @@ Nodes (4): 12.1 Zonas (arriba → abajo), 12.2 Estados, 12.3 Días de entreno, 1
 Cohesion: 0.24
 Nodes (8): Highlight(), RecipeList(), RecipeRow(), SelectRecipe, findMatchRange(), ingredientLine(), RecipeGroup, RecipeSort
 
-### Community 473 - "MealCard"
-Cohesion: 0.22
-Nodes (5): parseQuantity(), formatMealFoods(), MealCard(), handleSaveItem(), handleStartEditItem()
+### Community 473 - "PlanRows.tsx"
+Cohesion: 0.17
+Nodes (10): AccountRows(), ActivityMeter(), BAR_HEIGHTS, BmrFloorNote(), PlanSheet, Row, HomeSectionHeader(), HomeWeekStats() (+2 more)
 
-### Community 474 - "MuscleAnatomy.tsx"
-Cohesion: 0.09
-Nodes (29): CALLOUTS, MuscleAnatomy(), changeView(), MuscleStrengthPoint, Side, strongestGroup(), anteriorData, BodyMuscleFigure() (+21 more)
+### Community 474 - "BodyMuscleFigure.tsx"
+Cohesion: 0.15
+Nodes (18): anteriorData, BodyMuscleFigure(), BodySVG(), buildLibraryMuscleColors(), DEFAULT_MUSCLE_DATA, fillIntensityColor(), fillMuscleData(), HIGHLIGHTED_COLORS (+10 more)
 
-### Community 475 - "RoutineCoverImage.tsx"
+### Community 475 - "Grupo "G6" - Ejercicios admin"
 Cohesion: 0.50
-Nodes (3): RoutineCover(), RoutineCoverImage(), TONES
+Nodes (4): Grupo "G6" - Ejercicios admin, Subgrupo "G6.1" - Acceso a datos y validacion, Subgrupo "G6.2" - Admin UI, Subgrupo "G6.3" - Integracion y permisos
 
 ### Community 477 - "Integrar acceso admin en el shell general: unificar la entrada administrativa sin duplicar la experiencia base"
 Cohesion: 0.22
@@ -2231,14 +2227,6 @@ Nodes (9): Archivos, Criterios de aceptacion, Estado, Estado final, Integrar acc
 ### Community 478 - "Integrar type_rol al flujo de acceso y sesion: distinguir admin de usuario normal"
 Cohesion: 0.22
 Nodes (9): Archivos, Criterios de aceptacion, Estado, Estado final, Integrar type_rol al flujo de acceso y sesion: distinguir admin de usuario normal, Objetivo, Pasos, Resolucion (+1 more)
-
-### Community 479 - "WorkoutAction.tsx"
-Cohesion: 0.33
-Nodes (4): ActionButton(), FinishConfirm(), RestCard(), SetDoneButton()
-
-### Community 480 - "RoutineDetailMobile.tsx"
-Cohesion: 0.12
-Nodes (14): ActionContext, ActionControl(), CompactDetailAction(), DetailAction(), GroupVolume, MuscleBalance(), RoutineDetailMobile(), RoutineDetailView (+6 more)
 
 ### Community 481 - "start/route.ts"
 Cohesion: 0.70
@@ -2257,20 +2245,12 @@ Cohesion: 0.67
 Nodes (3): 19.1 Zonas (arriba → abajo), 19.2 Estados, 19. Detalle de rutina mobile (`/catalogo/rutinas/[id]`, <1024px)
 
 ### Community 485 - "food-catalog.ts"
-Cohesion: 0.09
-Nodes (39): FoodDetailBody(), FoodRow(), CatalogQuery, ChipCounts, ChipOption, defaultFoodPortion(), filterFoodsByChip(), FoodPortion (+31 more)
-
-### Community 486 - "highlightSegments"
-Cohesion: 0.60
-Nodes (5): CatalogRoutineRow(), highlightSegments(), matchesQuery(), normalizeSearch(), searchTokens()
+Cohesion: 0.10
+Nodes (35): FoodDetailBody(), FoodRow(), CatalogQuery, ChipCounts, ChipOption, defaultFoodPortion(), filterFoodsByChip(), FoodPortion (+27 more)
 
 ### Community 487 - "ExercisePlanRow.tsx"
 Cohesion: 0.50
 Nodes (3): ExercisePlanRow(), PlanStat, splitPlanValue()
-
-### Community 488 - "MealMenuSheet"
-Cohesion: 0.60
-Nodes (4): MealMenuSheet(), remove(), saveName(), withBusy()
 
 ### Community 489 - "Grupo "G2" - Base de datos"
 Cohesion: 0.40
@@ -2330,11 +2310,11 @@ _Questions this graph is uniquely positioned to answer:_
   _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
 - **What is the exact relationship between `Next.js Logo` and `Vercel Triangle Logo`?**
   _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
-- **Why does `cn()` connect `cn` to `FoodList.tsx`, `RoutineWeekView.tsx`, `DayCountWheel.tsx`, `routine-catalog.ts`, `RoutineDetailClient.tsx`, `utils.ts`, `motion.tsx`, `Card.tsx`, `RecipesMobile.tsx`, `WorkoutMobile.tsx`, `routine-catalog.test.mjs`, `ExerciseAdminClient.tsx`, `ProfileSetupFlow.tsx`, `auth-otp.ts`, `RegistroMobile.tsx`, `requireUser`, `FoodSearchBar.tsx`, `ProjectionSection.tsx`, `Button.tsx`, `useProfileForm`, `meal-amounts.ts`, `ExerciseDetailModal.tsx`, `RoutineAdminClient.tsx`, `CompactDayBar.tsx`, `recipes.ts`, `RegistroClient.tsx`, `OptionList.tsx`, `ConfiguracionClient.tsx`, `meal-diary.ts`, `FilterPanel.tsx`, `recipe-catalog.ts`, `profile-plan.ts`, `NumberStepper.tsx`, `home-dashboard.ts`, `GoalSheet.tsx`, `RecipeAdminClient.tsx`, `meal-diary.test.mjs`, `ExerciseFormSheet`, `exercise-history.ts`, `RecipeList.tsx`, `MealCard`, `MuscleAnatomy.tsx`, `RoutineCoverImage.tsx`, `DayWorkoutClient.tsx`, `WorkoutAction.tsx`, `RoutineDetailMobile.tsx`, `food-catalog.ts`, `MealMenuSheet`, `DaySheet.tsx`, `PrimaryNavigation.tsx`?**
-  _High betweenness centrality (0.031) - this node is a cross-community bridge._
-- **Why does `createSupabaseServerClient()` connect `meal-logs.ts` to `server.ts`, `nutrition-types.ts`, `saved-routines.ts`, `day-workout.ts`, `foods.ts`, `ExerciseAdminClient.tsx`, `auth-otp.ts`, `app/page.tsx`, `requireUser`, `useProfileForm`, `admin/rutinas/actions.ts`, `routines.ts`, `recipes.ts`, `recetas/actions.ts`, `workout-tracking.ts`, `workout-sync.ts`, `auth.ts`, `admin/page.tsx`, `catalogo/page.tsx`, `[id]/page.tsx`, `registro/actions.ts`, `start/route.ts`?**
+- **Why does `cn()` connect `cn` to `FoodList.tsx`, `RoutineWeekView.tsx`, `DayCountWheel.tsx`, `routine-metadata.ts`, `routine-catalog.ts`, `Sheet.tsx`, `Card.tsx`, `RecipesMobile.tsx`, `WorkoutMobile.tsx`, `routine-catalog.test.mjs`, `BodySheet`, `auth-otp.ts`, `RegistroMobile.tsx`, `requireUser`, `FoodSearchBar.tsx`, `ProjectionSection.tsx`, `utils.ts`, `useProfileForm`, `meal-amounts.ts`, `ExerciseAdminClient.tsx`, `CatalogMobileView.tsx`, `RegistroClient.tsx`, `OptionList.tsx`, `nutrition-types.ts`, `registro/page.tsx`, `workout-tracking.ts`, `recipe-catalog.ts`, `GoalSheet.tsx`, `NumberStepper.tsx`, `Button.tsx`, `home-hero.ts`, `admin/page.tsx`, `ExerciseFormSheet`, `exercise-history.ts`, `RecipeList.tsx`, `PlanRows.tsx`, `[id]/page.tsx`, `DayWorkoutClient.tsx`, `food-catalog.ts`, `MealPanel.tsx`, `PrimaryNavigation.tsx`?**
+  _High betweenness centrality (0.032) - this node is a cross-community bridge._
+- **Why does `createSupabaseServerClient()` connect `createSupabaseServerClient` to `server.ts`, `foods.ts`, `useProfileForm.ts`, `day-workout.ts`, `app/alimentos/actions.ts`, `auth-otp.ts`, `app/page.tsx`, `requireUser`, `RoutineFormSheet`, `useProfileForm`, `meal-logs.ts`, `admin/rutinas/actions.ts`, `routines.ts`, `RegistroClient.tsx`, `recipes.ts`, `recetas/actions.ts`, `registro/page.tsx`, `workout-tracking.ts`, `workout-sync.ts`, `auth.ts`, `exercises.ts`, `admin/page.tsx`, `archiveRecipeAction`, `catalogo/page.tsx`, `[id]/page.tsx`, `app/alimentos/page.tsx`, `start/route.ts`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
-- **Why does `CatalogMobileView()` connect `routine-catalog.test.mjs` to `routine-catalog.ts`, `catalogo/page.tsx`, `cn`?**
+- **Why does `CatalogMobileView()` connect `routine-catalog.test.mjs` to `cn`, `routine-metadata.ts`, `routine-catalog.ts`, `CatalogMobileView.tsx`, `catalogo/page.tsx`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
 - **What connects `supabase_gymcontrol`, `RecentActivityEntry`, `ACTIVITY_ICONS` to the rest of the system?**
   _3213 weakly-connected nodes found - possible documentation gaps or missing edges._
