@@ -177,28 +177,28 @@ export function describeSuggestion({
       case "increase_load":
       case "increase_reps":
         return suggestion.kg != null && suggestion.kg > 0
-          ? `Otra chance: ${formatKg(suggestion.kg)} kg × ${suggestion.reps} por serie.`
-          : `Otra chance: ${suggestion.reps} reps por serie.`;
+          ? `Otra chance: ${formatKg(suggestion.kg)} kg × ${suggestion.reps}.`
+          : `Otra chance: ${suggestion.reps} reps.`;
       case "increase_time":
-        return `Otra chance: ${formatSeconds(suggestion.secs)} por serie.`;
+        return `Otra chance: ${formatSeconds(suggestion.secs)}.`;
     }
   }
 
   switch (suggestion?.kind) {
     case "hold":
       return suggestion.kg != null && suggestion.kg > 0
-        ? `Reafirmá tu marca: ${formatKg(suggestion.kg)} kg × ${suggestion.reps} por serie.`
-        : `Reafirmá tu marca: ${suggestion.reps} reps por serie.`;
+        ? `Reafirmá tu marca: ${formatKg(suggestion.kg)} kg × ${suggestion.reps}.`
+        : `Reafirmá tu marca: ${suggestion.reps} reps.`;
     case "hold_time":
-      return `Reafirmá tu marca: ${formatSeconds(suggestion.secs)} por serie.`;
+      return `Reafirmá tu marca: ${formatSeconds(suggestion.secs)}.`;
     case "increase_load":
-      return `Hoy: subí a ${formatKg(suggestion.kg)} kg y apuntá a ${suggestion.reps} reps.`;
+      return `Hoy: subí a ${formatKg(suggestion.kg)} kg × ${suggestion.reps}.`;
     case "increase_reps":
       return suggestion.kg != null && suggestion.kg > 0
-        ? `Hoy: ${formatKg(suggestion.kg)} kg, buscá ${suggestion.reps} reps en cada serie.`
-        : `Hoy: buscá ${suggestion.reps} reps en cada serie.`;
+        ? `Hoy: buscá ${formatKg(suggestion.kg)} kg × ${suggestion.reps}.`
+        : `Hoy: buscá ${suggestion.reps} reps.`;
     case "increase_time":
-      return `Hoy: buscá ${formatSeconds(suggestion.secs)} por serie.`;
+      return `Hoy: buscá ${formatSeconds(suggestion.secs)}.`;
     case "top_of_range":
       return exercise.kind === "time"
         ? "Llegaste al tope del rango: sumá dificultad."

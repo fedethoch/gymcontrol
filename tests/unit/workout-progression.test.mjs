@@ -13,7 +13,7 @@ import {
   parseRestSeconds,
   planWeeklyProgression,
   resolveExerciseKind,
-  suggestNextTarget,
+  suggestSetTarget,
 } from "../../app/lib/workout-progression.ts";
 
 const set = (kg, reps, done = true, secs = null) => ({ kg, reps, secs, done });
@@ -101,55 +101,28 @@ describe("isValidSet, estimateE1rm y findBestSet", () => {
   });
 });
 
-describe("suggestNextTarget", () => {
+describe("suggestSetTarget", () => {
   const target = { measure: "reps", min: 8, max: 10 };
+  const suggest = (previousSet, extra = {}) =>
+    suggestSetTarget({ target, kind: "reps", previousSet, loadStep: 2.5, ...extra });
 
-  it("sube la carga cuando todas las series llegaron al tope", () => {
-    assert.deepEqual(
-      suggestNextTarget({
-        target,
-        kind: "reps",
-        previousSets: [set(40, 10), set(40, 10), set(40, 10)],
-        plannedSeries: 3,
-        loadStep: getLoadStep("Barra"),
-      }),
-      { kind: "increase_load", kg: 42.5, reps: 8 },
-    );
+  it("sube la carga cuando la serie llegó al tope", () => {
+    assert.deepEqual(suggest(set(40, 10), { loadStep: getLoadStep("Barra") }), { kind: "increase_load", kg: 42.5, reps: 8 });
   });
 
-  it("pide una rep más en la serie más floja si no llegó al tope", () => {
-    assert.deepEqual(
-      suggestNextTarget({
-        target,
-        kind: "reps",
-        previousSets: [set(40, 10), set(40, 9), set(40, 7)],
-        plannedSeries: 3,
-        loadStep: 2.5,
-      }),
-      { kind: "increase_reps", kg: 40, reps: 8 },
-    );
+  it("pide una rep más si la serie no llegó al tope", () => {
+    assert.deepEqual(suggest(set(40, 9)), { kind: "increase_reps", kg: 40, reps: 10 });
   });
 
-  it("no sube carga si faltaron series del plan o hubo series sin completar", () => {
-    assert.equal(
-      suggestNextTarget({
-        target,
-        kind: "reps",
-        previousSets: [set(40, 10), set(40, 10), set(40, 10, false)],
-        plannedSeries: 3,
-        loadStep: 2.5,
-      })?.kind,
-      "increase_reps",
-    );
+  it("debajo del rango apunta al mínimo", () => {
+    assert.deepEqual(suggest(set(40, 5)), { kind: "increase_reps", kg: 40, reps: 8 });
   });
 
   it("en peso corporal avisa el tope en vez de inventar carga", () => {
     assert.deepEqual(
-      suggestNextTarget({
+      suggest(set(null, 12), {
         target: { measure: "reps", min: 6, max: 12 },
         kind: "bodyweight",
-        previousSets: [set(null, 12), set(null, 12)],
-        plannedSeries: 2,
         loadStep: getLoadStep("Peso corporal"),
       }),
       { kind: "top_of_range" },
@@ -159,34 +132,18 @@ describe("suggestNextTarget", () => {
   it("en tiempo progresa en segundos", () => {
     const timeTarget = { measure: "seconds", min: 30, max: 45 };
 
-    assert.deepEqual(
-      suggestNextTarget({
-        target: timeTarget,
-        kind: "time",
-        previousSets: [set(null, null, true, 35), set(null, null, true, 30)],
-        plannedSeries: 2,
-        loadStep: null,
-      }),
-      { kind: "increase_time", secs: 35 },
-    );
-    assert.deepEqual(
-      suggestNextTarget({
-        target: timeTarget,
-        kind: "time",
-        previousSets: [set(null, null, true, 45), set(null, null, true, 50)],
-        plannedSeries: 2,
-        loadStep: null,
-      }),
-      { kind: "top_of_range" },
-    );
+    assert.deepEqual(suggest(set(null, null, true, 30), { target: timeTarget, kind: "time", loadStep: null }), {
+      kind: "increase_time",
+      secs: 35,
+    });
+    assert.deepEqual(suggest(set(null, null, true, 45), { target: timeTarget, kind: "time", loadStep: null }), {
+      kind: "top_of_range",
+    });
   });
 
-  it("no sugiere sin datos válidos previos", () => {
-    assert.equal(suggestNextTarget({ target, kind: "reps", previousSets: [], plannedSeries: 3, loadStep: 2.5 }), null);
-    assert.equal(
-      suggestNextTarget({ target, kind: "reps", previousSets: [set(40, 10, false)], plannedSeries: 3, loadStep: 2.5 }),
-      null,
-    );
+  it("no sugiere sin una serie válida previa", () => {
+    assert.equal(suggest(null), null);
+    assert.equal(suggest(set(40, 10, false)), null);
   });
 });
 
@@ -233,18 +190,27 @@ describe("planWeeklyProgression", () => {
   const session = (trainingDate, ...sets) => ({ trainingDate, sets });
   const plan = (history, extra = {}) =>
     planWeeklyProgression({ history, weekStart, target, kind: "reps", plannedSeries: 3, loadStep: 2.5, ...extra });
+  const suggestions = (plans) => plans.map((entry) => entry.suggestion);
 
-  it("primera vez en la semana: progresa sobre la semana pasada", () => {
-    const history = [session("2026-09-19", set(40, 9), set(40, 9), set(40, 8))];
-    assert.deepEqual(plan(history), { phase: "progress", suggestion: { kind: "increase_reps", kg: 40, reps: 9 } });
+  it("primera vez en la semana: cada serie progresa sobre la suya de la semana pasada", () => {
+    const history = [session("2026-09-19", set(40, 10), set(40, 9), set(40, 8))];
+    assert.deepEqual(plan(history), [
+      { phase: "progress", suggestion: { kind: "increase_load", kg: 42.5, reps: 8 } },
+      { phase: "progress", suggestion: { kind: "increase_reps", kg: 40, reps: 10 } },
+      { phase: "progress", suggestion: { kind: "increase_reps", kg: 40, reps: 9 } },
+    ]);
   });
 
-  it("progresa sobre la mejor sesión de la semana pasada, no sobre la última", () => {
+  it("cada serie progresa sobre su mejor marca de la semana pasada", () => {
     const history = [
-      session("2026-09-19", set(40, 8), set(40, 8), set(40, 7)),
-      session("2026-09-14", set(40, 10), set(40, 10), set(40, 10)),
+      session("2026-09-19", set(40, 10), set(40, 8), set(40, 7)),
+      session("2026-09-14", set(40, 9), set(40, 9), set(40, 8)),
     ];
-    assert.deepEqual(plan(history).suggestion, { kind: "increase_load", kg: 42.5, reps: 8 });
+    assert.deepEqual(suggestions(plan(history)), [
+      { kind: "increase_load", kg: 42.5, reps: 8 },
+      { kind: "increase_reps", kg: 40, reps: 10 },
+      { kind: "increase_reps", kg: 40, reps: 9 },
+    ]);
   });
 
   it("si se saltó una semana, usa la última semana entrenada", () => {
@@ -252,45 +218,62 @@ describe("planWeeklyProgression", () => {
       session("2026-09-08", set(40, 10), set(40, 10), set(40, 10)),
       session("2026-09-01", set(50, 10), set(50, 10), set(50, 10)),
     ];
-    assert.deepEqual(plan(history).suggestion, { kind: "increase_load", kg: 42.5, reps: 8 });
+    assert.deepEqual(plan(history)[0].suggestion, { kind: "increase_load", kg: 42.5, reps: 8 });
   });
 
-  it("segunda vez en la semana con el objetivo logrado: reafirma la marca", () => {
+  it("si el plan tiene más series que la sesión, las nuevas parten de la última registrada", () => {
+    const history = [session("2026-09-19", set(40, 9), set(40, 8))];
+    assert.deepEqual(plan(history)[2].suggestion, { kind: "increase_reps", kg: 40, reps: 9 });
+  });
+
+  it("segunda vez en la semana: reafirma las series logradas y reintenta las otras", () => {
     const history = [
-      session("2026-09-21", set(42.5, 9), set(42.5, 8), set(42.5, 8)),
-      session("2026-09-19", set(40, 10), set(40, 10), set(40, 10)),
+      session("2026-09-21", set(42.5, 9), set(40, 9), set(40, 10)),
+      session("2026-09-19", set(40, 10), set(40, 9), set(40, 8)),
     ];
-    assert.deepEqual(plan(history, { weekStart: "2026-09-21" }), {
-      phase: "hold",
-      suggestion: { kind: "hold", kg: 42.5, reps: 8 },
-    });
+    assert.deepEqual(plan(history), [
+      { phase: "hold", suggestion: { kind: "hold", kg: 42.5, reps: 9 } },
+      { phase: "retry", suggestion: { kind: "increase_reps", kg: 40, reps: 10 } },
+      { phase: "hold", suggestion: { kind: "hold", kg: 40, reps: 10 } },
+    ]);
   });
 
-  it("segunda vez en la semana sin lograr el objetivo: lo reintenta", () => {
+  it("una serie que no se registró esta semana se reintenta", () => {
     const history = [
-      session("2026-09-21", set(42.5, 8), set(42.5, 7), set(42.5, 6)),
-      session("2026-09-19", set(40, 10), set(40, 10), set(40, 10)),
+      session("2026-09-21", set(42.5, 8), set(40, 10)),
+      session("2026-09-19", set(40, 10), set(40, 9), set(40, 8)),
     ];
-    assert.deepEqual(plan(history), { phase: "retry", suggestion: { kind: "increase_load", kg: 42.5, reps: 8 } });
+    assert.equal(plan(history)[2].phase, "retry");
   });
 
-  it("la primera semana, la segunda sesión reafirma la primera", () => {
+  it("la primera semana, la segunda sesión reafirma cada serie de la primera", () => {
     const history = [session("2026-09-21", set(40, 9), set(40, 8), set(40, 8))];
-    assert.deepEqual(plan(history), { phase: "hold", suggestion: { kind: "hold", kg: 40, reps: 8 } });
+    assert.deepEqual(suggestions(plan(history)), [
+      { kind: "hold", kg: 40, reps: 9 },
+      { kind: "hold", kg: 40, reps: 8 },
+      { kind: "hold", kg: 40, reps: 8 },
+    ]);
   });
 
-  it("en tiempo reafirma el tiempo más corto", () => {
+  it("en tiempo reafirma el tiempo de cada serie", () => {
     const history = [
       session("2026-09-22", set(null, null, true, 50), set(null, null, true, 45)),
       session("2026-09-15", set(null, null, true, 40), set(null, null, true, 40)),
     ];
     assert.deepEqual(
       plan(history, { target: { measure: "seconds", min: 30, max: 60 }, kind: "time", plannedSeries: 2 }),
-      { phase: "hold", suggestion: { kind: "hold_time", secs: 45 } },
+      [
+        { phase: "hold", suggestion: { kind: "hold_time", secs: 50 } },
+        { phase: "hold", suggestion: { kind: "hold_time", secs: 45 } },
+      ],
     );
   });
 
   it("sin historial no sugiere nada", () => {
-    assert.deepEqual(plan([]), { phase: "progress", suggestion: null });
+    assert.deepEqual(plan([]), [
+      { phase: "progress", suggestion: null },
+      { phase: "progress", suggestion: null },
+      { phase: "progress", suggestion: null },
+    ]);
   });
 });

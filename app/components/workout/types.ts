@@ -1,6 +1,6 @@
 import type { ExerciseDetail } from "@/app/components/shared/ExerciseDetailModal";
 import type { DraftSet, ExerciseDraft, ExercisePlan } from "@/app/lib/day-workout";
-import type { LoggedSet, WeeklyPlan } from "@/app/lib/workout-progression";
+import type { LoggedSet, SetPlan } from "@/app/lib/workout-progression";
 import type { ExerciseHistoryEntry } from "@/app/lib/workout-tracking";
 
 /** Un ejercicio del día tal como llega del server: plan, ficha, lo guardado y el historial. */
@@ -11,8 +11,8 @@ export type DayExercise = ExercisePlan & {
   rest: string;
   saved: { id: string; sets: LoggedSet[]; rev: number } | null;
   history: ExerciseHistoryEntry[];
-  /** Objetivo de hoy según la progresión semanal (ver `planWeeklyProgression`). */
-  progression: WeeklyPlan;
+  /** Objetivo de hoy por serie según la progresión semanal (ver `planWeeklyProgression`). */
+  progression: SetPlan[];
 };
 
 /** Handlers del registro: los dos árboles (mobile y desktop) usan los mismos. */

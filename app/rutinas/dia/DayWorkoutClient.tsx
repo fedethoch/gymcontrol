@@ -28,6 +28,7 @@ import { cn } from "@/app/lib/utils";
 import {
   buildPlaceholder,
   countValidDrafts,
+  currentSetIndex,
   describeSuggestion,
   formatCompactSet,
   nextPendingExercise,
@@ -45,8 +46,6 @@ import {
   parsePlanTarget,
   parseRestSeconds,
   type PlanTarget,
-  type Suggestion,
-  type WeeklyPhase,
 } from "@/app/lib/workout-progression";
 import {
   enqueueFinish,
@@ -490,7 +489,6 @@ function ExerciseCard({
 }) {
   const target = parsePlanTarget(exercise.target);
   const previous = exercise.history[0] ?? null;
-  const { suggestion, phase } = exercise.progression;
   const validCount = countValidDrafts(draft, exercise);
   const isDone = validCount >= exercise.series;
   const factor = timeFactor(exercise);
@@ -543,8 +541,7 @@ function ExerciseCard({
       {expanded ? (
         <div className="grid gap-3 border-t border-[var(--border)] px-4 pb-4 pt-3">
           <SuggestionLine
-            suggestion={suggestion}
-            phase={phase}
+            setIndex={currentSetIndex(draft, exercise)}
             target={target}
             exercise={exercise}
             hasHistory={Boolean(previous)}
@@ -575,7 +572,12 @@ function ExerciseCard({
 
             {draft.sets.map((set, index) => {
               const previousSet = previous?.sets[index] ?? null;
-              const placeholder = buildPlaceholder({ exercise, suggestion, target, previousSet });
+              const placeholder = buildPlaceholder({
+                exercise,
+                suggestion: exercise.progression[index]?.suggestion ?? null,
+                target,
+                previousSet,
+              });
 
               return (
                 <div
@@ -664,27 +666,33 @@ function ExerciseCard({
   );
 }
 
+/** Objetivo de la próxima serie a cargar: en desktop se ven todas las series juntas, así que nombra cuál es. */
 function SuggestionLine({
-  suggestion,
-  phase,
+  setIndex,
   target,
   exercise,
   hasHistory,
 }: {
-  suggestion: Suggestion | null;
-  phase: WeeklyPhase;
+  setIndex: number;
   target: PlanTarget | null;
   exercise: DayExercise;
   hasHistory: boolean;
 }) {
-  const text = describeSuggestion({ suggestion, phase, target, exercise, hasHistory });
+  const plan = exercise.progression[setIndex];
+  const text = describeSuggestion({
+    suggestion: plan?.suggestion ?? null,
+    phase: plan?.phase,
+    target,
+    exercise,
+    hasHistory,
+  });
 
   if (!text) return null;
 
   return (
     <p className="flex items-start gap-2 text-[13px] leading-5 text-[var(--foreground)]">
       <TrendingUp aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-[var(--accent-bright)]" />
-      {text}
+      {hasHistory ? `Serie ${setIndex + 1} · ${text}` : text}
     </p>
   );
 }

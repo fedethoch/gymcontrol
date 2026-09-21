@@ -207,7 +207,7 @@ describe("placeholders y formato", () => {
     const target = { measure: "reps", min: 8, max: 10 };
     assert.equal(
       describeSuggestion({ suggestion: { kind: "hold", kg: 42.5, reps: 8 }, phase: "hold", target, exercise: press, hasHistory: true }),
-      "Reafirmá tu marca: 42.5 kg × 8 por serie.",
+      "Reafirmá tu marca: 42.5 kg × 8.",
     );
     assert.equal(
       describeSuggestion({
@@ -217,7 +217,7 @@ describe("placeholders y formato", () => {
         exercise: press,
         hasHistory: true,
       }),
-      "Otra chance: 42.5 kg × 8 por serie.",
+      "Otra chance: 42.5 kg × 8.",
     );
     assert.deepEqual(
       buildPlaceholder({ exercise: press, suggestion: { kind: "hold", kg: 42.5, reps: 8 }, target, previousSet: null }),

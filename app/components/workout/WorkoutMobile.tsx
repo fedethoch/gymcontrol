@@ -364,11 +364,12 @@ function ExercisePanel({
 }) {
   const target = parsePlanTarget(exercise.target);
   const previous = exercise.history[0] ?? null;
-  const { suggestion, phase } = exercise.progression;
   const index = clampSet(
     selectedSet ?? currentSetIndex(draft, exercise),
     draft.sets.length
   );
+  const suggestion = exercise.progression[index]?.suggestion ?? null;
+  const phase = exercise.progression[index]?.phase;
   const set = draft.sets[index];
   const placeholder = buildPlaceholder({
     exercise,
@@ -425,7 +426,7 @@ function ExercisePanel({
     const done = isValidSet(toLoggedSet(draftSet, exercise));
     const rowPlaceholder = buildPlaceholder({
       exercise,
-      suggestion,
+      suggestion: exercise.progression[rowIndex]?.suggestion ?? null,
       target,
       previousSet: previous?.sets[rowIndex] ?? null,
     });
@@ -540,7 +541,7 @@ function placeholderFor(
 
   return buildPlaceholder({
     exercise,
-    suggestion: exercise.progression.suggestion,
+    suggestion: exercise.progression[index]?.suggestion ?? null,
     target,
     previousSet: previous?.sets[index] ?? null,
   });
