@@ -523,19 +523,6 @@
       "norm_label": "savedroutinelistrow"
     },
     {
-      "label": "ActionResult",
-      "file_type": "code",
-      "source_file": "app/rutinas/actions.ts",
-      "source_location": "L14",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_rutinas_actions_actionresult",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "actionresult"
-    },
-    {
       "label": "FrequentUsage",
       "file_type": "code",
       "source_file": "app/lib/meal-amounts.ts",
@@ -1106,19 +1093,6 @@
       "community": 21,
       "community_name": "WorkoutMobile.tsx",
       "norm_label": "reststate"
-    },
-    {
-      "label": "SyncStatus",
-      "file_type": "code",
-      "source_file": "app/lib/workout-sync-queue.ts",
-      "source_location": "L35",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_lib_workout_sync_queue_syncstatus",
-      "community": 21,
-      "community_name": "WorkoutMobile.tsx",
-      "norm_label": "syncstatus"
     },
     {
       "label": "SessionComparison",
@@ -2772,6 +2746,19 @@
       "norm_label": "stepoptions"
     },
     {
+      "label": "DaySheet",
+      "file_type": "code",
+      "source_file": "app/components/home/HomeWeekPlanner.tsx",
+      "source_location": "L17",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_components_home_homeweekplanner_daysheet",
+      "community": 319,
+      "community_name": "home-hero.ts",
+      "norm_label": "daysheet"
+    },
+    {
       "label": "HeroAction",
       "file_type": "code",
       "source_file": "app/lib/home-hero.ts",
@@ -2811,6 +2798,19 @@
       "norm_label": "heroinput"
     },
     {
+      "label": "HeroLine",
+      "file_type": "code",
+      "source_file": "app/lib/home-hero.ts",
+      "source_location": "L53",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_lib_home_hero_heroline",
+      "community": 319,
+      "community_name": "home-hero.ts",
+      "norm_label": "heroline"
+    },
+    {
       "label": "HeroNext",
       "file_type": "code",
       "source_file": "app/lib/home-hero.ts",
@@ -2837,6 +2837,19 @@
       "norm_label": "herotitlepart"
     },
     {
+      "label": "HeroView",
+      "file_type": "code",
+      "source_file": "app/lib/home-hero.ts",
+      "source_location": "L60",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_lib_home_hero_heroview",
+      "community": 319,
+      "community_name": "home-hero.ts",
+      "norm_label": "heroview"
+    },
+    {
       "label": "PlannedDay",
       "file_type": "code",
       "source_file": "app/lib/training-schedule.ts",
@@ -2861,6 +2874,19 @@
       "community": 319,
       "community_name": "home-hero.ts",
       "norm_label": "plannedstatus"
+    },
+    {
+      "label": "StripDay",
+      "file_type": "code",
+      "source_file": "app/lib/training-schedule.ts",
+      "source_location": "L42",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_lib_training_schedule_stripday",
+      "community": 319,
+      "community_name": "home-hero.ts",
+      "norm_label": "stripday"
     },
     {
       "label": "HeroState",
@@ -2993,6 +3019,19 @@
       "norm_label": "frequentfoodtile"
     },
     {
+      "label": "ActionResult",
+      "file_type": "code",
+      "source_file": "app/rutinas/actions.ts",
+      "source_location": "L14",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_rutinas_actions_actionresult",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "actionresult"
+    },
+    {
       "label": "RutinasOverviewProps",
       "file_type": "code",
       "source_file": "app/rutinas/RutinasOverview.tsx",
@@ -3002,7 +3041,7 @@
       "_origin": "ast",
       "id": "app_rutinas_rutinasoverview_rutinasoverviewprops",
       "community": 33,
-      "community_name": "RutinasOverview.tsx",
+      "community_name": "requireUser",
       "norm_label": "rutinasoverviewprops"
     },
     {
@@ -3056,6 +3095,19 @@
       "community": 346,
       "community_name": "DayWorkoutClient.tsx",
       "norm_label": "syncevent"
+    },
+    {
+      "label": "SyncStatus",
+      "file_type": "code",
+      "source_file": "app/lib/workout-sync-queue.ts",
+      "source_location": "L35",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_lib_workout_sync_queue_syncstatus",
+      "community": 346,
+      "community_name": "DayWorkoutClient.tsx",
+      "norm_label": "syncstatus"
     },
     {
       "label": "DayWorkoutClientProps",
@@ -3459,19 +3511,6 @@
       "community": 396,
       "community_name": "useProfileForm.ts",
       "norm_label": "macropreset"
-    },
-    {
-      "label": "Macros",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L49",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_lib_nutrition_types_macros",
-      "community": 396,
-      "community_name": "useProfileForm.ts",
-      "norm_label": "macros"
     },
     {
       "label": "ManualTarget",
@@ -4202,32 +4241,6 @@
       "norm_label": "goalview"
     },
     {
-      "label": "PlanSheet",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/PlanRows.tsx",
-      "source_location": "L14",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_components_configuracion_planrows_plansheet",
-      "community": 445,
-      "community_name": "GoalSheet.tsx",
-      "norm_label": "plansheet"
-    },
-    {
-      "label": "Row",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/PlanRows.tsx",
-      "source_location": "L16",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_components_configuracion_planrows_row",
-      "community": 445,
-      "community_name": "GoalSheet.tsx",
-      "norm_label": "row"
-    },
-    {
       "label": "variantInfo",
       "file_type": "code",
       "source_file": "app/lib/nutrition-plan-options.ts",
@@ -4252,6 +4265,19 @@
       "community": 445,
       "community_name": "GoalSheet.tsx",
       "norm_label": "goal"
+    },
+    {
+      "label": "Macros",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L49",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_lib_nutrition_types_macros",
+      "community": 445,
+      "community_name": "GoalSheet.tsx",
+      "norm_label": "macros"
     },
     {
       "label": "ManualTargetFields",
@@ -4852,6 +4878,32 @@
       "norm_label": "recipesort"
     },
     {
+      "label": "PlanSheet",
+      "file_type": "code",
+      "source_file": "app/components/configuracion/PlanRows.tsx",
+      "source_location": "L14",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_components_configuracion_planrows_plansheet",
+      "community": 473,
+      "community_name": "PlanRows.tsx",
+      "norm_label": "plansheet"
+    },
+    {
+      "label": "Row",
+      "file_type": "code",
+      "source_file": "app/components/configuracion/PlanRows.tsx",
+      "source_location": "L16",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_components_configuracion_planrows_row",
+      "community": 473,
+      "community_name": "PlanRows.tsx",
+      "norm_label": "row"
+    },
+    {
       "label": "IExerciseData",
       "file_type": "code",
       "source_file": "app/components/shared/BodyMuscleFigure.tsx",
@@ -4941,71 +4993,6 @@
       "community": 48,
       "community_name": "OptionList.tsx",
       "norm_label": "profilesavestatus"
-    },
-    {
-      "label": "DaySheet",
-      "file_type": "code",
-      "source_file": "app/components/home/HomeWeekPlanner.tsx",
-      "source_location": "L17",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_components_home_homeweekplanner_daysheet",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "daysheet"
-    },
-    {
-      "label": "TrainingDaysChoice",
-      "file_type": "code",
-      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
-      "source_location": "L12",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_components_rutinas_trainingdayssheet_trainingdayschoice",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "trainingdayschoice"
-    },
-    {
-      "label": "HeroLine",
-      "file_type": "code",
-      "source_file": "app/lib/home-hero.ts",
-      "source_location": "L53",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_lib_home_hero_heroline",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "heroline"
-    },
-    {
-      "label": "HeroView",
-      "file_type": "code",
-      "source_file": "app/lib/home-hero.ts",
-      "source_location": "L60",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_lib_home_hero_heroview",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "heroview"
-    },
-    {
-      "label": "StripDay",
-      "file_type": "code",
-      "source_file": "app/lib/training-schedule.ts",
-      "source_location": "L42",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_lib_training_schedule_stripday",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "stripday"
     },
     {
       "label": "CatalogQuery",
@@ -5359,6 +5346,19 @@
       "norm_label": "routinedetailview"
     },
     {
+      "label": "TrainingDaysChoice",
+      "file_type": "code",
+      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
+      "source_location": "L12",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_components_rutinas_trainingdayssheet_trainingdayschoice",
+      "community": 88,
+      "community_name": "[id]/page.tsx",
+      "norm_label": "trainingdayschoice"
+    },
+    {
       "label": "DayLike",
       "file_type": "code",
       "source_file": "app/lib/routine-detail.ts",
@@ -5510,18 +5510,6 @@
       "norm_label": "adminfoodspage()"
     },
     {
-      "label": "AdminRecetasPage()",
-      "file_type": "code",
-      "source_file": "app/admin/recetas/page.tsx",
-      "source_location": "L5",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_admin_recetas_page_adminrecetaspage",
-      "community": 10,
-      "community_name": "foods.ts",
-      "norm_label": "adminrecetaspage()"
-    },
-    {
       "label": "createAnonClient()",
       "file_type": "code",
       "source_file": "app/lib/foods.ts",
@@ -5580,30 +5568,6 @@
       "community": 10,
       "community_name": "foods.ts",
       "norm_label": "mapfood()"
-    },
-    {
-      "label": "formatDateLabel()",
-      "file_type": "code",
-      "source_file": "app/lib/recipes.ts",
-      "source_location": "L201",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_recipes_formatdatelabel",
-      "community": 10,
-      "community_name": "foods.ts",
-      "norm_label": "formatdatelabel()"
-    },
-    {
-      "label": "listAdminRecipes()",
-      "file_type": "code",
-      "source_file": "app/lib/recipes.ts",
-      "source_location": "L67",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_recipes_listadminrecipes",
-      "community": 10,
-      "community_name": "foods.ts",
-      "norm_label": "listadminrecipes()"
     },
     {
       "label": "DayClosedPanel()",
@@ -5918,30 +5882,6 @@
       "norm_label": "saveroutinefromcatalogaction()"
     },
     {
-      "label": "DashboardLayout()",
-      "file_type": "code",
-      "source_file": "app/dashboard/layout.tsx",
-      "source_location": "L5",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_dashboard_layout_dashboardlayout",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "dashboardlayout()"
-    },
-    {
-      "label": "requireUser()",
-      "file_type": "code",
-      "source_file": "app/lib/auth.ts",
-      "source_location": "L109",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_auth_requireuser",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "requireuser()"
-    },
-    {
       "label": "activateIfRequested()",
       "file_type": "code",
       "source_file": "app/lib/saved-routines.ts",
@@ -5952,30 +5892,6 @@
       "community": 15,
       "community_name": "createSupabaseServerClient",
       "norm_label": "activateifrequested()"
-    },
-    {
-      "label": "deactivateSavedRoutineForUser()",
-      "file_type": "code",
-      "source_file": "app/lib/saved-routines.ts",
-      "source_location": "L497",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_saved_routines_deactivatesavedroutineforuser",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "deactivatesavedroutineforuser()"
-    },
-    {
-      "label": "deleteSavedRoutineForUser()",
-      "file_type": "code",
-      "source_file": "app/lib/saved-routines.ts",
-      "source_location": "L591",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_saved_routines_deletesavedroutineforuser",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "deletesavedroutineforuser()"
     },
     {
       "label": "formatDateLabel()",
@@ -6134,16 +6050,16 @@
       "norm_label": "unwraptemplate()"
     },
     {
-      "label": "updateTrainingWeekdaysForUser()",
+      "label": "weekdaysForRoutine()",
       "file_type": "code",
       "source_file": "app/lib/saved-routines.ts",
-      "source_location": "L559",
+      "source_location": "L385",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_lib_saved_routines_updatetrainingweekdaysforuser",
+      "id": "app_lib_saved_routines_weekdaysforroutine",
       "community": 15,
       "community_name": "createSupabaseServerClient",
-      "norm_label": "updatetrainingweekdaysforuser()"
+      "norm_label": "weekdaysforroutine()"
     },
     {
       "label": "createSupabaseServerClient()",
@@ -6158,148 +6074,40 @@
       "norm_label": "createsupabaseserverclient()"
     },
     {
-      "label": "activateSavedRoutineAction()",
+      "label": "parseWeekdays()",
       "file_type": "code",
-      "source_file": "app/rutinas/actions.ts",
-      "source_location": "L45",
+      "source_file": "app/lib/training-schedule.ts",
+      "source_location": "L83",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_rutinas_actions_activatesavedroutineaction",
+      "id": "app_lib_training_schedule_parseweekdays",
       "community": 15,
       "community_name": "createSupabaseServerClient",
-      "norm_label": "activatesavedroutineaction()"
+      "norm_label": "parseweekdays()"
     },
     {
-      "label": "deactivateSavedRoutineAction()",
+      "label": "resolveSchedule()",
       "file_type": "code",
-      "source_file": "app/rutinas/actions.ts",
-      "source_location": "L75",
+      "source_file": "app/lib/training-schedule.ts",
+      "source_location": "L93",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_rutinas_actions_deactivatesavedroutineaction",
+      "id": "app_lib_training_schedule_resolveschedule",
       "community": 15,
       "community_name": "createSupabaseServerClient",
-      "norm_label": "deactivatesavedroutineaction()"
+      "norm_label": "resolveschedule()"
     },
     {
-      "label": "deleteSavedRoutineAction()",
+      "label": "scheduleNeedsChoice()",
       "file_type": "code",
-      "source_file": "app/rutinas/actions.ts",
-      "source_location": "L84",
+      "source_file": "app/lib/training-schedule.ts",
+      "source_location": "L78",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_rutinas_actions_deletesavedroutineaction",
+      "id": "app_lib_training_schedule_scheduleneedschoice",
       "community": 15,
       "community_name": "createSupabaseServerClient",
-      "norm_label": "deletesavedroutineaction()"
-    },
-    {
-      "label": "renameSavedRoutineAction()",
-      "file_type": "code",
-      "source_file": "app/rutinas/actions.ts",
-      "source_location": "L16",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_rutinas_actions_renamesavedroutineaction",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "renamesavedroutineaction()"
-    },
-    {
-      "label": "runSelectionChange()",
-      "file_type": "code",
-      "source_file": "app/rutinas/actions.ts",
-      "source_location": "L96",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_rutinas_actions_runselectionchange",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "runselectionchange()"
-    },
-    {
-      "label": "updateTrainingWeekdaysAction()",
-      "file_type": "code",
-      "source_file": "app/rutinas/actions.ts",
-      "source_location": "L60",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_rutinas_actions_updatetrainingweekdaysaction",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "updatetrainingweekdaysaction()"
-    },
-    {
-      "label": "MyRoutinesList()",
-      "file_type": "code",
-      "source_file": "app/rutinas/MyRoutinesList.tsx",
-      "source_location": "L45",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_rutinas_myroutineslist_myroutineslist",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "myroutineslist()"
-    },
-    {
-      "label": "activate()",
-      "file_type": "code",
-      "source_file": "app/rutinas/MyRoutinesList.tsx",
-      "source_location": "L56",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_rutinas_myroutineslist_myroutineslist_activate",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "activate()"
-    },
-    {
-      "label": "confirmRename()",
-      "file_type": "code",
-      "source_file": "app/rutinas/MyRoutinesList.tsx",
-      "source_location": "L106",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_rutinas_myroutineslist_myroutineslist_confirmrename",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "confirmrename()"
-    },
-    {
-      "label": "run()",
-      "file_type": "code",
-      "source_file": "app/rutinas/MyRoutinesList.tsx",
-      "source_location": "L67",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_rutinas_myroutineslist_myroutineslist_run",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "run()"
-    },
-    {
-      "label": "startRename()",
-      "file_type": "code",
-      "source_file": "app/rutinas/MyRoutinesList.tsx",
-      "source_location": "L100",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_rutinas_myroutineslist_myroutineslist_startrename",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "startrename()"
-    },
-    {
-      "label": "confirmEdit()",
-      "file_type": "code",
-      "source_file": "app/rutinas/RutinasOverview.tsx",
-      "source_location": "L75",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_rutinas_rutinasoverview_rutinasoverview_confirmedit",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "confirmedit()"
+      "norm_label": "scheduleneedschoice()"
     },
     {
       "label": "resolveAfterMealId()",
@@ -8033,7 +7841,7 @@
       "label": "activeSetDone()",
       "file_type": "code",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L520",
+      "source_location": "L523",
       "_callable": true,
       "_origin": "ast",
       "id": "app_components_workout_workoutmobile_activesetdone",
@@ -8045,7 +7853,7 @@
       "label": "activeSetIndex()",
       "file_type": "code",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L508",
+      "source_location": "L511",
       "_callable": true,
       "_origin": "ast",
       "id": "app_components_workout_workoutmobile_activesetindex",
@@ -8057,7 +7865,7 @@
       "label": "clampSet()",
       "file_type": "code",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L504",
+      "source_location": "L507",
       "_callable": true,
       "_origin": "ast",
       "id": "app_components_workout_workoutmobile_clampset",
@@ -8069,7 +7877,7 @@
       "label": "describeSet()",
       "file_type": "code",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L559",
+      "source_location": "L562",
       "_callable": true,
       "_origin": "ast",
       "id": "app_components_workout_workoutmobile_describeset",
@@ -8081,7 +7889,7 @@
       "label": "ExercisePanel()",
       "file_type": "code",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L343",
+      "source_location": "L346",
       "_callable": true,
       "_origin": "ast",
       "id": "app_components_workout_workoutmobile_exercisepanel",
@@ -8093,7 +7901,7 @@
       "label": "nextSetLabel()",
       "file_type": "code",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L547",
+      "source_location": "L550",
       "_callable": true,
       "_origin": "ast",
       "id": "app_components_workout_workoutmobile_nextsetlabel",
@@ -8105,7 +7913,7 @@
       "label": "placeholderFor()",
       "file_type": "code",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L530",
+      "source_location": "L533",
       "_callable": true,
       "_origin": "ast",
       "id": "app_components_workout_workoutmobile_placeholderfor",
@@ -8172,30 +7980,6 @@
       "community": 21,
       "community_name": "WorkoutMobile.tsx",
       "norm_label": "restcard()"
-    },
-    {
-      "label": "SyncIndicator()",
-      "file_type": "code",
-      "source_file": "app/components/workout/WorkoutTopBar.tsx",
-      "source_location": "L87",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_workout_workouttopbar_syncindicator",
-      "community": 21,
-      "community_name": "WorkoutMobile.tsx",
-      "norm_label": "syncindicator()"
-    },
-    {
-      "label": "WorkoutTopBar()",
-      "file_type": "code",
-      "source_file": "app/components/workout/WorkoutTopBar.tsx",
-      "source_location": "L9",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_workout_workouttopbar_workouttopbar",
-      "community": 21,
-      "community_name": "WorkoutMobile.tsx",
-      "norm_label": "workouttopbar()"
     },
     {
       "label": "buildPlaceholder()",
@@ -8268,18 +8052,6 @@
       "community": 21,
       "community_name": "WorkoutMobile.tsx",
       "norm_label": "currentsetindex()"
-    },
-    {
-      "label": "describeSuggestion()",
-      "file_type": "code",
-      "source_file": "app/lib/day-workout.ts",
-      "source_location": "L156",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_day_workout_describesuggestion",
-      "community": 21,
-      "community_name": "WorkoutMobile.tsx",
-      "norm_label": "describesuggestion()"
     },
     {
       "label": "exerciseFractions()",
@@ -8400,18 +8172,6 @@
       "community": 21,
       "community_name": "WorkoutMobile.tsx",
       "norm_label": "exercisecard()"
-    },
-    {
-      "label": "SuggestionLine()",
-      "file_type": "code",
-      "source_file": "app/rutinas/dia/DayWorkoutClient.tsx",
-      "source_location": "L667",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_rutinas_dia_dayworkoutclient_suggestionline",
-      "community": 21,
-      "community_name": "WorkoutMobile.tsx",
-      "norm_label": "suggestionline()"
     },
     {
       "label": "empty()",
@@ -11042,18 +10802,6 @@
       "norm_label": "dropdownmenutrigger()"
     },
     {
-      "label": "DietView()",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/GoalSheet.tsx",
-      "source_location": "L290",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_configuracion_goalsheet_dietview",
-      "community": 294,
-      "community_name": "nutrition-plan-options.ts",
-      "norm_label": "dietview()"
-    },
-    {
       "label": "MacroSliders()",
       "file_type": "code",
       "source_file": "app/components/configuracion/MacroSliders.tsx",
@@ -11162,16 +10910,16 @@
       "norm_label": "referenceweightkg()"
     },
     {
-      "label": "resolveVariant()",
+      "label": "roundPct()",
       "file_type": "code",
       "source_file": "app/lib/nutrition-plan-options.ts",
-      "source_location": "L56",
+      "source_location": "L73",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_lib_nutrition_plan_options_resolvevariant",
+      "id": "app_lib_nutrition_plan_options_roundpct",
       "community": 294,
       "community_name": "nutrition-plan-options.ts",
-      "norm_label": "resolvevariant()"
+      "norm_label": "roundpct()"
     },
     {
       "label": "settleMacros()",
@@ -11184,18 +10932,6 @@
       "community": 294,
       "community_name": "nutrition-plan-options.ts",
       "norm_label": "settlemacros()"
-    },
-    {
-      "label": "suggestedPreset()",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-plan-options.ts",
-      "source_location": "L100",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_nutrition_plan_options_suggestedpreset",
-      "community": 294,
-      "community_name": "nutrition-plan-options.ts",
-      "norm_label": "suggestedpreset()"
     },
     {
       "label": "suggestsKeto()",
@@ -13106,6 +12842,66 @@
       "norm_label": "draft()"
     },
     {
+      "label": "HomeWeekStrip()",
+      "file_type": "code",
+      "source_file": "app/components/home/HomeWeekStrip.tsx",
+      "source_location": "L11",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_home_homeweekstrip_homeweekstrip",
+      "community": 319,
+      "community_name": "home-hero.ts",
+      "norm_label": "homeweekstrip()"
+    },
+    {
+      "label": "onKeyDown()",
+      "file_type": "code",
+      "source_file": "app/components/home/HomeWeekStrip.tsx",
+      "source_location": "L22",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_home_homeweekstrip_homeweekstrip_onkeydown",
+      "community": 319,
+      "community_name": "home-hero.ts",
+      "norm_label": "onkeydown()"
+    },
+    {
+      "label": "HeroLineView()",
+      "file_type": "code",
+      "source_file": "app/components/home/TodayHero.tsx",
+      "source_location": "L137",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_home_todayhero_herolineview",
+      "community": 319,
+      "community_name": "home-hero.ts",
+      "norm_label": "herolineview()"
+    },
+    {
+      "label": "titleSize()",
+      "file_type": "code",
+      "source_file": "app/components/home/TodayHero.tsx",
+      "source_location": "L18",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_home_todayhero_titlesize",
+      "community": 319,
+      "community_name": "home-hero.ts",
+      "norm_label": "titlesize()"
+    },
+    {
+      "label": "TodayHero()",
+      "file_type": "code",
+      "source_file": "app/components/home/TodayHero.tsx",
+      "source_location": "L29",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_home_todayhero_todayhero",
+      "community": 319,
+      "community_name": "home-hero.ts",
+      "norm_label": "todayhero()"
+    },
+    {
       "label": "buildHeroView()",
       "file_type": "code",
       "source_file": "app/lib/home-hero.ts",
@@ -13190,18 +12986,6 @@
       "norm_label": "stats()"
     },
     {
-      "label": "weekdaysForRoutine()",
-      "file_type": "code",
-      "source_file": "app/lib/saved-routines.ts",
-      "source_location": "L385",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_saved_routines_weekdaysforroutine",
-      "community": 319,
-      "community_name": "home-hero.ts",
-      "norm_label": "weekdaysforroutine()"
-    },
-    {
       "label": "addDays()",
       "file_type": "code",
       "source_file": "app/lib/training-schedule.ts",
@@ -13238,18 +13022,6 @@
       "norm_label": "isoweekday()"
     },
     {
-      "label": "parseWeekdays()",
-      "file_type": "code",
-      "source_file": "app/lib/training-schedule.ts",
-      "source_location": "L83",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_training_schedule_parseweekdays",
-      "community": 319,
-      "community_name": "home-hero.ts",
-      "norm_label": "parseweekdays()"
-    },
-    {
       "label": "planWeek()",
       "file_type": "code",
       "source_file": "app/lib/training-schedule.ts",
@@ -13272,30 +13044,6 @@
       "community": 319,
       "community_name": "home-hero.ts",
       "norm_label": "relativedaylabel()"
-    },
-    {
-      "label": "resolveSchedule()",
-      "file_type": "code",
-      "source_file": "app/lib/training-schedule.ts",
-      "source_location": "L93",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_training_schedule_resolveschedule",
-      "community": 319,
-      "community_name": "home-hero.ts",
-      "norm_label": "resolveschedule()"
-    },
-    {
-      "label": "scheduleNeedsChoice()",
-      "file_type": "code",
-      "source_file": "app/lib/training-schedule.ts",
-      "source_location": "L78",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_training_schedule_scheduleneedschoice",
-      "community": 319,
-      "community_name": "home-hero.ts",
-      "norm_label": "scheduleneedschoice()"
     },
     {
       "label": "suggestWeekdays()",
@@ -14186,6 +13934,198 @@
       "norm_label": "groupfoodsbycategory()"
     },
     {
+      "label": "DashboardLayout()",
+      "file_type": "code",
+      "source_file": "app/dashboard/layout.tsx",
+      "source_location": "L5",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_dashboard_layout_dashboardlayout",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "dashboardlayout()"
+    },
+    {
+      "label": "requireUser()",
+      "file_type": "code",
+      "source_file": "app/lib/auth.ts",
+      "source_location": "L109",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_lib_auth_requireuser",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "requireuser()"
+    },
+    {
+      "label": "deactivateSavedRoutineForUser()",
+      "file_type": "code",
+      "source_file": "app/lib/saved-routines.ts",
+      "source_location": "L497",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_lib_saved_routines_deactivatesavedroutineforuser",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "deactivatesavedroutineforuser()"
+    },
+    {
+      "label": "deleteSavedRoutineForUser()",
+      "file_type": "code",
+      "source_file": "app/lib/saved-routines.ts",
+      "source_location": "L591",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_lib_saved_routines_deletesavedroutineforuser",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "deletesavedroutineforuser()"
+    },
+    {
+      "label": "updateTrainingWeekdaysForUser()",
+      "file_type": "code",
+      "source_file": "app/lib/saved-routines.ts",
+      "source_location": "L559",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_lib_saved_routines_updatetrainingweekdaysforuser",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "updatetrainingweekdaysforuser()"
+    },
+    {
+      "label": "activateSavedRoutineAction()",
+      "file_type": "code",
+      "source_file": "app/rutinas/actions.ts",
+      "source_location": "L45",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_rutinas_actions_activatesavedroutineaction",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "activatesavedroutineaction()"
+    },
+    {
+      "label": "deactivateSavedRoutineAction()",
+      "file_type": "code",
+      "source_file": "app/rutinas/actions.ts",
+      "source_location": "L75",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_rutinas_actions_deactivatesavedroutineaction",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "deactivatesavedroutineaction()"
+    },
+    {
+      "label": "deleteSavedRoutineAction()",
+      "file_type": "code",
+      "source_file": "app/rutinas/actions.ts",
+      "source_location": "L84",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_rutinas_actions_deletesavedroutineaction",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "deletesavedroutineaction()"
+    },
+    {
+      "label": "renameSavedRoutineAction()",
+      "file_type": "code",
+      "source_file": "app/rutinas/actions.ts",
+      "source_location": "L16",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_rutinas_actions_renamesavedroutineaction",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "renamesavedroutineaction()"
+    },
+    {
+      "label": "runSelectionChange()",
+      "file_type": "code",
+      "source_file": "app/rutinas/actions.ts",
+      "source_location": "L96",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_rutinas_actions_runselectionchange",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "runselectionchange()"
+    },
+    {
+      "label": "updateTrainingWeekdaysAction()",
+      "file_type": "code",
+      "source_file": "app/rutinas/actions.ts",
+      "source_location": "L60",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_rutinas_actions_updatetrainingweekdaysaction",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "updatetrainingweekdaysaction()"
+    },
+    {
+      "label": "MyRoutinesList()",
+      "file_type": "code",
+      "source_file": "app/rutinas/MyRoutinesList.tsx",
+      "source_location": "L45",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_rutinas_myroutineslist_myroutineslist",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "myroutineslist()"
+    },
+    {
+      "label": "activate()",
+      "file_type": "code",
+      "source_file": "app/rutinas/MyRoutinesList.tsx",
+      "source_location": "L56",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_rutinas_myroutineslist_myroutineslist_activate",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "activate()"
+    },
+    {
+      "label": "confirmRename()",
+      "file_type": "code",
+      "source_file": "app/rutinas/MyRoutinesList.tsx",
+      "source_location": "L106",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_rutinas_myroutineslist_myroutineslist_confirmrename",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "confirmrename()"
+    },
+    {
+      "label": "run()",
+      "file_type": "code",
+      "source_file": "app/rutinas/MyRoutinesList.tsx",
+      "source_location": "L67",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_rutinas_myroutineslist_myroutineslist_run",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "run()"
+    },
+    {
+      "label": "startRename()",
+      "file_type": "code",
+      "source_file": "app/rutinas/MyRoutinesList.tsx",
+      "source_location": "L100",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_rutinas_myroutineslist_myroutineslist_startrename",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "startrename()"
+    },
+    {
       "label": "fadeUp()",
       "file_type": "code",
       "source_file": "app/rutinas/RutinasOverview.tsx",
@@ -14194,7 +14134,7 @@
       "_origin": "ast",
       "id": "app_rutinas_rutinasoverview_fadeup",
       "community": 33,
-      "community_name": "RutinasOverview.tsx",
+      "community_name": "requireUser",
       "norm_label": "fadeup()"
     },
     {
@@ -14206,7 +14146,7 @@
       "_origin": "ast",
       "id": "app_rutinas_rutinasoverview_minicard",
       "community": 33,
-      "community_name": "RutinasOverview.tsx",
+      "community_name": "requireUser",
       "norm_label": "minicard()"
     },
     {
@@ -14218,7 +14158,7 @@
       "_origin": "ast",
       "id": "app_rutinas_rutinasoverview_rutinasoverview",
       "community": 33,
-      "community_name": "RutinasOverview.tsx",
+      "community_name": "requireUser",
       "norm_label": "rutinasoverview()"
     },
     {
@@ -14230,8 +14170,20 @@
       "_origin": "ast",
       "id": "app_rutinas_rutinasoverview_rutinasoverview_canceledit",
       "community": 33,
-      "community_name": "RutinasOverview.tsx",
+      "community_name": "requireUser",
       "norm_label": "canceledit()"
+    },
+    {
+      "label": "confirmEdit()",
+      "file_type": "code",
+      "source_file": "app/rutinas/RutinasOverview.tsx",
+      "source_location": "L75",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_rutinas_rutinasoverview_rutinasoverview_confirmedit",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "confirmedit()"
     },
     {
       "label": "openEdit()",
@@ -14242,7 +14194,7 @@
       "_origin": "ast",
       "id": "app_rutinas_rutinasoverview_rutinasoverview_openedit",
       "community": 33,
-      "community_name": "RutinasOverview.tsx",
+      "community_name": "requireUser",
       "norm_label": "openedit()"
     },
     {
@@ -14616,6 +14568,42 @@
       "community": 346,
       "community_name": "DayWorkoutClient.tsx",
       "norm_label": "workoutsyncrunner()"
+    },
+    {
+      "label": "SyncIndicator()",
+      "file_type": "code",
+      "source_file": "app/components/workout/WorkoutTopBar.tsx",
+      "source_location": "L87",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_workout_workouttopbar_syncindicator",
+      "community": 346,
+      "community_name": "DayWorkoutClient.tsx",
+      "norm_label": "syncindicator()"
+    },
+    {
+      "label": "WorkoutTopBar()",
+      "file_type": "code",
+      "source_file": "app/components/workout/WorkoutTopBar.tsx",
+      "source_location": "L9",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_workout_workouttopbar_workouttopbar",
+      "community": 346,
+      "community_name": "DayWorkoutClient.tsx",
+      "norm_label": "workouttopbar()"
+    },
+    {
+      "label": "describeSuggestion()",
+      "file_type": "code",
+      "source_file": "app/lib/day-workout.ts",
+      "source_location": "L156",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_lib_day_workout_describesuggestion",
+      "community": 346,
+      "community_name": "DayWorkoutClient.tsx",
+      "norm_label": "describesuggestion()"
     },
     {
       "label": "nextPendingExercise()",
@@ -15036,6 +15024,18 @@
       "community": 346,
       "community_name": "DayWorkoutClient.tsx",
       "norm_label": "subscribenothing()"
+    },
+    {
+      "label": "SuggestionLine()",
+      "file_type": "code",
+      "source_file": "app/rutinas/dia/DayWorkoutClient.tsx",
+      "source_location": "L667",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_rutinas_dia_dayworkoutclient_suggestionline",
+      "community": 346,
+      "community_name": "DayWorkoutClient.tsx",
+      "norm_label": "suggestionline()"
     },
     {
       "label": "SyncIndicator()",
@@ -16176,18 +16176,6 @@
       "community": 396,
       "community_name": "useProfileForm.ts",
       "norm_label": "roundmacros()"
-    },
-    {
-      "label": "roundPct()",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-plan-options.ts",
-      "source_location": "L73",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_nutrition_plan_options_roundpct",
-      "community": 396,
-      "community_name": "useProfileForm.ts",
-      "norm_label": "roundpct()"
     },
     {
       "label": "getNutritionProfile()",
@@ -17450,6 +17438,18 @@
       "norm_label": "filtertrigger()"
     },
     {
+      "label": "AdminRecetasPage()",
+      "file_type": "code",
+      "source_file": "app/admin/recetas/page.tsx",
+      "source_location": "L5",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_admin_recetas_page_adminrecetaspage",
+      "community": 430,
+      "community_name": "recipes.ts",
+      "norm_label": "adminrecetaspage()"
+    },
+    {
       "label": "mapMealLogItem()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
@@ -17544,6 +17544,30 @@
       "community": 430,
       "community_name": "recipes.ts",
       "norm_label": "recipetotals()"
+    },
+    {
+      "label": "formatDateLabel()",
+      "file_type": "code",
+      "source_file": "app/lib/recipes.ts",
+      "source_location": "L201",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_lib_recipes_formatdatelabel",
+      "community": 430,
+      "community_name": "recipes.ts",
+      "norm_label": "formatdatelabel()"
+    },
+    {
+      "label": "listAdminRecipes()",
+      "file_type": "code",
+      "source_file": "app/lib/recipes.ts",
+      "source_location": "L67",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_lib_recipes_listadminrecipes",
+      "community": 430,
+      "community_name": "recipes.ts",
+      "norm_label": "listadminrecipes()"
     },
     {
       "label": "mapRecipe()",
@@ -18374,18 +18398,6 @@
       "norm_label": "updateitem()"
     },
     {
-      "label": "ActivityMeter()",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/ActivityMeter.tsx",
-      "source_location": "L6",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_configuracion_activitymeter_activitymeter",
-      "community": 445,
-      "community_name": "GoalSheet.tsx",
-      "norm_label": "activitymeter()"
-    },
-    {
       "label": "dietSummary()",
       "file_type": "code",
       "source_file": "app/components/configuracion/GoalSheet.tsx",
@@ -18396,6 +18408,18 @@
       "community": 445,
       "community_name": "GoalSheet.tsx",
       "norm_label": "dietsummary()"
+    },
+    {
+      "label": "DietView()",
+      "file_type": "code",
+      "source_file": "app/components/configuracion/GoalSheet.tsx",
+      "source_location": "L290",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_configuracion_goalsheet_dietview",
+      "community": 445,
+      "community_name": "GoalSheet.tsx",
+      "norm_label": "dietview()"
     },
     {
       "label": "formatKcalDelta()",
@@ -18602,18 +18626,6 @@
       "norm_label": "planhero()"
     },
     {
-      "label": "BmrFloorNote()",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/PlanRows.tsx",
-      "source_location": "L117",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_configuracion_planrows_bmrfloornote",
-      "community": 445,
-      "community_name": "GoalSheet.tsx",
-      "norm_label": "bmrfloornote()"
-    },
-    {
       "label": "PlanRows()",
       "file_type": "code",
       "source_file": "app/components/configuracion/PlanRows.tsx",
@@ -18660,6 +18672,30 @@
       "community": 445,
       "community_name": "GoalSheet.tsx",
       "norm_label": "recommendedvariant()"
+    },
+    {
+      "label": "resolveVariant()",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-plan-options.ts",
+      "source_location": "L56",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_lib_nutrition_plan_options_resolvevariant",
+      "community": 445,
+      "community_name": "GoalSheet.tsx",
+      "norm_label": "resolvevariant()"
+    },
+    {
+      "label": "suggestedPreset()",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-plan-options.ts",
+      "source_location": "L100",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_lib_nutrition_plan_options_suggestedpreset",
+      "community": 445,
+      "community_name": "GoalSheet.tsx",
+      "norm_label": "suggestedpreset()"
     },
     {
       "label": "activityLevelIndex()",
@@ -20434,8 +20470,32 @@
       "_origin": "ast",
       "id": "app_components_configuracion_accountrows_accountrows",
       "community": 473,
-      "community_name": "HomeSectionHeader.tsx",
+      "community_name": "PlanRows.tsx",
       "norm_label": "accountrows()"
+    },
+    {
+      "label": "ActivityMeter()",
+      "file_type": "code",
+      "source_file": "app/components/configuracion/ActivityMeter.tsx",
+      "source_location": "L6",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_configuracion_activitymeter_activitymeter",
+      "community": 473,
+      "community_name": "PlanRows.tsx",
+      "norm_label": "activitymeter()"
+    },
+    {
+      "label": "BmrFloorNote()",
+      "file_type": "code",
+      "source_file": "app/components/configuracion/PlanRows.tsx",
+      "source_location": "L117",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_configuracion_planrows_bmrfloornote",
+      "community": 473,
+      "community_name": "PlanRows.tsx",
+      "norm_label": "bmrfloornote()"
     },
     {
       "label": "HomeSectionHeader()",
@@ -20446,7 +20506,7 @@
       "_origin": "ast",
       "id": "app_components_home_homesectionheader_homesectionheader",
       "community": 473,
-      "community_name": "HomeSectionHeader.tsx",
+      "community_name": "PlanRows.tsx",
       "norm_label": "homesectionheader()"
     },
     {
@@ -20458,7 +20518,7 @@
       "_origin": "ast",
       "id": "app_components_home_homeweekstats_homeweekstats",
       "community": 473,
-      "community_name": "HomeSectionHeader.tsx",
+      "community_name": "PlanRows.tsx",
       "norm_label": "homeweekstats()"
     },
     {
@@ -20628,102 +20688,6 @@
       "community": 48,
       "community_name": "OptionList.tsx",
       "norm_label": "saveindicator()"
-    },
-    {
-      "label": "HomeWeekStrip()",
-      "file_type": "code",
-      "source_file": "app/components/home/HomeWeekStrip.tsx",
-      "source_location": "L11",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_home_homeweekstrip_homeweekstrip",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "homeweekstrip()"
-    },
-    {
-      "label": "onKeyDown()",
-      "file_type": "code",
-      "source_file": "app/components/home/HomeWeekStrip.tsx",
-      "source_location": "L22",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_home_homeweekstrip_homeweekstrip_onkeydown",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "onkeydown()"
-    },
-    {
-      "label": "HeroLineView()",
-      "file_type": "code",
-      "source_file": "app/components/home/TodayHero.tsx",
-      "source_location": "L137",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_home_todayhero_herolineview",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "herolineview()"
-    },
-    {
-      "label": "titleSize()",
-      "file_type": "code",
-      "source_file": "app/components/home/TodayHero.tsx",
-      "source_location": "L18",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_home_todayhero_titlesize",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "titlesize()"
-    },
-    {
-      "label": "TodayHero()",
-      "file_type": "code",
-      "source_file": "app/components/home/TodayHero.tsx",
-      "source_location": "L29",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_home_todayhero_todayhero",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "todayhero()"
-    },
-    {
-      "label": "TrainingDaysEditButton()",
-      "file_type": "code",
-      "source_file": "app/components/rutinas/TrainingDaysEditButton.tsx",
-      "source_location": "L11",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_rutinas_trainingdayseditbutton_trainingdayseditbutton",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "trainingdayseditbutton()"
-    },
-    {
-      "label": "save()",
-      "file_type": "code",
-      "source_file": "app/components/rutinas/TrainingDaysEditButton.tsx",
-      "source_location": "L24",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_rutinas_trainingdayseditbutton_trainingdayseditbutton_save",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "save()"
-    },
-    {
-      "label": "TrainingDaysButton()",
-      "file_type": "code",
-      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
-      "source_location": "L38",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_rutinas_trainingdayssheet_trainingdaysbutton",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "trainingdaysbutton()"
     },
     {
       "label": "POST()",
@@ -21386,6 +21350,42 @@
       "norm_label": "statepill()"
     },
     {
+      "label": "TrainingDaysEditButton()",
+      "file_type": "code",
+      "source_file": "app/components/rutinas/TrainingDaysEditButton.tsx",
+      "source_location": "L11",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_rutinas_trainingdayseditbutton_trainingdayseditbutton",
+      "community": 88,
+      "community_name": "[id]/page.tsx",
+      "norm_label": "trainingdayseditbutton()"
+    },
+    {
+      "label": "save()",
+      "file_type": "code",
+      "source_file": "app/components/rutinas/TrainingDaysEditButton.tsx",
+      "source_location": "L24",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_rutinas_trainingdayseditbutton_trainingdayseditbutton_save",
+      "community": 88,
+      "community_name": "[id]/page.tsx",
+      "norm_label": "save()"
+    },
+    {
+      "label": "TrainingDaysButton()",
+      "file_type": "code",
+      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
+      "source_location": "L38",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_rutinas_trainingdayssheet_trainingdaysbutton",
+      "community": 88,
+      "community_name": "[id]/page.tsx",
+      "norm_label": "trainingdaysbutton()"
+    },
+    {
       "label": "displayRoutineName()",
       "file_type": "code",
       "source_file": "app/lib/routine-catalog.ts",
@@ -21673,17 +21673,6 @@
       "norm_label": "admin/alimentos/page.tsx"
     },
     {
-      "label": "admin/recetas/page.tsx",
-      "file_type": "code",
-      "source_file": "app/admin/recetas/page.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_admin_recetas_page",
-      "community": 10,
-      "community_name": "foods.ts",
-      "norm_label": "admin/recetas/page.tsx"
-    },
-    {
       "label": "foods.ts",
       "file_type": "code",
       "source_file": "app/lib/foods.ts",
@@ -21693,17 +21682,6 @@
       "community": 10,
       "community_name": "foods.ts",
       "norm_label": "foods.ts"
-    },
-    {
-      "label": "listFoodCatalogItems",
-      "file_type": "code",
-      "source_file": "app/lib/foods.ts",
-      "source_location": "L43",
-      "_origin": "ast",
-      "id": "app_lib_foods_listfoodcatalogitems",
-      "community": 10,
-      "community_name": "foods.ts",
-      "norm_label": "listfoodcatalogitems"
     },
     {
       "label": "04-probar-apertura-del-modal-de-ejercicio-desde-multiples-contextos.md",
@@ -27816,17 +27794,6 @@
       "norm_label": "[id]/actions.ts"
     },
     {
-      "label": "dashboard/layout.tsx",
-      "file_type": "code",
-      "source_file": "app/dashboard/layout.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_dashboard_layout",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "dashboard/layout.tsx"
-    },
-    {
       "label": "saved-routines.ts",
       "file_type": "code",
       "source_file": "app/lib/saved-routines.ts",
@@ -27836,17 +27803,6 @@
       "community": 15,
       "community_name": "createSupabaseServerClient",
       "norm_label": "saved-routines.ts"
-    },
-    {
-      "label": "app/rutinas/actions.ts",
-      "file_type": "code",
-      "source_file": "app/rutinas/actions.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_rutinas_actions",
-      "community": 15,
-      "community_name": "createSupabaseServerClient",
-      "norm_label": "app/rutinas/actions.ts"
     },
     {
       "label": "07-permitir-agregar-multiples-filas-de-ejercicios-por-dia.md",
@@ -35469,17 +35425,6 @@
       "norm_label": "workoutmobile.tsx"
     },
     {
-      "label": "WorkoutTopBar.tsx",
-      "file_type": "code",
-      "source_file": "app/components/workout/WorkoutTopBar.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_workout_workouttopbar",
-      "community": 21,
-      "community_name": "WorkoutMobile.tsx",
-      "norm_label": "workouttopbar.tsx"
-    },
-    {
       "label": "day-workout.test.mjs",
       "file_type": "code",
       "source_file": "tests/unit/day-workout.test.mjs",
@@ -35929,17 +35874,6 @@
       "norm_label": "validacion",
       "community_name": "Disenar base visual de admin dashboard: preparar una capa administrativa clara y consistente",
       "id": "g4_5_frontend_base_and_experience_15_disenar_base_visual_de_admin_dashboard_validacion"
-    },
-    {
-      "label": "16-disenar-entradas-para-gestion-de-ejercicios-y-rutinas.md",
-      "file_type": "document",
-      "source_file": "specs/G4.5-frontend-base-and-experience/16-disenar-entradas-para-gestion-de-ejercicios-y-rutinas.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 213,
-      "norm_label": "16-disenar-entradas-para-gestion-de-ejercicios-y-rutinas.md",
-      "community_name": "Disenar base visual de admin dashboard: preparar una capa administrativa clara y consistente",
-      "id": "g4_5_frontend_base_and_experience_16_disenar_entradas_para_gestion_de_ejercicios_y_rutinas"
     },
     {
       "label": "19-ejecutar-validacion-tecnica-de-la-transicion-auth.md",
@@ -47511,6 +47445,50 @@
       "norm_label": "number-input.test.mjs"
     },
     {
+      "label": "HomeWeekPlanner.tsx",
+      "file_type": "code",
+      "source_file": "app/components/home/HomeWeekPlanner.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_home_homeweekplanner",
+      "community": 319,
+      "community_name": "home-hero.ts",
+      "norm_label": "homeweekplanner.tsx"
+    },
+    {
+      "label": "HomeWeekStrip.tsx",
+      "file_type": "code",
+      "source_file": "app/components/home/HomeWeekStrip.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_home_homeweekstrip",
+      "community": 319,
+      "community_name": "home-hero.ts",
+      "norm_label": "homeweekstrip.tsx"
+    },
+    {
+      "label": "TodayHero.tsx",
+      "file_type": "code",
+      "source_file": "app/components/home/TodayHero.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_home_todayhero",
+      "community": 319,
+      "community_name": "home-hero.ts",
+      "norm_label": "todayhero.tsx"
+    },
+    {
+      "label": "HEIGHT",
+      "file_type": "code",
+      "source_file": "app/components/home/TodayHero.tsx",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "app_components_home_todayhero_height",
+      "community": 319,
+      "community_name": "home-hero.ts",
+      "norm_label": "height"
+    },
+    {
       "label": "home-hero.ts",
       "file_type": "code",
       "source_file": "app/lib/home-hero.ts",
@@ -47575,6 +47553,17 @@
       "community": 319,
       "community_name": "home-hero.ts",
       "norm_label": "default_weekdays"
+    },
+    {
+      "label": "WEEKDAYS",
+      "file_type": "code",
+      "source_file": "app/lib/training-schedule.ts",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "app_lib_training_schedule_weekdays",
+      "community": 319,
+      "community_name": "home-hero.ts",
+      "norm_label": "weekdays"
     },
     {
       "label": "home-hero.test.mjs",
@@ -48158,6 +48147,28 @@
       "norm_label": "project overlay"
     },
     {
+      "label": "dashboard/layout.tsx",
+      "file_type": "code",
+      "source_file": "app/dashboard/layout.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_dashboard_layout",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "dashboard/layout.tsx"
+    },
+    {
+      "label": "app/rutinas/actions.ts",
+      "file_type": "code",
+      "source_file": "app/rutinas/actions.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_rutinas_actions",
+      "community": 33,
+      "community_name": "requireUser",
+      "norm_label": "app/rutinas/actions.ts"
+    },
+    {
       "label": "RutinasOverview.tsx",
       "file_type": "code",
       "source_file": "app/rutinas/RutinasOverview.tsx",
@@ -48165,7 +48176,7 @@
       "_origin": "ast",
       "id": "app_rutinas_rutinasoverview",
       "community": 33,
-      "community_name": "RutinasOverview.tsx",
+      "community_name": "requireUser",
       "norm_label": "rutinasoverview.tsx"
     },
     {
@@ -49325,6 +49336,17 @@
       "norm_label": "getoptionalauthcontext"
     },
     {
+      "label": "listFoodCatalogItems",
+      "file_type": "code",
+      "source_file": "app/lib/foods.ts",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "app_lib_foods_listfoodcatalogitems",
+      "community": 345,
+      "community_name": "app/alimentos/page.tsx",
+      "norm_label": "listfoodcatalogitems"
+    },
+    {
       "label": "app/recetas/page.tsx",
       "file_type": "code",
       "source_file": "app/recetas/page.tsx",
@@ -49345,6 +49367,17 @@
       "community": 346,
       "community_name": "DayWorkoutClient.tsx",
       "norm_label": "workoutsyncrunner.tsx"
+    },
+    {
+      "label": "WorkoutTopBar.tsx",
+      "file_type": "code",
+      "source_file": "app/components/workout/WorkoutTopBar.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_workout_workouttopbar",
+      "community": 346,
+      "community_name": "DayWorkoutClient.tsx",
+      "norm_label": "workouttopbar.tsx"
     },
     {
       "label": "workout-sync-queue.ts",
@@ -56021,6 +56054,17 @@
       "id": "docs_mcp_supabase_setup_ubicacion_pactada_en_gymcontrol"
     },
     {
+      "label": "admin/recetas/page.tsx",
+      "file_type": "code",
+      "source_file": "app/admin/recetas/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_admin_recetas_page",
+      "community": 430,
+      "community_name": "recipes.ts",
+      "norm_label": "admin/recetas/page.tsx"
+    },
+    {
       "label": "recipe-nutrition.ts",
       "file_type": "code",
       "source_file": "app/lib/recipe-nutrition.ts",
@@ -57647,28 +57691,6 @@
       "norm_label": "verificacion"
     },
     {
-      "label": "ActivityMeter.tsx",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/ActivityMeter.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_configuracion_activitymeter",
-      "community": 445,
-      "community_name": "GoalSheet.tsx",
-      "norm_label": "activitymeter.tsx"
-    },
-    {
-      "label": "BAR_HEIGHTS",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/ActivityMeter.tsx",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "app_components_configuracion_activitymeter_bar_heights",
-      "community": 445,
-      "community_name": "GoalSheet.tsx",
-      "norm_label": "bar_heights"
-    },
-    {
       "label": "GoalSheet.tsx",
       "file_type": "code",
       "source_file": "app/components/configuracion/GoalSheet.tsx",
@@ -57724,17 +57746,6 @@
       "norm_label": "macro_short_labels"
     },
     {
-      "label": "PlanRows.tsx",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/PlanRows.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_configuracion_planrows",
-      "community": 445,
-      "community_name": "GoalSheet.tsx",
-      "norm_label": "planrows.tsx"
-    },
-    {
       "label": "Slider.tsx",
       "file_type": "code",
       "source_file": "app/components/ui/Slider.tsx",
@@ -57744,28 +57755,6 @@
       "community": 445,
       "community_name": "GoalSheet.tsx",
       "norm_label": "slider.tsx"
-    },
-    {
-      "label": "MACRO_PRESET_COPY",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-plan-options.ts",
-      "source_location": "L88",
-      "_origin": "ast",
-      "id": "app_lib_nutrition_plan_options_macro_preset_copy",
-      "community": 445,
-      "community_name": "GoalSheet.tsx",
-      "norm_label": "macro_preset_copy"
-    },
-    {
-      "label": "RECOMMENDED_PRESET",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-plan-options.ts",
-      "source_location": "L97",
-      "_origin": "ast",
-      "id": "app_lib_nutrition_plan_options_recommended_preset",
-      "community": 445,
-      "community_name": "GoalSheet.tsx",
-      "norm_label": "recommended_preset"
     },
     {
       "label": "MACRO_COLORS",
@@ -60309,8 +60298,41 @@
       "_origin": "ast",
       "id": "app_components_configuracion_accountrows",
       "community": 473,
-      "community_name": "HomeSectionHeader.tsx",
+      "community_name": "PlanRows.tsx",
       "norm_label": "accountrows.tsx"
+    },
+    {
+      "label": "ActivityMeter.tsx",
+      "file_type": "code",
+      "source_file": "app/components/configuracion/ActivityMeter.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_configuracion_activitymeter",
+      "community": 473,
+      "community_name": "PlanRows.tsx",
+      "norm_label": "activitymeter.tsx"
+    },
+    {
+      "label": "BAR_HEIGHTS",
+      "file_type": "code",
+      "source_file": "app/components/configuracion/ActivityMeter.tsx",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "app_components_configuracion_activitymeter_bar_heights",
+      "community": 473,
+      "community_name": "PlanRows.tsx",
+      "norm_label": "bar_heights"
+    },
+    {
+      "label": "PlanRows.tsx",
+      "file_type": "code",
+      "source_file": "app/components/configuracion/PlanRows.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_configuracion_planrows",
+      "community": 473,
+      "community_name": "PlanRows.tsx",
+      "norm_label": "planrows.tsx"
     },
     {
       "label": "HomeSectionHeader.tsx",
@@ -60320,7 +60342,7 @@
       "_origin": "ast",
       "id": "app_components_home_homesectionheader",
       "community": 473,
-      "community_name": "HomeSectionHeader.tsx",
+      "community_name": "PlanRows.tsx",
       "norm_label": "homesectionheader.tsx"
     },
     {
@@ -60331,8 +60353,30 @@
       "_origin": "ast",
       "id": "app_components_home_homeweekstats",
       "community": 473,
-      "community_name": "HomeSectionHeader.tsx",
+      "community_name": "PlanRows.tsx",
       "norm_label": "homeweekstats.tsx"
+    },
+    {
+      "label": "MACRO_PRESET_COPY",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-plan-options.ts",
+      "source_location": "L88",
+      "_origin": "ast",
+      "id": "app_lib_nutrition_plan_options_macro_preset_copy",
+      "community": 473,
+      "community_name": "PlanRows.tsx",
+      "norm_label": "macro_preset_copy"
+    },
+    {
+      "label": "RECOMMENDED_PRESET",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-plan-options.ts",
+      "source_location": "L97",
+      "_origin": "ast",
+      "id": "app_lib_nutrition_plan_options_recommended_preset",
+      "community": 473,
+      "community_name": "PlanRows.tsx",
+      "norm_label": "recommended_preset"
     },
     {
       "label": "BodyMuscleFigure.tsx",
@@ -60454,17 +60498,6 @@
       "community": 476,
       "community_name": "react-dom",
       "norm_label": "react-dom"
-    },
-    {
-      "label": "14-integrar-acceso-admin-en-el-shell-general.md",
-      "file_type": "document",
-      "source_file": "specs/G4.5-frontend-base-and-experience/14-integrar-acceso-admin-en-el-shell-general.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 477,
-      "norm_label": "14-integrar-acceso-admin-en-el-shell-general.md",
-      "community_name": "Integrar acceso admin en el shell general: unificar la entrada administrativa sin duplicar la experiencia base",
-      "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general"
     },
     {
       "label": "Archivos",
@@ -60718,72 +60751,6 @@
       "community": 48,
       "community_name": "OptionList.tsx",
       "norm_label": "fadescale"
-    },
-    {
-      "label": "HomeWeekPlanner.tsx",
-      "file_type": "code",
-      "source_file": "app/components/home/HomeWeekPlanner.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_home_homeweekplanner",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "homeweekplanner.tsx"
-    },
-    {
-      "label": "HomeWeekStrip.tsx",
-      "file_type": "code",
-      "source_file": "app/components/home/HomeWeekStrip.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_home_homeweekstrip",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "homeweekstrip.tsx"
-    },
-    {
-      "label": "TodayHero.tsx",
-      "file_type": "code",
-      "source_file": "app/components/home/TodayHero.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_home_todayhero",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "todayhero.tsx"
-    },
-    {
-      "label": "HEIGHT",
-      "file_type": "code",
-      "source_file": "app/components/home/TodayHero.tsx",
-      "source_location": "L11",
-      "_origin": "ast",
-      "id": "app_components_home_todayhero_height",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "height"
-    },
-    {
-      "label": "TrainingDaysEditButton.tsx",
-      "file_type": "code",
-      "source_file": "app/components/rutinas/TrainingDaysEditButton.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_rutinas_trainingdayseditbutton",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "trainingdayseditbutton.tsx"
-    },
-    {
-      "label": "WEEKDAYS",
-      "file_type": "code",
-      "source_file": "app/lib/training-schedule.ts",
-      "source_location": "L5",
-      "_origin": "ast",
-      "id": "app_lib_training_schedule_weekdays",
-      "community": 480,
-      "community_name": "HomeWeekPlanner.tsx",
-      "norm_label": "weekdays"
     },
     {
       "label": "start/route.ts",
@@ -65766,6 +65733,17 @@
       "norm_label": "verificacion end-to-end (criterios de aceptacion)"
     },
     {
+      "label": "14-integrar-acceso-admin-en-el-shell-general.md",
+      "file_type": "document",
+      "source_file": "specs/G4.5-frontend-base-and-experience/14-integrar-acceso-admin-en-el-shell-general.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "community": 73,
+      "norm_label": "14-integrar-acceso-admin-en-el-shell-general.md",
+      "community_name": "Implementar autenticacion base de usuario: habilitar Supabase Auth server-side para el MVP",
+      "id": "g4_5_frontend_base_and_experience_14_integrar_acceso_admin_en_el_shell_general"
+    },
+    {
       "label": "01-implementar-autenticacion-base-de-usuario.md",
       "file_type": "document",
       "source_file": "specs/G5-auth-and-roles/01-implementar-autenticacion-base-de-usuario.md",
@@ -65885,6 +65863,17 @@
       "norm_label": "02-integrar-type-rol-al-flujo-de-acceso-y-sesion.md",
       "community_name": "Implementar autenticacion base de usuario: habilitar Supabase Auth server-side para el MVP",
       "id": "g5_auth_and_roles_02_integrar_type_rol_al_flujo_de_acceso_y_sesion"
+    },
+    {
+      "label": "16-disenar-entradas-para-gestion-de-ejercicios-y-rutinas.md",
+      "file_type": "document",
+      "source_file": "specs/G4.5-frontend-base-and-experience/16-disenar-entradas-para-gestion-de-ejercicios-y-rutinas.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "community": 74,
+      "norm_label": "16-disenar-entradas-para-gestion-de-ejercicios-y-rutinas.md",
+      "community_name": "Disenar entradas para gestion de ejercicios y rutinas: preparar el punto de partida administrativo real",
+      "id": "g4_5_frontend_base_and_experience_16_disenar_entradas_para_gestion_de_ejercicios_y_rutinas"
     },
     {
       "label": "Archivos",
@@ -68211,6 +68200,17 @@
       "community": 88,
       "community_name": "[id]/page.tsx",
       "norm_label": "routinedetailmobile.tsx"
+    },
+    {
+      "label": "TrainingDaysEditButton.tsx",
+      "file_type": "code",
+      "source_file": "app/components/rutinas/TrainingDaysEditButton.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_rutinas_trainingdayseditbutton",
+      "community": 88,
+      "community_name": "[id]/page.tsx",
+      "norm_label": "trainingdayseditbutton.tsx"
     },
     {
       "label": "routine-detail.ts",
@@ -71764,6 +71764,21 @@
       "id": "docs_mcp_supabase_setup_mcp_supabase_setup"
     },
     {
+      "label": "Acceso admin integrado en shell general",
+      "file_type": "rationale",
+      "source_file": "specs/G4.5-frontend-base-and-experience/14-integrar-acceso-admin-en-el-shell-general.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "community": 213,
+      "norm_label": "acceso admin integrado en shell general",
+      "_origin": "semantic",
+      "community_name": "Disenar base visual de admin dashboard: preparar una capa administrativa clara y consistente",
+      "id": "frontend_experience_acceso_admin_shell"
+    },
+    {
       "label": "Base visual de Admin dashboard (Rutinas y Ejercicios)",
       "file_type": "rationale",
       "source_file": "specs/G4.5-frontend-base-and-experience/15-disenar-base-visual-de-admin-dashboard.md",
@@ -71777,21 +71792,6 @@
       "_origin": "semantic",
       "community_name": "Disenar base visual de admin dashboard: preparar una capa administrativa clara y consistente",
       "id": "frontend_experience_admin_dashboard_base_visual"
-    },
-    {
-      "label": "Entradas administrativas Gestion de rutinas / Gestion de ejercicios",
-      "file_type": "rationale",
-      "source_file": "specs/G4.5-frontend-base-and-experience/16-disenar-entradas-para-gestion-de-ejercicios-y-rutinas.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 213,
-      "norm_label": "entradas administrativas gestion de rutinas / gestion de ejercicios",
-      "_origin": "semantic",
-      "community_name": "Disenar base visual de admin dashboard: preparar una capa administrativa clara y consistente",
-      "id": "frontend_experience_entradas_gestion_admin"
     },
     {
       "label": ".env.example",
@@ -73676,21 +73676,6 @@
       "id": "codex_temp_catalogo_mobile_cards"
     },
     {
-      "label": "Acceso admin integrado en shell general",
-      "file_type": "rationale",
-      "source_file": "specs/G4.5-frontend-base-and-experience/14-integrar-acceso-admin-en-el-shell-general.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 477,
-      "norm_label": "acceso admin integrado en shell general",
-      "_origin": "semantic",
-      "community_name": "Integrar acceso admin en el shell general: unificar la entrada administrativa sin duplicar la experiencia base",
-      "id": "frontend_experience_acceso_admin_shell"
-    },
-    {
       "label": "Tabla profiles",
       "file_type": "concept",
       "source_file": "specs/G2.1/03-crear-tabla-profiles.md",
@@ -74064,6 +74049,21 @@
       "_origin": "semantic",
       "community_name": "Implementar autenticacion base de usuario: habilitar Supabase Auth server-side para el MVP",
       "id": "supabase_auth_ssr_implementation"
+    },
+    {
+      "label": "Entradas administrativas Gestion de rutinas / Gestion de ejercicios",
+      "file_type": "rationale",
+      "source_file": "specs/G4.5-frontend-base-and-experience/16-disenar-entradas-para-gestion-de-ejercicios-y-rutinas.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "community": 74,
+      "norm_label": "entradas administrativas gestion de rutinas / gestion de ejercicios",
+      "_origin": "semantic",
+      "community_name": "Disenar entradas para gestion de ejercicios y rutinas: preparar el punto de partida administrativo real",
+      "id": "frontend_experience_entradas_gestion_admin"
     },
     {
       "label": "Bootstrap admin verificable (magic link + promocion type_rol=admin)",
@@ -82269,7 +82269,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L525",
+      "source_location": "L528",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_activesetdone",
@@ -82281,7 +82281,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L527",
+      "source_location": "L530",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_activesetdone",
@@ -82293,7 +82293,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L527",
+      "source_location": "L530",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_activesetdone",
@@ -82305,7 +82305,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L513",
+      "source_location": "L516",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_activesetindex",
@@ -82317,7 +82317,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L514",
+      "source_location": "L517",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_activesetindex",
@@ -82329,7 +82329,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L562",
+      "source_location": "L565",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_describeset",
@@ -82341,7 +82341,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L362",
+      "source_location": "L365",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_exercisepanel",
@@ -82353,7 +82353,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L365",
+      "source_location": "L368",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_exercisepanel",
@@ -82365,7 +82365,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L366",
+      "source_location": "L369",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_exercisepanel",
@@ -82377,7 +82377,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L370",
+      "source_location": "L373",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_exercisepanel",
@@ -82389,7 +82389,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L376",
+      "source_location": "L379",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_exercisepanel",
@@ -82401,7 +82401,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L414",
+      "source_location": "L417",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_exercisepanel",
@@ -82413,7 +82413,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L415",
+      "source_location": "L418",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_exercisepanel",
@@ -82425,7 +82425,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L422",
+      "source_location": "L425",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_exercisepanel",
@@ -82437,7 +82437,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L431",
+      "source_location": "L434",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_exercisepanel",
@@ -82449,7 +82449,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L464",
+      "source_location": "L467",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_exercisepanel",
@@ -82461,7 +82461,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L480",
+      "source_location": "L483",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_exercisepanel",
@@ -82473,7 +82473,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L548",
+      "source_location": "L551",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_nextsetlabel",
@@ -82485,7 +82485,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L550",
+      "source_location": "L553",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_nextsetlabel",
@@ -82497,7 +82497,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L550",
+      "source_location": "L553",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_nextsetlabel",
@@ -82509,7 +82509,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L552",
+      "source_location": "L555",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_nextsetlabel",
@@ -82521,7 +82521,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L553",
+      "source_location": "L556",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_nextsetlabel",
@@ -82533,7 +82533,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L535",
+      "source_location": "L538",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_placeholderfor",
@@ -82545,7 +82545,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L538",
+      "source_location": "L541",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile_placeholderfor",
@@ -142678,7 +142678,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L343",
+      "source_location": "L346",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile",
@@ -142689,7 +142689,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L504",
+      "source_location": "L507",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile",
@@ -142700,7 +142700,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L508",
+      "source_location": "L511",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile",
@@ -142711,7 +142711,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L520",
+      "source_location": "L523",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile",
@@ -142722,7 +142722,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L530",
+      "source_location": "L533",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile",
@@ -142744,22 +142744,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L547",
+      "source_location": "L550",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile",
       "target": "app_components_workout_workoutmobile_nextsetlabel",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app/components/workout/WorkoutMobile.tsx",
-      "source_location": "L559",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_components_workout_workoutmobile",
-      "target": "app_components_workout_workoutmobile_describeset",
       "confidence_score": 1.0
     },
     {
@@ -142771,6 +142760,17 @@
       "_origin": "ast",
       "source": "app_components_workout_workoutmobile",
       "target": "app_components_workout_workoutmobile_reststate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/components/workout/WorkoutMobile.tsx",
+      "source_location": "L562",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "app_components_workout_workoutmobile",
+      "target": "app_components_workout_workoutmobile_describeset",
       "confidence_score": 1.0
     },
     {
@@ -198521,5 +198521,5 @@
       "source_file": "specs/G7-admin-routines/03-implementar-persistencia-de-filas-de-ejercicio.md"
     }
   ],
-  "built_at_commit": "8a1afd7ba052f766000b31cd748314f0946bf71e"
+  "built_at_commit": "ce48a0ef98f2e017f285c510d41283ded236b8e3"
 }
