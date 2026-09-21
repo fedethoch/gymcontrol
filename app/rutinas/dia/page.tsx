@@ -3,10 +3,13 @@ import { notFound } from "next/navigation";
 import { DayWorkoutClient, type DayExercise } from "@/app/rutinas/dia/DayWorkoutClient";
 import { requireUser } from "@/app/lib/auth";
 import { sameWorkoutDayIds } from "@/app/lib/day-workout";
+import { getTodayDateKey, getWeekStartDateKey } from "@/app/lib/local-date";
 import { getSavedRoutineByIdForUser } from "@/app/lib/saved-routines";
 import {
   estimateDayMinutes,
+  getLoadStep,
   parsePlanTarget,
+  planWeeklyProgression,
   resolveExerciseKind,
 } from "@/app/lib/workout-progression";
 import {
@@ -58,8 +61,12 @@ export default async function RutinaDiaPage({ searchParams }: DayPageProps) {
     }),
   ]);
 
+  const weekStart = getWeekStartDateKey(getTodayDateKey());
   const exercises: DayExercise[] = selectedDay.items.map((item, index) => {
     const saved = openSession?.itemsByRoutineItemId[item.id] ?? null;
+    const target = parsePlanTarget(item.repetitions);
+    const kind = saved?.kind ?? resolveExerciseKind(target, item.exercise.equipment);
+    const history = historyByExerciseId[item.exerciseId] ?? [];
 
     return {
       routineItemId: item.id,
@@ -76,9 +83,17 @@ export default async function RutinaDiaPage({ searchParams }: DayPageProps) {
       target: item.repetitions,
       rir: item.rir,
       rest: item.rest,
-      kind: saved?.kind ?? resolveExerciseKind(parsePlanTarget(item.repetitions), item.exercise.equipment),
+      kind,
       saved: saved ? { id: saved.id, sets: saved.sets, rev: saved.rev } : null,
-      history: historyByExerciseId[item.exerciseId] ?? [],
+      history,
+      progression: planWeeklyProgression({
+        history,
+        weekStart,
+        target,
+        kind,
+        plannedSeries: item.series,
+        loadStep: getLoadStep(item.exercise.equipment),
+      }),
     };
   });
 

@@ -8,6 +8,7 @@ import {
   type LoggedSet,
   type PlanTarget,
   type Suggestion,
+  type WeeklyPhase,
 } from "@/app/lib/workout-progression";
 
 /** Lo que el usuario escribe, tal cual (strings), por serie. `secs` va en la unidad del plan (seg o min). */
@@ -128,21 +129,21 @@ export function buildPlaceholder({
 
   if (exercise.kind === "time") {
     const secs =
-      suggestion?.kind === "increase_time"
+      suggestion?.kind === "increase_time" || suggestion?.kind === "hold_time"
         ? suggestion.secs
         : (previous?.secs ?? (target && target.measure !== "reps" ? target.min * factor : null));
 
     return { kg: "", reps: "", secs: secs != null ? formatNumber(secs / factor) : "", done: false };
   }
 
-  const kg =
-    suggestion?.kind === "increase_load" || suggestion?.kind === "increase_reps"
-      ? suggestion.kg
-      : (previous?.kg ?? null);
-  const reps =
-    suggestion?.kind === "increase_load" || suggestion?.kind === "increase_reps"
-      ? suggestion.reps
-      : (previous?.reps ?? (target?.measure === "reps" ? target.min : null));
+  const fromSuggestion =
+    suggestion?.kind === "increase_load" || suggestion?.kind === "increase_reps" || suggestion?.kind === "hold"
+      ? suggestion
+      : null;
+  const kg = fromSuggestion ? fromSuggestion.kg : (previous?.kg ?? null);
+  const reps = fromSuggestion
+    ? fromSuggestion.reps
+    : (previous?.reps ?? (target?.measure === "reps" ? target.min : null));
 
   return {
     kg: kg != null && kg > 0 ? formatNumber(kg) : "",
@@ -154,11 +155,13 @@ export function buildPlaceholder({
 
 export function describeSuggestion({
   suggestion,
+  phase = "progress",
   target,
   exercise,
   hasHistory,
 }: {
   suggestion: Suggestion | null;
+  phase?: WeeklyPhase;
   target: PlanTarget | null;
   exercise: Pick<ExercisePlan, "kind" | "target">;
   hasHistory: boolean;
@@ -169,7 +172,25 @@ export function describeSuggestion({
       : null;
   }
 
+  if (phase === "retry") {
+    switch (suggestion?.kind) {
+      case "increase_load":
+      case "increase_reps":
+        return suggestion.kg != null && suggestion.kg > 0
+          ? `Otra chance: ${formatKg(suggestion.kg)} kg × ${suggestion.reps} por serie.`
+          : `Otra chance: ${suggestion.reps} reps por serie.`;
+      case "increase_time":
+        return `Otra chance: ${formatSeconds(suggestion.secs)} por serie.`;
+    }
+  }
+
   switch (suggestion?.kind) {
+    case "hold":
+      return suggestion.kg != null && suggestion.kg > 0
+        ? `Reafirmá tu marca: ${formatKg(suggestion.kg)} kg × ${suggestion.reps} por serie.`
+        : `Reafirmá tu marca: ${suggestion.reps} reps por serie.`;
+    case "hold_time":
+      return `Reafirmá tu marca: ${formatSeconds(suggestion.secs)} por serie.`;
     case "increase_load":
       return `Hoy: subí a ${formatKg(suggestion.kg)} kg y apuntá a ${suggestion.reps} reps.`;
     case "increase_reps":

@@ -202,6 +202,28 @@ describe("placeholders y formato", () => {
     });
     assert.equal(text, "Primera vez en este día: apuntá a 8-10 reps.");
   });
+
+  it("reafirma o reintenta según la fase de la semana", () => {
+    const target = { measure: "reps", min: 8, max: 10 };
+    assert.equal(
+      describeSuggestion({ suggestion: { kind: "hold", kg: 42.5, reps: 8 }, phase: "hold", target, exercise: press, hasHistory: true }),
+      "Reafirmá tu marca: 42.5 kg × 8 por serie.",
+    );
+    assert.equal(
+      describeSuggestion({
+        suggestion: { kind: "increase_load", kg: 42.5, reps: 8 },
+        phase: "retry",
+        target,
+        exercise: press,
+        hasHistory: true,
+      }),
+      "Otra chance: 42.5 kg × 8 por serie.",
+    );
+    assert.deepEqual(
+      buildPlaceholder({ exercise: press, suggestion: { kind: "hold", kg: 42.5, reps: 8 }, target, previousSet: null }),
+      { kg: "42.5", reps: "8", secs: "", done: false },
+    );
+  });
 });
 
 describe("marcas por día", () => {

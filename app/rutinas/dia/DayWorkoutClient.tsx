@@ -41,13 +41,12 @@ import {
 } from "@/app/lib/day-workout";
 import {
   formatLoggedSet,
-  getLoadStep,
   isValidSet,
   parsePlanTarget,
   parseRestSeconds,
-  suggestNextTarget,
   type PlanTarget,
   type Suggestion,
+  type WeeklyPhase,
 } from "@/app/lib/workout-progression";
 import {
   enqueueFinish,
@@ -491,13 +490,7 @@ function ExerciseCard({
 }) {
   const target = parsePlanTarget(exercise.target);
   const previous = exercise.history[0] ?? null;
-  const suggestion = suggestNextTarget({
-    target,
-    kind: exercise.kind,
-    previousSets: previous?.sets ?? [],
-    plannedSeries: exercise.series,
-    loadStep: getLoadStep(exercise.equipment),
-  });
+  const { suggestion, phase } = exercise.progression;
   const validCount = countValidDrafts(draft, exercise);
   const isDone = validCount >= exercise.series;
   const factor = timeFactor(exercise);
@@ -549,7 +542,13 @@ function ExerciseCard({
 
       {expanded ? (
         <div className="grid gap-3 border-t border-[var(--border)] px-4 pb-4 pt-3">
-          <SuggestionLine suggestion={suggestion} target={target} exercise={exercise} hasHistory={Boolean(previous)} />
+          <SuggestionLine
+            suggestion={suggestion}
+            phase={phase}
+            target={target}
+            exercise={exercise}
+            hasHistory={Boolean(previous)}
+          />
 
           <div role="table" aria-label={`Series de ${exercise.exercise.name}`} className="grid gap-1.5 lg:max-w-xl">
             <div
@@ -667,16 +666,18 @@ function ExerciseCard({
 
 function SuggestionLine({
   suggestion,
+  phase,
   target,
   exercise,
   hasHistory,
 }: {
   suggestion: Suggestion | null;
+  phase: WeeklyPhase;
   target: PlanTarget | null;
   exercise: DayExercise;
   hasHistory: boolean;
 }) {
-  const text = describeSuggestion({ suggestion, target, exercise, hasHistory });
+  const text = describeSuggestion({ suggestion, phase, target, exercise, hasHistory });
 
   if (!text) return null;
 

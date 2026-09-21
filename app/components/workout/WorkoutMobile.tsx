@@ -38,10 +38,8 @@ import {
   type DraftSet,
 } from "@/app/lib/day-workout";
 import {
-  getLoadStep,
   isValidSet,
   parsePlanTarget,
-  suggestNextTarget,
 } from "@/app/lib/workout-progression";
 import type { SyncStatus } from "@/app/lib/workout-sync-queue";
 import {
@@ -363,13 +361,7 @@ function ExercisePanel({
 }) {
   const target = parsePlanTarget(exercise.target);
   const previous = exercise.history[0] ?? null;
-  const suggestion = suggestNextTarget({
-    target,
-    kind: exercise.kind,
-    previousSets: previous?.sets ?? [],
-    plannedSeries: exercise.series,
-    loadStep: getLoadStep(exercise.equipment),
-  });
+  const { suggestion, phase } = exercise.progression;
   const index = clampSet(
     selectedSet ?? currentSetIndex(draft, exercise),
     draft.sets.length
@@ -471,6 +463,7 @@ function ExercisePanel({
             previousLabel={previousLabel}
             suggestion={describeSuggestion({
               suggestion,
+              phase,
               target,
               exercise,
               hasHistory: Boolean(previous),
@@ -544,13 +537,7 @@ function placeholderFor(
 
   return buildPlaceholder({
     exercise,
-    suggestion: suggestNextTarget({
-      target,
-      kind: exercise.kind,
-      previousSets: previous?.sets ?? [],
-      plannedSeries: exercise.series,
-      loadStep: getLoadStep(exercise.equipment),
-    }),
+    suggestion: exercise.progression.suggestion,
     target,
     previousSet: previous?.sets[index] ?? null,
   });

@@ -23,7 +23,18 @@ export type Suggestion =
   | { kind: "increase_load"; kg: number; reps: number }
   | { kind: "increase_reps"; kg: number | null; reps: number }
   | { kind: "increase_time"; secs: number }
-  | { kind: "top_of_range" };
+  | { kind: "top_of_range" }
+  | { kind: "hold"; kg: number | null; reps: number }
+  | { kind: "hold_time"; secs: number };
+
+/**
+ * `progress`: primera vez del entreno en la semana, se busca superar la semana anterior.
+ * `retry`: ya se hizo esta semana sin lograr el objetivo, se vuelve a intentar el mismo.
+ * `hold`: ya se logró esta semana, se reafirma esa marca.
+ */
+export type WeeklyPhase = "progress" | "retry" | "hold";
+
+export type WeeklyPlan = { phase: WeeklyPhase; suggestion: Suggestion | null };
 
 const TARGET_PATTERN = /^(\d+)(?:\s*-\s*(\d+))?\s*(seg|s|min|m)?\s*(?:c\/lado)?$/i;
 const REST_PATTERN = /^(\d+)(?:\s*-\s*\d+)?\s*(seg|s|min|m)?$/i;
@@ -178,12 +189,7 @@ export function suggestNextTarget(args: {
     return null;
   }
 
-  const workKg = valid.reduce<number | null>(
-    (heaviest, set) => (set.kg != null && set.kg > 0 && (heaviest == null || set.kg > heaviest) ? set.kg : heaviest),
-    null,
-  );
-  const workSets = valid.filter((set) => (workKg == null ? !set.kg : set.kg === workKg));
-  const lowestReps = Math.min(...workSets.map((set) => set.reps ?? 0));
+  const { workKg, workSets, lowestReps } = summarizeWorkSets(valid);
 
   if (workSets.length >= args.plannedSeries && lowestReps >= target.max) {
     return args.loadStep != null && workKg != null
@@ -196,6 +202,50 @@ export function suggestNextTarget(args: {
     kg: workKg,
     reps: Math.min(target.max, Math.max(target.min, lowestReps + 1)),
   };
+}
+
+/**
+ * Progresión una vez por semana por entreno (el día y sus copias exactas). El objetivo de la semana sale de la
+ * mejor sesión de la última semana entrenada. La primera sesión de la semana va por ese objetivo; las siguientes
+ * lo reintentan si todavía no se logró, o reafirman la mejor marca de la semana si ya se logró.
+ * `history` va de la más reciente a la más vieja, con fechas YYYY-MM-DD; `weekStart` es el lunes de hoy.
+ */
+export function planWeeklyProgression(args: {
+  history: Array<{ trainingDate: string; sets: LoggedSet[] }>;
+  weekStart: string;
+  target: PlanTarget | null;
+  kind: ExerciseKind;
+  plannedSeries: number;
+  loadStep: number | null;
+}): WeeklyPlan {
+  const suggest = (sets: LoggedSet[]) =>
+    suggestNextTarget({
+      target: args.target,
+      kind: args.kind,
+      previousSets: sets,
+      plannedSeries: args.plannedSeries,
+      loadStep: args.loadStep,
+    });
+  const bestOf = (sessions: Array<{ sets: LoggedSet[] }>) =>
+    sessions.reduce<{ sets: LoggedSet[]; next: Suggestion | null } | null>((best, session) => {
+      const next = suggest(session.sets);
+      return !best || rankSuggestion(next) > rankSuggestion(best.next) ? { sets: session.sets, next } : best;
+    }, null);
+
+  const thisWeek = args.history.filter((session) => session.trainingDate >= args.weekStart);
+  const earlier = args.history.filter((session) => session.trainingDate < args.weekStart);
+  const lastWeekStart = earlier[0] ? weekStartOf(earlier[0].trainingDate) : null;
+  const goal = bestOf(earlier.filter((session) => weekStartOf(session.trainingDate) === lastWeekStart))?.next ?? null;
+
+  if (thisWeek.length === 0 || goal?.kind === "top_of_range") {
+    return { phase: "progress", suggestion: goal };
+  }
+
+  if (goal && !thisWeek.some((session) => meetsSuggestion(session.sets, goal, args.plannedSeries))) {
+    return { phase: "retry", suggestion: goal };
+  }
+
+  return { phase: "hold", suggestion: holdOf(bestOf(thisWeek)?.sets ?? [], args.kind) };
 }
 
 /**
@@ -260,6 +310,79 @@ export function formatSeconds(secs: number): string {
   const rest = secs % 60;
 
   return rest === 0 ? `${minutes} min` : `${minutes}:${String(rest).padStart(2, "0")} min`;
+}
+
+/** Series de trabajo: las válidas con la carga más pesada (o sin carga, si ninguna la tiene). */
+function summarizeWorkSets(valid: LoggedSet[]) {
+  const workKg = valid.reduce<number | null>(
+    (heaviest, set) => (set.kg != null && set.kg > 0 && (heaviest == null || set.kg > heaviest) ? set.kg : heaviest),
+    null,
+  );
+  const workSets = valid.filter((set) => (workKg == null ? !set.kg : set.kg === workKg));
+  const lowestReps = Math.min(...workSets.map((set) => set.reps ?? 0));
+
+  return { workKg, workSets, lowestReps };
+}
+
+/** Marca a reafirmar: carga de trabajo y la peor serie de trabajo (o el tiempo más corto). */
+function holdOf(sets: LoggedSet[], kind: ExerciseKind): Suggestion | null {
+  const valid = sets.filter(isValidSet);
+
+  if (valid.length === 0) {
+    return null;
+  }
+
+  if (kind === "time") {
+    return { kind: "hold_time", secs: Math.min(...valid.map((set) => set.secs ?? 0)) };
+  }
+
+  const { workKg, lowestReps } = summarizeWorkSets(valid);
+
+  return { kind: "hold", kg: workKg, reps: lowestReps };
+}
+
+/** Todas las series planeadas llegaron al objetivo (carga y reps, o tiempo). */
+function meetsSuggestion(sets: LoggedSet[], suggestion: Suggestion, plannedSeries: number) {
+  const valid = sets.filter(isValidSet);
+
+  switch (suggestion.kind) {
+    case "increase_load":
+    case "increase_reps":
+      return (
+        valid.filter((set) => (set.kg ?? 0) >= (suggestion.kg ?? 0) && (set.reps ?? 0) >= suggestion.reps).length >=
+        plannedSeries
+      );
+    case "increase_time":
+      return valid.filter((set) => (set.secs ?? 0) >= suggestion.secs).length >= plannedSeries;
+    default:
+      return true;
+  }
+}
+
+/** Orden de objetivos para elegir la mejor sesión: más carga, después más reps (o más tiempo); el tope gana. */
+function rankSuggestion(suggestion: Suggestion | null) {
+  switch (suggestion?.kind) {
+    case "increase_load":
+    case "increase_reps":
+    case "hold":
+      return (suggestion.kg ?? 0) * 1000 + suggestion.reps;
+    case "increase_time":
+    case "hold_time":
+      return suggestion.secs;
+    case "top_of_range":
+      return Number.POSITIVE_INFINITY;
+    default:
+      return Number.NEGATIVE_INFINITY;
+  }
+}
+
+/** Lunes de la semana de una fecha YYYY-MM-DD (misma regla que `getWeekStartDateKey`). */
+function weekStartOf(key: string) {
+  const [year, month, day] = key.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  date.setUTCDate(date.getUTCDate() - ((date.getUTCDay() + 6) % 7));
+
+  return date.toISOString().slice(0, 10);
 }
 
 function roundLoad(kg: number) {
