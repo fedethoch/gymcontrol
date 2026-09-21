@@ -278,8 +278,11 @@ export function WorkoutMobile({
           <>
             {repeatedThisWeek && !hasStarted ? (
               <p className="text-[13px] text-[var(--foreground-muted)]">
-                Ya registraste este día esta semana. Si lo repetís, se guarda
-                como otro entreno.
+                Ya registraste este día esta semana.
+                <span className="short:hidden">
+                  {" "}
+                  Si lo repetís, se guarda como otro entreno.
+                </span>
               </p>
             ) : null}
 
