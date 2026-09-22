@@ -393,6 +393,58 @@
       "norm_label": "reciperow"
     },
     {
+      "label": "ExerciseHistoryData",
+      "file_type": "code",
+      "source_file": "app/components/exercise/ExerciseHistoryPanel.tsx",
+      "source_location": "L13",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_components_exercise_exercisehistorypanel_exercisehistorydata",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "exercisehistorydata"
+    },
+    {
+      "label": "MediaView",
+      "file_type": "code",
+      "source_file": "app/components/exercise/ExerciseMedia.tsx",
+      "source_location": "L10",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_components_exercise_exercisemedia_mediaview",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "mediaview"
+    },
+    {
+      "label": "ExerciseSheetTab",
+      "file_type": "code",
+      "source_file": "app/components/exercise/ExerciseSheet.tsx",
+      "source_location": "L13",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_components_exercise_exercisesheet_exercisesheettab",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "exercisesheettab"
+    },
+    {
+      "label": "DetailExercise",
+      "file_type": "code",
+      "source_file": "app/components/rutina-detalle/DetailDays.tsx",
+      "source_location": "L11",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_components_rutina_detalle_detaildays_detailexercise",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "detailexercise"
+    },
+    {
       "label": "WeekDay",
       "file_type": "code",
       "source_file": "app/components/rutinas/DayPanel.tsx",
@@ -402,7 +454,7 @@
       "_origin": "ast",
       "id": "app_components_rutinas_daypanel_weekday",
       "community": 105,
-      "community_name": "RoutineWeekView.tsx",
+      "community_name": "ExerciseDetailModal.tsx",
       "norm_label": "weekday"
     },
     {
@@ -415,7 +467,7 @@
       "_origin": "ast",
       "id": "app_components_rutinas_daypanel_weekexercise",
       "community": 105,
-      "community_name": "RoutineWeekView.tsx",
+      "community_name": "ExerciseDetailModal.tsx",
       "norm_label": "weekexercise"
     },
     {
@@ -428,8 +480,34 @@
       "_origin": "ast",
       "id": "app_components_rutinas_routineweekview_weeksummary",
       "community": 105,
-      "community_name": "RoutineWeekView.tsx",
+      "community_name": "ExerciseDetailModal.tsx",
       "norm_label": "weeksummary"
+    },
+    {
+      "label": "ExerciseDetail",
+      "file_type": "code",
+      "source_file": "app/components/shared/ExerciseDetailModal.tsx",
+      "source_location": "L24",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_components_shared_exercisedetailmodal_exercisedetail",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "exercisedetail"
+    },
+    {
+      "label": "ExerciseDetailModalProps",
+      "file_type": "code",
+      "source_file": "app/components/shared/ExerciseDetailModal.tsx",
+      "source_location": "L42",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_components_shared_exercisedetailmodal_exercisedetailmodalprops",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "exercisedetailmodalprops"
     },
     {
       "label": "DayTab",
@@ -441,7 +519,7 @@
       "_origin": "ast",
       "id": "app_lib_routine_week_daytab",
       "community": 105,
-      "community_name": "RoutineWeekView.tsx",
+      "community_name": "ExerciseDetailModal.tsx",
       "norm_label": "daytab"
     },
     {
@@ -844,7 +922,7 @@
       "_origin": "ast",
       "id": "app_components_registro_addfoodsheet_segment",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "segment"
     },
     {
@@ -857,7 +935,7 @@
       "_origin": "ast",
       "id": "app_components_registro_addfoodsheet_session",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "session"
     },
     {
@@ -870,7 +948,7 @@
       "_origin": "ast",
       "id": "app_components_registro_addfoodsheet_step",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "step"
     },
     {
@@ -883,8 +961,21 @@
       "_origin": "ast",
       "id": "app_components_registro_amounteditor_amountdraft",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "amountdraft"
+    },
+    {
+      "label": "QuickRow",
+      "file_type": "code",
+      "source_file": "app/components/registro/FrequentRows.tsx",
+      "source_location": "L7",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_components_registro_frequentrows_quickrow",
+      "community": 170,
+      "community_name": "RegistroClient.tsx",
+      "norm_label": "quickrow"
     },
     {
       "label": "ItemSheetState",
@@ -896,7 +987,7 @@
       "_origin": "ast",
       "id": "app_components_registro_registromobile_itemsheetstate",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "itemsheetstate"
     },
     {
@@ -909,7 +1000,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_amount",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "amount"
     },
     {
@@ -922,7 +1013,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_decimalseparator",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "decimalseparator"
     },
     {
@@ -935,7 +1026,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_nutritionpreview",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "nutritionpreview"
     },
     {
@@ -948,21 +1039,8 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_pickeroption",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "pickeroption"
-    },
-    {
-      "label": "MealGroup",
-      "file_type": "code",
-      "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L49",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_lib_meal_logs_mealgroup",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "mealgroup"
     },
     {
       "label": "MealLogItem",
@@ -974,21 +1052,8 @@
       "_origin": "ast",
       "id": "app_lib_meal_logs_meallogitem",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "meallogitem"
-    },
-    {
-      "label": "FoodCategory",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L2",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_lib_nutrition_types_foodcategory",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "foodcategory"
     },
     {
       "label": "FoodMeasure",
@@ -1000,7 +1065,7 @@
       "_origin": "ast",
       "id": "app_lib_nutrition_types_foodmeasure",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "foodmeasure"
     },
     {
@@ -1013,7 +1078,7 @@
       "_origin": "ast",
       "id": "app_lib_nutrition_types_frequentitem",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "frequentitem"
     },
     {
@@ -1026,21 +1091,8 @@
       "_origin": "ast",
       "id": "app_lib_nutrition_types_frequentitemsbyslot",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "frequentitemsbyslot"
-    },
-    {
-      "label": "FrequentSlot",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L103",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_lib_nutrition_types_frequentslot",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "frequentslot"
     },
     {
       "label": "Macros",
@@ -1052,7 +1104,7 @@
       "_origin": "ast",
       "id": "app_lib_nutrition_types_macros",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "macros"
     },
     {
@@ -1065,21 +1117,8 @@
       "_origin": "ast",
       "id": "app_lib_nutrition_types_mealiteminput",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "mealiteminput"
-    },
-    {
-      "label": "MealType",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L31",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_lib_nutrition_types_mealtype",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "mealtype"
     },
     {
       "label": "RecipeOption",
@@ -1091,7 +1130,7 @@
       "_origin": "ast",
       "id": "app_lib_nutrition_types_recipeoption",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "recipeoption"
     },
     {
@@ -1104,7 +1143,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_draftitem",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "draftitem"
     },
     {
@@ -1537,173 +1576,56 @@
       "norm_label": "parsedfoodpayload"
     },
     {
-      "label": "FoodAdminClientProps",
+      "label": "MobileSheet",
       "file_type": "code",
-      "source_file": "app/admin/alimentos/FoodAdminClient.tsx",
-      "source_location": "L54",
+      "source_file": "app/configuracion/ConfiguracionClient.tsx",
+      "source_location": "L67",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "id": "app_admin_alimentos_foodadminclient_foodadminclientprops",
+      "id": "app_configuracion_configuracionclient_mobilesheet",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "foodadminclientprops"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "mobilesheet"
     },
     {
-      "label": "FoodFormSheetProps",
+      "label": "MealGroup",
       "file_type": "code",
-      "source_file": "app/admin/alimentos/FoodAdminClient.tsx",
-      "source_location": "L458",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_admin_alimentos_foodadminclient_foodformsheetprops",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "foodformsheetprops"
-    },
-    {
-      "label": "SortColumn",
-      "file_type": "code",
-      "source_file": "app/admin/alimentos/FoodAdminClient.tsx",
-      "source_location": "L60",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_admin_alimentos_foodadminclient_sortcolumn",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sortcolumn"
-    },
-    {
-      "label": "SortDirection",
-      "file_type": "code",
-      "source_file": "app/admin/alimentos/FoodAdminClient.tsx",
-      "source_location": "L61",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_admin_alimentos_foodadminclient_sortdirection",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sortdirection"
-    },
-    {
-      "label": "AdminRecipe",
-      "file_type": "code",
-      "source_file": "app/admin/recetas/RecipeAdminClient.tsx",
+      "source_file": "app/lib/meal-logs.ts",
       "source_location": "L49",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "id": "app_admin_recetas_recipeadminclient_adminrecipe",
+      "id": "app_lib_meal_logs_mealgroup",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "adminrecipe"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "mealgroup"
     },
     {
-      "label": "RecipeAdminClientProps",
+      "label": "FrequentSlot",
       "file_type": "code",
-      "source_file": "app/admin/recetas/RecipeAdminClient.tsx",
-      "source_location": "L51",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L103",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "id": "app_admin_recetas_recipeadminclient_recipeadminclientprops",
+      "id": "app_lib_nutrition_types_frequentslot",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "recipeadminclientprops"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "frequentslot"
     },
     {
-      "label": "RoutineAdminClientProps",
+      "label": "MealType",
       "file_type": "code",
-      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
-      "source_location": "L74",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L31",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "id": "app_admin_rutinas_routineadminclient_routineadminclientprops",
+      "id": "app_lib_nutrition_types_mealtype",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "routineadminclientprops"
-    },
-    {
-      "label": "RoutineFormSheetProps",
-      "file_type": "code",
-      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
-      "source_location": "L714",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_admin_rutinas_routineadminclient_routineformsheetprops",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "routineformsheetprops"
-    },
-    {
-      "label": "SortColumn",
-      "file_type": "code",
-      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
-      "source_location": "L79",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_admin_rutinas_routineadminclient_sortcolumn",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sortcolumn"
-    },
-    {
-      "label": "SortDirection",
-      "file_type": "code",
-      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
-      "source_location": "L80",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_admin_rutinas_routineadminclient_sortdirection",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sortdirection"
-    },
-    {
-      "label": "SheetProps",
-      "file_type": "code",
-      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
-      "source_location": "L30",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_components_rutinas_trainingdayssheet_sheetprops",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sheetprops"
-    },
-    {
-      "label": "TrainingDaysSubmit",
-      "file_type": "code",
-      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
-      "source_location": "L24",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_components_rutinas_trainingdayssheet_trainingdayssubmit",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "trainingdayssubmit"
-    },
-    {
-      "label": "FilterSheetProps",
-      "file_type": "code",
-      "source_file": "app/components/shared/FilterSheet.tsx",
-      "source_location": "L15",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_components_shared_filtersheet_filtersheetprops",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "filtersheetprops"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "mealtype"
     },
     {
       "label": "MobileHeaderBadge",
@@ -2450,7 +2372,7 @@
       "label": "WeeklySummary",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L179",
+      "source_location": "L182",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
@@ -2534,7 +2456,7 @@
       "_origin": "ast",
       "id": "app_catalogo_routinecatalogclient_routinecatalogclientprops",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "routinecatalogclientprops"
     },
     {
@@ -2547,7 +2469,7 @@
       "_origin": "ast",
       "id": "app_catalogo_routinecatalogclient_savedstatus",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "savedstatus"
     },
     {
@@ -2560,21 +2482,21 @@
       "_origin": "ast",
       "id": "app_catalogo_routinecatalogclient_sortoption",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "sortoption"
     },
     {
-      "label": "MobileSheet",
+      "label": "SegmentedOption",
       "file_type": "code",
-      "source_file": "app/configuracion/ConfiguracionClient.tsx",
-      "source_location": "L67",
+      "source_file": "app/components/ui/SegmentedControl.tsx",
+      "source_location": "L9",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "id": "app_configuracion_configuracionclient_mobilesheet",
+      "id": "app_components_ui_segmentedcontrol_segmentedoption",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "mobilesheet"
+      "community_name": "motion.tsx",
+      "norm_label": "segmentedoption"
     },
     {
       "label": "DiaryTab",
@@ -2586,8 +2508,60 @@
       "_origin": "ast",
       "id": "app_lib_meal_diary_diarytab",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "diarytab"
+    },
+    {
+      "label": "FoodAdminClientProps",
+      "file_type": "code",
+      "source_file": "app/admin/alimentos/FoodAdminClient.tsx",
+      "source_location": "L54",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_admin_alimentos_foodadminclient_foodadminclientprops",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "foodadminclientprops"
+    },
+    {
+      "label": "FoodFormSheetProps",
+      "file_type": "code",
+      "source_file": "app/admin/alimentos/FoodAdminClient.tsx",
+      "source_location": "L458",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_admin_alimentos_foodadminclient_foodformsheetprops",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "foodformsheetprops"
+    },
+    {
+      "label": "SortColumn",
+      "file_type": "code",
+      "source_file": "app/admin/alimentos/FoodAdminClient.tsx",
+      "source_location": "L60",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_admin_alimentos_foodadminclient_sortcolumn",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "sortcolumn"
+    },
+    {
+      "label": "SortDirection",
+      "file_type": "code",
+      "source_file": "app/admin/alimentos/FoodAdminClient.tsx",
+      "source_location": "L61",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_admin_alimentos_foodadminclient_sortdirection",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "sortdirection"
     },
     {
       "label": "ExerciseAdminClientProps",
@@ -2655,6 +2629,84 @@
       "norm_label": "uploadstatus"
     },
     {
+      "label": "AdminRecipe",
+      "file_type": "code",
+      "source_file": "app/admin/recetas/RecipeAdminClient.tsx",
+      "source_location": "L49",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_admin_recetas_recipeadminclient_adminrecipe",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "adminrecipe"
+    },
+    {
+      "label": "RecipeAdminClientProps",
+      "file_type": "code",
+      "source_file": "app/admin/recetas/RecipeAdminClient.tsx",
+      "source_location": "L51",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_admin_recetas_recipeadminclient_recipeadminclientprops",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "recipeadminclientprops"
+    },
+    {
+      "label": "RoutineAdminClientProps",
+      "file_type": "code",
+      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
+      "source_location": "L74",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_admin_rutinas_routineadminclient_routineadminclientprops",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "routineadminclientprops"
+    },
+    {
+      "label": "RoutineFormSheetProps",
+      "file_type": "code",
+      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
+      "source_location": "L714",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_admin_rutinas_routineadminclient_routineformsheetprops",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "routineformsheetprops"
+    },
+    {
+      "label": "SortColumn",
+      "file_type": "code",
+      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
+      "source_location": "L79",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_admin_rutinas_routineadminclient_sortcolumn",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "sortcolumn"
+    },
+    {
+      "label": "SortDirection",
+      "file_type": "code",
+      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
+      "source_location": "L80",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_admin_rutinas_routineadminclient_sortdirection",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "sortdirection"
+    },
+    {
       "label": "RoutineDetailClientProps",
       "file_type": "code",
       "source_file": "app/catalogo/rutinas/[id]/RoutineDetailClient.tsx",
@@ -2668,82 +2720,43 @@
       "norm_label": "routinedetailclientprops"
     },
     {
-      "label": "ExerciseHistoryData",
+      "label": "SheetProps",
       "file_type": "code",
-      "source_file": "app/components/exercise/ExerciseHistoryPanel.tsx",
-      "source_location": "L13",
+      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
+      "source_location": "L30",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "id": "app_components_exercise_exercisehistorypanel_exercisehistorydata",
+      "id": "app_components_rutinas_trainingdayssheet_sheetprops",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "exercisehistorydata"
+      "norm_label": "sheetprops"
     },
     {
-      "label": "MediaView",
+      "label": "TrainingDaysSubmit",
       "file_type": "code",
-      "source_file": "app/components/exercise/ExerciseMedia.tsx",
-      "source_location": "L10",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_components_exercise_exercisemedia_mediaview",
-      "community": 300,
-      "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "mediaview"
-    },
-    {
-      "label": "ExerciseSheetTab",
-      "file_type": "code",
-      "source_file": "app/components/exercise/ExerciseSheet.tsx",
-      "source_location": "L13",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_components_exercise_exercisesheet_exercisesheettab",
-      "community": 300,
-      "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "exercisesheettab"
-    },
-    {
-      "label": "DetailExercise",
-      "file_type": "code",
-      "source_file": "app/components/rutina-detalle/DetailDays.tsx",
-      "source_location": "L11",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_components_rutina_detalle_detaildays_detailexercise",
-      "community": 300,
-      "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "detailexercise"
-    },
-    {
-      "label": "ExerciseDetail",
-      "file_type": "code",
-      "source_file": "app/components/shared/ExerciseDetailModal.tsx",
+      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
       "source_location": "L24",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "id": "app_components_shared_exercisedetailmodal_exercisedetail",
+      "id": "app_components_rutinas_trainingdayssheet_trainingdayssubmit",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "exercisedetail"
+      "norm_label": "trainingdayssubmit"
     },
     {
-      "label": "ExerciseDetailModalProps",
+      "label": "FilterSheetProps",
       "file_type": "code",
-      "source_file": "app/components/shared/ExerciseDetailModal.tsx",
-      "source_location": "L42",
+      "source_file": "app/components/shared/FilterSheet.tsx",
+      "source_location": "L15",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "id": "app_components_shared_exercisedetailmodal_exercisedetailmodalprops",
+      "id": "app_components_shared_filtersheet_filtersheetprops",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "exercisedetailmodalprops"
+      "norm_label": "filtersheetprops"
     },
     {
       "label": "RoutineTablePreviewProps",
@@ -2822,19 +2835,6 @@
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
       "norm_label": "badgeprops"
-    },
-    {
-      "label": "SegmentedOption",
-      "file_type": "code",
-      "source_file": "app/components/ui/SegmentedControl.tsx",
-      "source_location": "L9",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_components_ui_segmentedcontrol_segmentedoption",
-      "community": 300,
-      "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "segmentedoption"
     },
     {
       "label": "AdminExerciseListItem",
@@ -2939,6 +2939,19 @@
       "community": 302,
       "community_name": "NutritionCatalogClient.tsx",
       "norm_label": "foodformprops"
+    },
+    {
+      "label": "FoodCategory",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L2",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_lib_nutrition_types_foodcategory",
+      "community": 302,
+      "community_name": "NutritionCatalogClient.tsx",
+      "norm_label": "foodcategory"
     },
     {
       "label": "LoginPageProps",
@@ -3420,19 +3433,6 @@
       "community": 319,
       "community_name": "home-dashboard.ts",
       "norm_label": "plannedstatus"
-    },
-    {
-      "label": "StripDay",
-      "file_type": "code",
-      "source_file": "app/lib/training-schedule.ts",
-      "source_location": "L42",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_lib_training_schedule_stripday",
-      "community": 319,
-      "community_name": "home-dashboard.ts",
-      "norm_label": "stripday"
     },
     {
       "label": "OpenWorkoutSession",
@@ -4192,7 +4192,7 @@
       "label": "PushPayload",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L209",
+      "source_location": "L210",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
@@ -4356,6 +4356,19 @@
       "community": 423,
       "community_name": "RecipeDetailDrawer.tsx",
       "norm_label": "buttonprops"
+    },
+    {
+      "label": "LoadingDotsProps",
+      "file_type": "code",
+      "source_file": "app/components/ui/LoadingDots.tsx",
+      "source_location": "L3",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_components_ui_loadingdots_loadingdotsprops",
+      "community": 423,
+      "community_name": "RecipeDetailDrawer.tsx",
+      "norm_label": "loadingdotsprops"
     },
     {
       "label": "Food",
@@ -4930,19 +4943,6 @@
       "norm_label": "otploginflowprops"
     },
     {
-      "label": "QuickRow",
-      "file_type": "code",
-      "source_file": "app/components/registro/FrequentRows.tsx",
-      "source_location": "L7",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_components_registro_frequentrows_quickrow",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "quickrow"
-    },
-    {
       "label": "InputOtpProps",
       "file_type": "code",
       "source_file": "app/components/ui/InputOtp.tsx",
@@ -4954,19 +4954,6 @@
       "community": 455,
       "community_name": "cn",
       "norm_label": "inputotpprops"
-    },
-    {
-      "label": "LoadingDotsProps",
-      "file_type": "code",
-      "source_file": "app/components/ui/LoadingDots.tsx",
-      "source_location": "L3",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "app_components_ui_loadingdots_loadingdotsprops",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "loadingdotsprops"
     },
     {
       "label": "WeekDay",
@@ -4998,7 +4985,7 @@
       "label": "pushDelivery",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L236",
+      "source_location": "L237",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
@@ -5123,6 +5110,19 @@
       "community": 472,
       "community_name": "app/page.tsx",
       "norm_label": "heroview"
+    },
+    {
+      "label": "StripDay",
+      "file_type": "code",
+      "source_file": "app/lib/training-schedule.ts",
+      "source_location": "L42",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "app_lib_training_schedule_stripday",
+      "community": 472,
+      "community_name": "app/page.tsx",
+      "norm_label": "stripday"
     },
     {
       "label": "WorkerState",
@@ -5943,6 +5943,54 @@
       "norm_label": "recipe()"
     },
     {
+      "label": "ExerciseMedia()",
+      "file_type": "code",
+      "source_file": "app/components/exercise/ExerciseMedia.tsx",
+      "source_location": "L16",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_exercise_exercisemedia_exercisemedia",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "exercisemedia()"
+    },
+    {
+      "label": "ExerciseSheet()",
+      "file_type": "code",
+      "source_file": "app/components/exercise/ExerciseSheet.tsx",
+      "source_location": "L19",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_exercise_exercisesheet_exercisesheet",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "exercisesheet()"
+    },
+    {
+      "label": "SheetBody()",
+      "file_type": "code",
+      "source_file": "app/components/exercise/ExerciseSheet.tsx",
+      "source_location": "L48",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_exercise_exercisesheet_sheetbody",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "sheetbody()"
+    },
+    {
+      "label": "DayPanelBody()",
+      "file_type": "code",
+      "source_file": "app/components/rutina-detalle/DetailDays.tsx",
+      "source_location": "L140",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_rutina_detalle_detaildays_daypanelbody",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "daypanelbody()"
+    },
+    {
       "label": "CompactDayAction()",
       "file_type": "code",
       "source_file": "app/components/rutinas/DayAction.tsx",
@@ -5951,7 +5999,7 @@
       "_origin": "ast",
       "id": "app_components_rutinas_dayaction_compactdayaction",
       "community": 105,
-      "community_name": "RoutineWeekView.tsx",
+      "community_name": "ExerciseDetailModal.tsx",
       "norm_label": "compactdayaction()"
     },
     {
@@ -5963,7 +6011,7 @@
       "_origin": "ast",
       "id": "app_components_rutinas_dayaction_dayaction",
       "community": 105,
-      "community_name": "RoutineWeekView.tsx",
+      "community_name": "ExerciseDetailModal.tsx",
       "norm_label": "dayaction()"
     },
     {
@@ -5975,7 +6023,7 @@
       "_origin": "ast",
       "id": "app_components_rutinas_daypanel_daypanel",
       "community": 105,
-      "community_name": "RoutineWeekView.tsx",
+      "community_name": "ExerciseDetailModal.tsx",
       "norm_label": "daypanel()"
     },
     {
@@ -5987,7 +6035,7 @@
       "_origin": "ast",
       "id": "app_components_rutinas_daypanel_weekstats",
       "community": 105,
-      "community_name": "RoutineWeekView.tsx",
+      "community_name": "ExerciseDetailModal.tsx",
       "norm_label": "weekstats()"
     },
     {
@@ -5999,7 +6047,7 @@
       "_origin": "ast",
       "id": "app_components_rutinas_daytabs_daytabs",
       "community": 105,
-      "community_name": "RoutineWeekView.tsx",
+      "community_name": "ExerciseDetailModal.tsx",
       "norm_label": "daytabs()"
     },
     {
@@ -6011,7 +6059,7 @@
       "_origin": "ast",
       "id": "app_components_rutinas_daytabs_daytabs_onkeydown",
       "community": 105,
-      "community_name": "RoutineWeekView.tsx",
+      "community_name": "ExerciseDetailModal.tsx",
       "norm_label": "onkeydown()"
     },
     {
@@ -6023,8 +6071,92 @@
       "_origin": "ast",
       "id": "app_components_rutinas_routineweekview_weekdonesummary",
       "community": 105,
-      "community_name": "RoutineWeekView.tsx",
+      "community_name": "ExerciseDetailModal.tsx",
       "norm_label": "weekdonesummary()"
+    },
+    {
+      "label": "TrainingDaysSheet()",
+      "file_type": "code",
+      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
+      "source_location": "L64",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_rutinas_trainingdayssheet_trainingdayssheet",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "trainingdayssheet()"
+    },
+    {
+      "label": "ExerciseDetailModal()",
+      "file_type": "code",
+      "source_file": "app/components/shared/ExerciseDetailModal.tsx",
+      "source_location": "L52",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_shared_exercisedetailmodal_exercisedetailmodal",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "exercisedetailmodal()"
+    },
+    {
+      "label": "ExerciseDetailSidePanel()",
+      "file_type": "code",
+      "source_file": "app/components/shared/ExerciseDetailModal.tsx",
+      "source_location": "L61",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_shared_exercisedetailmodal_exercisedetailsidepanel",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "exercisedetailsidepanel()"
+    },
+    {
+      "label": "SpecChip()",
+      "file_type": "code",
+      "source_file": "app/components/shared/ExerciseDetailModal.tsx",
+      "source_location": "L230",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_shared_exercisedetailmodal_specchip",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "specchip()"
+    },
+    {
+      "label": "useMediaQuery()",
+      "file_type": "code",
+      "source_file": "app/components/ui/use-media-query.ts",
+      "source_location": "L9",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_use_media_query_usemediaquery",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "usemediaquery()"
+    },
+    {
+      "label": "equipmentLabel()",
+      "file_type": "code",
+      "source_file": "app/lib/exercise-form.ts",
+      "source_location": "L95",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_lib_exercise_form_equipmentlabel",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "equipmentlabel()"
+    },
+    {
+      "label": "muscleLabel()",
+      "file_type": "code",
+      "source_file": "app/lib/exercise-form.ts",
+      "source_location": "L90",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_lib_exercise_form_musclelabel",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "musclelabel()"
     },
     {
       "label": "addLabelFor()",
@@ -6879,6 +7011,18 @@
       "norm_label": "getnextmealposition()"
     },
     {
+      "label": "listFrequentUsages()",
+      "file_type": "code",
+      "source_file": "app/lib/meal-logs.ts",
+      "source_location": "L696",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_lib_meal_logs_listfrequentusages",
+      "community": 169,
+      "community_name": "meal-logs.ts",
+      "norm_label": "listfrequentusages()"
+    },
+    {
       "label": "listMealIdsInOrder()",
       "file_type": "code",
       "source_file": "app/lib/meal-logs.ts",
@@ -6925,6 +7069,18 @@
       "community": 169,
       "community_name": "meal-logs.ts",
       "norm_label": "movemeal()"
+    },
+    {
+      "label": "normalizeMealType()",
+      "file_type": "code",
+      "source_file": "app/lib/meal-logs.ts",
+      "source_location": "L797",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_lib_meal_logs_normalizemealtype",
+      "community": 169,
+      "community_name": "meal-logs.ts",
+      "norm_label": "normalizemealtype()"
     },
     {
       "label": "roundOneDecimal()",
@@ -7427,7 +7583,7 @@
       "_origin": "ast",
       "id": "app_components_registro_addfoodsheet_addfoodsheet",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "addfoodsheet()"
     },
     {
@@ -7439,7 +7595,7 @@
       "_origin": "ast",
       "id": "app_components_registro_addfoodsheet_addfoodsheet_add",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "add()"
     },
     {
@@ -7451,7 +7607,7 @@
       "_origin": "ast",
       "id": "app_components_registro_addfoodsheet_addfoodsheet_amountfor",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "amountfor()"
     },
     {
@@ -7463,7 +7619,7 @@
       "_origin": "ast",
       "id": "app_components_registro_addfoodsheet_addfoodsheet_choose",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "choose()"
     },
     {
@@ -7475,7 +7631,7 @@
       "_origin": "ast",
       "id": "app_components_registro_addfoodsheet_addfoodsheet_markadded",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "markadded()"
     },
     {
@@ -7487,7 +7643,7 @@
       "_origin": "ast",
       "id": "app_components_registro_addfoodsheet_addfoodsheet_undolast",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "undolast()"
     },
     {
@@ -7499,56 +7655,20 @@
       "_origin": "ast",
       "id": "app_components_registro_amounteditor_amounteditor",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "amounteditor()"
     },
     {
-      "label": "DayClosedPanel()",
+      "label": "FrequentRows()",
       "file_type": "code",
-      "source_file": "app/components/registro/DayClosedPanel.tsx",
-      "source_location": "L9",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_registro_dayclosedpanel_dayclosedpanel",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "dayclosedpanel()"
-    },
-    {
-      "label": "DayPickerSheet()",
-      "file_type": "code",
-      "source_file": "app/components/registro/DayPickerSheet.tsx",
-      "source_location": "L16",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_registro_daypickersheet_daypickersheet",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "daypickersheet()"
-    },
-    {
-      "label": "DaySheet()",
-      "file_type": "code",
-      "source_file": "app/components/registro/DaySheet.tsx",
+      "source_file": "app/components/registro/FrequentRows.tsx",
       "source_location": "L17",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_registro_daysheet_daysheet",
+      "id": "app_components_registro_frequentrows_frequentrows",
       "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "daysheet()"
-    },
-    {
-      "label": "pickType()",
-      "file_type": "code",
-      "source_file": "app/components/registro/DaySheet.tsx",
-      "source_location": "L42",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_registro_daysheet_daysheet_picktype",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "picktype()"
+      "community_name": "RegistroClient.tsx",
+      "norm_label": "frequentrows()"
     },
     {
       "label": "ItemSheet()",
@@ -7559,7 +7679,7 @@
       "_origin": "ast",
       "id": "app_components_registro_itemsheet_itemsheet",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "itemsheet()"
     },
     {
@@ -7571,7 +7691,7 @@
       "_origin": "ast",
       "id": "app_components_registro_itemsheet_itemsheet_remove",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "remove()"
     },
     {
@@ -7583,8 +7703,20 @@
       "_origin": "ast",
       "id": "app_components_registro_itemsheet_itemsheet_save",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "save()"
+    },
+    {
+      "label": "MealPanel()",
+      "file_type": "code",
+      "source_file": "app/components/registro/MealPanel.tsx",
+      "source_location": "L16",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_registro_mealpanel_mealpanel",
+      "community": 170,
+      "community_name": "RegistroClient.tsx",
+      "norm_label": "mealpanel()"
     },
     {
       "label": "quickRowsFor()",
@@ -7595,32 +7727,68 @@
       "_origin": "ast",
       "id": "app_components_registro_registromobile_registromobile_quickrowsfor",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "quickrowsfor()"
     },
     {
-      "label": "RegistroSheet()",
+      "label": "SegmentedControl()",
       "file_type": "code",
-      "source_file": "app/components/registro/RegistroSheet.tsx",
-      "source_location": "L24",
+      "source_file": "app/components/ui/SegmentedControl.tsx",
+      "source_location": "L18",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_registro_registrosheet_registrosheet",
+      "id": "app_components_ui_segmentedcontrol_segmentedcontrol",
       "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "registrosheet()"
+      "community_name": "RegistroClient.tsx",
+      "norm_label": "segmentedcontrol()"
     },
     {
-      "label": "Input()",
+      "label": "onKeyDown()",
       "file_type": "code",
-      "source_file": "app/components/ui/Input.tsx",
-      "source_location": "L5",
+      "source_file": "app/components/ui/SegmentedControl.tsx",
+      "source_location": "L39",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_input_input",
+      "id": "app_components_ui_segmentedcontrol_segmentedcontrol_onkeydown",
       "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "input()"
+      "community_name": "RegistroClient.tsx",
+      "norm_label": "onkeydown()"
+    },
+    {
+      "label": "getSnapshot()",
+      "file_type": "code",
+      "source_file": "app/components/ui/use-keyboard-open.ts",
+      "source_location": "L14",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_use_keyboard_open_getsnapshot",
+      "community": 170,
+      "community_name": "RegistroClient.tsx",
+      "norm_label": "getsnapshot()"
+    },
+    {
+      "label": "subscribe()",
+      "file_type": "code",
+      "source_file": "app/components/ui/use-keyboard-open.ts",
+      "source_location": "L8",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_use_keyboard_open_subscribe",
+      "community": 170,
+      "community_name": "RegistroClient.tsx",
+      "norm_label": "subscribe()"
+    },
+    {
+      "label": "useKeyboardOpen()",
+      "file_type": "code",
+      "source_file": "app/components/ui/use-keyboard-open.ts",
+      "source_location": "L22",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_use_keyboard_open_usekeyboardopen",
+      "community": 170,
+      "community_name": "RegistroClient.tsx",
+      "norm_label": "usekeyboardopen()"
     },
     {
       "label": "amountToGrams()",
@@ -7631,7 +7799,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_amounttograms",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "amounttograms()"
     },
     {
@@ -7643,7 +7811,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_convertquantity",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "convertquantity()"
     },
     {
@@ -7655,7 +7823,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_describeoption",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "describeoption()"
     },
     {
@@ -7667,7 +7835,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_formatamount",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "formatamount()"
     },
     {
@@ -7679,7 +7847,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_formatitemamount",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "formatitemamount()"
     },
     {
@@ -7691,7 +7859,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_formatquantity",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "formatquantity()"
     },
     {
@@ -7703,7 +7871,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_formatservings",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "formatservings()"
     },
     {
@@ -7715,7 +7883,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_getfoodgramsperunit",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "getfoodgramsperunit()"
     },
     {
@@ -7727,7 +7895,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_getoptiongramsperunit",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "getoptiongramsperunit()"
     },
     {
@@ -7739,7 +7907,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_measurelabels",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "measurelabels()"
     },
     {
@@ -7751,7 +7919,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_optioncategory",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "optioncategory()"
     },
     {
@@ -7763,7 +7931,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_optionkcallabel",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "optionkcallabel()"
     },
     {
@@ -7775,7 +7943,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_optionkey",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "optionkey()"
     },
     {
@@ -7787,7 +7955,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_parsequantity",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "parsequantity()"
     },
     {
@@ -7799,7 +7967,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_previewitemnutrition",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "previewitemnutrition()"
     },
     {
@@ -7811,7 +7979,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_previewnutrition",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "previewnutrition()"
     },
     {
@@ -7823,7 +7991,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_quantitystep",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "quantitystep()"
     },
     {
@@ -7835,7 +8003,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_rankfrequentitems",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "rankfrequentitems()"
     },
     {
@@ -7847,7 +8015,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_rankfrequentitemsbyslot",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "rankfrequentitemsbyslot()"
     },
     {
@@ -7859,7 +8027,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_resolvedefaultamount",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "resolvedefaultamount()"
     },
     {
@@ -7871,7 +8039,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_tomealiteminput",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "tomealiteminput()"
     },
     {
@@ -7883,32 +8051,20 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_validateamount",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "validateamount()"
     },
     {
-      "label": "buildWeekStrip()",
+      "label": "titleScale()",
       "file_type": "code",
       "source_file": "app/lib/meal-diary.ts",
-      "source_location": "L422",
+      "source_location": "L551",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_lib_meal_diary_buildweekstrip",
+      "id": "app_lib_meal_diary_titlescale",
       "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "buildweekstrip()"
-    },
-    {
-      "label": "formatMealFoods()",
-      "file_type": "code",
-      "source_file": "app/lib/meal-diary.ts",
-      "source_location": "L543",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_meal_diary_formatmealfoods",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "formatmealfoods()"
+      "community_name": "RegistroClient.tsx",
+      "norm_label": "titlescale()"
     },
     {
       "label": "frequentSlotOf()",
@@ -7919,7 +8075,7 @@
       "_origin": "ast",
       "id": "app_lib_nutrition_types_frequentslotof",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "frequentslotof()"
     },
     {
@@ -7931,7 +8087,7 @@
       "_origin": "ast",
       "id": "app_lib_nutrition_types_getamountunitlabel",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "getamountunitlabel()"
     },
     {
@@ -7943,7 +8099,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_foodpicker_foodpicker",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "foodpicker()"
     },
     {
@@ -7955,7 +8111,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_foodpicker_foodpicker_handleadd",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "handleadd()"
     },
     {
@@ -7967,7 +8123,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_foodpicker_foodpicker_handlemeasurechange",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "handlemeasurechange()"
     },
     {
@@ -7979,7 +8135,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_foodpicker_foodpicker_handlepointerdown",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "handlepointerdown()"
     },
     {
@@ -7991,7 +8147,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_foodpicker_foodpicker_reset",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "reset()"
     },
     {
@@ -8003,7 +8159,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_foodpicker_foodpicker_selectoption",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "selectoption()"
     },
     {
@@ -8015,7 +8171,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_formatdraftamount",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "formatdraftamount()"
     },
     {
@@ -8027,7 +8183,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_formatmealfoods",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "formatmealfoods()"
     },
     {
@@ -8039,7 +8195,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_macrochip",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "macrochip()"
     },
     {
@@ -8051,7 +8207,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_mealcard",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "mealcard()"
     },
     {
@@ -8063,7 +8219,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_mealcard_handleconfirmdelete",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "handleconfirmdelete()"
     },
     {
@@ -8075,7 +8231,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_mealcard_handledelete",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "handledelete()"
     },
     {
@@ -8087,7 +8243,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_mealcard_handlemove",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "handlemove()"
     },
     {
@@ -8099,7 +8255,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_mealcard_handlesaveitem",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "handlesaveitem()"
     },
     {
@@ -8111,7 +8267,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_mealcard_handlestartedititem",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "handlestartedititem()"
     },
     {
@@ -8123,7 +8279,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_mealcard_handletoggleedit",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "handletoggleedit()"
     },
     {
@@ -8135,7 +8291,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_mealcard_handletypechange",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "handletypechange()"
     },
     {
@@ -8147,7 +8303,7 @@
       "_origin": "ast",
       "id": "tests_unit_meal_amounts_test_food",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "food()"
     },
     {
@@ -8159,7 +8315,7 @@
       "_origin": "ast",
       "id": "tests_unit_meal_amounts_test_foodoption",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "foodoption()"
     },
     {
@@ -9543,376 +9699,232 @@
       "norm_label": "parsefoodpayload()"
     },
     {
-      "label": "SortHeader()",
+      "label": "DeleteAccountSheet()",
       "file_type": "code",
-      "source_file": "app/admin/alimentos/FoodAdminClient.tsx",
-      "source_location": "L426",
+      "source_file": "app/components/configuracion/DeleteAccountSheet.tsx",
+      "source_location": "L13",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_admin_alimentos_foodadminclient_sortheader",
+      "id": "app_components_configuracion_deleteaccountsheet_deleteaccountsheet",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sortheader()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "deleteaccountsheet()"
     },
     {
-      "label": "SortHeader()",
+      "label": "handleOpenChange()",
       "file_type": "code",
-      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
-      "source_location": "L682",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_admin_rutinas_routineadminclient_sortheader",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sortheader()"
-    },
-    {
-      "label": "StatTile()",
-      "file_type": "code",
-      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
-      "source_location": "L658",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_admin_rutinas_routineadminclient_stattile",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "stattile()"
-    },
-    {
-      "label": "DaysForm()",
-      "file_type": "code",
-      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
-      "source_location": "L131",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_rutinas_trainingdayssheet_daysform",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "daysform()"
-    },
-    {
-      "label": "confirm()",
-      "file_type": "code",
-      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
-      "source_location": "L148",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_rutinas_trainingdayssheet_daysform_confirm",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "confirm()"
-    },
-    {
-      "label": "FormConfirm()",
-      "file_type": "code",
-      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
-      "source_location": "L190",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_rutinas_trainingdayssheet_formconfirm",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "formconfirm()"
-    },
-    {
-      "label": "FilterSheet()",
-      "file_type": "code",
-      "source_file": "app/components/shared/FilterSheet.tsx",
-      "source_location": "L21",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_shared_filtersheet_filtersheet",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "filtersheet()"
-    },
-    {
-      "label": "Dialog()",
-      "file_type": "code",
-      "source_file": "app/components/ui/Dialog.tsx",
-      "source_location": "L10",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_ui_dialog_dialog",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "dialog()"
-    },
-    {
-      "label": "DialogClose()",
-      "file_type": "code",
-      "source_file": "app/components/ui/Dialog.tsx",
-      "source_location": "L22",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_ui_dialog_dialogclose",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "dialogclose()"
-    },
-    {
-      "label": "DialogContent()",
-      "file_type": "code",
-      "source_file": "app/components/ui/Dialog.tsx",
-      "source_location": "L34",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_ui_dialog_dialogcontent",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "dialogcontent()"
-    },
-    {
-      "label": "DialogDescription()",
-      "file_type": "code",
-      "source_file": "app/components/ui/Dialog.tsx",
-      "source_location": "L103",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_ui_dialog_dialogdescription",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "dialogdescription()"
-    },
-    {
-      "label": "DialogHeader()",
-      "file_type": "code",
-      "source_file": "app/components/ui/Dialog.tsx",
-      "source_location": "L80",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_ui_dialog_dialogheader",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "dialogheader()"
-    },
-    {
-      "label": "DialogPortal()",
-      "file_type": "code",
-      "source_file": "app/components/ui/Dialog.tsx",
+      "source_file": "app/components/configuracion/DeleteAccountSheet.tsx",
       "source_location": "L28",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_dialog_dialogportal",
+      "id": "app_components_configuracion_deleteaccountsheet_deleteaccountsheet_handleopenchange",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "dialogportal()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "handleopenchange()"
     },
     {
-      "label": "DialogTitle()",
+      "label": "NameSheet()",
       "file_type": "code",
-      "source_file": "app/components/ui/Dialog.tsx",
-      "source_location": "L90",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_ui_dialog_dialogtitle",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "dialogtitle()"
-    },
-    {
-      "label": "DialogTrigger()",
-      "file_type": "code",
-      "source_file": "app/components/ui/Dialog.tsx",
-      "source_location": "L16",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_ui_dialog_dialogtrigger",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "dialogtrigger()"
-    },
-    {
-      "label": "Select()",
-      "file_type": "code",
-      "source_file": "app/components/ui/Select.tsx",
+      "source_file": "app/components/configuracion/NameSheet.tsx",
       "source_location": "L9",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_select_select",
+      "id": "app_components_configuracion_namesheet_namesheet",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "select()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "namesheet()"
     },
     {
-      "label": "SelectContent()",
+      "label": "handleOpenChange()",
       "file_type": "code",
-      "source_file": "app/components/ui/Select.tsx",
-      "source_location": "L49",
+      "source_file": "app/components/configuracion/NameSheet.tsx",
+      "source_location": "L24",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_select_selectcontent",
+      "id": "app_components_configuracion_namesheet_namesheet_handleopenchange",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "selectcontent()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "handleopenchange()"
     },
     {
-      "label": "SelectGroup()",
+      "label": "PlanHero()",
       "file_type": "code",
-      "source_file": "app/components/ui/Select.tsx",
-      "source_location": "L15",
+      "source_file": "app/components/configuracion/PlanHero.tsx",
+      "source_location": "L13",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_select_selectgroup",
+      "id": "app_components_configuracion_planhero_planhero",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "selectgroup()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "planhero()"
     },
     {
-      "label": "SelectItem()",
+      "label": "ProfileIdentity()",
       "file_type": "code",
-      "source_file": "app/components/ui/Select.tsx",
-      "source_location": "L98",
+      "source_file": "app/components/configuracion/ProfileIdentity.tsx",
+      "source_location": "L12",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_select_selectitem",
+      "id": "app_components_configuracion_profileidentity_profileidentity",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "selectitem()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "profileidentity()"
     },
     {
-      "label": "SelectLabel()",
+      "label": "SavedBadge()",
       "file_type": "code",
-      "source_file": "app/components/ui/Select.tsx",
-      "source_location": "L82",
+      "source_file": "app/components/configuracion/ProfileIdentity.tsx",
+      "source_location": "L110",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_select_selectlabel",
+      "id": "app_components_configuracion_profileidentity_savedbadge",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "selectlabel()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "savedbadge()"
     },
     {
-      "label": "SelectSeparator()",
+      "label": "SaveIndicator()",
       "file_type": "code",
-      "source_file": "app/components/ui/Select.tsx",
-      "source_location": "L122",
+      "source_file": "app/components/configuracion/ProfileIdentity.tsx",
+      "source_location": "L65",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_select_selectseparator",
+      "id": "app_components_configuracion_profileidentity_saveindicator",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "selectseparator()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "saveindicator()"
     },
     {
-      "label": "SelectTrigger()",
+      "label": "SetupHero()",
       "file_type": "code",
-      "source_file": "app/components/ui/Select.tsx",
-      "source_location": "L27",
+      "source_file": "app/components/configuracion/SetupHero.tsx",
+      "source_location": "L6",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_select_selecttrigger",
+      "id": "app_components_configuracion_setuphero_setuphero",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "selecttrigger()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "setuphero()"
     },
     {
-      "label": "SelectValue()",
+      "label": "DayClosedPanel()",
       "file_type": "code",
-      "source_file": "app/components/ui/Select.tsx",
-      "source_location": "L21",
+      "source_file": "app/components/registro/DayClosedPanel.tsx",
+      "source_location": "L9",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_select_selectvalue",
+      "id": "app_components_registro_dayclosedpanel_dayclosedpanel",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "selectvalue()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "dayclosedpanel()"
     },
     {
-      "label": "Sheet()",
+      "label": "DayPickerSheet()",
       "file_type": "code",
-      "source_file": "app/components/ui/Sheet.tsx",
-      "source_location": "L14",
+      "source_file": "app/components/registro/DayPickerSheet.tsx",
+      "source_location": "L16",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_sheet_sheet",
+      "id": "app_components_registro_daypickersheet_daypickersheet",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sheet()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "daypickersheet()"
     },
     {
-      "label": "SheetClose()",
+      "label": "DaySheet()",
       "file_type": "code",
-      "source_file": "app/components/ui/Sheet.tsx",
-      "source_location": "L26",
+      "source_file": "app/components/registro/DaySheet.tsx",
+      "source_location": "L17",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_sheet_sheetclose",
+      "id": "app_components_registro_daysheet_daysheet",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sheetclose()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "daysheet()"
     },
     {
-      "label": "SheetDescription()",
+      "label": "pickType()",
       "file_type": "code",
-      "source_file": "app/components/ui/Sheet.tsx",
-      "source_location": "L136",
+      "source_file": "app/components/registro/DaySheet.tsx",
+      "source_location": "L42",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_sheet_sheetdescription",
+      "id": "app_components_registro_daysheet_daysheet_picktype",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sheetdescription()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "picktype()"
     },
     {
-      "label": "SheetFooter()",
+      "label": "keepOpenOnToast()",
       "file_type": "code",
-      "source_file": "app/components/ui/Sheet.tsx",
-      "source_location": "L113",
+      "source_file": "app/components/registro/RegistroSheet.tsx",
+      "source_location": "L16",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_sheet_sheetfooter",
+      "id": "app_components_registro_registrosheet_keepopenontoast",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sheetfooter()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "keepopenontoast()"
     },
     {
-      "label": "SheetHeader()",
+      "label": "RegistroSheet()",
       "file_type": "code",
-      "source_file": "app/components/ui/Sheet.tsx",
-      "source_location": "L103",
+      "source_file": "app/components/registro/RegistroSheet.tsx",
+      "source_location": "L24",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_sheet_sheetheader",
+      "id": "app_components_registro_registrosheet_registrosheet",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sheetheader()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "registrosheet()"
     },
     {
-      "label": "SheetOverlay()",
+      "label": "Input()",
       "file_type": "code",
-      "source_file": "app/components/ui/Sheet.tsx",
-      "source_location": "L38",
+      "source_file": "app/components/ui/Input.tsx",
+      "source_location": "L5",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_sheet_sheetoverlay",
+      "id": "app_components_ui_input_input",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sheetoverlay()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "input()"
     },
     {
-      "label": "SheetPortal()",
+      "label": "ToggleOption()",
       "file_type": "code",
-      "source_file": "app/components/ui/Sheet.tsx",
-      "source_location": "L32",
+      "source_file": "app/configuracion/ConfiguracionClient.tsx",
+      "source_location": "L718",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_sheet_sheetportal",
+      "id": "app_configuracion_configuracionclient_toggleoption",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sheetportal()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "toggleoption()"
     },
     {
-      "label": "SheetTitle()",
+      "label": "buildWeekStrip()",
       "file_type": "code",
-      "source_file": "app/components/ui/Sheet.tsx",
-      "source_location": "L123",
+      "source_file": "app/lib/meal-diary.ts",
+      "source_location": "L422",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_sheet_sheettitle",
+      "id": "app_lib_meal_diary_buildweekstrip",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sheettitle()"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "buildweekstrip()"
+    },
+    {
+      "label": "formatMealFoods()",
+      "file_type": "code",
+      "source_file": "app/lib/meal-diary.ts",
+      "source_location": "L543",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_lib_meal_diary_formatmealfoods",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "formatmealfoods()"
     },
     {
       "label": "MobileHeader()",
@@ -11106,7 +11118,7 @@
       "label": "buildPushPayload()",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L266",
+      "source_location": "L267",
       "_callable": true,
       "_origin": "ast",
       "id": "app_lib_notifications_buildpushpayload",
@@ -11118,7 +11130,7 @@
       "label": "clampText()",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L260",
+      "source_location": "L261",
       "_callable": true,
       "_origin": "ast",
       "id": "app_lib_notifications_clamptext",
@@ -11226,7 +11238,7 @@
       "label": "pushTag()",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L224",
+      "source_location": "L225",
       "_callable": true,
       "_origin": "ast",
       "id": "app_lib_notifications_pushtag",
@@ -11238,7 +11250,7 @@
       "label": "trainingReminderMessage()",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L175",
+      "source_location": "L176",
       "_callable": true,
       "_origin": "ast",
       "id": "app_lib_notifications_trainingremindermessage",
@@ -11250,7 +11262,7 @@
       "label": "weeklySummaryMessage()",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L185",
+      "source_location": "L189",
       "_callable": true,
       "_origin": "ast",
       "id": "app_lib_notifications_weeklysummarymessage",
@@ -11262,7 +11274,7 @@
       "label": "withNotificationOrigin()",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L253",
+      "source_location": "L254",
       "_callable": true,
       "_origin": "ast",
       "id": "app_lib_notifications_withnotificationorigin",
@@ -11298,7 +11310,7 @@
       "label": "runReminderTick()",
       "file_type": "code",
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L155",
+      "source_location": "L151",
       "_callable": true,
       "_origin": "ast",
       "id": "app_lib_push_reminders_runremindertick",
@@ -11723,7 +11735,7 @@
       "_origin": "ast",
       "id": "app_catalogo_routinecatalogclient_getroutinecoverimage",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "getroutinecoverimage()"
     },
     {
@@ -11735,7 +11747,7 @@
       "_origin": "ast",
       "id": "app_catalogo_routinecatalogclient_getroutineitemcount",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "getroutineitemcount()"
     },
     {
@@ -11747,116 +11759,8 @@
       "_origin": "ast",
       "id": "app_catalogo_routinecatalogclient_routinecatalogcard",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "routinecatalogcard()"
-    },
-    {
-      "label": "DeleteAccountSheet()",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/DeleteAccountSheet.tsx",
-      "source_location": "L13",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_configuracion_deleteaccountsheet_deleteaccountsheet",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "deleteaccountsheet()"
-    },
-    {
-      "label": "handleOpenChange()",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/DeleteAccountSheet.tsx",
-      "source_location": "L28",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_configuracion_deleteaccountsheet_deleteaccountsheet_handleopenchange",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "handleopenchange()"
-    },
-    {
-      "label": "NameSheet()",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/NameSheet.tsx",
-      "source_location": "L9",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_configuracion_namesheet_namesheet",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "namesheet()"
-    },
-    {
-      "label": "handleOpenChange()",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/NameSheet.tsx",
-      "source_location": "L24",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_configuracion_namesheet_namesheet_handleopenchange",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "handleopenchange()"
-    },
-    {
-      "label": "PlanHero()",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/PlanHero.tsx",
-      "source_location": "L13",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_configuracion_planhero_planhero",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "planhero()"
-    },
-    {
-      "label": "ProfileIdentity()",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/ProfileIdentity.tsx",
-      "source_location": "L12",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_configuracion_profileidentity_profileidentity",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "profileidentity()"
-    },
-    {
-      "label": "SavedBadge()",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/ProfileIdentity.tsx",
-      "source_location": "L110",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_configuracion_profileidentity_savedbadge",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "savedbadge()"
-    },
-    {
-      "label": "SaveIndicator()",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/ProfileIdentity.tsx",
-      "source_location": "L65",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_configuracion_profileidentity_saveindicator",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "saveindicator()"
-    },
-    {
-      "label": "SetupHero()",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/SetupHero.tsx",
-      "source_location": "L6",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_configuracion_setuphero_setuphero",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "setuphero()"
     },
     {
       "label": "HomeNutrition()",
@@ -11867,7 +11771,7 @@
       "_origin": "ast",
       "id": "app_components_home_homenutrition_homenutrition",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "homenutrition()"
     },
     {
@@ -11879,7 +11783,7 @@
       "_origin": "ast",
       "id": "app_components_registro_budgetblock_budgetblock",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "budgetblock()"
     },
     {
@@ -11891,7 +11795,7 @@
       "_origin": "ast",
       "id": "app_components_registro_mealtabs_mealtabs",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "mealtabs()"
     },
     {
@@ -11903,7 +11807,7 @@
       "_origin": "ast",
       "id": "app_components_registro_mealtabs_mealtabs_onkeydown",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "onkeydown()"
     },
     {
@@ -11915,7 +11819,7 @@
       "_origin": "ast",
       "id": "app_components_registro_mealtabs_tabstatus",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "tabstatus()"
     },
     {
@@ -11927,7 +11831,7 @@
       "_origin": "ast",
       "id": "app_components_shared_goalsetupstep_goalsetupstep",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "goalsetupstep()"
     },
     {
@@ -11939,7 +11843,7 @@
       "_origin": "ast",
       "id": "app_components_ui_arcgauge_arcgauge",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "arcgauge()"
     },
     {
@@ -11951,7 +11855,7 @@
       "_origin": "ast",
       "id": "app_components_ui_motion_animatedmacrobar",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "animatedmacrobar()"
     },
     {
@@ -11963,32 +11867,20 @@
       "_origin": "ast",
       "id": "app_components_ui_motion_glowpulsewrapper",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "glowpulsewrapper()"
     },
     {
-      "label": "AnimatedProgressRing()",
+      "label": "SortHeader()",
       "file_type": "code",
-      "source_file": "app/components/ui/ProgressRing.tsx",
-      "source_location": "L8",
+      "source_file": "app/admin/alimentos/FoodAdminClient.tsx",
+      "source_location": "L426",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_progressring_animatedprogressring",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "animatedprogressring()"
-    },
-    {
-      "label": "ToggleOption()",
-      "file_type": "code",
-      "source_file": "app/configuracion/ConfiguracionClient.tsx",
-      "source_location": "L718",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_configuracion_configuracionclient_toggleoption",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "toggleoption()"
+      "id": "app_admin_alimentos_foodadminclient_sortheader",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "sortheader()"
     },
     {
       "label": "EditableTextList()",
@@ -12039,100 +11931,76 @@
       "norm_label": "recentexercisestable()"
     },
     {
-      "label": "ExerciseMedia()",
+      "label": "SortHeader()",
       "file_type": "code",
-      "source_file": "app/components/exercise/ExerciseMedia.tsx",
-      "source_location": "L16",
+      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
+      "source_location": "L682",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_exercise_exercisemedia_exercisemedia",
+      "id": "app_admin_rutinas_routineadminclient_sortheader",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "exercisemedia()"
+      "norm_label": "sortheader()"
     },
     {
-      "label": "ExerciseSheet()",
+      "label": "StatTile()",
       "file_type": "code",
-      "source_file": "app/components/exercise/ExerciseSheet.tsx",
-      "source_location": "L19",
+      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
+      "source_location": "L658",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_exercise_exercisesheet_exercisesheet",
+      "id": "app_admin_rutinas_routineadminclient_stattile",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "exercisesheet()"
+      "norm_label": "stattile()"
     },
     {
-      "label": "SheetBody()",
-      "file_type": "code",
-      "source_file": "app/components/exercise/ExerciseSheet.tsx",
-      "source_location": "L48",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_exercise_exercisesheet_sheetbody",
-      "community": 300,
-      "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "sheetbody()"
-    },
-    {
-      "label": "DayPanelBody()",
-      "file_type": "code",
-      "source_file": "app/components/rutina-detalle/DetailDays.tsx",
-      "source_location": "L140",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_rutina_detalle_detaildays_daypanelbody",
-      "community": 300,
-      "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "daypanelbody()"
-    },
-    {
-      "label": "TrainingDaysSheet()",
+      "label": "DaysForm()",
       "file_type": "code",
       "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
-      "source_location": "L64",
+      "source_location": "L131",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_rutinas_trainingdayssheet_trainingdayssheet",
+      "id": "app_components_rutinas_trainingdayssheet_daysform",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "trainingdayssheet()"
+      "norm_label": "daysform()"
     },
     {
-      "label": "ExerciseDetailModal()",
+      "label": "confirm()",
       "file_type": "code",
-      "source_file": "app/components/shared/ExerciseDetailModal.tsx",
-      "source_location": "L52",
+      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
+      "source_location": "L148",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_shared_exercisedetailmodal_exercisedetailmodal",
+      "id": "app_components_rutinas_trainingdayssheet_daysform_confirm",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "exercisedetailmodal()"
+      "norm_label": "confirm()"
     },
     {
-      "label": "ExerciseDetailSidePanel()",
+      "label": "FormConfirm()",
       "file_type": "code",
-      "source_file": "app/components/shared/ExerciseDetailModal.tsx",
-      "source_location": "L61",
+      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
+      "source_location": "L190",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_shared_exercisedetailmodal_exercisedetailsidepanel",
+      "id": "app_components_rutinas_trainingdayssheet_formconfirm",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "exercisedetailsidepanel()"
+      "norm_label": "formconfirm()"
     },
     {
-      "label": "SpecChip()",
+      "label": "FilterSheet()",
       "file_type": "code",
-      "source_file": "app/components/shared/ExerciseDetailModal.tsx",
-      "source_location": "L230",
+      "source_file": "app/components/shared/FilterSheet.tsx",
+      "source_location": "L21",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_shared_exercisedetailmodal_specchip",
+      "id": "app_components_shared_filtersheet_filtersheet",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "specchip()"
+      "norm_label": "filtersheet()"
     },
     {
       "label": "RoutineTablePreview()",
@@ -12315,6 +12183,102 @@
       "norm_label": "cardtitle()"
     },
     {
+      "label": "Dialog()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Dialog.tsx",
+      "source_location": "L10",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_dialog_dialog",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "dialog()"
+    },
+    {
+      "label": "DialogClose()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Dialog.tsx",
+      "source_location": "L22",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_dialog_dialogclose",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "dialogclose()"
+    },
+    {
+      "label": "DialogContent()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Dialog.tsx",
+      "source_location": "L34",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_dialog_dialogcontent",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "dialogcontent()"
+    },
+    {
+      "label": "DialogDescription()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Dialog.tsx",
+      "source_location": "L103",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_dialog_dialogdescription",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "dialogdescription()"
+    },
+    {
+      "label": "DialogHeader()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Dialog.tsx",
+      "source_location": "L80",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_dialog_dialogheader",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "dialogheader()"
+    },
+    {
+      "label": "DialogPortal()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Dialog.tsx",
+      "source_location": "L28",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_dialog_dialogportal",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "dialogportal()"
+    },
+    {
+      "label": "DialogTitle()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Dialog.tsx",
+      "source_location": "L90",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_dialog_dialogtitle",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "dialogtitle()"
+    },
+    {
+      "label": "DialogTrigger()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Dialog.tsx",
+      "source_location": "L16",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_dialog_dialogtrigger",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "dialogtrigger()"
+    },
+    {
       "label": "MotionDiv()",
       "file_type": "code",
       "source_file": "app/components/ui/motion.tsx",
@@ -12339,28 +12303,196 @@
       "norm_label": "motionsection()"
     },
     {
-      "label": "SegmentedControl()",
+      "label": "Select()",
       "file_type": "code",
-      "source_file": "app/components/ui/SegmentedControl.tsx",
-      "source_location": "L18",
+      "source_file": "app/components/ui/Select.tsx",
+      "source_location": "L9",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_segmentedcontrol_segmentedcontrol",
+      "id": "app_components_ui_select_select",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "segmentedcontrol()"
+      "norm_label": "select()"
     },
     {
-      "label": "onKeyDown()",
+      "label": "SelectContent()",
       "file_type": "code",
-      "source_file": "app/components/ui/SegmentedControl.tsx",
-      "source_location": "L39",
+      "source_file": "app/components/ui/Select.tsx",
+      "source_location": "L49",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_segmentedcontrol_segmentedcontrol_onkeydown",
+      "id": "app_components_ui_select_selectcontent",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "onkeydown()"
+      "norm_label": "selectcontent()"
+    },
+    {
+      "label": "SelectGroup()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Select.tsx",
+      "source_location": "L15",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_select_selectgroup",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "selectgroup()"
+    },
+    {
+      "label": "SelectItem()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Select.tsx",
+      "source_location": "L98",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_select_selectitem",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "selectitem()"
+    },
+    {
+      "label": "SelectLabel()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Select.tsx",
+      "source_location": "L82",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_select_selectlabel",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "selectlabel()"
+    },
+    {
+      "label": "SelectSeparator()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Select.tsx",
+      "source_location": "L122",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_select_selectseparator",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "selectseparator()"
+    },
+    {
+      "label": "SelectTrigger()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Select.tsx",
+      "source_location": "L27",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_select_selecttrigger",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "selecttrigger()"
+    },
+    {
+      "label": "SelectValue()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Select.tsx",
+      "source_location": "L21",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_select_selectvalue",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "selectvalue()"
+    },
+    {
+      "label": "Sheet()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Sheet.tsx",
+      "source_location": "L14",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_sheet_sheet",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "sheet()"
+    },
+    {
+      "label": "SheetClose()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Sheet.tsx",
+      "source_location": "L26",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_sheet_sheetclose",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "sheetclose()"
+    },
+    {
+      "label": "SheetDescription()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Sheet.tsx",
+      "source_location": "L136",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_sheet_sheetdescription",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "sheetdescription()"
+    },
+    {
+      "label": "SheetFooter()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Sheet.tsx",
+      "source_location": "L113",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_sheet_sheetfooter",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "sheetfooter()"
+    },
+    {
+      "label": "SheetHeader()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Sheet.tsx",
+      "source_location": "L103",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_sheet_sheetheader",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "sheetheader()"
+    },
+    {
+      "label": "SheetOverlay()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Sheet.tsx",
+      "source_location": "L38",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_sheet_sheetoverlay",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "sheetoverlay()"
+    },
+    {
+      "label": "SheetPortal()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Sheet.tsx",
+      "source_location": "L32",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_sheet_sheetportal",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "sheetportal()"
+    },
+    {
+      "label": "SheetTitle()",
+      "file_type": "code",
+      "source_file": "app/components/ui/Sheet.tsx",
+      "source_location": "L123",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_sheet_sheettitle",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "sheettitle()"
     },
     {
       "label": "Table()",
@@ -12447,40 +12579,16 @@
       "norm_label": "tablerow()"
     },
     {
-      "label": "useMediaQuery()",
+      "label": "Textarea()",
       "file_type": "code",
-      "source_file": "app/components/ui/use-media-query.ts",
-      "source_location": "L9",
+      "source_file": "app/components/ui/Textarea.tsx",
+      "source_location": "L5",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_use_media_query_usemediaquery",
+      "id": "app_components_ui_textarea_textarea",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "usemediaquery()"
-    },
-    {
-      "label": "equipmentLabel()",
-      "file_type": "code",
-      "source_file": "app/lib/exercise-form.ts",
-      "source_location": "L95",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_exercise_form_equipmentlabel",
-      "community": 300,
-      "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "equipmentlabel()"
-    },
-    {
-      "label": "muscleLabel()",
-      "file_type": "code",
-      "source_file": "app/lib/exercise-form.ts",
-      "source_location": "L90",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_exercise_form_musclelabel",
-      "community": 300,
-      "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "musclelabel()"
+      "norm_label": "textarea()"
     },
     {
       "label": "attachSheetViewport()",
@@ -13767,30 +13875,6 @@
       "norm_label": "draft()"
     },
     {
-      "label": "HomeWeekStrip()",
-      "file_type": "code",
-      "source_file": "app/components/home/HomeWeekStrip.tsx",
-      "source_location": "L11",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_home_homeweekstrip_homeweekstrip",
-      "community": 319,
-      "community_name": "home-dashboard.ts",
-      "norm_label": "homeweekstrip()"
-    },
-    {
-      "label": "onKeyDown()",
-      "file_type": "code",
-      "source_file": "app/components/home/HomeWeekStrip.tsx",
-      "source_location": "L22",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_home_homeweekstrip_homeweekstrip_onkeydown",
-      "community": 319,
-      "community_name": "home-dashboard.ts",
-      "norm_label": "onkeydown()"
-    },
-    {
       "label": "resolveHeroState()",
       "file_type": "code",
       "source_file": "app/lib/home-dashboard.ts",
@@ -14005,18 +14089,6 @@
       "community": 319,
       "community_name": "home-dashboard.ts",
       "norm_label": "scheduleneedschoice()"
-    },
-    {
-      "label": "suggestWeekdays()",
-      "file_type": "code",
-      "source_file": "app/lib/training-schedule.ts",
-      "source_location": "L104",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_training_schedule_suggestweekdays",
-      "community": 319,
-      "community_name": "home-dashboard.ts",
-      "norm_label": "suggestweekdays()"
     },
     {
       "label": "summarizeWeek()",
@@ -17082,7 +17154,7 @@
       "label": "restEndMessage()",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L202",
+      "source_location": "L203",
       "_callable": true,
       "_origin": "ast",
       "id": "app_lib_notifications_restendmessage",
@@ -17415,16 +17487,16 @@
       "norm_label": "profilesheet()"
     },
     {
-      "label": "keepOpenOnToast()",
+      "label": "DiaryHeader()",
       "file_type": "code",
-      "source_file": "app/components/registro/RegistroSheet.tsx",
-      "source_location": "L16",
+      "source_file": "app/components/registro/DiaryHeader.tsx",
+      "source_location": "L7",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_registro_registrosheet_keepopenontoast",
+      "id": "app_components_registro_diaryheader_diaryheader",
       "community": 423,
       "community_name": "RecipeDetailDrawer.tsx",
-      "norm_label": "keepopenontoast()"
+      "norm_label": "diaryheader()"
     },
     {
       "label": "countActiveFilters()",
@@ -17689,6 +17761,18 @@
       "community": 423,
       "community_name": "RecipeDetailDrawer.tsx",
       "norm_label": "drawertrigger()"
+    },
+    {
+      "label": "LoadingDots()",
+      "file_type": "code",
+      "source_file": "app/components/ui/LoadingDots.tsx",
+      "source_location": "L7",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_ui_loadingdots_loadingdots",
+      "community": 423,
+      "community_name": "RecipeDetailDrawer.tsx",
+      "norm_label": "loadingdots()"
     },
     {
       "label": "AnimatedNumber()",
@@ -19131,30 +19215,6 @@
       "norm_label": "listfrequentitemsbyslot()"
     },
     {
-      "label": "listFrequentUsages()",
-      "file_type": "code",
-      "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L696",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_meal_logs_listfrequentusages",
-      "community": 439,
-      "community_name": "workout-tracking.ts",
-      "norm_label": "listfrequentusages()"
-    },
-    {
-      "label": "normalizeMealType()",
-      "file_type": "code",
-      "source_file": "app/lib/meal-logs.ts",
-      "source_location": "L797",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_meal_logs_normalizemealtype",
-      "community": 439,
-      "community_name": "workout-tracking.ts",
-      "norm_label": "normalizemealtype()"
-    },
-    {
       "label": "firstParam()",
       "file_type": "code",
       "source_file": "app/lib/recipe-catalog.ts",
@@ -20103,102 +20163,6 @@
       "norm_label": "todayhero()"
     },
     {
-      "label": "DiaryHeader()",
-      "file_type": "code",
-      "source_file": "app/components/registro/DiaryHeader.tsx",
-      "source_location": "L7",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_registro_diaryheader_diaryheader",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "diaryheader()"
-    },
-    {
-      "label": "FrequentRows()",
-      "file_type": "code",
-      "source_file": "app/components/registro/FrequentRows.tsx",
-      "source_location": "L17",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_registro_frequentrows_frequentrows",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "frequentrows()"
-    },
-    {
-      "label": "MealMenuSheet()",
-      "file_type": "code",
-      "source_file": "app/components/registro/MealMenuSheet.tsx",
-      "source_location": "L22",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_registro_mealmenusheet_mealmenusheet",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "mealmenusheet()"
-    },
-    {
-      "label": "remove()",
-      "file_type": "code",
-      "source_file": "app/components/registro/MealMenuSheet.tsx",
-      "source_location": "L73",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_registro_mealmenusheet_mealmenusheet_remove",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "remove()"
-    },
-    {
-      "label": "saveName()",
-      "file_type": "code",
-      "source_file": "app/components/registro/MealMenuSheet.tsx",
-      "source_location": "L64",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_registro_mealmenusheet_mealmenusheet_savename",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "savename()"
-    },
-    {
-      "label": "startRename()",
-      "file_type": "code",
-      "source_file": "app/components/registro/MealMenuSheet.tsx",
-      "source_location": "L59",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_registro_mealmenusheet_mealmenusheet_startrename",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "startrename()"
-    },
-    {
-      "label": "withBusy()",
-      "file_type": "code",
-      "source_file": "app/components/registro/MealMenuSheet.tsx",
-      "source_location": "L50",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_registro_mealmenusheet_mealmenusheet_withbusy",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "withbusy()"
-    },
-    {
-      "label": "MealPanel()",
-      "file_type": "code",
-      "source_file": "app/components/registro/MealPanel.tsx",
-      "source_location": "L16",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_registro_mealpanel_mealpanel",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "mealpanel()"
-    },
-    {
       "label": "BookmarkSubmit()",
       "file_type": "code",
       "source_file": "app/components/rutina-detalle/DetailTopBar.tsx",
@@ -20331,16 +20295,16 @@
       "norm_label": "slot()"
     },
     {
-      "label": "LoadingDots()",
+      "label": "AnimatedProgressRing()",
       "file_type": "code",
-      "source_file": "app/components/ui/LoadingDots.tsx",
-      "source_location": "L7",
+      "source_file": "app/components/ui/ProgressRing.tsx",
+      "source_location": "L8",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_loadingdots_loadingdots",
+      "id": "app_components_ui_progressring_animatedprogressring",
       "community": 455,
       "community_name": "cn",
-      "norm_label": "loadingdots()"
+      "norm_label": "animatedprogressring()"
     },
     {
       "label": "Separator()",
@@ -20427,18 +20391,6 @@
       "norm_label": "tabstrigger()"
     },
     {
-      "label": "Textarea()",
-      "file_type": "code",
-      "source_file": "app/components/ui/Textarea.tsx",
-      "source_location": "L5",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_ui_textarea_textarea",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "textarea()"
-    },
-    {
       "label": "ExerciseListSheet()",
       "file_type": "code",
       "source_file": "app/components/workout/ExerciseListSheet.tsx",
@@ -20449,18 +20401,6 @@
       "community": 455,
       "community_name": "cn",
       "norm_label": "exerciselistsheet()"
-    },
-    {
-      "label": "titleScale()",
-      "file_type": "code",
-      "source_file": "app/lib/meal-diary.ts",
-      "source_location": "L551",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_lib_meal_diary_titlescale",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "titlescale()"
     },
     {
       "label": "cn()",
@@ -20610,7 +20550,7 @@
       "label": "isAllowedPushEndpoint()",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L290",
+      "source_location": "L291",
       "_callable": true,
       "_origin": "ast",
       "id": "app_lib_notifications_isallowedpushendpoint",
@@ -21231,6 +21171,30 @@
       "norm_label": "select()"
     },
     {
+      "label": "HomeWeekStrip()",
+      "file_type": "code",
+      "source_file": "app/components/home/HomeWeekStrip.tsx",
+      "source_location": "L11",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_home_homeweekstrip_homeweekstrip",
+      "community": 472,
+      "community_name": "app/page.tsx",
+      "norm_label": "homeweekstrip()"
+    },
+    {
+      "label": "onKeyDown()",
+      "file_type": "code",
+      "source_file": "app/components/home/HomeWeekStrip.tsx",
+      "source_location": "L22",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_home_homeweekstrip_homeweekstrip_onkeydown",
+      "community": 472,
+      "community_name": "app/page.tsx",
+      "norm_label": "onkeydown()"
+    },
+    {
       "label": "ChooseRoutineMobile()",
       "file_type": "code",
       "source_file": "app/components/rutinas/RoutineEmptyStates.tsx",
@@ -21409,6 +21373,18 @@
       "community": 472,
       "community_name": "app/page.tsx",
       "norm_label": "listsavedroutinesforuser()"
+    },
+    {
+      "label": "suggestWeekdays()",
+      "file_type": "code",
+      "source_file": "app/lib/training-schedule.ts",
+      "source_location": "L104",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_lib_training_schedule_suggestweekdays",
+      "community": 472,
+      "community_name": "app/page.tsx",
+      "norm_label": "suggestweekdays()"
     },
     {
       "label": "estimateDayMinutes()",
@@ -21939,40 +21915,64 @@
       "norm_label": "tolibrarymuscles()"
     },
     {
-      "label": "getSnapshot()",
+      "label": "MealMenuSheet()",
       "file_type": "code",
-      "source_file": "app/components/ui/use-keyboard-open.ts",
-      "source_location": "L14",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_ui_use_keyboard_open_getsnapshot",
-      "community": 475,
-      "community_name": "useKeyboardOpen",
-      "norm_label": "getsnapshot()"
-    },
-    {
-      "label": "subscribe()",
-      "file_type": "code",
-      "source_file": "app/components/ui/use-keyboard-open.ts",
-      "source_location": "L8",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "app_components_ui_use_keyboard_open_subscribe",
-      "community": 475,
-      "community_name": "useKeyboardOpen",
-      "norm_label": "subscribe()"
-    },
-    {
-      "label": "useKeyboardOpen()",
-      "file_type": "code",
-      "source_file": "app/components/ui/use-keyboard-open.ts",
+      "source_file": "app/components/registro/MealMenuSheet.tsx",
       "source_location": "L22",
       "_callable": true,
       "_origin": "ast",
-      "id": "app_components_ui_use_keyboard_open_usekeyboardopen",
+      "id": "app_components_registro_mealmenusheet_mealmenusheet",
       "community": 475,
-      "community_name": "useKeyboardOpen",
-      "norm_label": "usekeyboardopen()"
+      "community_name": "MealMenuSheet",
+      "norm_label": "mealmenusheet()"
+    },
+    {
+      "label": "remove()",
+      "file_type": "code",
+      "source_file": "app/components/registro/MealMenuSheet.tsx",
+      "source_location": "L73",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_registro_mealmenusheet_mealmenusheet_remove",
+      "community": 475,
+      "community_name": "MealMenuSheet",
+      "norm_label": "remove()"
+    },
+    {
+      "label": "saveName()",
+      "file_type": "code",
+      "source_file": "app/components/registro/MealMenuSheet.tsx",
+      "source_location": "L64",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_registro_mealmenusheet_mealmenusheet_savename",
+      "community": 475,
+      "community_name": "MealMenuSheet",
+      "norm_label": "savename()"
+    },
+    {
+      "label": "startRename()",
+      "file_type": "code",
+      "source_file": "app/components/registro/MealMenuSheet.tsx",
+      "source_location": "L59",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_registro_mealmenusheet_mealmenusheet_startrename",
+      "community": 475,
+      "community_name": "MealMenuSheet",
+      "norm_label": "startrename()"
+    },
+    {
+      "label": "withBusy()",
+      "file_type": "code",
+      "source_file": "app/components/registro/MealMenuSheet.tsx",
+      "source_location": "L50",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "app_components_registro_mealmenusheet_mealmenusheet_withbusy",
+      "community": 475,
+      "community_name": "MealMenuSheet",
+      "norm_label": "withbusy()"
     },
     {
       "label": "FoodSearchBar()",
@@ -23948,6 +23948,39 @@
       "id": "g11_integration_and_qa_08_resolver_bugs_detectados_en_pruebas_finales_validacion"
     },
     {
+      "label": "ExerciseMedia.tsx",
+      "file_type": "code",
+      "source_file": "app/components/exercise/ExerciseMedia.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_exercise_exercisemedia",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "exercisemedia.tsx"
+    },
+    {
+      "label": "ExerciseSheet.tsx",
+      "file_type": "code",
+      "source_file": "app/components/exercise/ExerciseSheet.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_exercise_exercisesheet",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "exercisesheet.tsx"
+    },
+    {
+      "label": "DetailDays.tsx",
+      "file_type": "code",
+      "source_file": "app/components/rutina-detalle/DetailDays.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_rutina_detalle_detaildays",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "detaildays.tsx"
+    },
+    {
       "label": "DayAction.tsx",
       "file_type": "code",
       "source_file": "app/components/rutinas/DayAction.tsx",
@@ -23955,7 +23988,7 @@
       "_origin": "ast",
       "id": "app_components_rutinas_dayaction",
       "community": 105,
-      "community_name": "RoutineWeekView.tsx",
+      "community_name": "ExerciseDetailModal.tsx",
       "norm_label": "dayaction.tsx"
     },
     {
@@ -23966,7 +23999,7 @@
       "_origin": "ast",
       "id": "app_components_rutinas_daypanel",
       "community": 105,
-      "community_name": "RoutineWeekView.tsx",
+      "community_name": "ExerciseDetailModal.tsx",
       "norm_label": "daypanel.tsx"
     },
     {
@@ -23977,7 +24010,7 @@
       "_origin": "ast",
       "id": "app_components_rutinas_daytabs",
       "community": 105,
-      "community_name": "RoutineWeekView.tsx",
+      "community_name": "ExerciseDetailModal.tsx",
       "norm_label": "daytabs.tsx"
     },
     {
@@ -23988,8 +24021,30 @@
       "_origin": "ast",
       "id": "app_components_rutinas_routineweekview",
       "community": 105,
-      "community_name": "RoutineWeekView.tsx",
+      "community_name": "ExerciseDetailModal.tsx",
       "norm_label": "routineweekview.tsx"
+    },
+    {
+      "label": "ExerciseDetailModal.tsx",
+      "file_type": "code",
+      "source_file": "app/components/shared/ExerciseDetailModal.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_shared_exercisedetailmodal",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "exercisedetailmodal.tsx"
+    },
+    {
+      "label": "use-media-query.ts",
+      "file_type": "code",
+      "source_file": "app/components/ui/use-media-query.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_ui_use_media_query",
+      "community": 105,
+      "community_name": "ExerciseDetailModal.tsx",
+      "norm_label": "use-media-query.ts"
     },
     {
       "label": "09-ejecutar-validacion-tecnica-final-del-mvp.md",
@@ -31879,17 +31934,6 @@
       "norm_label": "catalog_page_size"
     },
     {
-      "label": "NameSheet.tsx",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/NameSheet.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_configuracion_namesheet",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "namesheet.tsx"
-    },
-    {
       "label": "AddFoodSheet.tsx",
       "file_type": "code",
       "source_file": "app/components/registro/AddFoodSheet.tsx",
@@ -31897,7 +31941,7 @@
       "_origin": "ast",
       "id": "app_components_registro_addfoodsheet",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "addfoodsheet.tsx"
     },
     {
@@ -31908,52 +31952,19 @@
       "_origin": "ast",
       "id": "app_components_registro_amounteditor",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "amounteditor.tsx"
     },
     {
-      "label": "DayClosedPanel.tsx",
+      "label": "FrequentRows.tsx",
       "file_type": "code",
-      "source_file": "app/components/registro/DayClosedPanel.tsx",
+      "source_file": "app/components/registro/FrequentRows.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_registro_dayclosedpanel",
+      "id": "app_components_registro_frequentrows",
       "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "dayclosedpanel.tsx"
-    },
-    {
-      "label": "DayPickerSheet.tsx",
-      "file_type": "code",
-      "source_file": "app/components/registro/DayPickerSheet.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_registro_daypickersheet",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "daypickersheet.tsx"
-    },
-    {
-      "label": "WEEKDAY_NAMES",
-      "file_type": "code",
-      "source_file": "app/components/registro/DayPickerSheet.tsx",
-      "source_location": "L13",
-      "_origin": "ast",
-      "id": "app_components_registro_daypickersheet_weekday_names",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "weekday_names"
-    },
-    {
-      "label": "DaySheet.tsx",
-      "file_type": "code",
-      "source_file": "app/components/registro/DaySheet.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_registro_daysheet",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "daysheet.tsx"
+      "community_name": "RegistroClient.tsx",
+      "norm_label": "frequentrows.tsx"
     },
     {
       "label": "ItemSheet.tsx",
@@ -31963,19 +31974,19 @@
       "_origin": "ast",
       "id": "app_components_registro_itemsheet",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "itemsheet.tsx"
     },
     {
-      "label": "MealMenuSheet.tsx",
+      "label": "MealPanel.tsx",
       "file_type": "code",
-      "source_file": "app/components/registro/MealMenuSheet.tsx",
+      "source_file": "app/components/registro/MealPanel.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_registro_mealmenusheet",
+      "id": "app_components_registro_mealpanel",
       "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "mealmenusheet.tsx"
+      "community_name": "RegistroClient.tsx",
+      "norm_label": "mealpanel.tsx"
     },
     {
       "label": "RegistroMobile.tsx",
@@ -31985,7 +31996,7 @@
       "_origin": "ast",
       "id": "app_components_registro_registromobile",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "registromobile.tsx"
     },
     {
@@ -31996,7 +32007,7 @@
       "_origin": "ast",
       "id": "app_components_registro_registromobile_default_labels",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "default_labels"
     },
     {
@@ -32007,96 +32018,19 @@
       "_origin": "ast",
       "id": "app_components_registro_registromobile_no_created",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "no_created"
     },
     {
-      "label": "styles.ts",
+      "label": "use-keyboard-open.ts",
       "file_type": "code",
-      "source_file": "app/components/registro/styles.ts",
+      "source_file": "app/components/ui/use-keyboard-open.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_registro_styles",
+      "id": "app_components_ui_use_keyboard_open",
       "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "styles.ts"
-    },
-    {
-      "label": "CHOICE_CHIP_CLASS",
-      "file_type": "code",
-      "source_file": "app/components/registro/styles.ts",
-      "source_location": "L24",
-      "_origin": "ast",
-      "id": "app_components_registro_styles_choice_chip_class",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "choice_chip_class"
-    },
-    {
-      "label": "ICON_BUTTON_CLASS",
-      "file_type": "code",
-      "source_file": "app/components/registro/styles.ts",
-      "source_location": "L10",
-      "_origin": "ast",
-      "id": "app_components_registro_styles_icon_button_class",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "icon_button_class"
-    },
-    {
-      "label": "NEUTRAL_BUTTON_CLASS",
-      "file_type": "code",
-      "source_file": "app/components/registro/styles.ts",
-      "source_location": "L2",
-      "_origin": "ast",
-      "id": "app_components_registro_styles_neutral_button_class",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "neutral_button_class"
-    },
-    {
-      "label": "PANEL_TITLE_CLASS",
-      "file_type": "code",
-      "source_file": "app/components/registro/styles.ts",
-      "source_location": "L14",
-      "_origin": "ast",
-      "id": "app_components_registro_styles_panel_title_class",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "panel_title_class"
-    },
-    {
-      "label": "PANEL_TITLE_SIZES",
-      "file_type": "code",
-      "source_file": "app/components/registro/styles.ts",
-      "source_location": "L17",
-      "_origin": "ast",
-      "id": "app_components_registro_styles_panel_title_sizes",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "panel_title_sizes"
-    },
-    {
-      "label": "STRONG_BUTTON_CLASS",
-      "file_type": "code",
-      "source_file": "app/components/registro/styles.ts",
-      "source_location": "L6",
-      "_origin": "ast",
-      "id": "app_components_registro_styles_strong_button_class",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "strong_button_class"
-    },
-    {
-      "label": "Input.tsx",
-      "file_type": "code",
-      "source_file": "app/components/ui/Input.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_ui_input",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "input.tsx"
+      "community_name": "RegistroClient.tsx",
+      "norm_label": "use-keyboard-open.ts"
     },
     {
       "label": "meal-amounts.ts",
@@ -32106,7 +32040,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "meal-amounts.ts"
     },
     {
@@ -32117,7 +32051,7 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_max_item_grams",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "max_item_grams"
     },
     {
@@ -32128,19 +32062,8 @@
       "_origin": "ast",
       "id": "app_lib_meal_amounts_max_quantity",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "max_quantity"
-    },
-    {
-      "label": "nutrition-types.ts",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_lib_nutrition_types",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "nutrition-types.ts"
     },
     {
       "label": "FREQUENT_SLOTS",
@@ -32150,63 +32073,8 @@
       "_origin": "ast",
       "id": "app_lib_nutrition_types_frequent_slots",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "frequent_slots"
-    },
-    {
-      "label": "MEAL_LOG_MAX_PAST_DAYS",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L76",
-      "_origin": "ast",
-      "id": "app_lib_nutrition_types_meal_log_max_past_days",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "meal_log_max_past_days"
-    },
-    {
-      "label": "MEAL_TYPE_IMAGES",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L41",
-      "_origin": "ast",
-      "id": "app_lib_nutrition_types_meal_type_images",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "meal_type_images"
-    },
-    {
-      "label": "MEAL_TYPE_LABELS",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L33",
-      "_origin": "ast",
-      "id": "app_lib_nutrition_types_meal_type_labels",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "meal_type_labels"
-    },
-    {
-      "label": "MEAL_TYPES",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L30",
-      "_origin": "ast",
-      "id": "app_lib_nutrition_types_meal_types",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "meal_types"
-    },
-    {
-      "label": "TARGET_MODES",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L259",
-      "_origin": "ast",
-      "id": "app_lib_nutrition_types_target_modes",
-      "community": 170,
-      "community_name": "nutrition-types.ts",
-      "norm_label": "target_modes"
     },
     {
       "label": "FoodPicker.tsx",
@@ -32216,7 +32084,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_foodpicker",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "foodpicker.tsx"
     },
     {
@@ -32227,7 +32095,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "registroclient.tsx"
     },
     {
@@ -32238,7 +32106,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_day_month_formatter",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "day_month_formatter"
     },
     {
@@ -32249,7 +32117,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_nutrition_phrases",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "nutrition_phrases"
     },
     {
@@ -32260,7 +32128,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_week_letters",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "week_letters"
     },
     {
@@ -32271,7 +32139,7 @@
       "_origin": "ast",
       "id": "app_nutricion_registro_registroclient_weekday_formatter",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "weekday_formatter"
     },
     {
@@ -32282,7 +32150,7 @@
       "_origin": "ast",
       "id": "tests_unit_meal_amounts_test",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "meal-amounts.test.mjs"
     },
     {
@@ -32293,7 +32161,7 @@
       "_origin": "ast",
       "id": "tests_unit_meal_amounts_test_recipeoption",
       "community": 170,
-      "community_name": "nutrition-types.ts",
+      "community_name": "RegistroClient.tsx",
       "norm_label": "recipeoption"
     },
     {
@@ -41986,136 +41854,323 @@
       "norm_label": "validacion"
     },
     {
-      "label": "FoodAdminClient.tsx",
+      "label": "NameSheet.tsx",
       "file_type": "code",
-      "source_file": "app/admin/alimentos/FoodAdminClient.tsx",
+      "source_file": "app/components/configuracion/NameSheet.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_admin_alimentos_foodadminclient",
+      "id": "app_components_configuracion_namesheet",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "foodadminclient.tsx"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "namesheet.tsx"
     },
     {
-      "label": "RecipeAdminClient.tsx",
+      "label": "ProfileIdentity.tsx",
       "file_type": "code",
-      "source_file": "app/admin/recetas/RecipeAdminClient.tsx",
+      "source_file": "app/components/configuracion/ProfileIdentity.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_admin_recetas_recipeadminclient",
+      "id": "app_components_configuracion_profileidentity",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "recipeadminclient.tsx"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "profileidentity.tsx"
     },
     {
-      "label": "RoutineAdminClient.tsx",
+      "label": "SetupHero.tsx",
       "file_type": "code",
-      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
+      "source_file": "app/components/configuracion/SetupHero.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_admin_rutinas_routineadminclient",
+      "id": "app_components_configuracion_setuphero",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "routineadminclient.tsx"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "setuphero.tsx"
     },
     {
-      "label": "DIFFICULTY_BADGE_STYLES",
+      "label": "DayClosedPanel.tsx",
       "file_type": "code",
-      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
-      "source_location": "L84",
-      "_origin": "ast",
-      "id": "app_admin_rutinas_routineadminclient_difficulty_badge_styles",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "difficulty_badge_styles"
-    },
-    {
-      "label": "OBJECTIVE_BADGE_STYLES",
-      "file_type": "code",
-      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
-      "source_location": "L90",
-      "_origin": "ast",
-      "id": "app_admin_rutinas_routineadminclient_objective_badge_styles",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "objective_badge_styles"
-    },
-    {
-      "label": "OBJECTIVE_DOT_STYLES",
-      "file_type": "code",
-      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
-      "source_location": "L96",
-      "_origin": "ast",
-      "id": "app_admin_rutinas_routineadminclient_objective_dot_styles",
-      "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "objective_dot_styles"
-    },
-    {
-      "label": "TrainingDaysSheet.tsx",
-      "file_type": "code",
-      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
+      "source_file": "app/components/registro/DayClosedPanel.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_rutinas_trainingdayssheet",
+      "id": "app_components_registro_dayclosedpanel",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "trainingdayssheet.tsx"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "dayclosedpanel.tsx"
     },
     {
-      "label": "FilterSheet.tsx",
+      "label": "DayPickerSheet.tsx",
       "file_type": "code",
-      "source_file": "app/components/shared/FilterSheet.tsx",
+      "source_file": "app/components/registro/DayPickerSheet.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_shared_filtersheet",
+      "id": "app_components_registro_daypickersheet",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "filtersheet.tsx"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "daypickersheet.tsx"
     },
     {
-      "label": "Dialog.tsx",
+      "label": "WEEKDAY_NAMES",
       "file_type": "code",
-      "source_file": "app/components/ui/Dialog.tsx",
+      "source_file": "app/components/registro/DayPickerSheet.tsx",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "app_components_registro_daypickersheet_weekday_names",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "weekday_names"
+    },
+    {
+      "label": "DaySheet.tsx",
+      "file_type": "code",
+      "source_file": "app/components/registro/DaySheet.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_ui_dialog",
+      "id": "app_components_registro_daysheet",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "dialog.tsx"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "daysheet.tsx"
     },
     {
-      "label": "Select.tsx",
+      "label": "MealMenuSheet.tsx",
       "file_type": "code",
-      "source_file": "app/components/ui/Select.tsx",
+      "source_file": "app/components/registro/MealMenuSheet.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_ui_select",
+      "id": "app_components_registro_mealmenusheet",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "select.tsx"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "mealmenusheet.tsx"
     },
     {
-      "label": "Sheet.tsx",
+      "label": "RegistroSheet.tsx",
       "file_type": "code",
-      "source_file": "app/components/ui/Sheet.tsx",
+      "source_file": "app/components/registro/RegistroSheet.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_ui_sheet",
+      "id": "app_components_registro_registrosheet",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "sheet.tsx"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "registrosheet.tsx"
     },
     {
-      "label": "FOOD_MEASURE_LABELS",
+      "label": "styles.ts",
+      "file_type": "code",
+      "source_file": "app/components/registro/styles.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_registro_styles",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "styles.ts"
+    },
+    {
+      "label": "CHOICE_CHIP_CLASS",
+      "file_type": "code",
+      "source_file": "app/components/registro/styles.ts",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "app_components_registro_styles_choice_chip_class",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "choice_chip_class"
+    },
+    {
+      "label": "ICON_BUTTON_CLASS",
+      "file_type": "code",
+      "source_file": "app/components/registro/styles.ts",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "app_components_registro_styles_icon_button_class",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "icon_button_class"
+    },
+    {
+      "label": "NEUTRAL_BUTTON_CLASS",
+      "file_type": "code",
+      "source_file": "app/components/registro/styles.ts",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "app_components_registro_styles_neutral_button_class",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "neutral_button_class"
+    },
+    {
+      "label": "PANEL_TITLE_CLASS",
+      "file_type": "code",
+      "source_file": "app/components/registro/styles.ts",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "app_components_registro_styles_panel_title_class",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "panel_title_class"
+    },
+    {
+      "label": "PANEL_TITLE_SIZES",
+      "file_type": "code",
+      "source_file": "app/components/registro/styles.ts",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "app_components_registro_styles_panel_title_sizes",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "panel_title_sizes"
+    },
+    {
+      "label": "STRONG_BUTTON_CLASS",
+      "file_type": "code",
+      "source_file": "app/components/registro/styles.ts",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "app_components_registro_styles_strong_button_class",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "strong_button_class"
+    },
+    {
+      "label": "Input.tsx",
+      "file_type": "code",
+      "source_file": "app/components/ui/Input.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_ui_input",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "input.tsx"
+    },
+    {
+      "label": "fadeScale",
+      "file_type": "code",
+      "source_file": "app/components/ui/motion.tsx",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "app_components_ui_motion_fadescale",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "fadescale"
+    },
+    {
+      "label": "ConfiguracionClient.tsx",
+      "file_type": "code",
+      "source_file": "app/configuracion/ConfiguracionClient.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_configuracion_configuracionclient",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "configuracionclient.tsx"
+    },
+    {
+      "label": "nutrition-types.ts",
       "file_type": "code",
       "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L25",
+      "source_location": "L1",
       "_origin": "ast",
-      "id": "app_lib_nutrition_types_food_measure_labels",
+      "id": "app_lib_nutrition_types",
       "community": 25,
-      "community_name": "RoutineAdminClient.tsx",
-      "norm_label": "food_measure_labels"
+      "community_name": "nutrition-types.ts",
+      "norm_label": "nutrition-types.ts"
+    },
+    {
+      "label": "ACTIVITY_LEVEL_INFO",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L149",
+      "_origin": "ast",
+      "id": "app_lib_nutrition_types_activity_level_info",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "activity_level_info"
+    },
+    {
+      "label": "GENDERS",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L143",
+      "_origin": "ast",
+      "id": "app_lib_nutrition_types_genders",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "genders"
+    },
+    {
+      "label": "GOAL_INFO",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L181",
+      "_origin": "ast",
+      "id": "app_lib_nutrition_types_goal_info",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "goal_info"
+    },
+    {
+      "label": "GOALS",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L178",
+      "_origin": "ast",
+      "id": "app_lib_nutrition_types_goals",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "goals"
+    },
+    {
+      "label": "MEAL_LOG_MAX_PAST_DAYS",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L76",
+      "_origin": "ast",
+      "id": "app_lib_nutrition_types_meal_log_max_past_days",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "meal_log_max_past_days"
+    },
+    {
+      "label": "MEAL_TYPE_IMAGES",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "app_lib_nutrition_types_meal_type_images",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "meal_type_images"
+    },
+    {
+      "label": "MEAL_TYPE_LABELS",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "app_lib_nutrition_types_meal_type_labels",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "meal_type_labels"
+    },
+    {
+      "label": "MEAL_TYPES",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L30",
+      "_origin": "ast",
+      "id": "app_lib_nutrition_types_meal_types",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "meal_types"
+    },
+    {
+      "label": "TARGET_MODES",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L259",
+      "_origin": "ast",
+      "id": "app_lib_nutrition_types_target_modes",
+      "community": 25,
+      "community_name": "nutrition-types.ts",
+      "norm_label": "target_modes"
     },
     {
       "label": "Archivos",
@@ -46127,17 +46182,6 @@
       "id": "plan_estado_actual"
     },
     {
-      "label": "Grupo \"G6\" - Ejercicios admin",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L288",
-      "_origin": "ast",
-      "community": 288,
-      "norm_label": "grupo \"g6\" - ejercicios admin",
-      "community_name": "Plan - indice y orden de ejecucion",
-      "id": "plan_grupo_g6_ejercicios_admin"
-    },
-    {
       "label": "Grupo \"G8\" - Catalogo de rutinas",
       "file_type": "document",
       "source_file": "PLAN.md",
@@ -46169,39 +46213,6 @@
       "norm_label": "plan - indice y orden de ejecucion",
       "community_name": "Plan - indice y orden de ejecucion",
       "id": "plan_plan_indice_y_orden_de_ejecucion"
-    },
-    {
-      "label": "Subgrupo \"G6.1\" - Acceso a datos y validacion",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L292",
-      "_origin": "ast",
-      "community": 288,
-      "norm_label": "subgrupo \"g6.1\" - acceso a datos y validacion",
-      "community_name": "Plan - indice y orden de ejecucion",
-      "id": "plan_subgrupo_g6_1_acceso_a_datos_y_validacion"
-    },
-    {
-      "label": "Subgrupo \"G6.2\" - Admin UI",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L300",
-      "_origin": "ast",
-      "community": 288,
-      "norm_label": "subgrupo \"g6.2\" - admin ui",
-      "community_name": "Plan - indice y orden de ejecucion",
-      "id": "plan_subgrupo_g6_2_admin_ui"
-    },
-    {
-      "label": "Subgrupo \"G6.3\" - Integracion y permisos",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L308",
-      "_origin": "ast",
-      "community": 288,
-      "norm_label": "subgrupo \"g6.3\" - integracion y permisos",
-      "community_name": "Plan - indice y orden de ejecucion",
-      "id": "plan_subgrupo_g6_3_integracion_y_permisos"
     },
     {
       "label": "Subgrupo \"G8.1\" - Exploracion",
@@ -46786,17 +46797,6 @@
       "norm_label": "default_notification_preferences"
     },
     {
-      "label": "MEAL_COPY",
-      "file_type": "code",
-      "source_file": "app/lib/notifications.ts",
-      "source_location": "L164",
-      "_origin": "ast",
-      "id": "app_lib_notifications_meal_copy",
-      "community": 293,
-      "community_name": "reminders.ts",
-      "norm_label": "meal_copy"
-    },
-    {
       "label": "MEAL_REMINDER_TYPES",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
@@ -46808,10 +46808,21 @@
       "norm_label": "meal_reminder_types"
     },
     {
+      "label": "MEAL_TITLES",
+      "file_type": "code",
+      "source_file": "app/lib/notifications.ts",
+      "source_location": "L164",
+      "_origin": "ast",
+      "id": "app_lib_notifications_meal_titles",
+      "community": 293,
+      "community_name": "reminders.ts",
+      "norm_label": "meal_titles"
+    },
+    {
       "label": "NOTIFICATION_LINK_PARAM",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L250",
+      "source_location": "L251",
       "_origin": "ast",
       "id": "app_lib_notifications_notification_link_param",
       "community": 293,
@@ -46822,7 +46833,7 @@
       "label": "NOTIFICATION_LINK_VALUE",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L251",
+      "source_location": "L252",
       "_origin": "ast",
       "id": "app_lib_notifications_notification_link_value",
       "community": 293,
@@ -46844,7 +46855,7 @@
       "label": "PUSH_PAYLOAD_VERSION",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L206",
+      "source_location": "L207",
       "_origin": "ast",
       "id": "app_lib_notifications_push_payload_version",
       "community": 293,
@@ -46855,7 +46866,7 @@
       "label": "PUSH_SERVICE_HOSTS",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L286",
+      "source_location": "L287",
       "_origin": "ast",
       "id": "app_lib_notifications_push_service_hosts",
       "community": 293,
@@ -46866,7 +46877,7 @@
       "label": "PUSH_SERVICE_SUFFIXES",
       "file_type": "code",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L287",
+      "source_location": "L288",
       "_origin": "ast",
       "id": "app_lib_notifications_push_service_suffixes",
       "community": 293,
@@ -47667,30 +47678,8 @@
       "_origin": "ast",
       "id": "app_catalogo_routinecatalogclient",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "routinecatalogclient.tsx"
-    },
-    {
-      "label": "ProfileIdentity.tsx",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/ProfileIdentity.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_configuracion_profileidentity",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "profileidentity.tsx"
-    },
-    {
-      "label": "SetupHero.tsx",
-      "file_type": "code",
-      "source_file": "app/components/configuracion/SetupHero.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_configuracion_setuphero",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "setuphero.tsx"
     },
     {
       "label": "HomeNutrition.tsx",
@@ -47700,7 +47689,7 @@
       "_origin": "ast",
       "id": "app_components_home_homenutrition",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "homenutrition.tsx"
     },
     {
@@ -47711,7 +47700,7 @@
       "_origin": "ast",
       "id": "app_components_registro_budgetblock",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "budgetblock.tsx"
     },
     {
@@ -47722,7 +47711,7 @@
       "_origin": "ast",
       "id": "app_components_registro_budgetblock_macros",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "macros"
     },
     {
@@ -47733,7 +47722,7 @@
       "_origin": "ast",
       "id": "app_components_registro_mealtabs",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "mealtabs.tsx"
     },
     {
@@ -47744,7 +47733,7 @@
       "_origin": "ast",
       "id": "app_components_registro_mealtabs_nav_keys",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "nav_keys"
     },
     {
@@ -47755,7 +47744,7 @@
       "_origin": "ast",
       "id": "app_components_shared_goalsetupstep",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "goalsetupstep.tsx"
     },
     {
@@ -47766,7 +47755,7 @@
       "_origin": "ast",
       "id": "app_components_ui_arcgauge",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "arcgauge.tsx"
     },
     {
@@ -47777,19 +47766,8 @@
       "_origin": "ast",
       "id": "app_components_ui_motion",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "motion.tsx"
-    },
-    {
-      "label": "fadeScale",
-      "file_type": "code",
-      "source_file": "app/components/ui/motion.tsx",
-      "source_location": "L18",
-      "_origin": "ast",
-      "id": "app_components_ui_motion_fadescale",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "fadescale"
     },
     {
       "label": "fadeUp",
@@ -47799,7 +47777,7 @@
       "_origin": "ast",
       "id": "app_components_ui_motion_fadeup",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "fadeup"
     },
     {
@@ -47810,7 +47788,7 @@
       "_origin": "ast",
       "id": "app_components_ui_motion_listitemhover",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "listitemhover"
     },
     {
@@ -47821,7 +47799,7 @@
       "_origin": "ast",
       "id": "app_components_ui_motion_microtransition",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "microtransition"
     },
     {
@@ -47832,7 +47810,7 @@
       "_origin": "ast",
       "id": "app_components_ui_motion_premiumease",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "premiumease"
     },
     {
@@ -47843,7 +47821,7 @@
       "_origin": "ast",
       "id": "app_components_ui_motion_staggercontainer",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "staggercontainer"
     },
     {
@@ -47854,74 +47832,41 @@
       "_origin": "ast",
       "id": "app_components_ui_motion_tapfeedback",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
+      "community_name": "motion.tsx",
       "norm_label": "tapfeedback"
     },
     {
-      "label": "ProgressRing.tsx",
+      "label": "SegmentedControl.tsx",
       "file_type": "code",
-      "source_file": "app/components/ui/ProgressRing.tsx",
+      "source_file": "app/components/ui/SegmentedControl.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_ui_progressring",
+      "id": "app_components_ui_segmentedcontrol",
       "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "progressring.tsx"
+      "community_name": "motion.tsx",
+      "norm_label": "segmentedcontrol.tsx"
     },
     {
-      "label": "ConfiguracionClient.tsx",
+      "label": "NAV_KEYS",
       "file_type": "code",
-      "source_file": "app/configuracion/ConfiguracionClient.tsx",
+      "source_file": "app/components/ui/SegmentedControl.tsx",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "app_components_ui_segmentedcontrol_nav_keys",
+      "community": 30,
+      "community_name": "motion.tsx",
+      "norm_label": "nav_keys"
+    },
+    {
+      "label": "FoodAdminClient.tsx",
+      "file_type": "code",
+      "source_file": "app/admin/alimentos/FoodAdminClient.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_configuracion_configuracionclient",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "configuracionclient.tsx"
-    },
-    {
-      "label": "ACTIVITY_LEVEL_INFO",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L149",
-      "_origin": "ast",
-      "id": "app_lib_nutrition_types_activity_level_info",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "activity_level_info"
-    },
-    {
-      "label": "GENDERS",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L143",
-      "_origin": "ast",
-      "id": "app_lib_nutrition_types_genders",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "genders"
-    },
-    {
-      "label": "GOAL_INFO",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L181",
-      "_origin": "ast",
-      "id": "app_lib_nutrition_types_goal_info",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "goal_info"
-    },
-    {
-      "label": "GOALS",
-      "file_type": "code",
-      "source_file": "app/lib/nutrition-types.ts",
-      "source_location": "L178",
-      "_origin": "ast",
-      "id": "app_lib_nutrition_types_goals",
-      "community": 30,
-      "community_name": "ConfiguracionClient.tsx",
-      "norm_label": "goals"
+      "id": "app_admin_alimentos_foodadminclient",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "foodadminclient.tsx"
     },
     {
       "label": "ExerciseAdminClient.tsx",
@@ -47979,6 +47924,61 @@
       "norm_label": "recentexercisestable.tsx"
     },
     {
+      "label": "RecipeAdminClient.tsx",
+      "file_type": "code",
+      "source_file": "app/admin/recetas/RecipeAdminClient.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_admin_recetas_recipeadminclient",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "recipeadminclient.tsx"
+    },
+    {
+      "label": "RoutineAdminClient.tsx",
+      "file_type": "code",
+      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_admin_rutinas_routineadminclient",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "routineadminclient.tsx"
+    },
+    {
+      "label": "DIFFICULTY_BADGE_STYLES",
+      "file_type": "code",
+      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
+      "source_location": "L84",
+      "_origin": "ast",
+      "id": "app_admin_rutinas_routineadminclient_difficulty_badge_styles",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "difficulty_badge_styles"
+    },
+    {
+      "label": "OBJECTIVE_BADGE_STYLES",
+      "file_type": "code",
+      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
+      "source_location": "L90",
+      "_origin": "ast",
+      "id": "app_admin_rutinas_routineadminclient_objective_badge_styles",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "objective_badge_styles"
+    },
+    {
+      "label": "OBJECTIVE_DOT_STYLES",
+      "file_type": "code",
+      "source_file": "app/admin/rutinas/RoutineAdminClient.tsx",
+      "source_location": "L96",
+      "_origin": "ast",
+      "id": "app_admin_rutinas_routineadminclient_objective_dot_styles",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "objective_dot_styles"
+    },
+    {
       "label": "RoutineDetailClient.tsx",
       "file_type": "code",
       "source_file": "app/catalogo/rutinas/[id]/RoutineDetailClient.tsx",
@@ -48001,48 +48001,26 @@
       "norm_label": "faderow"
     },
     {
-      "label": "ExerciseMedia.tsx",
+      "label": "TrainingDaysSheet.tsx",
       "file_type": "code",
-      "source_file": "app/components/exercise/ExerciseMedia.tsx",
+      "source_file": "app/components/rutinas/TrainingDaysSheet.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_exercise_exercisemedia",
+      "id": "app_components_rutinas_trainingdayssheet",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "exercisemedia.tsx"
+      "norm_label": "trainingdayssheet.tsx"
     },
     {
-      "label": "ExerciseSheet.tsx",
+      "label": "FilterSheet.tsx",
       "file_type": "code",
-      "source_file": "app/components/exercise/ExerciseSheet.tsx",
+      "source_file": "app/components/shared/FilterSheet.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_exercise_exercisesheet",
+      "id": "app_components_shared_filtersheet",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "exercisesheet.tsx"
-    },
-    {
-      "label": "DetailDays.tsx",
-      "file_type": "code",
-      "source_file": "app/components/rutina-detalle/DetailDays.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_rutina_detalle_detaildays",
-      "community": 300,
-      "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "detaildays.tsx"
-    },
-    {
-      "label": "ExerciseDetailModal.tsx",
-      "file_type": "code",
-      "source_file": "app/components/shared/ExerciseDetailModal.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_shared_exercisedetailmodal",
-      "community": 300,
-      "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "exercisedetailmodal.tsx"
+      "norm_label": "filtersheet.tsx"
     },
     {
       "label": "RoutineTablePreview.tsx",
@@ -48122,26 +48100,37 @@
       "norm_label": "card.tsx"
     },
     {
-      "label": "SegmentedControl.tsx",
+      "label": "Dialog.tsx",
       "file_type": "code",
-      "source_file": "app/components/ui/SegmentedControl.tsx",
+      "source_file": "app/components/ui/Dialog.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_ui_segmentedcontrol",
+      "id": "app_components_ui_dialog",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "segmentedcontrol.tsx"
+      "norm_label": "dialog.tsx"
     },
     {
-      "label": "NAV_KEYS",
+      "label": "Select.tsx",
       "file_type": "code",
-      "source_file": "app/components/ui/SegmentedControl.tsx",
-      "source_location": "L15",
+      "source_file": "app/components/ui/Select.tsx",
+      "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_ui_segmentedcontrol_nav_keys",
+      "id": "app_components_ui_select",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "nav_keys"
+      "norm_label": "select.tsx"
+    },
+    {
+      "label": "Sheet.tsx",
+      "file_type": "code",
+      "source_file": "app/components/ui/Sheet.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_ui_sheet",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "sheet.tsx"
     },
     {
       "label": "Table.tsx",
@@ -48155,15 +48144,15 @@
       "norm_label": "table.tsx"
     },
     {
-      "label": "use-media-query.ts",
+      "label": "Textarea.tsx",
       "file_type": "code",
-      "source_file": "app/components/ui/use-media-query.ts",
+      "source_file": "app/components/ui/Textarea.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_ui_use_media_query",
+      "id": "app_components_ui_textarea",
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
-      "norm_label": "use-media-query.ts"
+      "norm_label": "textarea.tsx"
     },
     {
       "label": "MUSCLE_GRADIENTS",
@@ -48175,6 +48164,17 @@
       "community": 300,
       "community_name": "ExerciseAdminClient.tsx",
       "norm_label": "muscle_gradients"
+    },
+    {
+      "label": "FOOD_MEASURE_LABELS",
+      "file_type": "code",
+      "source_file": "app/lib/nutrition-types.ts",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "app_lib_nutrition_types_food_measure_labels",
+      "community": 300,
+      "community_name": "ExerciseAdminClient.tsx",
+      "norm_label": "food_measure_labels"
     },
     {
       "label": "use-sheet-viewport.ts",
@@ -50138,17 +50138,6 @@
       "norm_label": "number-input.test.mjs"
     },
     {
-      "label": "HomeWeekStrip.tsx",
-      "file_type": "code",
-      "source_file": "app/components/home/HomeWeekStrip.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_home_homeweekstrip",
-      "community": 319,
-      "community_name": "home-dashboard.ts",
-      "norm_label": "homeweekstrip.tsx"
-    },
-    {
       "label": "home-dashboard.ts",
       "file_type": "code",
       "source_file": "app/lib/home-dashboard.ts",
@@ -50235,17 +50224,6 @@
       "community": 319,
       "community_name": "home-dashboard.ts",
       "norm_label": "default_weekdays"
-    },
-    {
-      "label": "WEEKDAYS",
-      "file_type": "code",
-      "source_file": "app/lib/training-schedule.ts",
-      "source_location": "L5",
-      "_origin": "ast",
-      "id": "app_lib_training_schedule_weekdays",
-      "community": 319,
-      "community_name": "home-dashboard.ts",
-      "norm_label": "weekdays"
     },
     {
       "label": "home-hero.test.mjs",
@@ -52362,17 +52340,6 @@
       "norm_label": "input-otp"
     },
     {
-      "label": "next",
-      "file_type": "code",
-      "source_file": "package.json",
-      "source_location": "L33",
-      "_origin": "ast",
-      "id": "package_dependencies_next",
-      "community": 35,
-      "community_name": "dependencies",
-      "norm_label": "next"
-    },
-    {
       "label": "radix-ui",
       "file_type": "code",
       "source_file": "package.json",
@@ -52450,6 +52417,17 @@
       "norm_label": "@supabase/ssr"
     },
     {
+      "label": "tailwind-merge",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L38",
+      "_origin": "ast",
+      "id": "package_dependencies_tailwind_merge",
+      "community": 35,
+      "community_name": "dependencies",
+      "norm_label": "tailwind-merge"
+    },
+    {
       "label": "vaul",
       "file_type": "code",
       "source_file": "package.json",
@@ -52492,17 +52470,6 @@
       "community": 35,
       "community_name": "dependencies",
       "norm_label": "input-otp"
-    },
-    {
-      "label": "next",
-      "file_type": "concept",
-      "source_file": "package.json",
-      "source_location": "L33",
-      "_origin": "ast",
-      "id": "next",
-      "community": 35,
-      "community_name": "dependencies",
-      "norm_label": "next"
     },
     {
       "label": "radix-ui",
@@ -52580,6 +52547,17 @@
       "community": 35,
       "community_name": "dependencies",
       "norm_label": "@supabase/ssr"
+    },
+    {
+      "label": "tailwind-merge",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L38",
+      "_origin": "ast",
+      "id": "tailwind_merge",
+      "community": 35,
+      "community_name": "dependencies",
+      "norm_label": "tailwind-merge"
     },
     {
       "label": "vaul",
@@ -57443,6 +57421,39 @@
       "norm_label": "typescript"
     },
     {
+      "label": "package.json",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "package",
+      "community": 414,
+      "community_name": "scripts",
+      "norm_label": "package.json"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "package_name",
+      "community": 414,
+      "community_name": "scripts",
+      "norm_label": "name"
+    },
+    {
+      "label": "private",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "package_private",
+      "community": 414,
+      "community_name": "scripts",
+      "norm_label": "private"
+    },
+    {
       "label": "scripts",
       "file_type": "code",
       "source_file": "package.json",
@@ -57584,6 +57595,17 @@
       "community": 414,
       "community_name": "scripts",
       "norm_label": "validate:mobile"
+    },
+    {
+      "label": "version",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "package_version",
+      "community": 414,
+      "community_name": "scripts",
+      "norm_label": "version"
     },
     {
       "label": "Archivos",
@@ -58441,15 +58463,15 @@
       "norm_label": "macros"
     },
     {
-      "label": "RegistroSheet.tsx",
+      "label": "DiaryHeader.tsx",
       "file_type": "code",
-      "source_file": "app/components/registro/RegistroSheet.tsx",
+      "source_file": "app/components/registro/DiaryHeader.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_registro_registrosheet",
+      "id": "app_components_registro_diaryheader",
       "community": 423,
       "community_name": "RecipeDetailDrawer.tsx",
-      "norm_label": "registrosheet.tsx"
+      "norm_label": "diaryheader.tsx"
     },
     {
       "label": "DetailTopBar.tsx",
@@ -58549,6 +58571,17 @@
       "community": 423,
       "community_name": "RecipeDetailDrawer.tsx",
       "norm_label": "drawerautofocuscontext"
+    },
+    {
+      "label": "LoadingDots.tsx",
+      "file_type": "code",
+      "source_file": "app/components/ui/LoadingDots.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_ui_loadingdots",
+      "community": 423,
+      "community_name": "RecipeDetailDrawer.tsx",
+      "norm_label": "loadingdots.tsx"
     },
     {
       "label": "ExerciseListSheet.tsx",
@@ -61303,39 +61336,6 @@
       "norm_label": "height"
     },
     {
-      "label": "DiaryHeader.tsx",
-      "file_type": "code",
-      "source_file": "app/components/registro/DiaryHeader.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_registro_diaryheader",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "diaryheader.tsx"
-    },
-    {
-      "label": "FrequentRows.tsx",
-      "file_type": "code",
-      "source_file": "app/components/registro/FrequentRows.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_registro_frequentrows",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "frequentrows.tsx"
-    },
-    {
-      "label": "MealPanel.tsx",
-      "file_type": "code",
-      "source_file": "app/components/registro/MealPanel.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_registro_mealpanel",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "mealpanel.tsx"
-    },
-    {
       "label": "TrainingDaysPicker.tsx",
       "file_type": "code",
       "source_file": "app/components/rutinas/TrainingDaysPicker.tsx",
@@ -61369,15 +61369,15 @@
       "norm_label": "inputotp.tsx"
     },
     {
-      "label": "LoadingDots.tsx",
+      "label": "ProgressRing.tsx",
       "file_type": "code",
-      "source_file": "app/components/ui/LoadingDots.tsx",
+      "source_file": "app/components/ui/ProgressRing.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "app_components_ui_loadingdots",
+      "id": "app_components_ui_progressring",
       "community": 455,
       "community_name": "cn",
-      "norm_label": "loadingdots.tsx"
+      "norm_label": "progressring.tsx"
     },
     {
       "label": "Separator.tsx",
@@ -61433,17 +61433,6 @@
       "community": 455,
       "community_name": "cn",
       "norm_label": "tabslistvariants"
-    },
-    {
-      "label": "Textarea.tsx",
-      "file_type": "code",
-      "source_file": "app/components/ui/Textarea.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_ui_textarea",
-      "community": 455,
-      "community_name": "cn",
-      "norm_label": "textarea.tsx"
     },
     {
       "label": "utils.ts",
@@ -62646,6 +62635,17 @@
       "norm_label": "homeweekplanner.tsx"
     },
     {
+      "label": "HomeWeekStrip.tsx",
+      "file_type": "code",
+      "source_file": "app/components/home/HomeWeekStrip.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "app_components_home_homeweekstrip",
+      "community": 472,
+      "community_name": "app/page.tsx",
+      "norm_label": "homeweekstrip.tsx"
+    },
+    {
       "label": "TrainingDaysEditButton.tsx",
       "file_type": "code",
       "source_file": "app/components/rutinas/TrainingDaysEditButton.tsx",
@@ -62666,6 +62666,17 @@
       "community": 472,
       "community_name": "app/page.tsx",
       "norm_label": "buttonvariants"
+    },
+    {
+      "label": "WEEKDAYS",
+      "file_type": "code",
+      "source_file": "app/lib/training-schedule.ts",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "app_lib_training_schedule_weekdays",
+      "community": 472,
+      "community_name": "app/page.tsx",
+      "norm_label": "weekdays"
     },
     {
       "label": "app/page.tsx",
@@ -62765,17 +62776,6 @@
       "community": 474,
       "community_name": "BodyMuscleFigure.tsx",
       "norm_label": "posteriordata"
-    },
-    {
-      "label": "use-keyboard-open.ts",
-      "file_type": "code",
-      "source_file": "app/components/ui/use-keyboard-open.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "app_components_ui_use_keyboard_open",
-      "community": 475,
-      "community_name": "useKeyboardOpen",
-      "norm_label": "use-keyboard-open.ts"
     },
     {
       "label": "react-dom",
@@ -62910,26 +62910,48 @@
       "norm_label": "sort_hints"
     },
     {
-      "label": "tailwind-merge",
-      "file_type": "code",
-      "source_file": "package.json",
-      "source_location": "L38",
+      "label": "Grupo \"G6\" - Ejercicios admin",
+      "file_type": "document",
+      "source_file": "PLAN.md",
+      "source_location": "L288",
       "_origin": "ast",
-      "id": "package_dependencies_tailwind_merge",
       "community": 480,
-      "community_name": "tailwind-merge",
-      "norm_label": "tailwind-merge"
+      "norm_label": "grupo \"g6\" - ejercicios admin",
+      "community_name": "Grupo \"G6\" - Ejercicios admin",
+      "id": "plan_grupo_g6_ejercicios_admin"
     },
     {
-      "label": "tailwind-merge",
-      "file_type": "concept",
-      "source_file": "package.json",
-      "source_location": "L38",
+      "label": "Subgrupo \"G6.1\" - Acceso a datos y validacion",
+      "file_type": "document",
+      "source_file": "PLAN.md",
+      "source_location": "L292",
       "_origin": "ast",
-      "id": "tailwind_merge",
       "community": 480,
-      "community_name": "tailwind-merge",
-      "norm_label": "tailwind-merge"
+      "norm_label": "subgrupo \"g6.1\" - acceso a datos y validacion",
+      "community_name": "Grupo \"G6\" - Ejercicios admin",
+      "id": "plan_subgrupo_g6_1_acceso_a_datos_y_validacion"
+    },
+    {
+      "label": "Subgrupo \"G6.2\" - Admin UI",
+      "file_type": "document",
+      "source_file": "PLAN.md",
+      "source_location": "L300",
+      "_origin": "ast",
+      "community": 480,
+      "norm_label": "subgrupo \"g6.2\" - admin ui",
+      "community_name": "Grupo \"G6\" - Ejercicios admin",
+      "id": "plan_subgrupo_g6_2_admin_ui"
+    },
+    {
+      "label": "Subgrupo \"G6.3\" - Integracion y permisos",
+      "file_type": "document",
+      "source_file": "PLAN.md",
+      "source_location": "L308",
+      "_origin": "ast",
+      "community": 480,
+      "norm_label": "subgrupo \"g6.3\" - integracion y permisos",
+      "community_name": "Grupo \"G6\" - Ejercicios admin",
+      "id": "plan_subgrupo_g6_3_integracion_y_permisos"
     },
     {
       "label": "web-push",
@@ -63207,48 +63229,26 @@
       "norm_label": "whey"
     },
     {
-      "label": "package.json",
+      "label": "next",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L1",
+      "source_location": "L33",
       "_origin": "ast",
-      "id": "package",
+      "id": "package_dependencies_next",
       "community": 486,
-      "community_name": "package.json",
-      "norm_label": "package.json"
+      "community_name": "next",
+      "norm_label": "next"
     },
     {
-      "label": "name",
-      "file_type": "code",
+      "label": "next",
+      "file_type": "concept",
       "source_file": "package.json",
-      "source_location": "L2",
+      "source_location": "L33",
       "_origin": "ast",
-      "id": "package_name",
+      "id": "next",
       "community": 486,
-      "community_name": "package.json",
-      "norm_label": "name"
-    },
-    {
-      "label": "private",
-      "file_type": "code",
-      "source_file": "package.json",
-      "source_location": "L4",
-      "_origin": "ast",
-      "id": "package_private",
-      "community": 486,
-      "community_name": "package.json",
-      "norm_label": "private"
-    },
-    {
-      "label": "version",
-      "file_type": "code",
-      "source_file": "package.json",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "package_version",
-      "community": 486,
-      "community_name": "package.json",
-      "norm_label": "version"
+      "community_name": "next",
+      "norm_label": "next"
     },
     {
       "label": "start/route.ts",
@@ -89798,7 +89798,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L277",
+      "source_location": "L278",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications_buildpushpayload",
@@ -89810,7 +89810,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L279",
+      "source_location": "L280",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications_buildpushpayload",
@@ -89822,7 +89822,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L280",
+      "source_location": "L281",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications_buildpushpayload",
@@ -90342,18 +90342,6 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_evaluate",
-      "target": "app_lib_notifications_trainingremindermessage",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L104",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_lib_push_reminders_evaluate",
       "target": "app_lib_home_dashboard_formatdaygroups",
       "confidence_score": 1.0
     },
@@ -90362,7 +90350,19 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L104",
+      "source_location": "L101",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "app_lib_push_reminders_evaluate",
+      "target": "app_lib_notifications_trainingremindermessage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/lib/push/reminders.ts",
+      "source_location": "L101",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_evaluate",
@@ -90374,7 +90374,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L112",
+      "source_location": "L108",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_evaluate",
@@ -90386,7 +90386,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L115",
+      "source_location": "L111",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_evaluate",
@@ -90398,7 +90398,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L116",
+      "source_location": "L112",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_evaluate",
@@ -90410,7 +90410,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L118",
+      "source_location": "L114",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_evaluate",
@@ -90422,7 +90422,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L119",
+      "source_location": "L115",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_evaluate",
@@ -90434,7 +90434,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L125",
+      "source_location": "L121",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_evaluate",
@@ -90446,7 +90446,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L144",
+      "source_location": "L140",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_evaluate",
@@ -90458,7 +90458,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L146",
+      "source_location": "L142",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_evaluate",
@@ -90470,7 +90470,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L147",
+      "source_location": "L143",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_evaluate",
@@ -90519,7 +90519,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L156",
+      "source_location": "L152",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_runremindertick",
@@ -90531,7 +90531,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L157",
+      "source_location": "L153",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_runremindertick",
@@ -90543,7 +90543,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L157",
+      "source_location": "L153",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_runremindertick",
@@ -90555,7 +90555,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L178",
+      "source_location": "L174",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_runremindertick",
@@ -90567,7 +90567,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L183",
+      "source_location": "L179",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_runremindertick",
@@ -90579,7 +90579,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L198",
+      "source_location": "L194",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_runremindertick",
@@ -90590,7 +90590,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L203",
+      "source_location": "L199",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_runremindertick",
@@ -90602,7 +90602,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L208",
+      "source_location": "L204",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_runremindertick",
@@ -90615,7 +90615,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L236",
+      "source_location": "L232",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_runremindertick",
@@ -90627,7 +90627,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L236",
+      "source_location": "L232",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders_runremindertick",
@@ -155815,7 +155815,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
-      "target": "app_lib_notifications_meal_copy",
+      "target": "app_lib_notifications_meal_titles",
       "confidence_score": 1.0
     },
     {
@@ -155833,7 +155833,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L175",
+      "source_location": "L176",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -155844,7 +155844,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L179",
+      "source_location": "L182",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -155855,7 +155855,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L185",
+      "source_location": "L189",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -155877,7 +155877,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L202",
+      "source_location": "L203",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -155888,7 +155888,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L206",
+      "source_location": "L207",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -155899,7 +155899,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L209",
+      "source_location": "L210",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -155910,7 +155910,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L224",
+      "source_location": "L225",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -155921,7 +155921,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L236",
+      "source_location": "L237",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -155932,7 +155932,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L250",
+      "source_location": "L251",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -155943,7 +155943,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L251",
+      "source_location": "L252",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -155954,7 +155954,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L253",
+      "source_location": "L254",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -155965,7 +155965,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L260",
+      "source_location": "L261",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -155976,7 +155976,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L266",
+      "source_location": "L267",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -155987,7 +155987,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L286",
+      "source_location": "L287",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -155998,7 +155998,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L287",
+      "source_location": "L288",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -156009,7 +156009,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/notifications.ts",
-      "source_location": "L290",
+      "source_location": "L291",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_notifications",
@@ -157703,7 +157703,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/lib/push/reminders.ts",
-      "source_location": "L155",
+      "source_location": "L151",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_lib_push_reminders",
@@ -208347,5 +208347,5 @@
       "source_file": "specs/G7-admin-routines/03-implementar-persistencia-de-filas-de-ejercicio.md"
     }
   ],
-  "built_at_commit": "043bd7b93f2eaa0b5ac269bbc5fb0a04b2730c56"
+  "built_at_commit": "fb9864f759a7029fefb56fbae2fc9137379adfd9"
 }
