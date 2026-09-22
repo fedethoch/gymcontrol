@@ -4,6 +4,7 @@ import { DayWorkoutClient, type DayExercise } from "@/app/rutinas/dia/DayWorkout
 import { requireUser } from "@/app/lib/auth";
 import { sameWorkoutDayIds } from "@/app/lib/day-workout";
 import { getTodayDateKey, getWeekStartDateKey } from "@/app/lib/local-date";
+import { getNotificationPreferences } from "@/app/lib/notification-preferences";
 import { getSavedRoutineByIdForUser } from "@/app/lib/saved-routines";
 import {
   estimateDayMinutes,
@@ -47,7 +48,7 @@ export default async function RutinaDiaPage({ searchParams }: DayPageProps) {
     routineDayId: selectedDay.id,
   });
 
-  const [historyByExerciseId, overview] = await Promise.all([
+  const [historyByExerciseId, overview, notificationPrefs] = await Promise.all([
     listExerciseHistory({
       userId: auth.user.id,
       exerciseIds: selectedDay.items.map((item) => item.exerciseId),
@@ -59,6 +60,7 @@ export default async function RutinaDiaPage({ searchParams }: DayPageProps) {
       savedRoutineId,
       plannedDays: routine.days.length,
     }),
+    getNotificationPreferences(auth.user.id),
   ]);
 
   const weekStart = getWeekStartDateKey(getTodayDateKey());
@@ -109,6 +111,7 @@ export default async function RutinaDiaPage({ searchParams }: DayPageProps) {
       completedThisWeek={overview.completedRoutineDayIds.includes(selectedDay.id)}
       estimatedMinutes={estimateDayMinutes(selectedDay.items)}
       exercises={exercises}
+      restPushEnabled={notificationPrefs.restEnd}
     />
   );
 }

@@ -59,6 +59,11 @@ export function isPendingRow(type: string, meal: { items: unknown[] } | null) {
   return (DEFAULT_DAY_MEAL_TYPES as readonly string[]).includes(type) && (meal === null || meal.items.length === 0);
 }
 
+/** Ninguna comida de ese tipo tiene alimentos todavía: el aviso de esa comida sale (DESIGN.md §6.4). */
+export function isMealTypePending(meals: ReadonlyArray<{ type: string; items: unknown[] }>, type: string) {
+  return meals.filter((meal) => meal.type === type).every((meal) => meal.items.length === 0);
+}
+
 export function buildDiaryDay<M extends DiaryMeal>(meals: M[]): DiaryDay<M> {
   const seen = new Map<string, number>();
   let nextKey: string | null = null;

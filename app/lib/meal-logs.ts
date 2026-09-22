@@ -1,5 +1,7 @@
 import "server-only";
 
+import type { SupabaseClient } from "@supabase/supabase-js";
+
 import { addDaysToDateKey, getTodayDateKey } from "@/app/lib/local-date";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 import { getLocalTrainingDate } from "@/app/lib/workout-tracking";
@@ -186,8 +188,12 @@ export function emptyMealLog(logDate: string): MealLog {
   };
 }
 
-export async function getMealLogForDate(args: { userId: string; logDate: string }): Promise<MealLog | null> {
-  const supabase = await createSupabaseServerClient();
+/** `client`: service role en el cron de avisos (sin sesión). */
+export async function getMealLogForDate(
+  args: { userId: string; logDate: string },
+  client?: SupabaseClient,
+): Promise<MealLog | null> {
+  const supabase = client ?? (await createSupabaseServerClient());
   const { data, error } = await supabase
     .from("meal_logs")
     .select(MEAL_LOG_SELECT)
@@ -633,10 +639,13 @@ export async function deleteMealItem(args: { userId: string; logDate: string; it
   return getMealLogOrEmpty(args);
 }
 
-export async function getLoggedDatesForUser(args: { userId: string; days: number }): Promise<Set<string>> {
+export async function getLoggedDatesForUser(
+  args: { userId: string; days: number },
+  client?: SupabaseClient,
+): Promise<Set<string>> {
   const today = getTodayDateKey();
   const rangeStart = addDaysToDateKey(today, -(args.days - 1));
-  const supabase = await createSupabaseServerClient();
+  const supabase = client ?? (await createSupabaseServerClient());
   const { data, error } = await supabase
     .from("meal_logs")
     .select("log_date, meal_log_meals(meal_log_items(id))")
@@ -658,6 +667,30 @@ export async function getLoggedDatesForUser(args: { userId: string; days: number
   }
 
   return dates;
+}
+
+/** kcal consumidas y objetivo congelado de cada día con registro del rango (resumen semanal de los avisos). */
+export async function listDailyKcal(
+  args: { userId: string; from: string; to: string },
+  client?: SupabaseClient,
+): Promise<Array<{ logDate: string; totalKcal: number; targetKcal: number | null }>> {
+  const supabase = client ?? (await createSupabaseServerClient());
+  const { data, error } = await supabase
+    .from("meal_logs")
+    .select(`${MEAL_LOG_SELECT}, target_kcal`)
+    .eq("user_id", args.userId)
+    .gte("log_date", args.from)
+    .lte("log_date", args.to);
+
+  if (error) {
+    throw new Error(`No se pudo leer el historial de comidas: ${error.message}`);
+  }
+
+  return ((data ?? []) as unknown as Array<MealLogRow & { target_kcal: number | null }>).map((row) => ({
+    logDate: row.log_date,
+    totalKcal: mapMealLog(row).totalKcal,
+    targetKcal: row.target_kcal ?? null,
+  }));
 }
 
 async function listFrequentUsages(args: { userId: string; days?: number }): Promise<FrequentUsage[]> {

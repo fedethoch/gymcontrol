@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Beef, Check, Droplet, Flame, LogOut, TriangleAlert, Wheat } from "lucide-react";
 import { toast } from "sonner";
@@ -11,12 +11,17 @@ import { BodySheet } from "@/app/components/configuracion/BodySheet";
 import { DeleteAccountSheet } from "@/app/components/configuracion/DeleteAccountSheet";
 import { GoalSheet } from "@/app/components/configuracion/GoalSheet";
 import { NameSheet } from "@/app/components/configuracion/NameSheet";
+import { NotificationRows } from "@/app/components/configuracion/NotificationRows";
+import { NotificationSettings } from "@/app/components/configuracion/NotificationSettings";
+import { NotificationsSheet } from "@/app/components/configuracion/NotificationsSheet";
 import { PlanHero } from "@/app/components/configuracion/PlanHero";
 import { PlanRows, type PlanSheet } from "@/app/components/configuracion/PlanRows";
 import { ProfileIdentity } from "@/app/components/configuracion/ProfileIdentity";
 import { ProfileSetupFlow } from "@/app/components/configuracion/ProfileSetupFlow";
 import { ProjectionSection } from "@/app/components/configuracion/ProjectionSection";
 import { SetupHero } from "@/app/components/configuracion/SetupHero";
+import { SignOutForm } from "@/app/components/configuracion/SignOutForm";
+import { usePushDevice } from "@/app/components/configuracion/usePushDevice";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
 import { BodyFatFigure } from "@/app/components/shared/BodyFatFigure";
 import { Button } from "@/app/components/ui/Button";
@@ -30,8 +35,11 @@ import {
 } from "@/app/components/ui/Dialog";
 import { Input } from "@/app/components/ui/Input";
 import { LoadingDots } from "@/app/components/ui/LoadingDots";
+import { useMediaQuery } from "@/app/components/ui/use-media-query";
 import { deleteAccountAction, saveProfileNameAction } from "@/app/configuracion/actions";
+import { useNotificationPrefs } from "@/app/configuracion/useNotificationPrefs";
 import { useProfileForm } from "@/app/configuracion/useProfileForm";
+import type { NotificationPreferences } from "@/app/lib/notifications";
 import { MACRO_COLORS, MACRO_LABELS } from "@/app/lib/nutrition-style";
 import {
   ACTIVITY_LEVEL_INFO,
@@ -56,18 +64,24 @@ import {
 
 const DELETE_CONFIRM_TEXT = "BORRAR";
 
-type MobileSheet = PlanSheet | "bodyFat" | "name" | "delete";
+type MobileSheet = PlanSheet | "bodyFat" | "name" | "delete" | "notifications";
 
 const BODY_FAT_CARD_ID = "configuracion-grasa-corporal";
+const NOTIFICATIONS_CARD_ID = "configuracion-notificaciones";
 
 export function ConfiguracionClient({
   initialProfile,
   initialDisplayName,
   email,
+  initialNotificationPrefs,
+  openNotifications,
 }: {
   initialProfile: NutritionProfile | null;
   initialDisplayName: string | null;
   email: string | null;
+  initialNotificationPrefs: NotificationPreferences;
+  /** `/configuracion?panel=notificaciones` (campanas de Inicio y del header). */
+  openNotifications: boolean;
 }) {
   const [displayName, setDisplayName] = useState(initialDisplayName ?? "");
   const savedNameRef = useRef(initialDisplayName ?? "");
@@ -79,6 +93,20 @@ export function ConfiguracionClient({
   const [setupOpen, setSetupOpen] = useState(false);
 
   const form = useProfileForm(initialProfile, { autosavePaused: setupOpen });
+  const pushDevice = usePushDevice();
+  const notificationPrefs = useNotificationPrefs(initialNotificationPrefs);
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const [notificationsLinkClosed, setNotificationsLinkClosed] = useState(false);
+  // Campana → S7 en mobile (DESIGN.md §15.2); en desktop el drawer no corresponde: baja a la card de avisos.
+  const notificationsOpen =
+    sheet === "notifications" || (openNotifications && !notificationsLinkClosed && isDesktop === false);
+
+  useEffect(() => {
+    if (!openNotifications || isDesktop !== true) return;
+    document.getElementById(NOTIFICATIONS_CARD_ID)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.history.replaceState(null, "", "/configuracion");
+  }, [openNotifications, isDesktop]);
+
   const {
     gender,
     handleGenderChange,
@@ -143,7 +171,14 @@ export function ConfiguracionClient({
   function handleSheetOpenChange(open: boolean) {
     if (open) return;
     form.flush();
+    notificationPrefs.flush();
     setSheet(null);
+    setNotificationsLinkClosed(true);
+
+    // Abierto desde la campana: al cerrar, recargar o volver no lo reabre.
+    if (new URLSearchParams(window.location.search).has("panel")) {
+      window.history.replaceState(null, "", "/configuracion");
+    }
   }
 
   function scrollToBodyFat() {
@@ -383,6 +418,10 @@ export function ConfiguracionClient({
             )}
 
             <div className="mt-10">
+              <NotificationRows status={pushDevice.status} onOpen={() => setSheet("notifications")} />
+            </div>
+
+            <div className="mt-10">
               <AccountRows
                 displayName={displayName}
                 email={email}
@@ -415,6 +454,13 @@ export function ConfiguracionClient({
           confirmText={DELETE_CONFIRM_TEXT}
           isDeleting={isDeleting}
           onConfirm={() => void handleDeleteAccount()}
+        />
+        <NotificationsSheet
+          open={notificationsOpen}
+          onOpenChange={handleSheetOpenChange}
+          device={pushDevice}
+          form={notificationPrefs}
+          hasNutritionProfile={form.hasProfile}
         />
       </div>
 
@@ -454,6 +500,15 @@ export function ConfiguracionClient({
             <CardTitle>Objetivo</CardTitle>
           </CardHeader>
           <CardContent>{goalBody}</CardContent>
+        </Card>
+
+        <Card id={NOTIFICATIONS_CARD_ID} className="scroll-mt-6">
+          <CardHeader>
+            <CardTitle>Notificaciones</CardTitle>
+          </CardHeader>
+          <CardContent className="max-w-xl">
+            <NotificationSettings device={pushDevice} form={notificationPrefs} hasNutritionProfile={form.hasProfile} />
+          </CardContent>
         </Card>
       </div>
 
@@ -595,12 +650,12 @@ export function ConfiguracionClient({
       </div>
 
       <div className="hidden flex-col gap-2 sm:flex-row sm:items-center sm:justify-between lg:flex">
-        <form action="/auth/signout" method="post">
+        <SignOutForm>
           <Button type="submit" variant="ghost" size="sm" className="text-[var(--foreground-muted)]">
             <LogOut className="size-3.5" />
             Cerrar sesión
           </Button>
-        </form>
+        </SignOutForm>
 
         <Button
           type="button"

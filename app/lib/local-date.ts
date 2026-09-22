@@ -11,11 +11,27 @@ const DATE_KEY_FORMATTER = new Intl.DateTimeFormat("en-CA", {
   day: "2-digit",
 });
 
+const TIME_FORMATTER = new Intl.DateTimeFormat("en-GB", {
+  timeZone: APP_TIME_ZONE,
+  hour: "2-digit",
+  minute: "2-digit",
+  hourCycle: "h23",
+});
+
 const DATE_KEY_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 /** Hoy (o `now`) como YYYY-MM-DD en la zona horaria de la app. */
 export function getTodayDateKey(now: Date = new Date()): string {
   return DATE_KEY_FORMATTER.format(now);
+}
+
+/** Minutos desde la medianoche (0–1439) en la zona horaria de la app. */
+export function getLocalMinutesOfDay(now: Date = new Date()): number {
+  const parts = TIME_FORMATTER.formatToParts(now);
+  const hour = Number(parts.find((part) => part.type === "hour")?.value ?? 0);
+  const minute = Number(parts.find((part) => part.type === "minute")?.value ?? 0);
+
+  return hour * 60 + minute;
 }
 
 export function isDateKey(value: string): boolean {

@@ -1,5 +1,7 @@
 import "server-only";
 
+import type { SupabaseClient } from "@supabase/supabase-js";
+
 import { calculateNutritionPlan } from "@/app/lib/nutrition-calc";
 import { resolveAdjustment } from "@/app/lib/nutrition-plan-options";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
@@ -43,8 +45,9 @@ type NutritionProfileRow = {
   fat_g: number;
 };
 
-export async function getNutritionProfile(userId: string): Promise<NutritionProfile | null> {
-  const supabase = await createSupabaseServerClient();
+/** `client`: service role en el cron de avisos (sin sesión). */
+export async function getNutritionProfile(userId: string, client?: SupabaseClient): Promise<NutritionProfile | null> {
+  const supabase = client ?? (await createSupabaseServerClient());
   const { data, error } = await supabase
     .from("nutrition_profiles")
     .select(

@@ -166,13 +166,13 @@ export function MobileHeader({
         </div>
 
         <div className="flex shrink-0 items-center gap-1.5">
-          <button
-            type="button"
+          <Link
+            href="/configuracion?panel=notificaciones"
             aria-label="Notificaciones"
             className="grid size-11 place-items-center rounded-xl bg-[var(--card)]/90 text-[var(--foreground-muted)] transition-[background-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[var(--card-hover)] hover:text-white active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100"
           >
             <Bell className="size-3.5" />
-          </button>
+          </Link>
           <span
             aria-label={streakBadge.ariaLabel ?? streakBadge.label}
             className={cn(

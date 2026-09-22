@@ -23,6 +23,7 @@ import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
 import { WorkoutMobile } from "@/app/components/workout/WorkoutMobile";
 import type { DayExercise } from "@/app/components/workout/types";
+import { useRestPush } from "@/app/components/workout/use-rest-push";
 import { ExerciseHistorySheet } from "@/app/rutinas/dia/ExerciseHistorySheet";
 import { cn } from "@/app/lib/utils";
 import {
@@ -47,6 +48,7 @@ import {
   parseRestSeconds,
   type PlanTarget,
 } from "@/app/lib/workout-progression";
+import { describeRestNext } from "@/app/lib/rest-push";
 import {
   enqueueFinish,
   enqueueItem,
@@ -74,9 +76,12 @@ type DayWorkoutClientProps = {
   completedThisWeek: boolean;
   estimatedMinutes: number;
   exercises: DayExercise[];
+  /** Aviso push al terminar el descanso (preferencia del usuario, DESIGN.md §6.4). */
+  restPushEnabled: boolean;
 };
 
-type RestTimer = { endsAt: number; now: number; totalSeconds: number };
+/** `next`: la serie que sigue, para el aviso de fin ("Sigue: Press banca · serie 3 de 4"); `null` si no queda. */
+type RestTimer = { endsAt: number; now: number; totalSeconds: number; next: string | null };
 
 const subscribeNothing = () => () => {};
 
@@ -116,6 +121,14 @@ function DayWorkoutLogger({
     drafts[exercise.routineItemId].sets.some((set) => set.done || set.kg || set.reps || set.secs),
   );
   const restEndsAt = rest?.endsAt ?? null;
+
+  useRestPush({
+    endsAt: restEndsAt,
+    next: rest?.next ?? null,
+    enabled: props.restPushEnabled,
+    savedRoutineId: props.savedRoutineId,
+    dayOrder: props.dayOrder,
+  });
 
   useEffect(() => {
     if (!sessionId) return;
@@ -238,7 +251,7 @@ function DayWorkoutLogger({
     const restSeconds = parseRestSeconds(exercise.rest);
 
     if (restSeconds) {
-      setRest(createRestTimer(restSeconds));
+      setRest(createRestTimer(restSeconds, describeNextSet(exercise, sets)));
     }
 
     if (sets.filter((set) => isValidSet(toLoggedSet(set, exercise))).length >= exercise.series) {
@@ -247,6 +260,26 @@ function DayWorkoutLogger({
       setExpandedId(next?.routineItemId ?? null);
       setFocusExerciseId(next?.routineItemId ?? null);
     }
+  }
+
+  /** La serie que sigue después del descanso: otra de este ejercicio o la primera pendiente del próximo. */
+  function describeNextSet(exercise: DayExercise, sets: DraftSet[]) {
+    const pending = sets.findIndex((set) => !isValidSet(toLoggedSet(set, exercise)));
+
+    if (pending !== -1) {
+      return describeRestNext({ exerciseName: exercise.exercise.name, setNumber: pending + 1, setCount: exercise.series });
+    }
+
+    const followingId = nextPendingExercise(props.exercises, drafts, exercise.routineItemId)?.routineItemId;
+    const following = props.exercises.find((candidate) => candidate.routineItemId === followingId);
+
+    return following
+      ? describeRestNext({
+          exerciseName: following.exercise.name,
+          setNumber: currentSetIndex(drafts[following.routineItemId], following) + 1,
+          setCount: following.series,
+        })
+      : null;
   }
 
   async function handleFinish() {
@@ -814,8 +847,8 @@ function buildInitialState(props: DayWorkoutClientProps, restoreQueue: boolean) 
 }
 
 /** El descanso se cuenta contra una hora de fin: sigue siendo correcto aunque la pantalla se bloquee. */
-function createRestTimer(seconds: number): RestTimer {
+function createRestTimer(seconds: number, next: string | null): RestTimer {
   const now = Date.now();
 
-  return { endsAt: now + seconds * 1000, now, totalSeconds: seconds };
+  return { endsAt: now + seconds * 1000, now, totalSeconds: seconds, next };
 }

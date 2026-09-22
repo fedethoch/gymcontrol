@@ -485,6 +485,12 @@ Dias de entreno (2026-09-21, `supabase/migrations/20260921_saved_routines_traini
 - se escribe al activar una rutina (catalogo y Mis rutinas) y al editar los dias desde `/rutinas`; las policies owner-only de `saved_routines` y el grant de update a `authenticated` ya la cubren
 - semantica en `DESIGN.md` §12.3 (dia fijo)
 
+Avisos push (2026-09-21, `supabase/migrations/20260921_push_notifications.sql`):
+
+- 4 tablas nuevas (`push_subscriptions`, `notification_preferences`, `push_deliveries`, `rest_push_jobs`) y 2 funciones solo para service role; detalle en la seccion "Avisos push"
+- migracion expand: el codigo anterior no las lee
+- RLS verificada con dos usuarios dentro de una transaccion revertida: cada uno ve y edita solo lo suyo; `push_deliveries`, `rest_push_jobs` y las funciones dan 42501 para `authenticated`
+
 Bootstrap admin minimo:
 
 - debe existir al menos un usuario verificable con `type_rol = admin` antes de validar G5, G5.5, G6 o G7
@@ -858,3 +864,48 @@ Decision RE-D2 del rediseño de `/recetas` (`DESIGN.md` §18): las imagenes de r
 - no hizo falta expand: la columna era nullable sin default y el unico que la escribia era `save_recipe`
 - los 25 objetos (5,9 MB) y el bucket `recipe-images` se borraron el 2026-09-16 por la Storage API con service role (`list` + `remove` + `deleteBucket`), igual que `food-images`
 - despues del contract, un rollback de Vercel a un deploy anterior rompe `/recetas`, `/nutricion/registro` y `/admin/recetas` (leen la columna)
+
+## Avisos push (2026-09-21)
+
+Avisos al celu (Web Push con VAPID): "Hoy toca entrenar", uno por comida, resumen semanal y fin del descanso. Reglas de producto en `DESIGN.md` §6.4; codigo en `app/lib/notifications.ts` (puro) y `app/lib/push/` (server-only). Horas en hora argentina (`APP_TIME_ZONE`), igual que `log_date` y `training_date`.
+
+| Migracion | Cuando | Que hace |
+| --- | --- | --- |
+| `20260921_push_notifications` | aplicada 2026-09-21, antes del deploy | expand: las 4 tablas, RLS, `claim_due_rest_pushes` y `record_rest_push_delta` |
+| `20260921_push_cron` | se aplica despues del deploy que agrega `/api/push/cron` (antes, el cron llamaria a una ruta que no existe) | `pg_cron` + `pg_net`, funciones `private.push_cron_post`, `private.push_rest_tick`, `private.push_maintenance` y los jobs de abajo |
+
+Cron (`pg_cron` llama a la app con `pg_net`; URL y secreto salen de Vault: `push_cron_base_url`, `push_cron_secret`, creados por SQL fuera del repo):
+
+| Job | Cada | Que hace |
+| --- | --- | --- |
+| `push-rest-tick` | 5 s | si hay un descanso que vence en <= 12 s y no esta reclamado, `POST /api/push/cron?task=rest` |
+| `push-reminders-tick` | 5 min | `POST /api/push/cron?task=reminders` (recordatorios cuya hora llego en los ultimos 30 min) |
+| `push-maintenance` | diario 04:23 ART | borra `cron.job_run_details` de mas de 2 dias y `push_deliveries` de mas de 60 |
+
+### `push_subscriptions`
+
+- un dispositivo suscripto: `endpoint` unico (https, host del push service en allowlist del codigo), `p256dh`, `auth`, `origin` (con el que se arman los links del aviso), `user_agent`, `last_success_at`, `last_test_at`
+- `user_id uuid not null references auth.users(id) on delete cascade`
+- RLS: owner-only select y delete; sin insert/update para `authenticated`. El alta la hace `POST /api/push/subscription` con service role despues de validar la sesion: si el mismo celu se suscribe con otra cuenta, el `endpoint` se reasigna
+- se borra al cerrar sesion (ese dispositivo) y cuando el push service responde 404/410
+
+### `notification_preferences`
+
+- una fila por usuario (`user_id` primary key); sin fila = valores por defecto
+- por aviso: `*_enabled` + `*_time` (`time`, hora argentina): `training` 09:00, `meal_desayuno` 10:00, `meal_almuerzo` 14:30, `meal_merienda` 18:30, `meal_cena` 22:30; `weekly_enabled` + `weekly_iso_day` (1 = lunes … 7 = domingo, default 7) + `weekly_time` 20:00; `rest_end_enabled`
+- RLS: owner-only select, insert y update
+
+### `push_deliveries`
+
+- un recordatorio por `(user_id, kind, local_date)`: `kind` en `training`, `meal_desayuno`, `meal_almuerzo`, `meal_merienda`, `meal_cena`, `weekly`
+- `status`: `sending` → `sent` / `failed`, o `skipped` con el motivo en `detail` (ej. descanso, comida ya registrada)
+- el insert `on conflict do nothing` es el reclamo idempotente del cron (tick cada 5 min con ventana de 30 min)
+- solo service role (RLS sin policies)
+
+### `rest_push_jobs`
+
+- el aviso de fin del descanso pendiente: una fila por usuario (`user_id` primary key), `subscription_id` (solo el celu que arranco el descanso), `token uuid unique` (cambia en cada descanso), `send_at`, `payload jsonb` (<= 3 KB), `claimed_at`, `sent_at`, `cancelled_at`
+- `recent_deltas_ms integer[]`: ultimas 20 demoras medidas por el service worker (recibido − fin del timer, reloj del celu)
+- `claim_due_rest_pushes(lookahead_ms)` reclama con `for update skip locked` las filas que vencen en la ventana; un reclamo colgado se puede retomar a los 10 s. El envio marca `sent_at` con el `token` antes de mandar (a lo sumo una vez)
+- `record_rest_push_delta(token, delta_ms)` agrega una medicion solo si el aviso ya salio
+- solo service role (RLS sin policies; las dos funciones tienen `execute` solo para `service_role`)

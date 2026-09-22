@@ -256,6 +256,27 @@ Superficie (pedido explícito del usuario, 2026-09-19): la barra es **opaca** `#
 - **Reconexión**: feedback breve (toast `--success` lime) al recuperar conexión.
 - Ningún estado offline/instalación debe romper el app-shell ni empujar la bottom nav.
 
+### 6.4 Notificaciones push
+
+Avisos al celu con Web Push (2026-09-21, mock https://claude.ai/artifact/LCK3nE4UdpzV7tbQ1xtcib). Qué y cuándo: `app/lib/notifications.ts` (puro, tests en `tests/unit/`); envío: `app/lib/push/`; mostrar y abrir: `public/sw.js`; navegador: `app/lib/push-client.ts`; datos: `docs/DATABASE.md` ("Avisos push"). Se configuran en S7 (§15.2).
+
+| Aviso | Por defecto | Sale solo si… | Abre |
+|---|---|---|---|
+| Hoy toca entrenar | 09:00 | el hero quedaría en `ready` con un día planificado hoy (§10.2) | el día del entreno |
+| Comida (una por comida) | desayuno 10:00 · almuerzo 14:30 · merienda 18:30 · cena 22:30 | esa comida sigue sin ítems hoy y hay perfil de nutrición | el "+" de esa comida en el registro |
+| Resumen semanal | domingo 20:00 | hay rutina activa o perfil de nutrición. Cubre los últimos 7 días: entrenos, días registrados y días en objetivo (la regla del registro) | Inicio |
+| Fin del descanso | prendido | termina el timer de `/rutinas/dia` (§11.3); solo al celu que lo arrancó | el entreno |
+
+Reglas:
+
+- El permiso se pide **solo** con el tap en "Activar notificaciones"; nunca al cargar una página. Al activar, todos los avisos arrancan prendidos.
+- La hora es la argentina. El aviso sale dentro de los 30 min siguientes a su hora (el cron corre cada 5 min) y una sola vez por día.
+- iPhone: los avisos existen solo con la app instalada en la pantalla de inicio (iOS 16.4+). En Safari, S7 muestra cómo instalarla. iOS no reemplaza ni borra avisos ya mostrados (ignora `tag`): por eso no hay aviso fijo mientras corre el descanso.
+- El service worker muestra una notificación por cada push, aunque el contenido venga roto (iOS revoca la suscripción si no).
+- Los links de un aviso llevan `?origen=aviso`: `PwaRuntime` no los manda a Inicio al abrir la app en frío y borra la marca de la URL.
+- Copy: título ≤30 caracteres, cuerpo ≤90, voseo, sin emojis. "Hoy toca entrenar" / "Día 2 de 4 · Pecho & Tríceps"; "¿Qué almorzaste?" / "Registrá el almuerzo para no perder el hilo del día."
+- Cerrar sesión borra la suscripción de ese celu: un celu compartido no recibe avisos de la cuenta anterior.
+
 ---
 
 ## 7. Accesibilidad (WCAG 2.2 AA — piso)
@@ -313,7 +334,7 @@ Jerarquía de escala fuerte: un solo elemento Display XXL por pantalla, títulos
 
 | Zona | Contenido |
 |---|---|
-| Z1 Saludo | Avatar (link a `/configuracion`), "Hola, {nombre}" (o "Bienvenido a GymControl"), campana y chip de racha (solo si racha > 0). Racha = semanas seguidas cumpliendo los días del plan activo |
+| Z1 Saludo | Avatar (link a `/configuracion`), "Hola, {nombre}" (o "Bienvenido a GymControl"), campana (abre Configuración → Notificaciones, §6.4) y chip de racha (solo si racha > 0). Racha = semanas seguidas cumpliendo los días del plan activo |
 | Z2 Semana | 7 círculos de 38px L–D: emerald con check = entreno que cuenta (terminado o de un día anterior), borde claro = hoy. Con días elegidos (§12.3): borde gris = día de entreno, punteado = quedó sin hacer, sin borde = descanso; cada día es una pestaña de 44px que muestra ese día en el hero (hacer el lunes un miércoles) y el elegido va relleno `--foreground`; tocar hoy vuelve. Sin días elegidos no se toca |
 | Z3 Hero "Hoy toca" | Foto grayscale, radio 28px, alto mínimo `clamp(380px, 52svh, 470px)`, título Display XXL (máx. 2 grupos musculares), meta en una línea, CTA 56px + botón de lista que abre un bottom sheet con los ejercicios |
 | Z4 Nutrición | Metric L (kcal restantes), 3 barras de macros, filas Desayuno/Almuerzo/Merienda/Cena (Snack solo si hay) con "+" de 44px → `/nutricion/registro?tipo=…` |
@@ -384,7 +405,7 @@ Reglas: **un solo CTA emerald** por pantalla; "Terminar entrenamiento" vive neut
 | Placeholder | Sugerencia de hoy o, si no hay, la serie anterior o el mínimo del objetivo. Marcar con campos vacíos completa con el placeholder |
 | Anterior | Formato compacto en mono (`40×10`, `+10×8`, `45s`), etiqueta accesible completa |
 | Marcas por día | Anterior, sugerencia, placeholder e Historial salen solo de entrenos del mismo día de la rutina o de sus copias exactas: mismos ejercicios en el mismo orden, con las mismas series, reps, RIR y descanso (`sameWorkoutDayIds` en `app/lib/day-workout.ts`). El mismo ejercicio en otro día u otra rutina no aporta marcas (2026-09-21) |
-| Descanso | Se cuenta contra una hora de fin: sigue siendo correcto con la pantalla bloqueada |
+| Descanso | Se cuenta contra una hora de fin: sigue siendo correcto con la pantalla bloqueada. Con avisos activados (§6.4), al terminar llega un push "Descanso terminado" / "Sigue: Press banca · serie 3 de 4" aunque el celu esté bloqueado, solo al celu del entreno (`app/components/workout/use-rest-push.ts`, lógica en `app/lib/rest-push.ts`). +15 s lo reprograma; Saltar, terminar, salir o no tener otra serie lo cancelan. En Android con la app a la vista se cancela 1,5 s antes del fin (vibra la app); en iPhone llega siempre, porque la app no puede vibrar. El server calcula la hora con el fin del celu (o con lo que faltaba, si los relojes difieren más de 2 s) y el cron de Supabase lo manda cada 5 s |
 | Técnica e Historial | Un solo bottom sheet del ejercicio con pestañas (§11.4). El desktop conserva el sheet lateral de técnica y el bottom sheet de historial |
 | Desktop | Card colapsable por ejercicio con la tabla `Serie · Anterior · kg · reps · ✓` (inputs de 44px y 16px, sin zoom iOS) |
 
@@ -549,7 +570,8 @@ Ver y ajustar el objetivo diario. Mobile se rediseñó con la dirección "Tu pla
 | Z2 Plan | Micro label "Tu objetivo diario", kcal en Display XXL, ecuación `mantenimiento − ajuste = objetivo` en 3 celdas entre líneas (`border-y`), macros en Metric M con el punto de `MACRO_COLORS` y barra de reparto de 6px con el % en mono (dato, no acento) |
 | Z2b Tu proyección | Solo con Déficit o Ganancia (§15.4): H2 + chip de ritmo, rótulo de la semana con el selector Peso · Grasa (`SegmentedControl` de 160px), peso o % de grasa de la semana elegida en Metric L con el delta y el rango, horizonte 4 · 12 · 24 sem (`SegmentedControl`), gráfico y fila de 3 stats (Peso: Hoy · kg por semana · % de tu peso. Grasa: Hoy % · kg de grasa · kg de magra, con el cambio hasta la semana elegida) |
 | Z3 Cómo lo calculamos | H2 + filas de 72px que abren su sheet: Tu cuerpo (miniatura de la referencia de grasa y `28 a · 178 cm · 78 kg · 22%`), Actividad (medidor de 5 barras en tinta neutra) y Objetivo (`Déficit · Moderado`, tipo de dieta en el detalle y ajuste `−20%` en mono). Si el déficit tocó el metabolismo basal, nota en `--warning`. Caption "Estimación nutricional…" |
-| Z4 Cuenta | H2 + filas de 52px: Nombre (sheet), Email (solo lectura), Cerrar sesión (POST `/auth/signout`) y Borrar cuenta (rose, sheet) |
+| Z3b Notificaciones | H2 + fila de 52px "Avisos" con campana, el estado a la derecha (Activados · Apagados · Instalá la app · Bloqueados · No disponibles) y chevron → S7. Se muestra también sin perfil (§6.4) |
+| Z4 Cuenta | H2 + filas de 52px: Nombre (sheet), Email (solo lectura), Cerrar sesión (POST `/auth/signout`; antes borra la suscripción a avisos de ese celu) y Borrar cuenta (rose, sheet) |
 
 ### 15.2 Sheets
 
@@ -565,6 +587,7 @@ Bottom sheets (vaul) con título a la izquierda y "Listo" a la derecha. Guardan 
 | S4b Avanzado | Mantenimiento real (`NumberStepper` de a 10 kcal; vacío = el calculado, "Usar el calculado"), Peso objetivo (de a 0,5 kg, solo Déficit/Ganancia; "Quitar") y "Calorías y macros: Calculados / Los fijo yo". En manual: kcal + 3 macros (precargados con lo calculado) y la suma de los macros (lime si coincide ±10%, ámbar si no) |
 | S5 Borrar cuenta | Escribir "BORRAR" habilita el botón rose; Cancelar neutro. Desktop sigue con dialog |
 | S6 Nombre | Input de 40 caracteres con contador; guarda al cerrar o con Enter |
+| S7 Notificaciones | Arriba, el estado del dispositivo: "Instalá la app para recibir avisos" (iPhone en Safari: 3 pasos, y que adentro hay que iniciar sesión otra vez), "Enterate sin abrir la app" + lista de 4 avisos + "Activar notificaciones" (único CTA emerald; pide el permiso), "Los avisos están bloqueados" (dónde activarlos en iPhone y Android) o, activadas, tarjeta "Activadas en este iPhone/celu" con "Probar notificación" (llega a los 5 s, para ver cómo aparece con el celu bloqueado) y "Desactivar". Activadas, debajo: Entrenamiento (Hoy toca entrenar + hora, Fin del descanso), Comidas (4 filas con hora y switch; "Solo te avisamos si esa comida sigue sin registrar.") y Resumen semanal (switch, chips Lu–Do como §12.3 y fila Hora). La hora es un `<input type="time">` nativo en una pastilla mono de 36px (apagado: atenuada); switch de 44×26 (`--accent` prendido, `--border-strong` apagado) con área de 48×44. Guarda solo (800 ms y al cerrar). Pie: versión de avisos (service worker). `/configuracion?panel=notificaciones` la abre (campanas de Inicio y del header) y al cerrar se limpia la URL |
 
 ### 15.3 Estados
 

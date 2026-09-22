@@ -1,5 +1,7 @@
 import "server-only";
 
+import type { SupabaseClient } from "@supabase/supabase-js";
+
 import { addDaysToDateKey, getTodayDateKey, getWeekStartDateKey } from "@/app/lib/local-date";
 import { STRENGTH_RANGE_COLORS } from "@/app/lib/strength-colors";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
@@ -150,12 +152,15 @@ export async function getOpenSessionForDay(args: {
   return data ? mapOpenSession(data as unknown as OpenSessionRow) : null;
 }
 
-/** Entreno sin terminar de hoy de la rutina, en cualquier día (hero del home). */
-export async function getOpenSessionForRoutine(args: {
-  userId: string;
-  savedRoutineId: string;
-}): Promise<OpenWorkoutSession | null> {
-  const supabase = await createSupabaseServerClient();
+/** Entreno sin terminar de hoy de la rutina, en cualquier día (hero del home). `client`: service role en el cron. */
+export async function getOpenSessionForRoutine(
+  args: {
+    userId: string;
+    savedRoutineId: string;
+  },
+  client?: SupabaseClient,
+): Promise<OpenWorkoutSession | null> {
+  const supabase = client ?? (await createSupabaseServerClient());
   const { data, error } = await supabase
     .from("workout_sessions")
     .select(`id, routine_day_id, training_date, workout_session_items (${ITEM_SELECT})`)
@@ -177,16 +182,19 @@ export async function getOpenSessionForRoutine(args: {
 /**
  * Resumen de entrenos que cuentan. Un entreno cuenta si tiene al menos una serie válida
  * y ya se terminó o es de un día anterior: no hace falta tocar "Terminar", pero un entreno
- * a medio hacer hoy todavía no suma.
+ * a medio hacer hoy todavía no suma. `client`: service role en el cron de avisos.
  */
-export async function getTrainingOverview(args: {
-  userId: string;
-  savedRoutineId: string | null;
-  plannedDays: number;
-}): Promise<TrainingOverview> {
+export async function getTrainingOverview(
+  args: {
+    userId: string;
+    savedRoutineId: string | null;
+    plannedDays: number;
+  },
+  client?: SupabaseClient,
+): Promise<TrainingOverview> {
   const { today, weekStart } = getCurrentWeekRange();
   const windowStart = addDaysToDateKey(weekStart, -7 * (STREAK_WEEKS - 1));
-  const supabase = await createSupabaseServerClient();
+  const supabase = client ?? (await createSupabaseServerClient());
   const { data, error } = await supabase
     .from("workout_sessions")
     .select("id, saved_routine_id, routine_day_id, training_date, status, workout_session_items (sets)")

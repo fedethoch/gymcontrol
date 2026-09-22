@@ -1,10 +1,18 @@
 import { ConfiguracionClient } from "@/app/configuracion/ConfiguracionClient";
 import { requireUser } from "@/app/lib/auth";
+import { getNotificationPreferences } from "@/app/lib/notification-preferences";
 import { getNutritionProfile } from "@/app/lib/nutrition-profile";
 
-export default async function ConfiguracionPage() {
-  const auth = await requireUser();
-  const profile = await getNutritionProfile(auth.user.id);
+type ConfiguracionPageProps = {
+  searchParams: Promise<{ panel?: string | string[] }>;
+};
+
+export default async function ConfiguracionPage({ searchParams }: ConfiguracionPageProps) {
+  const [auth, { panel }] = await Promise.all([requireUser(), searchParams]);
+  const [profile, notificationPrefs] = await Promise.all([
+    getNutritionProfile(auth.user.id),
+    getNotificationPreferences(auth.user.id),
+  ]);
 
   return (
     <section className="page-frame configuracion-frame content-start bg-[var(--background)] lg:bg-[radial-gradient(circle_at_18%_0%,rgba(124,58,237,0.15),transparent_31%),linear-gradient(180deg,#070a12_0%,#090d16_52%,#05070b_100%)]">
@@ -25,6 +33,8 @@ export default async function ConfiguracionPage() {
         initialProfile={profile}
         initialDisplayName={auth.profile.displayName}
         email={auth.user.email}
+        initialNotificationPrefs={notificationPrefs}
+        openNotifications={panel === "notificaciones"}
       />
     </section>
   );

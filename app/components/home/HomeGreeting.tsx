@@ -34,13 +34,13 @@ export function HomeGreeting({ displayName, streak }: { displayName: string | nu
       </div>
 
       <div className="flex shrink-0 items-center gap-2">
-        <button
-          type="button"
+        <Link
+          href="/configuracion?panel=notificaciones"
           aria-label="Notificaciones"
           className="pressable grid size-11 place-items-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
         >
           <Bell aria-hidden="true" className="size-[18px]" />
-        </button>
+        </Link>
         {streak > 0 ? (
           <span className="inline-flex h-11 items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card)] px-3.5 font-display text-sm font-bold tabular-nums text-[var(--foreground)]">
             <Flame aria-hidden="true" className="size-4 text-[#ff9a75]" />

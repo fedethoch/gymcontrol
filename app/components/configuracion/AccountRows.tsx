@@ -1,5 +1,6 @@
 import { ChevronRight, LogOut, TriangleAlert } from "lucide-react";
 
+import { SignOutForm } from "@/app/components/configuracion/SignOutForm";
 import { HomeSectionHeader } from "@/app/components/home/HomeSectionHeader";
 
 const ROW =
@@ -39,12 +40,12 @@ export function AccountRows({
           </li>
         ) : null}
         <li>
-          <form action="/auth/signout" method="post">
+          <SignOutForm>
             <button type="submit" className={ROW}>
               <LogOut aria-hidden="true" className="size-[18px] shrink-0 text-[var(--foreground-muted)]" />
               <span className="flex-1 text-[15px] font-medium text-[var(--foreground)]">Cerrar sesión</span>
             </button>
-          </form>
+          </SignOutForm>
         </li>
         <li>
           <button type="button" onClick={onDeleteAccount} className={ROW}>

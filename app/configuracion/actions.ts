@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { requireUser } from "@/app/lib/auth";
+import { saveNotificationPreferences } from "@/app/lib/notification-preferences";
+import type { NotificationPreferences } from "@/app/lib/notifications";
 import {
   CUSTOM_FAT_PCT_RANGE,
   CUSTOM_PROTEIN_RANGE,
@@ -87,6 +89,41 @@ export async function saveNutritionProfileAction(
   revalidatePath("/");
 
   return profile.plan;
+}
+
+const reminderTimeSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Revisá las horas de los avisos.");
+const reminderSchema = z.object({ enabled: z.boolean(), time: reminderTimeSchema });
+
+const notificationPreferencesSchema = z.object({
+  training: reminderSchema,
+  meals: z.object({
+    desayuno: reminderSchema,
+    almuerzo: reminderSchema,
+    merienda: reminderSchema,
+    cena: reminderSchema,
+  }),
+  weekly: reminderSchema.extend({ isoDay: z.number().int().min(1).max(7) }),
+  restEnd: z.boolean(),
+});
+
+/** S7 Notificaciones (DESIGN.md §15.2): guardado automático de qué avisos y a qué hora. */
+export async function saveNotificationPreferencesAction(
+  prefs: NotificationPreferences,
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  const auth = await requireUser();
+  const parsed = notificationPreferencesSchema.safeParse(prefs);
+
+  if (!parsed.success) {
+    return { ok: false, message: parsed.error.issues[0]?.message ?? "Revisá los avisos." };
+  }
+
+  try {
+    await saveNotificationPreferences(auth.user.id, parsed.data);
+  } catch (error) {
+    return { ok: false, message: error instanceof Error ? error.message : "No se pudieron guardar los avisos." };
+  }
+
+  return { ok: true };
 }
 
 export async function saveProfileNameAction(

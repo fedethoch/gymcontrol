@@ -2,6 +2,7 @@ import type { MealGroup } from "@/app/lib/meal-logs";
 import { buildDayMealRows } from "@/app/lib/meal-order";
 import { MEAL_TYPE_LABELS, type MealType } from "@/app/lib/nutrition-types";
 import type { RoutineItem } from "@/app/lib/routines";
+import { planWeek, resolveSchedule, scheduleNeedsChoice, summarizeWeek } from "@/app/lib/training-schedule";
 import { isValidSet } from "@/app/lib/workout-progression";
 import type { OpenWorkoutSession } from "@/app/lib/workout-tracking";
 
@@ -48,6 +49,59 @@ export function resolveHeroState(args: {
   if (args.needsSchedule) return "needs_schedule";
   if (args.restDay) return "rest";
   return "ready";
+}
+
+/**
+ * Qué toca hoy con la rutina activa (DESIGN.md §10.2): el estado del hero y los días que lo explican.
+ * La usan el home y el aviso "Hoy toca entrenar" (§6.4), que sale solo con `ready` y un día planificado hoy.
+ */
+export function resolveTodayTraining<D extends { id: string; dayOrder: number }>(args: {
+  routine: { trainingWeekdays: readonly number[] | null; days: readonly D[] } | null;
+  completedRoutineDayIds: readonly string[];
+  trainedToday: boolean;
+  /** Día de la rutina con un entreno sin terminar de hoy. */
+  openRoutineDayId: string | null;
+  todayKey: string;
+}) {
+  const { routine } = args;
+  const completedDayIds = new Set(args.completedRoutineDayIds);
+  const nextPendingDay = routine?.days.find((day) => !completedDayIds.has(day.id)) ?? null;
+  // Un entreno en curso manda sobre el próximo día pendiente.
+  const openDay = args.openRoutineDayId
+    ? (routine?.days.find((day) => day.id === args.openRoutineDayId) ?? null)
+    : null;
+  // Con días elegidos, hoy toca el día fijo de hoy (o ninguno).
+  const dayCount = routine?.days.length ?? 0;
+  const trainingWeekdays = routine ? resolveSchedule(routine.trainingWeekdays, dayCount) : null;
+  const needsSchedule = Boolean(routine) && !trainingWeekdays && scheduleNeedsChoice(dayCount);
+  const weekPlan =
+    routine && trainingWeekdays
+      ? planWeek({
+          weekdays: trainingWeekdays,
+          days: routine.days,
+          completedDayIds: args.completedRoutineDayIds,
+          todayKey: args.todayKey,
+        })
+      : null;
+  const todayPlanned = weekPlan ? summarizeWeek(weekPlan).today : null;
+  const todayPlannedDay = todayPlanned ? (routine?.days.find((day) => day.id === todayPlanned.id) ?? null) : null;
+
+  return {
+    heroState: resolveHeroState({
+      hasActiveRoutine: Boolean(routine),
+      hasPendingDay: Boolean(nextPendingDay),
+      trainedToday: args.trainedToday,
+      hasOpenSession: Boolean(openDay),
+      needsSchedule,
+      restDay: weekPlan !== null && todayPlanned === null,
+    }),
+    needsSchedule,
+    weekPlan,
+    nextPendingDay,
+    openDay,
+    todayPlannedDay,
+    heroDay: openDay ?? todayPlannedDay ?? nextPendingDay,
+  };
 }
 
 export type SessionProgress = {

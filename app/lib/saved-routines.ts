@@ -1,5 +1,7 @@
 import "server-only";
 
+import type { SupabaseClient } from "@supabase/supabase-js";
+
 import type { RoutineDay, RoutineExerciseRef } from "@/app/lib/routines";
 import type { RoutineDifficulty, RoutineObjective } from "@/app/lib/routine-metadata";
 import { dayMuscleGroups } from "@/app/lib/routine-week";
@@ -221,8 +223,12 @@ const SAVED_ROUTINE_DETAIL_SELECT = `
   )
 `;
 
-export async function listSavedRoutinesForUser(userId: string): Promise<SavedRoutineListItem[]> {
-  const supabase = await createSupabaseServerClient();
+/** `client`: service role en el cron de avisos (sin sesión). */
+export async function listSavedRoutinesForUser(
+  userId: string,
+  client?: SupabaseClient,
+): Promise<SavedRoutineListItem[]> {
+  const supabase = client ?? (await createSupabaseServerClient());
   const { data, error } = await supabase
     .from("saved_routines")
     .select(SAVED_ROUTINE_LIST_SELECT)
@@ -237,11 +243,14 @@ export async function listSavedRoutinesForUser(userId: string): Promise<SavedRou
   return ((data ?? []) as unknown as SavedRoutineListRow[]).map(mapSavedRoutineListItem);
 }
 
-export async function getSavedRoutineByIdForUser(args: {
-  savedRoutineId: string;
-  userId: string;
-}): Promise<SavedRoutineDetail | null> {
-  const supabase = await createSupabaseServerClient();
+export async function getSavedRoutineByIdForUser(
+  args: {
+    savedRoutineId: string;
+    userId: string;
+  },
+  client?: SupabaseClient,
+): Promise<SavedRoutineDetail | null> {
+  const supabase = client ?? (await createSupabaseServerClient());
   const { data, error } = await supabase
     .from("saved_routines")
     .select(SAVED_ROUTINE_DETAIL_SELECT)

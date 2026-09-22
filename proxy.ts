@@ -8,6 +8,7 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    // api/push/cron: lo llama el cron de Supabase sin sesión, no hay cookies que refrescar.
+    "/((?!_next/static|_next/image|favicon.ico|api/push/cron|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

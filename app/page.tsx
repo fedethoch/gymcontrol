@@ -39,7 +39,7 @@ import {
   formatDayGroups,
   formatMuscleGroup,
   getSessionProgress,
-  resolveHeroState,
+  resolveTodayTraining,
 } from "@/app/lib/home-dashboard";
 import { buildHeroView, buildHomeHeroInputs, type HeroDay, type HeroView } from "@/app/lib/home-hero";
 import {
@@ -57,14 +57,7 @@ import {
   getSavedRoutineByIdForUser,
   listSavedRoutinesForUser,
 } from "@/app/lib/saved-routines";
-import {
-  buildWeekStrip,
-  planWeek,
-  resolveSchedule,
-  scheduleNeedsChoice,
-  suggestWeekdays,
-  summarizeWeek,
-} from "@/app/lib/training-schedule";
+import { buildWeekStrip, suggestWeekdays } from "@/app/lib/training-schedule";
 import { countDatesThisWeek } from "@/app/lib/week";
 import { estimateDayMinutes, isValidSet } from "@/app/lib/workout-progression";
 import {
@@ -119,30 +112,15 @@ export default async function Home() {
 
   const completedDayIds = new Set(trainingOverview.completedRoutineDayIds);
   const completedTrainingDates = new Set(trainingOverview.completedDates);
-  const nextPendingDay =
-    activeRoutine?.days.find((day) => !completedDayIds.has(day.id)) ?? null;
-  // Un entreno en curso manda sobre el próximo día pendiente.
-  const openDay = openSession
-    ? (activeRoutine?.days.find((day) => day.id === openSession.routineDayId) ?? null)
-    : null;
-  // Días de entreno (DESIGN.md §10.2): con días elegidos, hoy toca el día fijo de hoy (o ninguno).
   const routineDayCount = activeRoutine?.days.length ?? 0;
-  const trainingWeekdays = activeRoutine ? resolveSchedule(activeRoutine.trainingWeekdays, routineDayCount) : null;
-  const needsSchedule = Boolean(activeRoutine) && !trainingWeekdays && scheduleNeedsChoice(routineDayCount);
-  const weekPlan =
-    activeRoutine && trainingWeekdays
-      ? planWeek({
-          weekdays: trainingWeekdays,
-          days: activeRoutine.days,
-          completedDayIds: trainingOverview.completedRoutineDayIds,
-          todayKey: logDate,
-        })
-      : null;
-  const todayPlanned = weekPlan ? summarizeWeek(weekPlan).today : null;
-  const todayPlannedDay = todayPlanned
-    ? (activeRoutine?.days.find((day) => day.id === todayPlanned.id) ?? null)
-    : null;
-  const heroDay = openDay ?? todayPlannedDay ?? nextPendingDay;
+  // Días de entreno (DESIGN.md §10.2): misma regla que el aviso "Hoy toca entrenar" (§6.4).
+  const { heroState, needsSchedule, weekPlan, nextPendingDay, openDay, heroDay } = resolveTodayTraining({
+    routine: activeRoutine,
+    completedRoutineDayIds: trainingOverview.completedRoutineDayIds,
+    trainedToday: trainingOverview.trainedToday,
+    openRoutineDayId: openSession?.routineDayId ?? null,
+    todayKey: logDate,
+  });
 
   const primaryHref =
     activeRoutine && heroDay
@@ -194,14 +172,6 @@ export default async function Home() {
   const weeklyNutritionCount = countDatesInWindow(nutritionDatesSet, 7, logDate);
 
   // ── Home mobile (DESIGN.md §10) ──
-  const heroState = resolveHeroState({
-    hasActiveRoutine: Boolean(activeRoutine),
-    hasPendingDay: Boolean(nextPendingDay),
-    trainedToday: trainingOverview.trainedToday,
-    hasOpenSession: Boolean(openDay),
-    needsSchedule,
-    restDay: weekPlan !== null && todayPlanned === null,
-  });
   const routineDays = activeRoutine?.days ?? [];
   const dayHref = (dayOrder: number) => `/rutinas/dia?savedRoutineId=${activeRoutine?.id}&day=${dayOrder}`;
   const heroInputs = buildHomeHeroInputs({
