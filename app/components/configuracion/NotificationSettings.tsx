@@ -46,7 +46,7 @@ export function NotificationSettings({
         <Preferences form={form} hasNutritionProfile={hasNutritionProfile} />
       ) : null}
       {device.swVersion ? (
-        <p className="mt-6 text-xs text-[var(--foreground-subtle)]">Versión de avisos {device.swVersion}</p>
+        <p className="mt-6 text-xs text-[var(--foreground-muted)]">Versión de avisos {device.swVersion}</p>
       ) : null}
     </div>
   );
@@ -74,7 +74,8 @@ function DeviceBlock({ device }: { device: PushDevice }) {
               </p>
             </div>
           </div>
-          <div className="flex gap-2">
+          {/* Por debajo de 375px los dos no entran en una fila: van uno debajo del otro. */}
+          <div className="flex gap-2 max-[374px]:flex-col">
             <Button
               type="button"
               variant="outline"
@@ -333,7 +334,22 @@ function ReminderRow({
   );
 }
 
-/** `<input type="time">` nativo (rueda de iOS) en una pastilla mono de 36px. */
+/** Con mouse el control invisible no abre su selector al hacer click: se pide. En táctil ya abre la rueda. */
+function openTimePicker(input: HTMLInputElement) {
+  if (!window.matchMedia("(pointer: fine)").matches) return;
+
+  try {
+    input.showPicker?.();
+  } catch {
+    // Ya abierto, o el navegador no lo permite: queda el teclado.
+  }
+}
+
+/**
+ * Hora del aviso. La pastilla muestra HH:MM (formato de la app, no el del celu: con reloj de 12 h iOS escribe
+ * "10:00 AM" y no entra) y se ajusta al texto. Encima, un `<input type="time">` invisible con área táctil de
+ * 44px abre la rueda del sistema.
+ */
 function TimeInput({
   label,
   value,
@@ -346,14 +362,26 @@ function TimeInput({
   onChange: (value: string) => void;
 }) {
   return (
-    <input
-      type="time"
-      aria-label={label}
-      value={value}
-      disabled={disabled}
-      data-vaul-no-drag=""
-      onChange={(event) => onChange(normalizeTime(event.target.value, value))}
-      className="h-9 w-[5.5rem] shrink-0 appearance-none rounded-[10px] border border-[var(--border)] bg-[var(--card)] px-2 text-center font-mono text-[15px] tabular-nums text-[var(--foreground)] outline-none focus-visible:shadow-[var(--focus-glow)] disabled:bg-transparent disabled:text-[var(--foreground-subtle)] [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-date-and-time-value]:text-center"
-    />
+    <label
+      className={cn(
+        "relative inline-flex h-9 shrink-0 items-center rounded-[10px] border border-[var(--border)] px-2.5 font-mono text-[15px] tabular-nums transition-colors focus-within:shadow-[var(--focus-glow)]",
+        disabled
+          ? "text-[var(--foreground-subtle)]"
+          : "bg-[var(--card)] text-[var(--foreground)] active:bg-[var(--card-alt)]",
+      )}
+    >
+      <span aria-hidden="true">{value}</span>
+      <input
+        type="time"
+        aria-label={label}
+        value={value}
+        disabled={disabled}
+        data-vaul-no-drag=""
+        onChange={(event) => onChange(normalizeTime(event.target.value, value))}
+        onClick={(event) => openTimePicker(event.currentTarget)}
+        // 34px de contenido (36 menos el borde) + 5px arriba y abajo = 44px táctiles.
+        className="absolute inset-x-0 -inset-y-[5px] cursor-pointer appearance-none opacity-0 disabled:cursor-default"
+      />
+    </label>
   );
 }

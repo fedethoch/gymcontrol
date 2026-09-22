@@ -872,7 +872,7 @@ Avisos al celu (Web Push con VAPID): "Hoy toca entrenar", uno por comida, resume
 | Migracion | Cuando | Que hace |
 | --- | --- | --- |
 | `20260921_push_notifications` | aplicada 2026-09-21, antes del deploy | expand: las 4 tablas, RLS, `claim_due_rest_pushes` y `record_rest_push_delta` |
-| `20260921_push_cron` | se aplica despues del deploy que agrega `/api/push/cron` (antes, el cron llamaria a una ruta que no existe) | `pg_cron` + `pg_net`, funciones `private.push_cron_post`, `private.push_rest_tick`, `private.push_maintenance` y los jobs de abajo |
+| `20260921_push_cron` | aplicada 2026-09-21, despues del deploy de `/api/push/cron` (`2a17d42`); antes, el cron llamaria a una ruta que no existe | `pg_cron` + `pg_net`, funciones `private.push_cron_post`, `private.push_rest_tick`, `private.push_maintenance` y los jobs de abajo. Verificado: `pg_net` → produccion responde 202 |
 
 Cron (`pg_cron` llama a la app con `pg_net`; URL y secreto salen de Vault: `push_cron_base_url`, `push_cron_secret`, creados por SQL fuera del repo):
 
