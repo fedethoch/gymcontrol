@@ -245,7 +245,7 @@ function Preferences({ form, hasNutritionProfile }: { form: NotificationPrefsFor
           <div className="flex min-w-0 flex-1 flex-col gap-0.5">
             <p className="text-[15px] font-medium text-[var(--foreground)]">Tus últimos 7 días</p>
             <p className="text-[13px] leading-snug text-[var(--foreground-muted)]">
-              Entrenos, días registrados y en objetivo
+              Cuántos entrenos hiciste en la semana
             </p>
           </div>
           <Switch

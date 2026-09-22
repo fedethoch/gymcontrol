@@ -161,19 +161,22 @@ export function dueReminders(
 
 export type PushMessage = { title: string; body: string };
 
-const MEAL_COPY: Record<MealReminderType, { title: string; noun: string }> = {
-  desayuno: { title: "¿Qué desayunaste?", noun: "el desayuno" },
-  almuerzo: { title: "¿Qué almorzaste?", noun: "el almuerzo" },
-  merienda: { title: "¿Qué merendaste?", noun: "la merienda" },
-  cena: { title: "¿Qué cenaste?", noun: "la cena" },
+const MEAL_TITLES: Record<MealReminderType, string> = {
+  desayuno: "¿Qué desayunaste?",
+  almuerzo: "¿Qué almorzaste?",
+  merienda: "¿Qué merendaste?",
+  cena: "¿Qué cenaste?",
 };
 
 export function mealReminderMessage(type: MealReminderType): PushMessage {
-  return { title: MEAL_COPY[type].title, body: `Registrá ${MEAL_COPY[type].noun} para no perder el hilo del día.` };
+  return { title: MEAL_TITLES[type], body: "" };
 }
 
-export function trainingReminderMessage(day: { dayOrder: number; dayCount: number; label: string }): PushMessage {
-  return { title: "Hoy toca entrenar", body: `Día ${day.dayOrder} de ${day.dayCount} · ${day.label}` };
+/** `label` viene de `formatDayGroups` ("Pecho & Tríceps") o es el nombre del día. */
+export function trainingReminderMessage(label: string): PushMessage {
+  const groups = label.split(" & ").map((part, index) => (index === 0 ? part : part.toLowerCase()));
+
+  return { title: `Hoy toca: ${groups.join(" y ")}`, body: "" };
 }
 
 export type WeeklySummary = {
@@ -182,21 +185,19 @@ export type WeeklySummary = {
   nutrition: { loggedDays: number; onTargetDays: number } | null;
 };
 
+/** Una línea: los entrenos; sin rutina, los días registrados. */
 export function weeklySummaryMessage(summary: WeeklySummary): PushMessage | null {
-  const parts: string[] = [];
+  let text: string | null = null;
 
   if (summary.training) {
     const { done, planned } = summary.training;
-    parts.push(planned ? `${done} de ${planned} entrenos` : `${done} ${done === 1 ? "entreno" : "entrenos"}`);
+    text = planned ? `${done} de ${planned} entrenos` : `${done} ${done === 1 ? "entreno" : "entrenos"}`;
+  } else if (summary.nutrition) {
+    const { loggedDays } = summary.nutrition;
+    text = `${loggedDays} ${loggedDays === 1 ? "día registrado" : "días registrados"}`;
   }
 
-  if (summary.nutrition) {
-    const { loggedDays, onTargetDays } = summary.nutrition;
-    parts.push(`${loggedDays} ${loggedDays === 1 ? "día registrado" : "días registrados"}`);
-    parts.push(`${onTargetDays} en objetivo`);
-  }
-
-  return parts.length > 0 ? { title: "Tus últimos 7 días", body: parts.join(" · ") } : null;
+  return text ? { title: `Tu semana: ${text}`, body: "" } : null;
 }
 
 export function restEndMessage(next: string | null): PushMessage {

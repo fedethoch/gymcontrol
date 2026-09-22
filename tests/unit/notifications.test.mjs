@@ -115,7 +115,7 @@ describe("mensajes", () => {
     const messages = [
       mealReminderMessage("desayuno"),
       mealReminderMessage("merienda"),
-      trainingReminderMessage({ dayOrder: 2, dayCount: 4, label: "Pecho & Tríceps" }),
+      trainingReminderMessage("Pecho & Tríceps"),
       restEndMessage("Sigue: Press banca · serie 3 de 4"),
       restEndMessage(null),
     ];
@@ -124,20 +124,23 @@ describe("mensajes", () => {
       assert.ok(message.title.length <= 30, message.title);
       assert.ok(message.body.length <= 90, message.body);
     }
-
-    assert.equal(mealReminderMessage("merienda").body, "Registrá la merienda para no perder el hilo del día.");
-    assert.equal(trainingReminderMessage({ dayOrder: 2, dayCount: 4, label: "Pecho & Tríceps" }).body, "Día 2 de 4 · Pecho & Tríceps");
   });
 
-  it("resumen semanal según lo que use cada uno", () => {
-    assert.equal(
-      weeklySummaryMessage({ training: { done: 3, planned: 4 }, nutrition: { loggedDays: 5, onTargetDays: 2 } })?.body,
-      "3 de 4 entrenos · 5 días registrados · 2 en objetivo",
+  it("comidas y entreno en una sola línea", () => {
+    assert.deepEqual(mealReminderMessage("merienda"), { title: "¿Qué merendaste?", body: "" });
+    assert.deepEqual(trainingReminderMessage("Pecho & Tríceps"), { title: "Hoy toca: Pecho y tríceps", body: "" });
+    assert.deepEqual(trainingReminderMessage("Día A"), { title: "Hoy toca: Día A", body: "" });
+  });
+
+  it("resumen semanal en una línea: entrenos, o días registrados sin rutina", () => {
+    assert.deepEqual(
+      weeklySummaryMessage({ training: { done: 3, planned: 4 }, nutrition: { loggedDays: 5, onTargetDays: 2 } }),
+      { title: "Tu semana: 3 de 4 entrenos", body: "" },
     );
-    assert.equal(weeklySummaryMessage({ training: { done: 1, planned: null }, nutrition: null })?.body, "1 entreno");
+    assert.equal(weeklySummaryMessage({ training: { done: 1, planned: null }, nutrition: null })?.title, "Tu semana: 1 entreno");
     assert.equal(
-      weeklySummaryMessage({ training: null, nutrition: { loggedDays: 1, onTargetDays: 0 } })?.body,
-      "1 día registrado · 0 en objetivo",
+      weeklySummaryMessage({ training: null, nutrition: { loggedDays: 1, onTargetDays: 0 } })?.title,
+      "Tu semana: 1 día registrado",
     );
     assert.equal(weeklySummaryMessage({ training: null, nutrition: null }), null);
   });

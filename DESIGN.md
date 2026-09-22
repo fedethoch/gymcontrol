@@ -276,7 +276,7 @@ Reglas:
 - iPhone: los avisos existen solo con la app instalada en la pantalla de inicio (iOS 16.4+). En Safari, S7 muestra cómo instalarla. iOS no reemplaza ni borra avisos ya mostrados (ignora `tag`): por eso no hay aviso fijo mientras corre el descanso.
 - El service worker muestra una notificación por cada push, aunque el contenido venga roto (iOS revoca la suscripción si no).
 - Los links de un aviso llevan `?origen=aviso`: `PwaRuntime` no los manda a Inicio al abrir la app en frío y borra la marca de la URL.
-- Copy: título ≤30 caracteres, cuerpo ≤90, voseo, sin emojis. "Hoy toca entrenar" / "Día 2 de 4 · Pecho & Tríceps"; "¿Qué almorzaste?" / "Registrá el almuerzo para no perder el hilo del día."
+- Copy: título ≤30 caracteres, cuerpo ≤90, voseo, sin emojis. Recordatorios en una sola línea (solo título, 2026-09-22 a pedido del usuario): "¿Qué almorzaste?", "Hoy toca: Pecho y tríceps", "Tu semana: 3 de 4 entrenos" (sin rutina: "Tu semana: 5 días registrados"). Fin del descanso: "Descanso terminado" / lo que sigue. El "de GymControl" que agrega iOS es del sistema: no se puede sacar.
 - Cerrar sesión borra la suscripción de ese celu: un celu compartido no recibe avisos de la cuenta anterior.
 
 ---

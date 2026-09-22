@@ -98,11 +98,7 @@ async function evaluate(
 
     return {
       send: true,
-      message: trainingReminderMessage({
-        dayOrder: day.dayOrder,
-        dayCount: routine.days.length,
-        label: formatDayGroups(dayMuscleGroups(day.items), day.dayName),
-      }),
+      message: trainingReminderMessage(formatDayGroups(dayMuscleGroups(day.items), day.dayName)),
       path: `/rutinas/dia?savedRoutineId=${routine.id}&day=${day.dayOrder}`,
     };
   }
