@@ -107,16 +107,3 @@ export async function deletePushSubscriptionById(admin: SupabaseClient, id: stri
 export async function markPushSuccess(admin: SupabaseClient, id: string) {
   await admin.from("push_subscriptions").update({ last_success_at: new Date().toISOString() }).eq("id", id);
 }
-
-/** Tope de 1 aviso de prueba cada 10 s por dispositivo (update atómico). */
-export async function claimTestSlot(admin: SupabaseClient, subscriptionId: string) {
-  const threshold = new Date(Date.now() - 10_000).toISOString();
-  const { data, error } = await admin
-    .from("push_subscriptions")
-    .update({ last_test_at: new Date().toISOString() })
-    .eq("id", subscriptionId)
-    .or(`last_test_at.is.null,last_test_at.lt."${threshold}"`)
-    .select("id");
-
-  return !error && (data?.length ?? 0) > 0;
-}

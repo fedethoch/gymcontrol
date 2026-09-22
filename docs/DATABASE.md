@@ -491,6 +491,11 @@ Avisos push (2026-09-21, `supabase/migrations/20260921_push_notifications.sql`):
 - migracion expand: el codigo anterior no las lee
 - RLS verificada con dos usuarios dentro de una transaccion revertida: cada uno ve y edita solo lo suyo; `push_deliveries`, `rest_push_jobs` y las funciones dan 42501 para `authenticated`
 
+Avisos push: horas de las comidas y sin aviso de prueba (2026-09-22, `20260922_push_meal_defaults.sql` y `20260922_push_drop_test.sql`):
+
+- defaults de las comidas a la hora de cada una: 08:00, 12:30, 17:30 y 21:00 (antes 10:00, 14:30, 18:30 y 22:30). Las filas que tenian un default viejo pasan al nuevo; una hora elegida a mano no se toca
+- contract: se borra `push_subscriptions.last_test_at`, que era el tope de "Probar notificación". Va despues del deploy que saca `/api/push/test`, porque el codigo anterior la escribe
+
 Bootstrap admin minimo:
 
 - debe existir al menos un usuario verificable con `type_rol = admin` antes de validar G5, G5.5, G6 o G7
@@ -873,6 +878,8 @@ Avisos al celu (Web Push con VAPID): "Hoy toca entrenar", uno por comida, resume
 | --- | --- | --- |
 | `20260921_push_notifications` | aplicada 2026-09-21, antes del deploy | expand: las 4 tablas, RLS, `claim_due_rest_pushes` y `record_rest_push_delta` |
 | `20260921_push_cron` | aplicada 2026-09-21, despues del deploy de `/api/push/cron` (`2a17d42`); antes, el cron llamaria a una ruta que no existe | `pg_cron` + `pg_net`, funciones `private.push_cron_post`, `private.push_rest_tick`, `private.push_maintenance` y los jobs de abajo. Verificado: `pg_net` → produccion responde 202 |
+| `20260922_push_meal_defaults` | aplicada 2026-09-22, antes del deploy (el codigo solo lee y escribe las horas de cada fila) | defaults de las comidas 08:00 / 12:30 / 17:30 / 21:00; las filas con un default viejo pasan al nuevo |
+| `20260922_push_drop_test` | pendiente, despues del deploy que saca `/api/push/test` | contract: borra `push_subscriptions.last_test_at` |
 
 Cron (`pg_cron` llama a la app con `pg_net`; URL y secreto salen de Vault: `push_cron_base_url`, `push_cron_secret`, creados por SQL fuera del repo):
 
@@ -884,7 +891,7 @@ Cron (`pg_cron` llama a la app con `pg_net`; URL y secreto salen de Vault: `push
 
 ### `push_subscriptions`
 
-- un dispositivo suscripto: `endpoint` unico (https, host del push service en allowlist del codigo), `p256dh`, `auth`, `origin` (con el que se arman los links del aviso), `user_agent`, `last_success_at`, `last_test_at`
+- un dispositivo suscripto: `endpoint` unico (https, host del push service en allowlist del codigo), `p256dh`, `auth`, `origin` (con el que se arman los links del aviso), `user_agent`, `last_success_at`
 - `user_id uuid not null references auth.users(id) on delete cascade`
 - RLS: owner-only select y delete; sin insert/update para `authenticated`. El alta la hace `POST /api/push/subscription` con service role despues de validar la sesion: si el mismo celu se suscribe con otra cuenta, el `endpoint` se reasigna
 - se borra al cerrar sesion (ese dispositivo) y cuando el push service responde 404/410
@@ -892,7 +899,7 @@ Cron (`pg_cron` llama a la app con `pg_net`; URL y secreto salen de Vault: `push
 ### `notification_preferences`
 
 - una fila por usuario (`user_id` primary key); sin fila = valores por defecto
-- por aviso: `*_enabled` + `*_time` (`time`, hora argentina): `training` 09:00, `meal_desayuno` 10:00, `meal_almuerzo` 14:30, `meal_merienda` 18:30, `meal_cena` 22:30; `weekly_enabled` + `weekly_iso_day` (1 = lunes … 7 = domingo, default 7) + `weekly_time` 20:00; `rest_end_enabled`
+- por aviso: `*_enabled` + `*_time` (`time`, hora argentina): `training` 09:00, `meal_desayuno` 08:00, `meal_almuerzo` 12:30, `meal_merienda` 17:30, `meal_cena` 21:00 (defaults: cada usuario las cambia en S7); `weekly_enabled` + `weekly_iso_day` (1 = lunes … 7 = domingo, default 7) + `weekly_time` 20:00; `rest_end_enabled`
 - RLS: owner-only select, insert y update
 
 ### `push_deliveries`

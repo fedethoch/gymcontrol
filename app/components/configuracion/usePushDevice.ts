@@ -75,7 +75,7 @@ export function usePushDevice() {
   const permission = useSyncExternalStore(subscribeVisibility, readPermission, () => null);
   const deviceLabel = useSyncExternalStore(subscribeNothing, describeDevice, () => "este dispositivo");
   const [worker, setWorker] = useState<WorkerState>({ phase: "pending" });
-  const [busy, setBusy] = useState<"enable" | "disable" | "test" | null>(null);
+  const [busy, setBusy] = useState<"enable" | "disable" | null>(null);
   // El registro se resuelve antes del tap: iOS exige pedir el permiso dentro del gesto, sin esperas previas.
   const registrationRef = useRef<ServiceWorkerRegistration | null>(null);
 
@@ -125,7 +125,6 @@ export function usePushDevice() {
   }, [support]);
 
   const status = resolveStatus(support, permission, worker);
-  const endpoint = worker.phase === "ready" ? worker.endpoint : null;
 
   /** Tap en "Activar notificaciones": permiso → suscripción → alta en el server. */
   const enable = useCallback(async () => {
@@ -171,46 +170,6 @@ export function usePushDevice() {
     }
   }, [busy]);
 
-  const test = useCallback(async () => {
-    const registration = registrationRef.current;
-
-    if (!registration || !endpoint || busy) {
-      return;
-    }
-
-    setBusy("test");
-
-    try {
-      const send = () =>
-        fetch("/api/push/test", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ endpoint }),
-        });
-      let response = await send();
-
-      // El server la había borrado (el push service la dio de baja): se vuelve a registrar una vez.
-      if (response.status === 404) {
-        const subscription = await registration.pushManager.getSubscription();
-        if (subscription && (await postPushSubscription(subscription))) {
-          response = await send();
-        }
-      }
-
-      if (response.status === 429) {
-        toast("Esperá unos segundos para volver a probar.");
-      } else if (response.ok) {
-        toast.success("Te llega en unos segundos. Bloqueá el celu para verlo como un aviso real.");
-      } else {
-        toast.error("No se pudo mandar la prueba.");
-      }
-    } catch {
-      toast.error("No se pudo mandar la prueba.");
-    } finally {
-      setBusy(null);
-    }
-  }, [busy, endpoint]);
-
   return {
     status,
     busy,
@@ -218,6 +177,5 @@ export function usePushDevice() {
     deviceLabel,
     enable,
     disable,
-    test,
   };
 }

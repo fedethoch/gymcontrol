@@ -62,8 +62,8 @@ function DeviceBlock({ device }: { device: PushDevice }) {
       );
     case "subscribed":
       return (
-        <div className="flex flex-col gap-3.5 rounded-[14px] border border-[var(--border)] bg-[var(--card)] p-4">
-          <div className="flex items-center gap-3">
+        <div className="rounded-[14px] border border-[var(--border)] bg-[var(--card)]">
+          <div className="flex items-center gap-3 p-4">
             <span className="grid size-10 shrink-0 place-items-center rounded-full bg-[var(--card-alt)]">
               <Bell aria-hidden="true" className="size-5 text-[var(--accent-bright)]" />
             </span>
@@ -74,27 +74,20 @@ function DeviceBlock({ device }: { device: PushDevice }) {
               </p>
             </div>
           </div>
-          {/* Por debajo de 375px los dos no entran en una fila: van uno debajo del otro. */}
-          <div className="flex gap-2 max-[374px]:flex-col">
-            <Button
-              type="button"
-              variant="outline"
-              className="flex-1 bg-transparent text-[15px]"
-              disabled={device.busy !== null}
-              onClick={() => void device.test()}
-            >
-              {device.busy === "test" ? <LoadingDots /> : "Probar notificación"}
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              className="px-3 text-[15px] font-medium"
-              disabled={device.busy !== null}
-              onClick={() => void device.disable()}
-            >
-              {device.busy === "disable" ? <LoadingDots /> : "Desactivar"}
-            </Button>
-          </div>
+          {/* Fila como "Cerrar sesión" (Z4): el ícono va centrado bajo la campana y el texto alineado con el título. */}
+          <button
+            type="button"
+            disabled={device.busy !== null}
+            aria-busy={device.busy === "disable"}
+            onClick={() => void device.disable()}
+            className="flex min-h-[52px] w-full items-center gap-3 rounded-b-[13px] border-t border-[var(--border)] px-4 text-left outline-none transition-colors focus-visible:shadow-[var(--focus-glow)] active:bg-[var(--card-alt)] disabled:opacity-50 motion-reduce:transition-none"
+          >
+            <span className="grid w-10 shrink-0 place-items-center">
+              <BellOff aria-hidden="true" className="size-[18px] text-[var(--foreground-muted)]" />
+            </span>
+            <span className="flex-1 text-[15px] font-medium text-[var(--foreground)]">Desactivar</span>
+            {device.busy === "disable" ? <LoadingDots className="text-[var(--foreground-muted)]" /> : null}
+          </button>
         </div>
       );
     case "default":

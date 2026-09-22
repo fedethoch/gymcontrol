@@ -5,7 +5,7 @@ export const MEAL_REMINDER_TYPES = ["desayuno", "almuerzo", "merienda", "cena"] 
 
 export type MealReminderType = (typeof MEAL_REMINDER_TYPES)[number];
 export type ReminderKind = "training" | `meal_${MealReminderType}` | "weekly";
-export type PushKind = ReminderKind | "rest_end" | "test";
+export type PushKind = ReminderKind | "rest_end";
 
 export type ReminderSetting = { enabled: boolean; time: string };
 
@@ -20,10 +20,10 @@ export type NotificationPreferences = {
 export const DEFAULT_NOTIFICATION_PREFERENCES: NotificationPreferences = {
   training: { enabled: true, time: "09:00" },
   meals: {
-    desayuno: { enabled: true, time: "10:00" },
-    almuerzo: { enabled: true, time: "14:30" },
-    merienda: { enabled: true, time: "18:30" },
-    cena: { enabled: true, time: "22:30" },
+    desayuno: { enabled: true, time: "08:00" },
+    almuerzo: { enabled: true, time: "12:30" },
+    merienda: { enabled: true, time: "17:30" },
+    cena: { enabled: true, time: "21:00" },
   },
   weekly: { enabled: true, isoDay: 7, time: "20:00" },
   restEnd: true,
@@ -203,11 +203,6 @@ export function restEndMessage(next: string | null): PushMessage {
   return { title: "Descanso terminado", body: next ?? "Seguí con la próxima serie." };
 }
 
-export const TEST_MESSAGE: PushMessage = {
-  title: "Avisos activados",
-  body: "Así te van a llegar los avisos de GymControl.",
-};
-
 export const PUSH_PAYLOAD_VERSION = 1;
 
 /** Lo que recibe el service worker (`public/sw.js`). */
@@ -239,8 +234,6 @@ export function pushDelivery(kind: PushKind): PushDelivery {
   switch (kind) {
     case "rest_end":
       return { ttl: 60, urgency: "high", topic: "rest" };
-    case "test":
-      return { ttl: 60, urgency: "high", topic: "test" };
     case "training":
       return { ttl: 2 * 60 * 60, urgency: "normal", topic: "training" };
     case "weekly":

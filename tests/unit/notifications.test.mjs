@@ -54,7 +54,7 @@ describe("preferencias ⇄ fila", () => {
 
   it("ida y vuelta conserva todo (y normaliza las horas de Postgres)", () => {
     const row = preferencesToRow(DEFAULT_NOTIFICATION_PREFERENCES);
-    const fromDb = { ...row, training_time: "09:00:00", meal_cena_time: "22:30:00", weekly_time: "20:00:00" };
+    const fromDb = { ...row, training_time: "09:00:00", meal_cena_time: "21:00:00", weekly_time: "20:00:00" };
 
     assert.deepEqual(preferencesFromRow(fromDb), DEFAULT_NOTIFICATION_PREFERENCES);
   });
@@ -70,13 +70,15 @@ describe("dueReminders", () => {
     assert.deepEqual(dueReminders(prefs, at("09:30")), []);
   });
 
-  it("cada comida con su hora", () => {
+  it("cada comida a su hora por defecto: 08:00, 12:30, 17:30 y 21:00", () => {
     const prefs = DEFAULT_NOTIFICATION_PREFERENCES;
 
-    assert.deepEqual(dueReminders(prefs, at("10:05")), ["meal_desayuno"]);
-    assert.deepEqual(dueReminders(prefs, at("14:35")), ["meal_almuerzo"]);
-    assert.deepEqual(dueReminders(prefs, at("18:40")), ["meal_merienda"]);
-    assert.deepEqual(dueReminders(prefs, at("22:30")), ["meal_cena"]);
+    assert.deepEqual(dueReminders(prefs, at("07:59")), []);
+    assert.deepEqual(dueReminders(prefs, at("08:00")), ["meal_desayuno"]);
+    assert.deepEqual(dueReminders(prefs, at("12:30")), ["meal_almuerzo"]);
+    assert.deepEqual(dueReminders(prefs, at("17:30")), ["meal_merienda"]);
+    assert.deepEqual(dueReminders(prefs, at("21:00")), ["meal_cena"]);
+    assert.deepEqual(dueReminders(prefs, at("21:30")), []);
   });
 
   it("apagado no sale", () => {
@@ -102,9 +104,9 @@ describe("dueReminders", () => {
   });
 
   it("dos avisos a la misma hora salen juntos", () => {
-    const prefs = prefsWith({ training: { enabled: true, time: "14:30" } });
+    const prefs = prefsWith({ training: { enabled: true, time: "12:30" } });
 
-    assert.deepEqual(dueReminders(prefs, at("14:30")), ["training", "meal_almuerzo"]);
+    assert.deepEqual(dueReminders(prefs, at("12:30")), ["training", "meal_almuerzo"]);
   });
 });
 
