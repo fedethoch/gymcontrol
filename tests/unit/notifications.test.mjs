@@ -186,7 +186,13 @@ describe("payload", () => {
     assert.equal(pushTag("rest_end"), "rest-end");
     assert.equal(pushTag("weekly"), "weekly");
     assert.deepEqual(pushDelivery("rest_end"), { ttl: 60, urgency: "high", topic: "rest" });
-    assert.deepEqual(pushDelivery("meal_cena"), { ttl: 3600, urgency: "normal", topic: "meal-cena" });
+    assert.deepEqual(pushDelivery("meal_cena"), { ttl: 3600, urgency: "normal", topic: "mealcena" });
+  });
+
+  it("topic solo alfanumérico (Apple responde 400 BadWebPushTopic con guiones)", () => {
+    for (const kind of ["rest_end", "training", "weekly", "meal_desayuno", "meal_almuerzo", "meal_merienda", "meal_cena"]) {
+      assert.match(pushDelivery(kind).topic, /^[A-Za-z0-9]{1,32}$/);
+    }
   });
 });
 

@@ -229,7 +229,10 @@ export function pushTag(kind: PushKind): string {
   return kind === "rest_end" ? "rest-end" : kind;
 }
 
-/** TTL (segundos), urgencia y topic (el push service reemplaza lo no entregado con el mismo topic). */
+/**
+ * TTL (segundos), urgencia y topic (el push service reemplaza lo no entregado con el mismo topic).
+ * Topic solo alfanumérico: Apple responde 400 BadWebPushTopic a "meal-cena".
+ */
 export function pushDelivery(kind: PushKind): PushDelivery {
   switch (kind) {
     case "rest_end":
@@ -239,7 +242,7 @@ export function pushDelivery(kind: PushKind): PushDelivery {
     case "weekly":
       return { ttl: 12 * 60 * 60, urgency: "normal", topic: "weekly" };
     default:
-      return { ttl: 60 * 60, urgency: "normal", topic: pushTag(kind) };
+      return { ttl: 60 * 60, urgency: "normal", topic: kind.replace("_", "") };
   }
 }
 
