@@ -426,9 +426,9 @@ Estado confirmado de rutina activa despues del rediseño de `/dashboard`:
 Estado confirmado de storage despues de `G6`:
 
 - existe el bucket publico `exercise-images`
-- `storage.buckets` fija `file_size_limit = 5242880` y `allowed_mime_types = ['image/jpeg', 'image/png', 'image/webp']`
+- `storage.buckets` fija `file_size_limit = 5242880` y `allowed_mime_types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']`
 - `storage.objects` permite lectura publica del bucket y escritura, actualizacion y borrado solo para usuarios admin autenticados
-- `exercises.image_url` guarda la URL publica del frame 0 estático (PNG) del ejercicio — se usa en el hero del detalle y en todas las listas/cards
+- `exercises.image_url` guarda la URL publica del frame 0 estático (PNG) del ejercicio — se usa en el hero del detalle y en todas las listas/cards (origen y mapeo: "Media de ejercicios (2026-09-30)")
 - `exercises.gif_url` guarda la URL publica del GIF animado completo — solo se consume en el popup de animacion del detalle; null cuando no hay GIF disponible
 - las demostraciones externas de ejercicios se resuelven en vivo via API interna; no se persisten ni cachean imagenes, GIFs o metadata de ExerciseDB en la base
 - `exercises.exercisedb_id` guarda solo el ID estable de ExerciseDB para evitar matching por nombre en runtime cuando el mapeo ya fue revisado
@@ -950,3 +950,20 @@ Qué suplementos toma cada usuario, cuáles tildó hoy y su recordatorio. Reglas
 - `notification_preferences.supplements_enabled` (default true) es el maestro de S7; cada suplemento tiene su `reminder_enabled` + `reminder_time`
 - el tick de 5 min manda **un aviso agrupado** con los pendientes (activos, con aviso, sin tilde hoy, hora ya pasada) si hoy no salió ninguno, si entró un pendiente nuevo o si pasaron 55 min desde la tanda anterior; repeticiones hasta las 23:00
 - cada tanda es una fila de `push_deliveries` con `kind = 'supplements_HHMM'` (hora del tick): reclamo idempotente y "¿por qué no llegó?"; la limpieza de 60 dias ya la cubre
+
+## Media de ejercicios (2026-09-30)
+
+Auditoria visual de los 71 ejercicios: 9 mostraban otro ejercicio y 8 otra variante (el script anterior tomaba el primer resultado de una busqueda en fitnessprogramer.com). Se reemplazo la media y se limpio el catalogo, que queda en 68 ejercicios.
+
+| Migracion | Cuando | Que hace |
+| --- | --- | --- |
+| `20260930_exercise_catalog_dedupe` | aplicada 2026-09-30, solo datos | backup y fusion: "Press en máquina" (press de pecho sentado cargado en Piernas) → "Press en maquina pecho"; "Extensiones de piernas" → "Extension de cuadriceps"; "Remo en banco" se retira y su fila de rutina pasa a "Remo en máquina". Las filas conservan series, reps, RIR y descanso |
+
+- backup previo: `private.exercises_backup_20260930` (71 filas, con las URLs anteriores) y `private.routine_items_backup_20260930` (las 4 filas reasignadas)
+- fuente: GIFs 360x360 del catalogo ExerciseDB via el repo `JahelCuadrado/ExerciseGymGifsDB` (tag `v1.1.0`, jsDelivr); el mapeo ejercicio → GIF es explicito y revisado cuadro por cuadro en `scripts/sync-exercise-gifs.mjs` (sin busqueda por nombre)
+- el GIF tiene que coincidir con `equipment` (barra / mancuernas / máquina / kettlebell): el nivel de fuerza compara contra la tabla de ese equipo (`docs/STRENGTH_STANDARDS.md`)
+- archivos: `exercise-images/exercises/{id}-{VERSION}.gif` y `.png` (frame 0), hoy `v3`. Cualquier cambio de media sube con `VERSION` nuevo: los archivos tienen `cacheControl` de 1 año y reescribir el mismo path deja la version vieja en caches
+- los archivos sin uso se borran del bucket despues de cada pasada (hoy 138, todos referenciados); las URLs de `private.exercises_backup_20260930` dejan de existir salvo las 6 que siguen en uso
+- "Patada de gluteo en polea" se creo despues (`20260930_cable_glute_kickback`, otra sesion) con su GIF en el mismo mapeo
+- "Hip thrust", "Pallof press" y "Plancha frontal" conservan su GIF anterior (correcto y sin equivalente en la fuente)
+- "Remo con mancuerna" es el remo a una mano con apoyo en banco (serrucho); "Curl de piernas" es el curl sentado en maquina y "Curl femoral acostado" el acostado
