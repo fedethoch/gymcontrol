@@ -18,7 +18,7 @@ import { HomeNutrition } from "@/app/components/home/HomeNutrition";
 import { HomeSupplements } from "@/app/components/home/HomeSupplements";
 import { HomeWeekPlanner, type DaySheet } from "@/app/components/home/HomeWeekPlanner";
 import { HomeWeekStats } from "@/app/components/home/HomeWeekStats";
-import { MuscleAnatomy } from "@/app/components/home/MuscleAnatomy";
+import { MuscleAnatomy, type MuscleStrengthPoint } from "@/app/components/home/MuscleAnatomy";
 import { TrainingDaysEditButton } from "@/app/components/rutinas/TrainingDaysEditButton";
 import { BodyMuscleFigure } from "@/app/components/shared/BodyMuscleFigure";
 import { RefreshOnDayChange } from "@/app/components/shared/RefreshOnDayChange";
@@ -58,19 +58,45 @@ import {
   getSavedRoutineByIdForUser,
   listSavedRoutinesForUser,
 } from "@/app/lib/saved-routines";
+import { strengthFill } from "@/app/lib/strength-colors";
+import {
+  formatStrengthRecord,
+  normalizeExerciseName,
+  resolveMuscleStrength,
+  type MuscleStrengthSummary,
+} from "@/app/lib/strength-standards";
 import { getHomeSupplements } from "@/app/lib/supplements-store";
 import { buildWeekStrip, suggestWeekdays } from "@/app/lib/training-schedule";
 import { countDatesThisWeek } from "@/app/lib/week";
 import { estimateDayMinutes, isValidSet } from "@/app/lib/workout-progression";
-import {
-  getOpenSessionForRoutine,
-  getTrainingOverview,
-  listMuscleStrengthSummaries,
-  type MuscleStrengthSummary,
-} from "@/app/lib/workout-tracking";
+import { getOpenSessionForRoutine, getTrainingOverview, listStrengthRecords } from "@/app/lib/workout-tracking";
 
 const STRENGTH_LEGEND_GRADIENT =
-  "linear-gradient(90deg,var(--strength-1) 0%,var(--strength-2) 33%,var(--strength-3) 66%,var(--strength-4) 100%)";
+  "linear-gradient(90deg,var(--strength-1) 0%,var(--strength-2) 25%,var(--strength-3) 50%,var(--strength-4) 75%,var(--strength-5) 100%)";
+
+/** "A", "A o B", "A, B o C". */
+function joinWithOr(items: string[]) {
+  return items.length > 1 ? `${items.slice(0, -1).join(", ")} o ${items[items.length - 1]}` : (items[0] ?? "");
+}
+
+/** Resumen del nivel de un grupo → punto del mapa de "Tus músculos" (DESIGN.md §10.3). */
+function toMuscleStrengthPoint(summary: MuscleStrengthSummary): MuscleStrengthPoint {
+  const mark = summary.record ? formatStrengthRecord(summary.record) : null;
+  const detail =
+    summary.exerciseName && mark
+      ? `Medido con ${summary.exerciseName} · ${mark.full}${summary.doubled ? " (a un brazo, cuenta doble)" : ""}`
+      : summary.candidates.length > 0
+        ? `Se mide con ${joinWithOr(summary.candidates)}. Registrá una serie y se pinta.`
+        : "Tu rutina no tiene un ejercicio que mida este grupo.";
+
+  return {
+    muscleGroup: summary.muscleGroup,
+    level: summary.level,
+    division: summary.division,
+    mark: mark?.short ?? null,
+    detail,
+  };
+}
 
 /** Cuenta cuántas fechas del set caen en la ventana de N días hasta hoy. */
 function countDatesInWindow(dates: Set<string>, days: number, today: string): number {
@@ -96,7 +122,7 @@ export default async function Home() {
 
   const activeRoutineListItem = findActiveSavedRoutine(savedRoutines);
 
-  const [activeRoutine, trainingOverview, muscleStrengthSummaries, openSession] = await Promise.all([
+  const [activeRoutine, trainingOverview, strengthRecords, openSession] = await Promise.all([
     activeRoutineListItem
       ? getSavedRoutineByIdForUser({ savedRoutineId: activeRoutineListItem.id, userId: auth.user.id })
       : null,
@@ -105,11 +131,24 @@ export default async function Home() {
       savedRoutineId: activeRoutineListItem?.id ?? null,
       plannedDays: activeRoutineListItem?.dayCount ?? 0,
     }),
-    listMuscleStrengthSummaries({ userId: auth.user.id }),
+    // "Tus músculos" solo se muestra con rutina activa (DESIGN.md §10.2).
+    activeRoutineListItem ? listStrengthRecords({ userId: auth.user.id }) : new Map(),
     activeRoutineListItem
       ? getOpenSessionForRoutine({ userId: auth.user.id, savedRoutineId: activeRoutineListItem.id })
       : null,
   ]);
+
+  // Nivel de fuerza (docs/STRENGTH_STANDARDS.md): sin perfil no hay sexo, peso ni edad contra qué comparar.
+  const muscleStrengthSummaries =
+    activeRoutine && nutritionProfile
+      ? resolveMuscleStrength({
+          records: strengthRecords,
+          activeExerciseNames: new Set(
+            activeRoutine.days.flatMap((day) => day.items.map((item) => normalizeExerciseName(item.exercise.name))),
+          ),
+          profile: { sex: nutritionProfile.gender, bodyweightKg: nutritionProfile.weightKg, age: nutritionProfile.age },
+        })
+      : [];
 
   // Sin perfil no hay objetivo: nada de valores inventados.
   const plan = nutritionProfile?.plan ?? null;
@@ -284,11 +323,8 @@ export default async function Home() {
             </div>
             <div className="mt-9">
               <MuscleAnatomy
-                points={muscleStrengthSummaries.map(({ muscleGroup, range, bestWeight }) => ({
-                  muscleGroup,
-                  range,
-                  bestWeight,
-                }))}
+                points={muscleStrengthSummaries.map(toMuscleStrengthPoint)}
+                needsProfile={!nutritionProfile}
               />
             </div>
           </>
@@ -775,9 +811,9 @@ function CargaMuscularCard({
   href: string;
 }) {
   const isEmpty = Object.keys(muscleLoad).length === 0;
-  const hasStrengthData = strengthSummaries.some((s) => s.bestWeight != null);
+  const hasStrengthData = strengthSummaries.some((s) => s.level != null);
   const muscleColors = Object.fromEntries(
-    strengthSummaries.map((s) => [s.muscleGroup, s.color]),
+    strengthSummaries.map((s) => [s.muscleGroup, strengthFill(s.level, s.division)]),
   );
 
     return (
@@ -806,9 +842,9 @@ function CargaMuscularCard({
             <div className="mt-4 grid w-full gap-1.5">
                 <div className="h-1.5 rounded-full" style={{ background: STRENGTH_LEGEND_GRADIENT }} />
                 <div className="flex items-center justify-between text-xs font-semibold text-[var(--foreground-muted)]">
-                  <span>Base</span>
+                  <span>Principiante</span>
                   <span>Intensidad</span>
-                  <span>Elite</span>
+                  <span>Élite</span>
               </div>
             </div>
           </div>

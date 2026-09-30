@@ -23,12 +23,13 @@
   --danger: #f43f5e;
   --info: #38bdf8;
   /* Rampa de fuerza peor -> mejor (DESIGN.md §1.6). Dato ordinal, no status.
-     El brillo sube con el rango; 0 = sin datos (mismo gris que el cuerpo). */
+     El brillo sube con el nivel; 0 = sin datos (mismo gris que el cuerpo). */
   --strength-0: #263347;
   --strength-1: #f43f5e;
   --strength-2: #fb923c;
   --strength-3: #fbbf24;
   --strength-4: #bef264;
+  --strength-5: #d9f99d;
   --card-hover: #1b2230;
   --focus-glow: 0 0 0 3px rgba(16, 185, 129, 0.35);
 }

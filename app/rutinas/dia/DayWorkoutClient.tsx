@@ -32,6 +32,7 @@ import {
   currentSetIndex,
   describeSuggestion,
   formatCompactSet,
+  loadUnit,
   nextPendingExercise,
   padSets,
   sanitizeNumber,
@@ -591,8 +592,8 @@ function ExerciseCard({
               <span role="columnheader">Serie</span>
               <span role="columnheader">Anterior</span>
               {exercise.kind === "time" ? null : (
-                <span role="columnheader" className="text-center">
-                  {exercise.kind === "bodyweight" ? "+kg" : "kg"}
+                <span role="columnheader" className="text-center" title={loadUnit(exercise).full}>
+                  {loadUnit(exercise).short}
                 </span>
               )}
               <span role="columnheader" className="text-center">
@@ -641,7 +642,7 @@ function ExerciseCard({
                   {exercise.kind === "time" ? null : (
                     <span role="cell">
                       <Input
-                        aria-label={`Serie ${index + 1}: ${exercise.kind === "bodyweight" ? "lastre en kg" : "kg"}`}
+                        aria-label={`Serie ${index + 1}: ${loadUnit(exercise).full}`}
                         inputMode="decimal"
                         value={set.kg}
                         placeholder={placeholder.kg}

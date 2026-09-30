@@ -3,7 +3,13 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import { addDaysToDateKey, getTodayDateKey, getWeekStartDateKey } from "@/app/lib/local-date";
-import { STRENGTH_RANGE_COLORS } from "@/app/lib/strength-colors";
+import {
+  bestStrengthRecord,
+  betterRecord,
+  MEASUREMENT_EXERCISE_NAMES,
+  normalizeExerciseName,
+  type StrengthRecord,
+} from "@/app/lib/strength-standards";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 import {
   computeWeeklyStreak,
@@ -53,18 +59,6 @@ export type ExerciseHistoryEntry = {
   best: { kg: number; reps: number; e1rm: number } | null;
 };
 
-export type MuscleStrengthRange = "sin_datos" | "base" | "fuerte" | "avanzado" | "elite";
-
-export type MuscleStrengthSummary = {
-  muscleGroup: string;
-  principalExercise: string;
-  matchedExerciseName: string | null;
-  /** Peso de la mejor serie (por 1RM estimado) de los últimos 180 días. */
-  bestWeight: number | null;
-  range: MuscleStrengthRange;
-  color: string;
-};
-
 type ItemRow = {
   id: string;
   routine_item_id: string | null;
@@ -87,29 +81,6 @@ const ITEM_SELECT = "id, routine_item_id, kind, target_snapshot, sets, sets_rev"
 
 const STREAK_WEEKS = 12;
 const STRENGTH_WINDOW_DAYS = 180;
-
-const STRENGTH_GROUPS = ["Pecho", "Espalda", "Piernas", "Hombros", "Biceps", "Triceps", "Core"] as const;
-
-const PRIMARY_STRENGTH_EXERCISES: Record<(typeof STRENGTH_GROUPS)[number], string[]> = {
-  Pecho: ["press banca", "bench press"],
-  Espalda: ["remo con barra", "barbell row"],
-  Piernas: ["sentadilla", "squat"],
-  Hombros: ["press militar", "overhead press", "shoulder press"],
-  Biceps: ["curl con barra", "barbell curl"],
-  Triceps: ["press cerrado", "close grip press"],
-  Core: ["crunch en polea", "cable crunch"],
-};
-
-/** Umbrales sobre el 1RM estimado de la mejor serie. */
-const STRENGTH_THRESHOLDS: Record<(typeof STRENGTH_GROUPS)[number], [number, number, number, number]> = {
-  Pecho: [20, 50, 80, 110],
-  Espalda: [20, 45, 75, 100],
-  Piernas: [30, 70, 110, 150],
-  Hombros: [15, 35, 55, 75],
-  Biceps: [10, 25, 40, 55],
-  Triceps: [10, 25, 40, 60],
-  Core: [10, 25, 40, 60],
-};
 
 export function getLocalTrainingDate() {
   return getTodayDateKey();
@@ -317,13 +288,16 @@ export async function listExerciseHistory(args: {
   return result;
 }
 
-/** Nivel de fuerza por grupo muscular del usuario (todas sus rutinas, últimos 180 días). */
-export async function listMuscleStrengthSummaries(args: { userId: string }): Promise<MuscleStrengthSummary[]> {
+/**
+ * Mejor marca de los últimos 180 días de cada ejercicio de medición del nivel de fuerza (cualquier rutina),
+ * con clave `normalizeExerciseName`. El nivel lo resuelve `resolveMuscleStrength`.
+ */
+export async function listStrengthRecords(args: { userId: string }): Promise<Map<string, StrengthRecord>> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("workout_session_items")
     .select(
-      "kind, sets, exercise:exercises!workout_session_items_exercise_id_fkey(name, muscle_group), workout_sessions!inner(user_id, training_date)",
+      "kind, sets, exercise:exercises!workout_session_items_exercise_id_fkey(name), workout_sessions!inner(user_id, training_date)",
     )
     .eq("workout_sessions.user_id", args.userId)
     .gte("workout_sessions.training_date", addDaysToDateKey(getTodayDateKey(), -STRENGTH_WINDOW_DAYS));
@@ -332,48 +306,19 @@ export async function listMuscleStrengthSummaries(args: { userId: string }): Pro
     throw new Error(`No se pudo leer la fuerza por grupo muscular: ${error.message}`);
   }
 
-  const bestByGroup = new Map<
-    (typeof STRENGTH_GROUPS)[number],
-    { principal: StrengthCandidate | null; fallback: StrengthCandidate | null }
-  >();
+  const records = new Map<string, StrengthRecord>();
 
   for (const row of (data ?? []) as unknown as StrengthRow[]) {
     const exercise = Array.isArray(row.exercise) ? row.exercise[0] : row.exercise;
-    const muscleGroup = normalizeStrengthGroup(exercise?.muscle_group);
-    const best = findBestSet(row.sets, row.kind);
+    const key = exercise ? normalizeExerciseName(exercise.name) : null;
+    const record = key && MEASUREMENT_EXERCISE_NAMES.has(key) ? bestStrengthRecord(row.kind, row.sets) : null;
 
-    if (!exercise || !muscleGroup || !best) {
-      continue;
+    if (key && record) {
+      records.set(key, betterRecord(records.get(key), record));
     }
-
-    const current = bestByGroup.get(muscleGroup) ?? { principal: null, fallback: null };
-    const candidate = { exerciseName: exercise.name, ...best };
-
-    if (!current.fallback || candidate.e1rm > current.fallback.e1rm) {
-      current.fallback = candidate;
-    }
-
-    if (isPrincipalStrengthExercise(muscleGroup, exercise.name) && (!current.principal || candidate.e1rm > current.principal.e1rm)) {
-      current.principal = candidate;
-    }
-
-    bestByGroup.set(muscleGroup, current);
   }
 
-  return STRENGTH_GROUPS.map((muscleGroup) => {
-    const best = bestByGroup.get(muscleGroup);
-    const selected = best?.principal ?? best?.fallback ?? null;
-    const range = resolveStrengthRange(muscleGroup, selected?.e1rm ?? null);
-
-    return {
-      muscleGroup,
-      principalExercise: PRIMARY_STRENGTH_EXERCISES[muscleGroup][0],
-      matchedExerciseName: selected?.exerciseName ?? null,
-      bestWeight: selected?.kg ?? null,
-      range,
-      color: STRENGTH_RANGE_COLORS[range],
-    };
-  });
+  return records;
 }
 
 type OpenSessionRow = {
@@ -392,13 +337,8 @@ type HistoryRow = Pick<ItemRow, "kind" | "target_snapshot" | "sets"> & {
 };
 
 type StrengthRow = Pick<ItemRow, "kind" | "sets"> & {
-  exercise:
-    | { name: string; muscle_group: string | null }
-    | Array<{ name: string; muscle_group: string | null }>
-    | null;
+  exercise: { name: string } | Array<{ name: string }> | null;
 };
-
-type StrengthCandidate = { exerciseName: string; kg: number; reps: number; e1rm: number };
 
 function mapOpenSession(row: OpenSessionRow): OpenWorkoutSession {
   return {
@@ -427,41 +367,6 @@ function isCountedSession(session: CountedSessionRow, today: string) {
   const hasValidWork = (session.workout_session_items ?? []).some((item) => item.sets.some(isValidSet));
 
   return hasValidWork && (session.status === "completed" || session.training_date < today);
-}
-
-function normalizeStrengthGroup(value: string | null | undefined) {
-  if (!value) {
-    return null;
-  }
-
-  const normalized = value.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
-
-  return STRENGTH_GROUPS.find((group) => group.toLowerCase() === normalized) ?? null;
-}
-
-function isPrincipalStrengthExercise(muscleGroup: (typeof STRENGTH_GROUPS)[number], exerciseName: string) {
-  const normalizedName = exerciseName.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
-
-  return PRIMARY_STRENGTH_EXERCISES[muscleGroup].some((candidate) =>
-    normalizedName.includes(candidate.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()),
-  );
-}
-
-function resolveStrengthRange(
-  muscleGroup: (typeof STRENGTH_GROUPS)[number],
-  e1rm: number | null,
-): MuscleStrengthRange {
-  if (e1rm == null) {
-    return "sin_datos";
-  }
-
-  const [base, fuerte, avanzado, elite] = STRENGTH_THRESHOLDS[muscleGroup];
-
-  if (e1rm >= elite) return "elite";
-  if (e1rm >= avanzado) return "avanzado";
-  if (e1rm >= fuerte) return "fuerte";
-  if (e1rm >= base) return "base";
-  return "sin_datos";
 }
 
 /** Fechas con algún entreno de los últimos `days` días (cualquier rutina): precarga del selector de días. */

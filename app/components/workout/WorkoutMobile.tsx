@@ -31,6 +31,7 @@ import {
   describeSuggestion,
   exerciseFractions,
   formatCompactSet,
+  loadUnit,
   resolveDayState,
   stepValue,
   timeFactor,
@@ -395,10 +396,8 @@ function ExercisePanel({
       : [
           {
             field: "kg",
-            unit: exercise.kind === "bodyweight" ? "+kg" : "kg",
-            label: `Serie ${index + 1}: ${
-              exercise.kind === "bodyweight" ? "lastre en kg" : "kg"
-            }`,
+            unit: loadUnit(exercise).short,
+            label: `Serie ${index + 1}: ${loadUnit(exercise).full}`,
             value: set.kg,
             placeholder: placeholder.kg,
             allowDecimal: true,

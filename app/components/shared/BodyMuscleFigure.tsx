@@ -321,6 +321,10 @@ function normalizeMuscleKey(key: string) {
 
 function toLibraryMuscles(key: string): Muscle[] {
   const k = normalizeMuscleKey(key);
+  // Grupos del nivel de fuerza (docs/STRENGTH_STANDARDS.md §12): cada uno pinta solo su músculo.
+  if (k === "cuadriceps") return ["quadriceps"];
+  if (k === "isquios") return ["hamstring"];
+  if (k === "gluteos") return ["gluteal"];
   if (k.includes("pecho") || k.includes("chest") || k.includes("pectoral")) return ["chest"];
   if (
     k.includes("espalda") ||
@@ -403,7 +407,8 @@ export type MuscleView = "front" | "back";
 
 /**
  * Una sola vista del cuerpo con color y opacidad por grupo muscular (claves de
- * `muscle_group`: Pecho, Espalda, Piernas, Hombros, Biceps, Triceps, Core).
+ * `muscle_group`: Pecho, Espalda, Piernas, Hombros, Biceps, Triceps, Core; o los grupos del nivel de fuerza,
+ * que parten Piernas en Cuadriceps, Isquios y Gluteos).
  */
 export function MuscleBodyView({
   view,

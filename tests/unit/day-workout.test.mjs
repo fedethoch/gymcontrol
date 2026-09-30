@@ -9,6 +9,7 @@ import {
   describeSuggestion,
   exerciseFractions,
   formatCompactSet,
+  loadUnit,
   nextPendingExercise,
   resolveDayState,
   sameWorkoutDayIds,
@@ -270,5 +271,17 @@ describe("marcas por día", () => {
       items: [row("laterales", 3), row("press", 1, { repetitions: "8 - 12", rest: "2-3M" }), row("jalon", 2)],
     };
     assert.deepEqual(sameWorkoutDayIds([lunes, mismoDesordenado], lunes), ["lunes", "copia"]);
+  });
+});
+
+describe("loadUnit", () => {
+  it("con mancuernas el peso es por mancuerna", () => {
+    assert.deepEqual(loadUnit({ kind: "reps", equipment: "Mancuernas" }), { short: "kg c/u", full: "kg por mancuerna" });
+  });
+
+  it("peso corporal es lastre y el resto kg", () => {
+    assert.deepEqual(loadUnit({ kind: "bodyweight", equipment: "Peso corporal" }), { short: "+kg", full: "lastre en kg" });
+    assert.deepEqual(loadUnit({ kind: "reps", equipment: "Barra" }), { short: "kg", full: "kg" });
+    assert.deepEqual(loadUnit({ kind: "reps", equipment: null }), { short: "kg", full: "kg" });
   });
 });

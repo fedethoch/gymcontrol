@@ -86,19 +86,21 @@ Texto sobre relleno de status: usar near-black `#0a0d12` para lime/amber/sky; bl
 
 ### 1.6 Rampa de fuerza (dato, no estado)
 
-Escala ordinal para el rango de fuerza por grupo muscular (`MuscleStrengthRange`). Lógica **peor → mejor** tipo semáforo: el brillo sube con el nivel, así el orden se lee también en escala de grises y con daltonismo.
+Escala ordinal para el nivel de fuerza por grupo muscular (`StrengthLevel`, cálculo en `docs/STRENGTH_STANDARDS.md`). Lógica **peor → mejor** tipo semáforo: el brillo sube con el nivel, así el orden se lee también en escala de grises y con daltonismo.
 
-| Token | Hex | Rango |
+| Token | Hex | Nivel |
 |---|---|---|
 | `--strength-0` | `#263347` | Sin datos (mismo gris que el cuerpo de `BodyMuscleFigure`) |
-| `--strength-1` | `#f43f5e` | Base |
-| `--strength-2` | `#fb923c` | Fuerte |
-| `--strength-3` | `#fbbf24` | Avanzado |
-| `--strength-4` | `#bef264` | Elite |
+| `--strength-1` | `#f43f5e` | Principiante |
+| `--strength-2` | `#fb923c` | Novato |
+| `--strength-3` | `#fbbf24` | Intermedio |
+| `--strength-4` | `#bef264` | Avanzado |
+| `--strength-5` | `#d9f99d` | Élite |
 
-- Todos los rangos ≥ 5.4:1 contra `--background`. ΔE mínimo entre rangos contiguos: 31 (normal), 16 (deuteranopia), 15 (protanopia).
-- Es un **dato**, no un estado: no reemplaza `--danger`/`--success` ni se usa para errores. El texto siempre nombra el rango ("Base", nunca "mal").
-- Fuente única en código: `STRENGTH_RANGE_COLORS` (`app/lib/strength-colors.ts`) apunta a estos tokens.
+- **Divisiones:** Principiante a Avanzado tienen 3 (1, 2, 3); Élite no se divide. La división es **intensidad del mismo color**: 60% / 80% / 100% del color del nivel mezclado con `--strength-0` (`color-mix(in srgb, …)`, `strengthFill`). El texto siempre dice el escalón completo ("Novato 2") y usa el color pleno del nivel.
+- Niveles plenos ≥ 5.5:1 contra `--background`; la división 1 (60%) ≥ 3.1:1 (dato gráfico). ΔE mínimo entre niveles contiguos: 25 (normal), 16 (deuteranopia), 15 (protanopia).
+- Es un **dato**, no un estado: no reemplaza `--danger`/`--success` ni se usa para errores. El texto siempre nombra el nivel ("Principiante 1", nunca "mal").
+- Fuente única en código: `STRENGTH_LEVEL_COLORS`, `strengthFill` y `strengthLabel` (`app/lib/strength-colors.ts`) apuntan a estos tokens.
 
 ---
 
@@ -342,7 +344,7 @@ Jerarquía de escala fuerte: un solo elemento Display XXL por pantalla, títulos
 | Z3 Hero "Hoy toca" | Foto grayscale, radio 28px, alto mínimo `clamp(380px, 52svh, 470px)`, título Display XXL (máx. 2 grupos musculares), meta en una línea, CTA 56px + botón de lista que abre un bottom sheet con los ejercicios |
 | Z4 Nutrición | Metric L (kcal restantes), 3 barras de macros, filas Desayuno/Almuerzo/Merienda/Cena (Snack solo si hay) con "+" de 44px → `/nutricion/registro?tipo=…` |
 | Z5 Esta semana | 3 stats Metric M (entrenos = días del plan hechos, racha en semanas "sem", comidas) de la semana calendario, separados por líneas |
-| Z6 Tus músculos | `BodyMuscleFigure` sin card: switch Frente/Espalda, figura 150×300, etiquetas con líneas guía (nombre, kg de la mejor serie, color del rango por 1RM estimado; la seleccionada suma el rango) y una fila de escala. Datos del usuario en todas sus rutinas |
+| Z6 Tus músculos | `BodyMuscleFigure` sin card: switch Frente/Espalda, figura 150×300, etiquetas con líneas guía (nombre, marca del ejercicio que midió —"80 kg" o "75 s"—, color del nivel con la intensidad de su división; la seleccionada suma "Novato 2"), una línea bajo la figura con el grupo elegido ("Medido con … · 80 kg × 8" o con qué ejercicio se mide) y una fila de escala. 9 grupos: Piernas se parte en Cuádriceps (frente), Isquios y Glúteos (espalda). Solo cuentan los ejercicios de medición de la rutina activa (docs/STRENGTH_STANDARDS.md) |
 | Z7 Suplementos (2026-09-30, mock https://claude.ai/artifact/P26kjBRsWqD1MQszR89T5c) | Al final de todo y solo con ≥1 suplemento marcado. H2 "Suplementos" + acción "Editar" → `/configuracion?panel=suplementos`. Filas de 56px como las comidas: nombre, hora en mono (pendiente: la del aviso, más tenue si todavía no llegó; tomado: la del tilde) y círculo de 44px (`aria-pressed`; tomado = `--accent` con check). Al abrir: pendientes por hora y después los tomados; tildar guarda al toque y no reordena. Hasta 3 filas; con más, "Ver todos (N)" las despliega en el lugar (vuelve plegado en cada visita). Con `?suplementos=hoy` (el aviso) baja a la sección, la despliega si un pendiente quedó oculto, resalta los pendientes con una banda `--card` de ~2 s y limpia la URL. Desktop: card al final de la columna |
 
 ### 10.2 Estados del hero
@@ -362,8 +364,9 @@ Reglas: **un solo CTA emerald por pantalla**. Orden de los estados (`resolveHero
 
 ### 10.3 Tus músculos sin datos
 
-- **Vacío** (los 7 grupos sin peso): frente y espalda juntos a 104px, sin etiquetas ni switch, mensaje "Todavía sin datos de fuerza" + escala.
-- **Parcial** (≥1 grupo con peso): layout normal + línea "X de 7 grupos con datos".
+- **Sin perfil** (sin sexo, peso y edad no hay tabla contra qué comparar): frente y espalda a 104px en gris, "Completá tu perfil" + "Tu nivel se compara con gente de tu sexo, peso y edad." + link neutro "Completar perfil" → `/configuracion` (nunca emerald: el hero tiene el CTA) + escala.
+- **Vacío** (los 9 grupos sin marca): frente y espalda juntos a 104px, sin etiquetas ni switch, mensaje "Todavía sin datos de fuerza" + escala.
+- **Parcial** (≥1 grupo con marca): layout normal + línea "X de 9 grupos con datos". Un grupo sin datos, al tocarlo, explica con qué ejercicio de la rutina se mide o que la rutina no tiene ninguno.
 
 ---
 
@@ -377,7 +380,7 @@ Pantalla de una tarea: **hacer la serie que sigue**. Mobile (<1024) se rediseñ�
 |---|---|
 | Z1 Barra | ✕ de 44px (sale del entreno; con series pendientes ofrece terminar), barra segmentada con un segmento por ejercicio relleno según sus series hechas, contador `hechas/plan` en mono y botón de lista de 44px con la cantidad de ejercicios (abre el sheet del día). Debajo, línea chica `Día N · Grupos` e indicador de guardado |
 | Z2 Ejercicio | Ilustración del ejercicio **invertida a dark** que absorbe el alto libre (mín. 120px; 88px en pantallas bajas) (`invert(1) hue-rotate(180deg)`: figura clara sobre negro, músculos rojizos), chip `N de M` y chip "Técnica" → `ExerciseDetailModal`. Debajo, nombre en H1 y `series × objetivo · RIR · descanso` |
-| Z3 Serie actual | Micro label `Serie N de M`, dos steppers −/+ con el valor en Metric L (kg y reps; en ejercicios de tiempo, una sola columna seg/min), "Anterior" en mono y la línea de sugerencia. El número se achica al ancho que queda entre los botones según sus dígitos (entre 16px y 3rem; a 375px, "22.5" va a ~24px) |
+| Z3 Serie actual | Micro label `Serie N de M`, dos steppers −/+ con el valor en Metric L (kg y reps; en ejercicios de tiempo, una sola columna seg/min), "Anterior" en mono y la línea de sugerencia. Unidad de carga (`loadUnit`): "kg"; "+kg" con peso corporal; **"kg c/u" con mancuernas** (el peso es por mancuerna, como los estándares de fuerza; el lector de pantalla dice "kg por mancuerna"). El número se achica al ancho que queda entre los botones según sus dígitos (entre 16px y 3rem; a 375px, "22.5" va a ~24px) |
 | Z3b Acción | Justo debajo de los steppers, en el flujo: CTA emerald "Serie N hecha" de 56px a todo el ancho. En descanso, el bloque steppers + CTA se reemplaza en el mismo lugar por la tarjeta de descanso; la confirmación de terminar parcial ocupa el mismo lugar |
 | Z4 Series | Tira de alto fijo (56px) con una columna plana por serie, **sin cards** (patrón Ladder): segmento de 3px arriba como la barra de Z1 (`--accent-bright` hecha, `--foreground` actual, `--border-strong` pendiente), valor compacto en mono (`22.5×8`) y "Serie N" (✓ si está hecha). Tocar una columna la vuelve la actual. Entra con 2 a 5 series a 360px |
 

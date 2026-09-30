@@ -47,6 +47,16 @@ const REPS_STEP = 1;
 const TIME_STEP_SECONDS = 5;
 const MINUTES_STEP = 1;
 
+/**
+ * Unidad del campo de carga: corta a la vista y completa para lectores de pantalla. Con mancuernas el peso es
+ * por mancuerna, igual que los estándares del nivel de fuerza (docs/STRENGTH_STANDARDS.md).
+ */
+export function loadUnit(exercise: Pick<ExercisePlan, "kind" | "equipment">) {
+  if (exercise.kind === "bodyweight") return { short: "+kg", full: "lastre en kg" };
+  if (exercise.equipment === "Mancuernas") return { short: "kg c/u", full: "kg por mancuerna" };
+  return { short: "kg", full: "kg" };
+}
+
 /** Objetivo en minutos ("30m") se carga en minutos y se guarda en segundos. */
 export function timeFactor(exercise: Pick<ExercisePlan, "kind" | "target">) {
   return exercise.kind === "time" && parsePlanTarget(exercise.target)?.measure === "minutes" ? 60 : 1;

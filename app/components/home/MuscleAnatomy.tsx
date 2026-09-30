@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { ChevronRight } from "lucide-react";
 
 import { HomeSectionHeader } from "@/app/components/home/HomeSectionHeader";
 import {
@@ -9,18 +11,24 @@ import {
   type MuscleView,
 } from "@/app/components/shared/BodyMuscleFigure";
 import {
-  STRENGTH_RANGE_COLORS,
-  STRENGTH_RANGE_LABELS,
-  STRENGTH_RANGE_ORDER,
+  STRENGTH_EMPTY_COLOR,
+  STRENGTH_LEVEL_COLORS,
+  strengthFill,
+  strengthLabel,
+  strengthScore,
 } from "@/app/lib/strength-colors";
 import { formatMuscleGroup } from "@/app/lib/home-dashboard";
+import type { StrengthDivision, StrengthLevel } from "@/app/lib/strength-standards";
 import { cn } from "@/app/lib/utils";
-import type { MuscleStrengthRange } from "@/app/lib/workout-tracking";
 
 export type MuscleStrengthPoint = {
   muscleGroup: string;
-  range: MuscleStrengthRange;
-  bestWeight: number | null;
+  level: StrengthLevel | null;
+  division: StrengthDivision | null;
+  /** Marca corta de la etiqueta ("80 kg", "75 s"); null = sin datos. */
+  mark: string | null;
+  /** Línea bajo la figura cuando el grupo está elegido: con qué ejercicio se midió o cómo medirlo. */
+  detail: string;
 };
 
 type Side = "left" | "right";
@@ -30,15 +38,16 @@ const CALLOUTS: Record<MuscleView, Array<{ group: string; muscle: string; side: 
   front: [
     { group: "Pecho", muscle: "chest", side: "left" },
     { group: "Core", muscle: "abs", side: "left" },
-    { group: "Piernas", muscle: "quadriceps", side: "left" },
+    { group: "Cuadriceps", muscle: "quadriceps", side: "left" },
     { group: "Hombros", muscle: "front-deltoids", side: "right" },
     { group: "Biceps", muscle: "biceps", side: "right" },
   ],
   back: [
     { group: "Espalda", muscle: "upper-back", side: "left" },
-    { group: "Piernas", muscle: "hamstring", side: "left" },
+    { group: "Isquios", muscle: "hamstring", side: "left" },
     { group: "Hombros", muscle: "back-deltoids", side: "right" },
     { group: "Triceps", muscle: "triceps", side: "right" },
+    { group: "Gluteos", muscle: "gluteal", side: "right" },
   ],
 };
 
@@ -46,10 +55,13 @@ const LABEL_WIDTH = 86;
 const LABEL_SPACING = 64;
 const DIMMED_OPACITY = 0.32;
 
-/** Z6 · "Tus músculos": cuerpo por rango de fuerza, sin card (D5-2 · D6-A · D8-A). */
-export function MuscleAnatomy({ points }: { points: MuscleStrengthPoint[] }) {
+/**
+ * Z6 · "Tus músculos": cuerpo por nivel de fuerza, sin card (D5-2 · D6-A · D8-A). Color por nivel e intensidad
+ * por división (DESIGN.md §1.6). Sin perfil no hay nivel: la tabla depende de sexo, peso y edad.
+ */
+export function MuscleAnatomy({ points, needsProfile }: { points: MuscleStrengthPoint[]; needsProfile: boolean }) {
   const byGroup = new Map(points.map((point) => [point.muscleGroup, point]));
-  const withData = points.filter((point) => point.bestWeight != null).length;
+  const withData = points.filter((point) => point.level != null).length;
 
   const [view, setView] = useState<MuscleView>("front");
   const [selected, setSelected] = useState<string | null>(() => strongestGroup("front", byGroup));
@@ -64,9 +76,9 @@ export function MuscleAnatomy({ points }: { points: MuscleStrengthPoint[] }) {
     return () => observer.disconnect();
   }, [withData]);
 
-  const fills = Object.fromEntries(points.map((point) => [point.muscleGroup, STRENGTH_RANGE_COLORS[point.range]]));
+  const fills = Object.fromEntries(points.map((point) => [point.muscleGroup, strengthFill(point.level, point.division)]));
 
-  if (withData === 0) {
+  if (needsProfile || withData === 0) {
     return (
       <section aria-labelledby="home-muscles-title" className="grid gap-4">
         <div className="grid gap-1">
@@ -74,15 +86,31 @@ export function MuscleAnatomy({ points }: { points: MuscleStrengthPoint[] }) {
           <p className="text-[13px] text-[var(--foreground-muted)]">Nivel de fuerza por grupo</p>
         </div>
         <div role="img" aria-label="Figura sin datos de fuerza" className="flex justify-center gap-7 pt-2">
-          <MuscleBodyView view="front" width={104} fills={fills} />
-          <MuscleBodyView view="back" width={104} fills={fills} />
+          <MuscleBodyView view="front" width={104} fills={needsProfile ? {} : fills} />
+          <MuscleBodyView view="back" width={104} fills={needsProfile ? {} : fills} />
         </div>
-        <div className="grid gap-1 text-center">
-          <p className="text-base font-semibold text-[var(--foreground)]">Todavía sin datos de fuerza</p>
-          <p className="mx-auto max-w-[30ch] text-sm text-[var(--foreground-muted)]">
-            Cargá el peso en tus series y cada músculo se pinta según tu mejor marca.
-          </p>
-        </div>
+        {needsProfile ? (
+          <div className="grid justify-items-center gap-1 text-center">
+            <p className="text-base font-semibold text-[var(--foreground)]">Completá tu perfil</p>
+            <p className="mx-auto max-w-[32ch] text-sm text-[var(--foreground-muted)]">
+              Tu nivel se compara con gente de tu sexo, peso y edad.
+            </p>
+            <Link
+              href="/configuracion"
+              className="pressable inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-[var(--foreground)]"
+            >
+              Completar perfil
+              <ChevronRight aria-hidden="true" className="size-4" />
+            </Link>
+          </div>
+        ) : (
+          <div className="grid gap-1 text-center">
+            <p className="text-base font-semibold text-[var(--foreground)]">Todavía sin datos de fuerza</p>
+            <p className="mx-auto max-w-[30ch] text-sm text-[var(--foreground-muted)]">
+              Cargá el peso en tus series y cada músculo se pinta según tu mejor marca.
+            </p>
+          </div>
+        )}
         <StrengthScale />
       </section>
     );
@@ -117,13 +145,12 @@ export function MuscleAnatomy({ points }: { points: MuscleStrengthPoint[] }) {
   const opacities = Object.fromEntries(
     points.map((point) => [
       point.muscleGroup,
-      selected && point.muscleGroup !== selected && point.range !== "sin_datos" ? DIMMED_OPACITY : 1,
+      selected && point.muscleGroup !== selected && point.level != null ? DIMMED_OPACITY : 1,
     ]),
   );
+  const selectedPoint = selected ? byGroup.get(selected) : undefined;
   const viewFills =
-    selected && byGroup.get(selected)?.range === "sin_datos"
-      ? { ...fills, [selected]: "var(--foreground-subtle)" }
-      : fills;
+    selected && selectedPoint?.level == null ? { ...fills, [selected]: "var(--foreground-subtle)" } : fills;
 
   function changeView(next: MuscleView) {
     setView(next);
@@ -171,8 +198,8 @@ export function MuscleAnatomy({ points }: { points: MuscleStrengthPoint[] }) {
             const startX = callout.side === "left" ? LABEL_WIDTH + 2 : stageWidth - LABEL_WIDTH - 2;
             const startY = callout.top + 22;
             const stroke = isSelected
-              ? point && point.range !== "sin_datos"
-                ? STRENGTH_RANGE_COLORS[point.range]
+              ? point?.level
+                ? STRENGTH_LEVEL_COLORS[point.level]
                 : "var(--foreground-muted)"
               : "var(--border-strong)";
             return (
@@ -200,17 +227,17 @@ export function MuscleAnatomy({ points }: { points: MuscleStrengthPoint[] }) {
 
         {callouts.map((callout) => {
           const point = byGroup.get(callout.group);
-          const range = point?.range ?? "sin_datos";
+          const level = point?.level ?? null;
+          const division = point?.division ?? null;
           const isSelected = callout.group === selected;
           const label = formatMuscleGroup(callout.group);
-          const weight = point?.bestWeight != null ? `${point.bestWeight} kg` : null;
           const swatch = (
             <span
               aria-hidden="true"
               className="block size-2 rounded-[2px]"
               style={{
-                background: STRENGTH_RANGE_COLORS[range],
-                boxShadow: range === "sin_datos" ? "inset 0 0 0 1px var(--border-strong)" : undefined,
+                background: strengthFill(level, division),
+                boxShadow: level ? undefined : "inset 0 0 0 1px var(--border-strong)",
               }}
             />
           );
@@ -219,7 +246,7 @@ export function MuscleAnatomy({ points }: { points: MuscleStrengthPoint[] }) {
               key={`${view}-${callout.group}`}
               type="button"
               aria-pressed={isSelected}
-              aria-label={`${label}, ${weight ?? "sin registros"}, rango ${STRENGTH_RANGE_LABELS[range]}`}
+              aria-label={`${label}, ${point?.mark ?? "sin registros"}, nivel ${strengthLabel(level, division)}`}
               onClick={() => setSelected(callout.group)}
               className={cn(
                 "absolute grid min-h-11 content-center gap-1 rounded-lg",
@@ -242,23 +269,29 @@ export function MuscleAnatomy({ points }: { points: MuscleStrengthPoint[] }) {
                 )}
               >
                 {callout.side === "left" ? swatch : null}
-                {weight ?? "—"}
+                {point?.mark ?? "—"}
                 {callout.side === "right" ? swatch : null}
               </span>
               {isSelected ? (
                 <span
                   className="text-xs font-semibold leading-none"
-                  style={{
-                    color: range === "sin_datos" ? "var(--foreground-muted)" : STRENGTH_RANGE_COLORS[range],
-                  }}
+                  style={{ color: level ? STRENGTH_LEVEL_COLORS[level] : "var(--foreground-muted)" }}
                 >
-                  {STRENGTH_RANGE_LABELS[range]}
+                  {strengthLabel(level, division)}
                 </span>
               ) : null}
             </button>
           );
         })}
       </div>
+
+      {selectedPoint ? (
+        <p aria-live="polite" className="-mt-1 min-h-10 text-[13px] leading-5 text-[var(--foreground-muted)]">
+          <span className="font-semibold text-[var(--foreground)]">{formatMuscleGroup(selectedPoint.muscleGroup)}</span>
+          {" · "}
+          {selectedPoint.detail}
+        </p>
+      ) : null}
 
       <StrengthScale />
 
@@ -275,25 +308,17 @@ function StrengthScale() {
   return (
     <div className="flex min-h-12 items-center justify-between gap-3 border-t border-[var(--border)]">
       <div className="flex items-center gap-1 text-xs font-medium text-[var(--foreground-muted)]">
-        <span className="mr-1">Base</span>
-        {(["base", "fuerte", "avanzado", "elite"] as const).map((range) => (
-          <span
-            key={range}
-            aria-hidden="true"
-            className="block h-1.5 w-5 rounded-[3px]"
-            style={{ background: STRENGTH_RANGE_COLORS[range] }}
-          />
+        <span className="mr-1">Principiante</span>
+        {Object.entries(STRENGTH_LEVEL_COLORS).map(([level, color]) => (
+          <span key={level} aria-hidden="true" className="block h-1.5 w-3.5 rounded-[3px]" style={{ background: color }} />
         ))}
-        <span className="ml-1">Elite</span>
+        <span className="ml-1">Élite</span>
       </div>
-      <span className="flex items-center gap-1.5 text-xs font-medium text-[var(--foreground-muted)]">
+      <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap text-xs font-medium text-[var(--foreground-muted)]">
         <span
           aria-hidden="true"
           className="block size-2.5 rounded-[3px]"
-          style={{
-            background: STRENGTH_RANGE_COLORS.sin_datos,
-            boxShadow: "inset 0 0 0 1px var(--border-strong)",
-          }}
+          style={{ background: STRENGTH_EMPTY_COLOR, boxShadow: "inset 0 0 0 1px var(--border-strong)" }}
         />
         Sin datos
       </span>
@@ -301,17 +326,13 @@ function StrengthScale() {
   );
 }
 
-/** El grupo con mejor rango (y más kg) entre los que tienen etiqueta en la vista. */
+/** El grupo con mejor nivel (y división) entre los que tienen etiqueta en la vista. */
 function strongestGroup(view: MuscleView, byGroup: Map<string, MuscleStrengthPoint>) {
   let best: MuscleStrengthPoint | null = null;
   for (const { group } of CALLOUTS[view]) {
     const point = byGroup.get(group);
-    if (!point || point.bestWeight == null) continue;
-    if (
-      !best ||
-      STRENGTH_RANGE_ORDER.indexOf(point.range) > STRENGTH_RANGE_ORDER.indexOf(best.range) ||
-      (point.range === best.range && point.bestWeight > (best.bestWeight ?? 0))
-    ) {
+    if (!point || point.level == null) continue;
+    if (!best || strengthScore(point.level, point.division) > strengthScore(best.level, best.division)) {
       best = point;
     }
   }

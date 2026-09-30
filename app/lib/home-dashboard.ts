@@ -15,7 +15,12 @@ export type HeroState =
   | "needs_schedule"
   | "rest";
 
-const MUSCLE_GROUP_LABELS: Record<string, string> = { Biceps: "Bíceps", Triceps: "Tríceps" };
+const MUSCLE_GROUP_LABELS: Record<string, string> = {
+  Biceps: "Bíceps",
+  Triceps: "Tríceps",
+  Cuadriceps: "Cuádriceps",
+  Gluteos: "Glúteos",
+};
 
 /** `muscle_group` de la base ("Biceps") → texto de UI ("Bíceps"). */
 export function formatMuscleGroup(group: string) {
