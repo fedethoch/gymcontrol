@@ -15,6 +15,7 @@ import {
 
 import { HomeGreeting } from "@/app/components/home/HomeGreeting";
 import { HomeNutrition } from "@/app/components/home/HomeNutrition";
+import { HomeSupplements } from "@/app/components/home/HomeSupplements";
 import { HomeWeekPlanner, type DaySheet } from "@/app/components/home/HomeWeekPlanner";
 import { HomeWeekStats } from "@/app/components/home/HomeWeekStats";
 import { MuscleAnatomy } from "@/app/components/home/MuscleAnatomy";
@@ -33,7 +34,7 @@ import {
 } from "@/app/components/ui/motion";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
 import { requireUser } from "@/app/lib/auth";
-import { addDaysToDateKey } from "@/app/lib/local-date";
+import { addDaysToDateKey, getLocalMinutesOfDay } from "@/app/lib/local-date";
 import {
   buildMealRows,
   formatDayGroups,
@@ -57,6 +58,7 @@ import {
   getSavedRoutineByIdForUser,
   listSavedRoutinesForUser,
 } from "@/app/lib/saved-routines";
+import { getHomeSupplements } from "@/app/lib/supplements-store";
 import { buildWeekStrip, suggestWeekdays } from "@/app/lib/training-schedule";
 import { countDatesThisWeek } from "@/app/lib/week";
 import { estimateDayMinutes, isValidSet } from "@/app/lib/workout-progression";
@@ -83,12 +85,14 @@ export default async function Home() {
   const auth = await requireUser();
   const logDate = getLocalTrainingDate();
 
-  const [savedRoutines, mealLog, nutritionProfile, nutritionLoggedDates] = await Promise.all([
+  const [savedRoutines, mealLog, nutritionProfile, nutritionLoggedDates, supplements] = await Promise.all([
     listSavedRoutinesForUser(auth.user.id),
     getMealLogForDate({ userId: auth.user.id, logDate }),
     getNutritionProfile(auth.user.id),
     getLoggedDatesForUser({ userId: auth.user.id, days: 70 }),
+    getHomeSupplements(auth.user.id, logDate),
   ]);
+  const nowMinutes = getLocalMinutesOfDay();
 
   const activeRoutineListItem = findActiveSavedRoutine(savedRoutines);
 
@@ -289,6 +293,12 @@ export default async function Home() {
             </div>
           </>
         ) : null}
+        {/* Z7 · al final de todo y solo con suplementos marcados (DESIGN.md §10.1). */}
+        {supplements.length > 0 ? (
+          <div className="mt-9">
+            <HomeSupplements initialItems={supplements} nowMinutes={nowMinutes} />
+          </div>
+        ) : null}
       </div>
 
       {/* ── Desktop (≥1024) · layout de cards ── */}
@@ -482,6 +492,10 @@ export default async function Home() {
           <ComidasHoyCard meals={meals} totalKcal={totalKcal} />
         </MotionDiv>
       </MotionSection>
+
+      {supplements.length > 0 ? (
+        <HomeSupplements initialItems={supplements} nowMinutes={nowMinutes} variant="card" />
+      ) : null}
       </div>
     </section>
   );

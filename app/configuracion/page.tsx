@@ -2,6 +2,7 @@ import { ConfiguracionClient } from "@/app/configuracion/ConfiguracionClient";
 import { requireUser } from "@/app/lib/auth";
 import { getNotificationPreferences } from "@/app/lib/notification-preferences";
 import { getNutritionProfile } from "@/app/lib/nutrition-profile";
+import { listSupplementsForUser } from "@/app/lib/supplements-store";
 
 type ConfiguracionPageProps = {
   searchParams: Promise<{ panel?: string | string[] }>;
@@ -9,9 +10,10 @@ type ConfiguracionPageProps = {
 
 export default async function ConfiguracionPage({ searchParams }: ConfiguracionPageProps) {
   const [auth, { panel }] = await Promise.all([requireUser(), searchParams]);
-  const [profile, notificationPrefs] = await Promise.all([
+  const [profile, notificationPrefs, supplements] = await Promise.all([
     getNutritionProfile(auth.user.id),
     getNotificationPreferences(auth.user.id),
+    listSupplementsForUser(auth.user.id),
   ]);
 
   return (
@@ -35,6 +37,8 @@ export default async function ConfiguracionPage({ searchParams }: ConfiguracionP
         email={auth.user.email}
         initialNotificationPrefs={notificationPrefs}
         openNotifications={panel === "notificaciones"}
+        initialSupplements={supplements}
+        openSupplements={panel === "suplementos"}
       />
     </section>
   );

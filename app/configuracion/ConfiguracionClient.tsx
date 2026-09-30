@@ -21,6 +21,12 @@ import { ProfileSetupFlow } from "@/app/components/configuracion/ProfileSetupFlo
 import { ProjectionSection } from "@/app/components/configuracion/ProjectionSection";
 import { SetupHero } from "@/app/components/configuracion/SetupHero";
 import { SignOutForm } from "@/app/components/configuracion/SignOutForm";
+import { SupplementRows } from "@/app/components/configuracion/SupplementRows";
+import {
+  SupplementSettings,
+  type SupplementRemindersState,
+} from "@/app/components/configuracion/SupplementSettings";
+import { SupplementsSheet } from "@/app/components/configuracion/SupplementsSheet";
 import { usePushDevice } from "@/app/components/configuracion/usePushDevice";
 import { AnimatedProgressRing } from "@/app/components/ui/ProgressRing";
 import { BodyFatFigure } from "@/app/components/shared/BodyFatFigure";
@@ -39,7 +45,9 @@ import { useMediaQuery } from "@/app/components/ui/use-media-query";
 import { deleteAccountAction, saveProfileNameAction } from "@/app/configuracion/actions";
 import { useNotificationPrefs } from "@/app/configuracion/useNotificationPrefs";
 import { useProfileForm } from "@/app/configuracion/useProfileForm";
+import { useSupplements } from "@/app/configuracion/useSupplements";
 import type { NotificationPreferences } from "@/app/lib/notifications";
+import type { Supplement } from "@/app/lib/supplements";
 import { MACRO_COLORS, MACRO_LABELS } from "@/app/lib/nutrition-style";
 import {
   ACTIVITY_LEVEL_INFO,
@@ -64,10 +72,11 @@ import {
 
 const DELETE_CONFIRM_TEXT = "BORRAR";
 
-type MobileSheet = PlanSheet | "bodyFat" | "name" | "delete" | "notifications";
+type MobileSheet = PlanSheet | "bodyFat" | "name" | "delete" | "notifications" | "supplements";
 
 const BODY_FAT_CARD_ID = "configuracion-grasa-corporal";
 const NOTIFICATIONS_CARD_ID = "configuracion-notificaciones";
+const SUPPLEMENTS_CARD_ID = "configuracion-suplementos";
 
 export function ConfiguracionClient({
   initialProfile,
@@ -75,6 +84,8 @@ export function ConfiguracionClient({
   email,
   initialNotificationPrefs,
   openNotifications,
+  initialSupplements,
+  openSupplements,
 }: {
   initialProfile: NutritionProfile | null;
   initialDisplayName: string | null;
@@ -82,6 +93,9 @@ export function ConfiguracionClient({
   initialNotificationPrefs: NotificationPreferences;
   /** `/configuracion?panel=notificaciones` (campanas de Inicio y del header). */
   openNotifications: boolean;
+  initialSupplements: Supplement[];
+  /** `/configuracion?panel=suplementos` ("Editar" de Suplementos en Inicio). */
+  openSupplements: boolean;
 }) {
   const [displayName, setDisplayName] = useState(initialDisplayName ?? "");
   const savedNameRef = useRef(initialDisplayName ?? "");
@@ -95,17 +109,36 @@ export function ConfiguracionClient({
   const form = useProfileForm(initialProfile, { autosavePaused: setupOpen });
   const pushDevice = usePushDevice();
   const notificationPrefs = useNotificationPrefs(initialNotificationPrefs);
+  const supplements = useSupplements(initialSupplements);
   const isDesktop = useMediaQuery("(min-width: 1024px)");
   const [notificationsLinkClosed, setNotificationsLinkClosed] = useState(false);
+  const [supplementsLinkClosed, setSupplementsLinkClosed] = useState(false);
   // Campana → S7 en mobile (DESIGN.md §15.2); en desktop el drawer no corresponde: baja a la card de avisos.
   const notificationsOpen =
     sheet === "notifications" || (openNotifications && !notificationsLinkClosed && isDesktop === false);
+  // "Editar" de Suplementos en Inicio → S8; en desktop baja a la card.
+  const supplementsOpen =
+    sheet === "supplements" || (openSupplements && !supplementsLinkClosed && isDesktop === false);
+  const supplementReminders: SupplementRemindersState =
+    pushDevice.status === "subscribed"
+      ? notificationPrefs.prefs.supplements
+        ? "on"
+        : "master_off"
+      : pushDevice.status === "loading"
+        ? "unknown"
+        : "device_off";
 
   useEffect(() => {
     if (!openNotifications || isDesktop !== true) return;
     document.getElementById(NOTIFICATIONS_CARD_ID)?.scrollIntoView({ behavior: "smooth", block: "start" });
     window.history.replaceState(null, "", "/configuracion");
   }, [openNotifications, isDesktop]);
+
+  useEffect(() => {
+    if (!openSupplements || isDesktop !== true) return;
+    document.getElementById(SUPPLEMENTS_CARD_ID)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.history.replaceState(null, "", "/configuracion");
+  }, [openSupplements, isDesktop]);
 
   const {
     gender,
@@ -168,17 +201,33 @@ export function ConfiguracionClient({
   const datosCompletos = Number(age) > 0 && Number(heightCm) > 0 && Number(weightKg) > 0;
   const bodyFatReferences = BODY_FAT_REFERENCES[gender];
 
-  function handleSheetOpenChange(open: boolean) {
-    if (open) return;
+  function closeLinkedPanels() {
     form.flush();
     notificationPrefs.flush();
-    setSheet(null);
+    supplements.flush();
     setNotificationsLinkClosed(true);
+    setSupplementsLinkClosed(true);
 
-    // Abierto desde la campana: al cerrar, recargar o volver no lo reabre.
+    // Abierto desde la campana o desde Inicio: al cerrar, recargar o volver no lo reabre.
     if (new URLSearchParams(window.location.search).has("panel")) {
       window.history.replaceState(null, "", "/configuracion");
     }
+  }
+
+  function handleSheetOpenChange(open: boolean) {
+    if (open) return;
+    closeLinkedPanels();
+    setSheet(null);
+  }
+
+  /** S7 y S8 sin sheets apilados: cierra uno y abre el otro. */
+  function switchSheet(next: "notifications" | "supplements") {
+    closeLinkedPanels();
+    setSheet(next);
+  }
+
+  function scrollToCard(id: string) {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function scrollToBodyFat() {
@@ -418,6 +467,10 @@ export function ConfiguracionClient({
             )}
 
             <div className="mt-10">
+              <SupplementRows activeCount={supplements.activeCount} onOpen={() => setSheet("supplements")} />
+            </div>
+
+            <div className="mt-10">
               <NotificationRows status={pushDevice.status} onOpen={() => setSheet("notifications")} />
             </div>
 
@@ -461,6 +514,15 @@ export function ConfiguracionClient({
           device={pushDevice}
           form={notificationPrefs}
           hasNutritionProfile={form.hasProfile}
+          supplementsCount={supplements.activeCount}
+          onChooseSupplements={() => switchSheet("supplements")}
+        />
+        <SupplementsSheet
+          open={supplementsOpen}
+          onOpenChange={handleSheetOpenChange}
+          form={supplements}
+          reminders={supplementReminders}
+          onOpenNotifications={() => switchSheet("notifications")}
         />
       </div>
 
@@ -502,12 +564,31 @@ export function ConfiguracionClient({
           <CardContent>{goalBody}</CardContent>
         </Card>
 
+        <Card id={SUPPLEMENTS_CARD_ID} className="scroll-mt-6">
+          <CardHeader>
+            <CardTitle>Suplementos</CardTitle>
+          </CardHeader>
+          <CardContent className="max-w-xl">
+            <SupplementSettings
+              form={supplements}
+              reminders={supplementReminders}
+              onOpenNotifications={() => scrollToCard(NOTIFICATIONS_CARD_ID)}
+            />
+          </CardContent>
+        </Card>
+
         <Card id={NOTIFICATIONS_CARD_ID} className="scroll-mt-6">
           <CardHeader>
             <CardTitle>Notificaciones</CardTitle>
           </CardHeader>
           <CardContent className="max-w-xl">
-            <NotificationSettings device={pushDevice} form={notificationPrefs} hasNutritionProfile={form.hasProfile} />
+            <NotificationSettings
+              device={pushDevice}
+              form={notificationPrefs}
+              hasNutritionProfile={form.hasProfile}
+              supplementsCount={supplements.activeCount}
+              onChooseSupplements={() => scrollToCard(SUPPLEMENTS_CARD_ID)}
+            />
           </CardContent>
         </Card>
       </div>

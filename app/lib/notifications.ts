@@ -5,7 +5,7 @@ export const MEAL_REMINDER_TYPES = ["desayuno", "almuerzo", "merienda", "cena"] 
 
 export type MealReminderType = (typeof MEAL_REMINDER_TYPES)[number];
 export type ReminderKind = "training" | `meal_${MealReminderType}` | "weekly";
-export type PushKind = ReminderKind | "rest_end";
+export type PushKind = ReminderKind | "rest_end" | "supplements";
 
 export type ReminderSetting = { enabled: boolean; time: string };
 
@@ -15,6 +15,8 @@ export type NotificationPreferences = {
   /** `isoDay`: 1 = lunes … 7 = domingo. */
   weekly: ReminderSetting & { isoDay: number };
   restEnd: boolean;
+  /** Maestro de los avisos de suplementos (la hora es de cada suplemento, app/lib/supplements.ts). */
+  supplements: boolean;
 };
 
 export const DEFAULT_NOTIFICATION_PREFERENCES: NotificationPreferences = {
@@ -27,6 +29,7 @@ export const DEFAULT_NOTIFICATION_PREFERENCES: NotificationPreferences = {
   },
   weekly: { enabled: true, isoDay: 7, time: "20:00" },
   restEnd: true,
+  supplements: true,
 };
 
 /** Fila de `notification_preferences`. Postgres devuelve `time` como HH:MM:SS. */
@@ -45,6 +48,7 @@ export type NotificationPreferencesRow = {
   weekly_iso_day: number;
   weekly_time: string;
   rest_end_enabled: boolean;
+  supplements_enabled: boolean;
 };
 
 export const NOTIFICATION_PREFERENCES_COLUMNS = [
@@ -55,6 +59,7 @@ export const NOTIFICATION_PREFERENCES_COLUMNS = [
   "weekly_iso_day",
   "weekly_time",
   "rest_end_enabled",
+  "supplements_enabled",
 ].join(", ");
 
 const TIME_PATTERN = /^([01]\d|2[0-3]):([0-5]\d)(?::[0-5]\d(?:\.\d+)?)?$/;
@@ -102,6 +107,7 @@ export function preferencesFromRow(row: NotificationPreferencesRow | null): Noti
       time: normalizeTime(row.weekly_time, defaults.weekly.time),
     },
     restEnd: row.rest_end_enabled,
+    supplements: row.supplements_enabled,
   };
 }
 
@@ -121,6 +127,7 @@ export function preferencesToRow(prefs: NotificationPreferences): NotificationPr
     weekly_iso_day: prefs.weekly.isoDay,
     weekly_time: prefs.weekly.time,
     rest_end_enabled: prefs.restEnd,
+    supplements_enabled: prefs.supplements,
   };
 }
 

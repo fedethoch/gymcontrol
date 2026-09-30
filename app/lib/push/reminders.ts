@@ -16,6 +16,7 @@ import {
   trainingReminderMessage,
   weeklySummaryMessage,
   type MealReminderType,
+  type NotificationPreferences,
   type NotificationPreferencesRow,
   type PushMessage,
   type ReminderKind,
@@ -23,6 +24,14 @@ import {
 import { getNutritionProfile } from "@/app/lib/nutrition-profile";
 import { sendPush } from "@/app/lib/push/send";
 import { listPushTargetsForUsers } from "@/app/lib/push/store";
+import {
+  pendingSupplements,
+  shouldSendSupplementReminder,
+  supplementDeliveryKind,
+  supplementReminderMessage,
+  SUPPLEMENTS_REMINDER_PATH,
+} from "@/app/lib/supplements";
+import { listSupplementReminderState } from "@/app/lib/supplements-store";
 import { dayMuscleGroups } from "@/app/lib/routine-week";
 import {
   findActiveSavedRoutine,
@@ -146,7 +155,8 @@ async function evaluate(
 
 /**
  * Tick del cron (cada 5 min, DESIGN.md §6.4): por cada usuario con avisos activados, los recordatorios cuya
- * hora llegó y que hoy todavía no salieron. `push_deliveries` es el reclamo idempotente (una vez por día).
+ * hora llegó y que hoy todavía no salieron. `push_deliveries` es el reclamo idempotente (una vez por día;
+ * los suplementos, una fila por tanda).
  */
 export async function runReminderTick(admin: SupabaseClient, now = new Date()) {
   const todayKey = getTodayDateKey(now);
@@ -174,10 +184,37 @@ export async function runReminderTick(admin: SupabaseClient, now = new Date()) {
       preferencesFromRow(row),
     ]),
   );
+  const prefsOf = (userId: string) => preferences.get(userId) ?? DEFAULT_NOTIFICATION_PREFERENCES;
 
-  const due = userIds.flatMap((userId) =>
-    dueReminders(preferences.get(userId) ?? DEFAULT_NOTIFICATION_PREFERENCES, local).map((kind) => ({ userId, kind })),
-  );
+  const fixed = await runFixedReminders(admin, userIds, prefsOf, todayKey, local);
+  let supplements = { due: 0, sent: 0 };
+
+  try {
+    supplements = await runSupplementReminders(
+      admin,
+      userIds.filter((userId) => prefsOf(userId).supplements),
+      todayKey,
+      local.minutes,
+    );
+  } catch (error) {
+    // Sin fila en push_deliveries: el próximo tick lo vuelve a intentar.
+    console.error("push: no se pudieron evaluar los suplementos", {
+      message: error instanceof Error ? error.message : String(error),
+    });
+  }
+
+  return { due: fixed.due + supplements.due, sent: fixed.sent + supplements.sent };
+}
+
+/** Entreno, comidas y resumen semanal: cada uno una vez por día dentro de su ventana. */
+async function runFixedReminders(
+  admin: SupabaseClient,
+  userIds: string[],
+  prefsOf: (userId: string) => NotificationPreferences,
+  todayKey: string,
+  local: { minutes: number; isoDay: number },
+) {
+  const due = userIds.flatMap((userId) => dueReminders(prefsOf(userId), local).map((kind) => ({ userId, kind })));
 
   if (due.length === 0) {
     return { due: 0, sent: 0 };
@@ -242,4 +279,62 @@ export async function runReminderTick(admin: SupabaseClient, now = new Date()) {
   }
 
   return { due: pending.length, sent };
+}
+
+/**
+ * Suplementos (DESIGN.md §6.4): un aviso agrupado con los pendientes, a su hora y cada 1 h hasta que se tilden
+ * (repeticiones hasta las 23:00). Cada tanda reclama su fila `supplements_HHMM`.
+ */
+async function runSupplementReminders(admin: SupabaseClient, userIds: string[], todayKey: string, minutes: number) {
+  const state = await listSupplementReminderState(admin, userIds, todayKey);
+  const batches = [...state.entries()].flatMap(([userId, entry]) => {
+    const pending = pendingSupplements(entry.supplements, entry.takenIds, minutes);
+
+    return shouldSendSupplementReminder({ pending, lastSendMinutes: entry.lastSendMinutes, minutes })
+      ? [{ userId, pending }]
+      : [];
+  });
+
+  if (batches.length === 0) {
+    return { due: 0, sent: 0 };
+  }
+
+  const targets = await listPushTargetsForUsers(admin, batches.map((batch) => batch.userId));
+  const kind = supplementDeliveryKind(minutes);
+  let sent = 0;
+
+  for (const { userId, pending } of batches) {
+    const key = { user_id: userId, kind, local_date: todayKey };
+    const { data: claimed } = await admin
+      .from("push_deliveries")
+      .upsert({ ...key, status: "sending", detail: null }, { onConflict: "user_id,kind,local_date", ignoreDuplicates: true })
+      .select("user_id");
+
+    if (!claimed?.length) {
+      continue;
+    }
+
+    const message = supplementReminderMessage(pending.map((item) => item.name));
+    const results = await Promise.all(
+      targets
+        .filter((target) => target.userId === userId)
+        .map((target) =>
+          sendPush(
+            admin,
+            target,
+            buildPushPayload({ kind: "supplements", message, origin: target.origin, path: SUPPLEMENTS_REMINDER_PATH }),
+          ),
+        ),
+    );
+    const ok = results.includes("sent");
+
+    await admin
+      .from("push_deliveries")
+      .update({ status: ok ? "sent" : "failed", detail: ok ? null : results.join(",") || "sin dispositivos" })
+      .match(key);
+
+    if (ok) sent += 1;
+  }
+
+  return { due: batches.length, sent };
 }

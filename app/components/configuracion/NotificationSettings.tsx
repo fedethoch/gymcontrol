@@ -1,8 +1,9 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Bell, BellOff, CalendarCheck, Dumbbell, Share, SquarePlus, Timer, Utensils } from "lucide-react";
+import { Bell, BellOff, CalendarCheck, ChevronRight, Dumbbell, Share, SquarePlus, Timer, Utensils } from "lucide-react";
 
+import { TimeInput } from "@/app/components/configuracion/TimeInput";
 import type { PushDevice } from "@/app/components/configuracion/usePushDevice";
 import { Button } from "@/app/components/ui/Button";
 import { LoadingDots } from "@/app/components/ui/LoadingDots";
@@ -10,7 +11,6 @@ import { Switch } from "@/app/components/ui/Switch";
 import type { NotificationPrefsForm } from "@/app/configuracion/useNotificationPrefs";
 import {
   MEAL_REMINDER_TYPES,
-  normalizeTime,
   type MealReminderType,
   type ReminderSetting,
 } from "@/app/lib/notifications";
@@ -34,16 +34,27 @@ export function NotificationSettings({
   device,
   form,
   hasNutritionProfile,
+  supplementsCount,
+  onChooseSupplements,
 }: {
   device: PushDevice;
   form: NotificationPrefsForm;
   hasNutritionProfile: boolean;
+  /** Suplementos marcados (grupo Suplementos, 2026-09-30). */
+  supplementsCount: number;
+  /** Cierra S7 y abre S8 (en desktop, baja a la card de suplementos). */
+  onChooseSupplements: () => void;
 }) {
   return (
     <div className="flex flex-col pt-4">
       <DeviceBlock device={device} />
       {device.status === "subscribed" ? (
-        <Preferences form={form} hasNutritionProfile={hasNutritionProfile} />
+        <Preferences
+          form={form}
+          hasNutritionProfile={hasNutritionProfile}
+          supplementsCount={supplementsCount}
+          onChooseSupplements={onChooseSupplements}
+        />
       ) : null}
       {device.swVersion ? (
         <p className="mt-6 text-xs text-[var(--foreground-muted)]">Versión de avisos {device.swVersion}</p>
@@ -190,7 +201,17 @@ function InstallStep({ number, icon, children }: { number: number; icon?: ReactN
   );
 }
 
-function Preferences({ form, hasNutritionProfile }: { form: NotificationPrefsForm; hasNutritionProfile: boolean }) {
+function Preferences({
+  form,
+  hasNutritionProfile,
+  supplementsCount,
+  onChooseSupplements,
+}: {
+  form: NotificationPrefsForm;
+  hasNutritionProfile: boolean;
+  supplementsCount: number;
+  onChooseSupplements: () => void;
+}) {
   const { prefs, setPrefs } = form;
 
   function setMeal(type: MealReminderType, next: ReminderSetting) {
@@ -237,6 +258,43 @@ function Preferences({ form, hasNutritionProfile }: { form: NotificationPrefsFor
         {hasNutritionProfile
           ? "Solo te avisamos si esa comida sigue sin registrar."
           : "Te llegan cuando calcules tu plan de nutrición."}
+      </p>
+
+      <p className={GROUP_LABEL}>Suplementos</p>
+      <div className="border-t border-[var(--border)]">
+        <div className={cn(ROW, "min-h-16 py-2")}>
+          <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+            <p className="text-[15px] font-medium text-[var(--foreground)]">Recordar suplementos</p>
+            <p className="text-[13px] leading-snug text-[var(--foreground-muted)]">Cada 1 hora hasta que lo marques</p>
+          </div>
+          <Switch
+            label="Recordar suplementos"
+            checked={prefs.supplements}
+            onCheckedChange={(supplements) => setPrefs((current) => ({ ...current, supplements }))}
+          />
+        </div>
+        <button
+          type="button"
+          onClick={onChooseSupplements}
+          className={cn(
+            ROW,
+            "min-h-14 w-full text-left outline-none transition-colors active:bg-[var(--card)] focus-visible:shadow-[var(--focus-glow)]",
+          )}
+        >
+          <span className="flex-1 text-[15px] font-medium text-[var(--foreground)]">Elegir suplementos</span>
+          <span
+            className={cn(
+              "text-[15px] text-[var(--foreground-muted)]",
+              supplementsCount > 0 && "font-mono tabular-nums",
+            )}
+          >
+            {supplementsCount > 0 ? supplementsCount : "Ninguno"}
+          </span>
+          <ChevronRight aria-hidden="true" className="size-5 shrink-0 text-[var(--foreground-subtle)]" />
+        </button>
+      </div>
+      <p className="mt-2.5 text-[13px] leading-snug text-[var(--foreground-muted)]">
+        La hora de cada uno se elige en Suplementos. El último aviso sale a las 23:00.
       </p>
 
       <p className={GROUP_LABEL}>Resumen semanal</p>
@@ -324,57 +382,5 @@ function ReminderRow({
       />
       <Switch label={label} checked={setting.enabled} onCheckedChange={(enabled) => onChange({ ...setting, enabled })} />
     </div>
-  );
-}
-
-/** Con mouse el control invisible no abre su selector al hacer click: se pide. En táctil ya abre la rueda. */
-function openTimePicker(input: HTMLInputElement) {
-  if (!window.matchMedia("(pointer: fine)").matches) return;
-
-  try {
-    input.showPicker?.();
-  } catch {
-    // Ya abierto, o el navegador no lo permite: queda el teclado.
-  }
-}
-
-/**
- * Hora del aviso. La pastilla muestra HH:MM (formato de la app, no el del celu: con reloj de 12 h iOS escribe
- * "10:00 AM" y no entra) y se ajusta al texto. Encima, un `<input type="time">` invisible con área táctil de
- * 44px abre la rueda del sistema.
- */
-function TimeInput({
-  label,
-  value,
-  disabled,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  disabled: boolean;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <label
-      className={cn(
-        "relative inline-flex h-9 shrink-0 items-center rounded-[10px] border border-[var(--border)] px-2.5 font-mono text-[15px] tabular-nums transition-colors focus-within:shadow-[var(--focus-glow)]",
-        disabled
-          ? "text-[var(--foreground-subtle)]"
-          : "bg-[var(--card)] text-[var(--foreground)] active:bg-[var(--card-alt)]",
-      )}
-    >
-      <span aria-hidden="true">{value}</span>
-      <input
-        type="time"
-        aria-label={label}
-        value={value}
-        disabled={disabled}
-        data-vaul-no-drag=""
-        onChange={(event) => onChange(normalizeTime(event.target.value, value))}
-        onClick={(event) => openTimePicker(event.currentTarget)}
-        // 34px de contenido (36 menos el borde) + 5px arriba y abajo = 44px táctiles.
-        className="absolute inset-x-0 -inset-y-[5px] cursor-pointer appearance-none opacity-0 disabled:cursor-default"
-      />
-    </label>
   );
 }

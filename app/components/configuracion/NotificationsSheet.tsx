@@ -12,12 +12,16 @@ export function NotificationsSheet({
   device,
   form,
   hasNutritionProfile,
+  supplementsCount,
+  onChooseSupplements,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   device: PushDevice;
   form: NotificationPrefsForm;
   hasNutritionProfile: boolean;
+  supplementsCount: number;
+  onChooseSupplements: () => void;
 }) {
   return (
     <ProfileSheet
@@ -26,7 +30,13 @@ export function NotificationsSheet({
       title="Notificaciones"
       description="Qué avisos te llegan al celu y a qué hora."
     >
-      <NotificationSettings device={device} form={form} hasNutritionProfile={hasNutritionProfile} />
+      <NotificationSettings
+        device={device}
+        form={form}
+        hasNutritionProfile={hasNutritionProfile}
+        supplementsCount={supplementsCount}
+        onChooseSupplements={onChooseSupplements}
+      />
     </ProfileSheet>
   );
 }

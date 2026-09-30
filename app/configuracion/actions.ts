@@ -8,6 +8,20 @@ import { requireUser } from "@/app/lib/auth";
 import { saveNotificationPreferences } from "@/app/lib/notification-preferences";
 import type { NotificationPreferences } from "@/app/lib/notifications";
 import {
+  cleanSupplementName,
+  findPresetByName,
+  MAX_CUSTOM_SUPPLEMENTS,
+  SUPPLEMENT_NAME_MAX_LENGTH,
+  SUPPLEMENT_PRESETS,
+  type Supplement,
+} from "@/app/lib/supplements";
+import {
+  countCustomSupplements,
+  deleteCustomSupplement,
+  listSupplementsForUser,
+  saveSupplement,
+} from "@/app/lib/supplements-store";
+import {
   CUSTOM_FAT_PCT_RANGE,
   CUSTOM_PROTEIN_RANGE,
   isVariantOf,
@@ -104,6 +118,7 @@ const notificationPreferencesSchema = z.object({
   }),
   weekly: reminderSchema.extend({ isoDay: z.number().int().min(1).max(7) }),
   restEnd: z.boolean(),
+  supplements: z.boolean(),
 });
 
 /** S7 Notificaciones (DESIGN.md §15.2): guardado automático de qué avisos y a qué hora. */
@@ -124,6 +139,121 @@ export async function saveNotificationPreferencesAction(
   }
 
   return { ok: true };
+}
+
+const supplementSchema = z.object({
+  id: z.string().uuid().nullable(),
+  presetKey: z.enum(SUPPLEMENT_PRESETS.map((preset) => preset.key) as [string, ...string[]]).nullable(),
+  active: z.boolean(),
+  reminderEnabled: z.boolean(),
+  reminderTime: reminderTimeSchema,
+});
+
+type SupplementResult = { ok: true; supplement: Supplement } | { ok: false; message: string };
+
+/** S8 Suplementos (DESIGN.md §15.2): marcar, desmarcar, hora y aviso de uno de la lista. */
+export async function saveSupplementAction(input: z.input<typeof supplementSchema>): Promise<SupplementResult> {
+  const auth = await requireUser();
+  const parsed = supplementSchema.safeParse(input);
+
+  if (!parsed.success || (!parsed.data.id && !parsed.data.presetKey)) {
+    return { ok: false, message: "Revisá el suplemento." };
+  }
+
+  const preset = SUPPLEMENT_PRESETS.find((item) => item.key === parsed.data.presetKey) ?? null;
+
+  try {
+    const id = await saveSupplement(auth.user.id, {
+      ...parsed.data,
+      presetKey: preset?.key ?? null,
+      // El nombre de un común sale del código, nunca del cliente.
+      name: preset?.name ?? "",
+    });
+
+    revalidatePath("/");
+
+    return {
+      ok: true,
+      supplement: {
+        id,
+        presetKey: preset?.key ?? null,
+        name: preset?.name ?? "",
+        active: parsed.data.active,
+        reminderEnabled: parsed.data.reminderEnabled,
+        reminderTime: parsed.data.reminderTime,
+      },
+    };
+  } catch {
+    return { ok: false, message: "No se pudo guardar el suplemento." };
+  }
+}
+
+/**
+ * "Agregar otro" de S8: un común escrito a mano marca ese común; un propio que ya existe se vuelve a marcar.
+ * Entra marcado, con aviso a las 09:00.
+ */
+export async function addCustomSupplementAction(rawName: string): Promise<SupplementResult> {
+  const auth = await requireUser();
+  const name = cleanSupplementName(typeof rawName === "string" ? rawName : "");
+
+  if (!name) {
+    return { ok: false, message: "Escribí el nombre del suplemento." };
+  }
+
+  if (name.length > SUPPLEMENT_NAME_MAX_LENGTH) {
+    return { ok: false, message: `Hasta ${SUPPLEMENT_NAME_MAX_LENGTH} letras.` };
+  }
+
+  try {
+    const saved = await listSupplementsForUser(auth.user.id);
+    const preset = findPresetByName(name);
+    const existing = preset
+      ? saved.find((item) => item.presetKey === preset.key)
+      : saved.find((item) => !item.presetKey && item.name.toLocaleLowerCase("es") === name.toLocaleLowerCase("es"));
+
+    if (existing?.active) {
+      return { ok: false, message: "Ya está en tu lista." };
+    }
+
+    if (!preset && !existing && (await countCustomSupplements(auth.user.id)) >= MAX_CUSTOM_SUPPLEMENTS) {
+      return { ok: false, message: `Podés agregar hasta ${MAX_CUSTOM_SUPPLEMENTS} propios.` };
+    }
+
+    const base = existing ?? {
+      id: null,
+      presetKey: preset?.key ?? null,
+      name: preset?.name ?? name,
+      reminderEnabled: true,
+      reminderTime: "09:00",
+    };
+    const id = await saveSupplement(auth.user.id, { ...base, active: true });
+
+    revalidatePath("/");
+
+    return { ok: true, supplement: { ...base, id, active: true } };
+  } catch (error) {
+    return {
+      ok: false,
+      message: error instanceof Error && error.message === "duplicate" ? "Ya está en tu lista." : "No se pudo agregar.",
+    };
+  }
+}
+
+export async function deleteSupplementAction(id: string): Promise<{ ok: true } | { ok: false; message: string }> {
+  const auth = await requireUser();
+
+  if (!z.string().uuid().safeParse(id).success) {
+    return { ok: false, message: "Revisá el suplemento." };
+  }
+
+  try {
+    await deleteCustomSupplement(auth.user.id, id);
+    revalidatePath("/");
+
+    return { ok: true };
+  } catch {
+    return { ok: false, message: "No se pudo borrar el suplemento." };
+  }
 }
 
 export async function saveProfileNameAction(

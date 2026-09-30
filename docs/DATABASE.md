@@ -496,6 +496,12 @@ Avisos push: horas de las comidas y sin aviso de prueba (2026-09-22, `20260922_p
 - defaults de las comidas a la hora de cada una: 08:00, 12:30, 17:30 y 21:00 (antes 10:00, 14:30, 18:30 y 22:30). Las filas que tenian un default viejo pasan al nuevo; una hora elegida a mano no se toca
 - contract: se borra `push_subscriptions.last_test_at`, que era el tope de "Probar notificación". Va despues del deploy que saca `/api/push/test`, porque el codigo anterior la escribe
 
+Suplementos (2026-09-30, `supabase/migrations/20260930_supplements.sql`):
+
+- 2 tablas nuevas (`user_supplements`, `supplement_intakes`), `notification_preferences.supplements_enabled` y el check de `push_deliveries.kind` acepta `supplements_HHMM`; detalle en la seccion "Suplementos"
+- migracion expand: el codigo anterior no lee las tablas nuevas, ignora la columna (tiene default) y nunca escribe `supplements_*`
+- RLS verificada con dos usuarios dentro de una transaccion revertida: cada uno ve y edita solo lo suyo; tildar un suplemento ajeno da 23503 (FK compuesta) o 42501; `push_deliveries` sigue en 42501; el check acepta `supplements_0900` y rechaza `supplements_x` / `supplements_2460`
+
 Bootstrap admin minimo:
 
 - debe existir al menos un usuario verificable con `type_rol = admin` antes de validar G5, G5.5, G6 o G7
@@ -904,7 +910,7 @@ Cron (`pg_cron` llama a la app con `pg_net`; URL y secreto salen de Vault: `push
 
 ### `push_deliveries`
 
-- un recordatorio por `(user_id, kind, local_date)`: `kind` en `training`, `meal_desayuno`, `meal_almuerzo`, `meal_merienda`, `meal_cena`, `weekly`
+- un recordatorio por `(user_id, kind, local_date)`: `kind` en `training`, `meal_desayuno`, `meal_almuerzo`, `meal_merienda`, `meal_cena`, `weekly`, o `supplements_HHMM` (una fila por tanda de suplementos, ver "Suplementos")
 - `status`: `sending` → `sent` / `failed`, o `skipped` con el motivo en `detail` (ej. descanso, comida ya registrada)
 - el insert `on conflict do nothing` es el reclamo idempotente del cron (tick cada 5 min con ventana de 30 min)
 - solo service role (RLS sin policies)
@@ -916,3 +922,31 @@ Cron (`pg_cron` llama a la app con `pg_net`; URL y secreto salen de Vault: `push
 - `claim_due_rest_pushes(lookahead_ms)` reclama con `for update skip locked` las filas que vencen en la ventana; un reclamo colgado se puede retomar a los 10 s. El envio marca `sent_at` con el `token` antes de mandar (a lo sumo una vez)
 - `record_rest_push_delta(token, delta_ms)` agrega una medicion solo si el aviso ya salio
 - solo service role (RLS sin policies; las dos funciones tienen `execute` solo para `service_role`)
+
+## Suplementos (2026-09-30)
+
+Qué suplementos toma cada usuario, cuáles tildó hoy y su recordatorio. Reglas de producto en `DESIGN.md` §6.4, §10.1 y §15.2 (S8); código en `app/lib/supplements.ts` (puro) y `app/lib/supplements-store.ts`. Los 10 comunes viven en código (`SUPPLEMENT_PRESETS`): la fila se crea recién al marcar uno.
+
+| Migracion | Cuando | Que hace |
+| --- | --- | --- |
+| `20260930_supplements` | aplicada 2026-09-30, antes del deploy (expand) | las 2 tablas con RLS, `notification_preferences.supplements_enabled` y el check ampliado de `push_deliveries.kind` |
+| `20260930_supplements_preset_unique` | aplicada 2026-09-30, antes del deploy | el unico `(user_id, preset_key)` pasa de indice parcial a constraint: el upsert de un comun (`on conflict`) no puede usar un indice parcial desde PostgREST |
+
+### `user_supplements`
+
+- un suplemento de un usuario: `preset_key` (clave de un común, `null` si es propio), `name` (1–40, sin espacios en los bordes), `active` ("lo tomo"), `reminder_enabled`, `reminder_time` (`time`, hora argentina, default 09:00)
+- unicos: `(user_id, preset_key)` (constraint; los propios tienen `null` y no chocan) y `(user_id, lower(name))`; `(id, user_id)` sostiene la FK compuesta de los tildes
+- desmarcar un común lo deja `active = false` (conserva su hora); los propios se pueden borrar. Tope de 20 propios en la action
+- RLS: owner-only select, insert, update y delete
+
+### `supplement_intakes`
+
+- un tilde por `(supplement_id, local_date)` (fecha argentina, como `log_date`), con `user_id` y `taken_at`
+- FK compuesta `(supplement_id, user_id) → user_supplements (id, user_id) on delete cascade`: solo se puede tildar un suplemento propio
+- RLS: owner-only select, insert y delete (destildar borra la fila)
+
+### Recordatorio
+
+- `notification_preferences.supplements_enabled` (default true) es el maestro de S7; cada suplemento tiene su `reminder_enabled` + `reminder_time`
+- el tick de 5 min manda **un aviso agrupado** con los pendientes (activos, con aviso, sin tilde hoy, hora ya pasada) si hoy no salió ninguno, si entró un pendiente nuevo o si pasaron 55 min desde la tanda anterior; repeticiones hasta las 23:00
+- cada tanda es una fila de `push_deliveries` con `kind = 'supplements_HHMM'` (hora del tick): reclamo idempotente y "¿por qué no llegó?"; la limpieza de 60 dias ya la cubre

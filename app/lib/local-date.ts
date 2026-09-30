@@ -34,6 +34,13 @@ export function getLocalMinutesOfDay(now: Date = new Date()): number {
   return hour * 60 + minute;
 }
 
+/** HH:MM (24 h) en la zona horaria de la app. */
+export function formatTimeInAppZone(date: Date): string {
+  const minutes = getLocalMinutesOfDay(date);
+
+  return `${String(Math.floor(minutes / 60)).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}`;
+}
+
 export function isDateKey(value: string): boolean {
   if (!DATE_KEY_PATTERN.test(value)) {
     return false;
